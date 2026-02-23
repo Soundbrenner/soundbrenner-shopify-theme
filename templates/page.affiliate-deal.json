@@ -14,14 +14,17 @@
       "settings": {
         "use_seasonal_hero_card": false,
         "use_affiliate_metaobject": true,
+        "use_resource_title_description": false,
+        "use_product_page_metaobjects": false,
         "kicker": "",
         "headline": "",
         "subheadline": "",
-        "show_button": false,
-        "button_label": "",
+        "show_button": true,
+        "button_label": "Explore now",
         "button_size": "large",
         "icon_position": "none",
-        "button_link": ""
+        "button_link": "shopify://collections/all",
+        "enable_app_download_buttons": false
       }
     }
   },
