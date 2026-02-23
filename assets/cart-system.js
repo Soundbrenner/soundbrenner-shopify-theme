@@ -164,17 +164,27 @@
       });
     }
 
-    if (codes.length > 0) {
-      return [...new Set(codes)];
-    }
-
     if (cart && Array.isArray(cart.cart_level_discount_applications)) {
       cart.cart_level_discount_applications.forEach((discount) => {
         const type = `${discount && discount.type ? discount.type : ''}`.toLowerCase();
         const title = `${discount && discount.title ? discount.title : ''}`.trim();
-        if (title && (type === 'discount_code' || !type)) {
+        if (title && type === 'discount_code') {
           codes.push(title);
         }
+      });
+    }
+
+    if (cart && Array.isArray(cart.items)) {
+      cart.items.forEach((item) => {
+        if (!item || !Array.isArray(item.line_level_discount_allocations)) return;
+        item.line_level_discount_allocations.forEach((allocation) => {
+          const application = allocation && allocation.discount_application ? allocation.discount_application : null;
+          const type = `${application && application.type ? application.type : ''}`.toLowerCase();
+          const title = `${application && application.title ? application.title : ''}`.trim();
+          if (title && type === 'discount_code') {
+            codes.push(title);
+          }
+        });
       });
     }
 
@@ -211,6 +221,22 @@
           code = title;
           break;
         }
+      }
+    }
+
+    if (!code && cart && Array.isArray(cart.items)) {
+      for (const item of cart.items) {
+        if (!item || !Array.isArray(item.line_level_discount_allocations)) continue;
+        for (const allocation of item.line_level_discount_allocations) {
+          const application =
+            allocation && allocation.discount_application ? allocation.discount_application : null;
+          const title = `${application && application.title ? application.title : ''}`.trim();
+          if (title) {
+            code = title;
+            break;
+          }
+        }
+        if (code) break;
       }
     }
 
@@ -706,6 +732,12 @@
 
       this.setupHistoryListener();
       this.dispatchStateChange();
+
+      this.querySelectorAll('cart-items-component').forEach((component) => {
+        if (component && typeof component.hideDiscountError === 'function') {
+          component.hideDiscountError();
+        }
+      });
 
       refreshCart({ source: 'drawer-open', animateBadge: false }).catch(() => {
         // no-op

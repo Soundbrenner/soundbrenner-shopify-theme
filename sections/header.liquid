@@ -1365,7 +1365,6 @@
             shipping_text: cart_summary_shipping_text,
             taxes_text: cart_summary_taxes_text,
             discount_input_id: 'HeaderCartDiscountCode-' | append: section.id,
-            discount_codes: cart.cart_level_discount_applications | where: 'type', 'discount_code' | map: 'title' | uniq,
             checkout_mode: 'link',
             checkout_button_class: '',
             clear_button_class: 'header__cart-drawer-action',
@@ -4150,7 +4149,7 @@
     flex: 1 1 auto;
     flex-direction: column;
     min-height: 0;
-    padding: 0 20px 20px;
+    padding: 0 20px 0;
   }
 
   .sb-cart-line-list {
@@ -4162,7 +4161,7 @@
     margin: 0;
     min-height: 0;
     overflow: auto;
-    padding: 0;
+    padding: var(--sb-space-16) 0 0;
   }
 
   .sb-cart-line-list[hidden] {
@@ -4592,7 +4591,7 @@
     flex-direction: column;
     gap: 0;
     margin-top: auto;
-    padding: 20px;
+    padding: 0 20px 20px;
   }
 
   .header__cart-drawer-summary[hidden] {
@@ -4601,11 +4600,7 @@
 
   .header__cart-drawer-panel[cart-summary-sticky='true'] .header__cart-drawer-summary {
     bottom: 0;
-    mask-image: linear-gradient(
-      to bottom,
-      transparent,
-      black var(--sb-space-20)
-    );
+    mask-image: none;
     position: sticky;
   }
 
@@ -4849,6 +4844,10 @@
     width: 100%;
   }
 
+  .sb-cart-summary__discount-error[hidden] {
+    display: none;
+  }
+
   .sb-cart-summary__discount-error-icon {
     color: currentColor;
     display: inline-flex;
@@ -4856,6 +4855,10 @@
     height: var(--sb-space-16);
     line-height: 0;
     width: var(--sb-space-16);
+  }
+
+  .sb-cart-summary__discount-error-icon[hidden] {
+    display: none;
   }
 
   .sb-cart-summary__discount-error-icon svg {
@@ -4942,7 +4945,7 @@
   .sb-cart-summary__checkout-group {
     display: grid;
     gap: var(--sb-space-16);
-    margin-top: 30px;
+    margin-top: 14px;
   }
 
   .sb-cart-summary__checkout-form {

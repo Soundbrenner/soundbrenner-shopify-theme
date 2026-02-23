@@ -23,11 +23,29 @@
     assign sb_cart_has_auto_discount = true
   endif
 
-  assign sb_cart_discount_code = ''
+  assign sb_cart_discount_codes = cart.cart_level_discount_applications | where: 'type', 'discount_code' | map: 'title'
+  for item in cart.items
+    for allocation in item.line_level_discount_allocations
+      if allocation.discount_application.type == 'discount_code'
+        assign sb_cart_line_discount_code = allocation.discount_application.title | default: '' | strip
+        if sb_cart_line_discount_code != blank
+          assign sb_cart_discount_codes = sb_cart_line_discount_code | split: '|' | concat: sb_cart_discount_codes
+        endif
+      endif
+    endfor
+  endfor
   if cart.discount_codes != blank and cart.discount_codes.size > 0
-    assign sb_cart_first_discount = cart.discount_codes | first
-    assign sb_cart_discount_code = sb_cart_first_discount.code | default: sb_cart_first_discount
+    for discount_code_entry in cart.discount_codes
+      assign sb_cart_discount_code_value = discount_code_entry.code | default: discount_code_entry | default: '' | strip
+      if sb_cart_discount_code_value != blank
+        assign sb_cart_discount_codes = sb_cart_discount_code_value | split: '|' | concat: sb_cart_discount_codes
+      endif
+    endfor
   endif
+  assign sb_cart_discount_codes = sb_cart_discount_codes | uniq
+
+  assign sb_cart_discount_code = ''
+  assign sb_cart_discount_code = sb_cart_discount_codes | first | default: ''
   if sb_cart_discount_code == blank
     assign sb_cart_discount_code = cart.cart_level_discount_applications | where: 'type', 'discount_code' | map: 'title' | first
   endif
@@ -36,6 +54,20 @@
       assign discount_title_fallback = discount_application.title | default: '' | strip
       if discount_title_fallback != blank
         assign sb_cart_discount_code = discount_title_fallback
+        break
+      endif
+    endfor
+  endif
+  if sb_cart_discount_code == blank
+    for item in cart.items
+      for allocation in item.line_level_discount_allocations
+        assign sb_cart_line_discount_title = allocation.discount_application.title | default: '' | strip
+        if sb_cart_line_discount_title != blank
+          assign sb_cart_discount_code = sb_cart_line_discount_title
+          break
+        endif
+      endfor
+      if sb_cart_discount_code != blank
         break
       endif
     endfor
@@ -165,7 +197,7 @@
           <span data-cart-discount-error-text></span>
         </p>
         <ul class="sb-cart-discount-list" data-cart-discount-list>
-          {% for discount_code in discount_codes %}
+          {% for discount_code in sb_cart_discount_codes %}
             {% assign discount_code_upper = discount_code | upcase %}
             <li class="sb-cart-discount-pill font-caption weight-bold">
               <span>{{ discount_code_upper }}</span>
