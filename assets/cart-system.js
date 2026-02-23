@@ -10,6 +10,7 @@
   const CART_OPEN_CLASS = 'is-open';
   const CART_ROW_REMOVE_DELAY = 170;
   const CART_ROW_REMOVE_FALLBACK = 360;
+  const CART_DISCOUNT_DISCLOSURE_DURATION = 280;
   const prefersReducedMotion = () =>
     window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const supportsViewTransitions = () =>
@@ -148,21 +149,6 @@
 
   const getAppliedDiscountCodes = (cart) => {
     const codes = [];
-
-    if (cart && Array.isArray(cart.discount_codes)) {
-      cart.discount_codes.forEach((entry) => {
-        if (!entry) return;
-        if (typeof entry === 'string') {
-          const code = entry.trim();
-          if (code) codes.push(code);
-          return;
-        }
-
-        const code = `${entry.code || ''}`.trim();
-        const applicable = entry.applicable !== false;
-        if (code && applicable) codes.push(code);
-      });
-    }
 
     if (cart && Array.isArray(cart.cart_level_discount_applications)) {
       cart.cart_level_discount_applications.forEach((discount) => {
@@ -549,7 +535,7 @@
     });
   };
 
-  const applyDiscount = async (discountCodes, { source = 'discount' } = {}) => {
+  const applyDiscount = async (discountCodes, { source = 'discount', commit = true } = {}) => {
     const normalizedCodes = normalizeStringArray(discountCodes);
 
     const response = await fetch(cartUrl('cart/update.js'), {
@@ -569,10 +555,20 @@
     }
 
     const cart = await response.json();
-    return updateCartAndDispatch(cart, source, {
-      animateBadge: false,
-      itemCount: cart.item_count || 0,
-    });
+    if (!commit) return cart;
+
+    try {
+      const freshCart = await fetchCart();
+      return updateCartAndDispatch(freshCart, source, {
+        animateBadge: false,
+        itemCount: freshCart.item_count || 0,
+      });
+    } catch (_) {
+      return updateCartAndDispatch(cart, source, {
+        animateBadge: false,
+        itemCount: cart.item_count || 0,
+      });
+    }
   };
 
   class CartDrawerComponent extends HTMLElement {
@@ -823,6 +819,10 @@
       this.discountForm = this.querySelector('[data-cart-discount-form]');
       this.discountInput = this.querySelector('[data-cart-discount-input]');
       this.discountListNode = this.querySelector('[data-cart-discount-list]');
+      this.discountDisclosureNode = this.querySelector('[data-cart-discount-disclosure]');
+      this.discountDisclosureSummaryNode =
+        this.discountDisclosureNode && this.discountDisclosureNode.querySelector('summary');
+      this.discountDisclosureCloseTimer = null;
       this.discountErrorNode = this.querySelector('[data-cart-discount-error]');
       this.discountErrorTextNode = this.querySelector('[data-cart-discount-error-text]');
       this.discountErrorIconNode = this.querySelector('[data-cart-discount-error-icon]');
@@ -850,11 +850,24 @@
       this.boundHandleClick = this.handleClick.bind(this);
       this.boundHandleChange = this.handleChange.bind(this);
       this.boundHandleSubmit = this.handleSubmit.bind(this);
+      this.boundHandleDiscountDisclosureToggle = this.handleDiscountDisclosureToggle.bind(this);
 
       document.addEventListener(EVENTS.cartChanged, this.boundHandleCartChanged);
       this.addEventListener('click', this.boundHandleClick);
       this.addEventListener('change', this.boundHandleChange);
       this.addEventListener('submit', this.boundHandleSubmit);
+
+      if (this.discountDisclosureNode) {
+        const isInitiallyOpen = this.discountDisclosureNode.hasAttribute('open');
+        this.discountDisclosureNode.classList.toggle('is-open', isInitiallyOpen);
+        if (this.discountDisclosureSummaryNode instanceof HTMLElement) {
+          this.discountDisclosureSummaryNode.setAttribute('aria-expanded', isInitiallyOpen ? 'true' : 'false');
+          this.discountDisclosureSummaryNode.addEventListener(
+            'click',
+            this.boundHandleDiscountDisclosureToggle
+          );
+        }
+      }
 
       if (cachedCart) {
         this.render(cachedCart);
@@ -874,6 +887,16 @@
       if (this.boundHandleSubmit) {
         this.removeEventListener('submit', this.boundHandleSubmit);
       }
+      if (this.discountDisclosureSummaryNode && this.boundHandleDiscountDisclosureToggle) {
+        this.discountDisclosureSummaryNode.removeEventListener(
+          'click',
+          this.boundHandleDiscountDisclosureToggle
+        );
+      }
+      if (this.discountDisclosureCloseTimer) {
+        window.clearTimeout(this.discountDisclosureCloseTimer);
+        this.discountDisclosureCloseTimer = null;
+      }
 
       this.removalTimers.forEach((timerId) => {
         window.clearTimeout(timerId);
@@ -884,6 +907,62 @@
     handleCartChanged(event) {
       if (!event || !event.detail || !event.detail.cart) return;
       this.render(event.detail.cart);
+    }
+
+    setDiscountDisclosureState(open, { immediate = false } = {}) {
+      if (!(this.discountDisclosureNode instanceof HTMLElement)) return;
+
+      if (this.discountDisclosureCloseTimer) {
+        window.clearTimeout(this.discountDisclosureCloseTimer);
+        this.discountDisclosureCloseTimer = null;
+      }
+
+      if (this.discountDisclosureSummaryNode instanceof HTMLElement) {
+        this.discountDisclosureSummaryNode.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+
+      if (open) {
+        this.discountDisclosureNode.removeAttribute('data-closing');
+        this.discountDisclosureNode.setAttribute('open', '');
+        if (immediate) {
+          this.discountDisclosureNode.classList.add('is-open');
+          return;
+        }
+        window.requestAnimationFrame(() => {
+          window.requestAnimationFrame(() => {
+            if (!(this.discountDisclosureNode instanceof HTMLElement)) return;
+            this.discountDisclosureNode.classList.add('is-open');
+          });
+        });
+        return;
+      }
+
+      if (immediate) {
+        this.discountDisclosureNode.classList.remove('is-open');
+        this.discountDisclosureNode.removeAttribute('data-closing');
+        this.discountDisclosureNode.removeAttribute('open');
+        return;
+      }
+
+      this.discountDisclosureNode.setAttribute('data-closing', 'true');
+      this.discountDisclosureNode.classList.remove('is-open');
+      this.discountDisclosureCloseTimer = window.setTimeout(() => {
+        if (!(this.discountDisclosureNode instanceof HTMLElement)) return;
+        if (this.discountDisclosureNode.classList.contains('is-open')) return;
+        this.discountDisclosureNode.removeAttribute('open');
+        this.discountDisclosureNode.removeAttribute('data-closing');
+        this.discountDisclosureCloseTimer = null;
+      }, CART_DISCOUNT_DISCLOSURE_DURATION);
+    }
+
+    handleDiscountDisclosureToggle(event) {
+      if (!event) return;
+      event.preventDefault();
+      event.stopPropagation();
+      const isOpen =
+        this.discountDisclosureNode instanceof HTMLElement &&
+        this.discountDisclosureNode.classList.contains('is-open');
+      this.setDiscountDisclosureState(!isOpen);
     }
 
     handleClick(event) {
@@ -979,9 +1058,10 @@
       }
 
       const nextCodes = [...existingCodes, nextCode];
-      applyDiscount(nextCodes, { source: `${this.context}-discount-add` })
+      applyDiscount(nextCodes, { source: `${this.context}-discount-add`, commit: false })
         .then((cart) => {
           const appliedCodes = getAppliedDiscountCodes(cart).map((code) => code.toLowerCase());
+          const existingCodesLower = existingCodes.map((code) => code.toLowerCase());
           if (!appliedCodes.includes(nextCode.toLowerCase())) {
             const discountCodes = Array.isArray(cart && cart.discount_codes) ? cart.discount_codes : [];
             const attemptedCode = nextCode.toLowerCase();
@@ -991,15 +1071,43 @@
               return code === attemptedCode;
             });
             if (attemptedEntry && attemptedEntry.applicable === true) {
-              this.showDiscountError(this.shippingDiscountErrorMessage);
+              const stillSameCodes =
+                appliedCodes.length === existingCodesLower.length &&
+                appliedCodes.every((code) => existingCodesLower.includes(code));
+              if (stillSameCodes) {
+                this.showDiscountError(this.shippingDiscountErrorMessage);
+              } else {
+                this.showDiscountError(this.discountCodeErrorMessage);
+              }
             } else {
               this.showDiscountError(this.discountCodeErrorMessage);
             }
+            refreshCart({
+              source: `${this.context}-discount-add-revalidate`,
+              animateBadge: false,
+            }).catch(() => {});
             return;
           }
 
-          this.discountInput.value = '';
-          this.hideDiscountError();
+          const finalizeSuccess = () => {
+            this.discountInput.value = '';
+            this.hideDiscountError();
+          };
+
+          refreshCart({
+            source: `${this.context}-discount-add`,
+            animateBadge: false,
+          })
+            .then(() => {
+              finalizeSuccess();
+            })
+            .catch(() => {
+              updateCartAndDispatch(cart, `${this.context}-discount-add`, {
+                animateBadge: false,
+                itemCount: cart.item_count || 0,
+              });
+              finalizeSuccess();
+            });
         })
         .catch(() => {
           this.showDiscountError(this.discountCodeErrorMessage);

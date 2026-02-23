@@ -34,14 +34,6 @@
       endif
     endfor
   endfor
-  if cart.discount_codes != blank and cart.discount_codes.size > 0
-    for discount_code_entry in cart.discount_codes
-      assign sb_cart_discount_code_value = discount_code_entry.code | default: discount_code_entry | default: '' | strip
-      if sb_cart_discount_code_value != blank
-        assign sb_cart_discount_codes = sb_cart_discount_code_value | split: '|' | concat: sb_cart_discount_codes
-      endif
-    endfor
-  endif
   assign sb_cart_discount_codes = sb_cart_discount_codes | uniq
 
   assign sb_cart_discount_code = ''

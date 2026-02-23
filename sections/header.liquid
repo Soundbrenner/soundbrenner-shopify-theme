@@ -3873,7 +3873,7 @@
     align-items: center;
     border-bottom: 0;
     display: flex;
-    padding-bottom: var(--sb-space-16);
+    padding-bottom: 0;
     justify-content: space-between;
     gap: var(--sb-space-12);
   }
@@ -4161,7 +4161,7 @@
     margin: 0;
     min-height: 0;
     overflow: auto;
-    padding: var(--sb-space-16) 0 0;
+    padding: var(--sb-space-16) var(--sb-space-8) var(--sb-space-16);
   }
 
   .sb-cart-line-list[hidden] {
@@ -4174,7 +4174,7 @@
     display: grid;
     gap: var(--sb-space-12);
     grid-template-columns: var(--sb-cart-thumb-size) minmax(0, 1fr);
-    padding: var(--sb-space-20) 0 0;
+    padding: var(--sb-space-24) 0 0;
     transition: opacity 160ms ease;
   }
 
@@ -4692,7 +4692,7 @@
   }
 
   .sb-cart-summary__discount[open] {
-    gap: var(--sb-space-16);
+    gap: 0;
   }
 
   .sb-cart-summary__discount > summary {
@@ -4758,12 +4758,12 @@
     transform: rotate(-90deg) scale(0.85);
   }
 
-  .sb-cart-summary__discount[open] .sb-cart-summary__toggle-icon-plus {
+  .sb-cart-summary__discount.is-open .sb-cart-summary__toggle-icon-plus {
     opacity: 0;
     transform: rotate(90deg) scale(0.85);
   }
 
-  .sb-cart-summary__discount[open] .sb-cart-summary__toggle-icon-close {
+  .sb-cart-summary__discount.is-open .sb-cart-summary__toggle-icon-close {
     opacity: 1;
     transform: rotate(0deg) scale(1);
   }
@@ -4771,10 +4771,11 @@
   .sb-cart-summary__discount-body {
     display: grid;
     grid-template-rows: 0fr;
-    transition: grid-template-rows 260ms cubic-bezier(0.22, 1, 0.36, 1);
+    overflow: hidden;
+    transition: grid-template-rows 280ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .sb-cart-summary__discount[open] .sb-cart-summary__discount-body {
+  .sb-cart-summary__discount.is-open .sb-cart-summary__discount-body {
     grid-template-rows: 1fr;
   }
 
@@ -4783,11 +4784,18 @@
     gap: var(--sb-space-16);
     min-height: 0;
     overflow: hidden;
+    opacity: 0;
     padding-top: 0;
+    transform: translateY(calc(-1 * var(--sb-space-8)));
+    transition:
+      opacity 220ms ease,
+      transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .sb-cart-summary__discount[open] .sb-cart-summary__discount-body-inner {
+  .sb-cart-summary__discount.is-open .sb-cart-summary__discount-body-inner {
+    opacity: 1;
     overflow: visible;
+    transform: translateY(0);
   }
 
   .sb-cart-summary__discount-form {
