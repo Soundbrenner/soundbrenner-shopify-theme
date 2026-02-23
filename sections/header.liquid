@@ -41,6 +41,24 @@
   assign seasonal_shipping_has_free_shipping = false
   assign seasonal_free_shipping_threshold_display = ''
   assign seasonal_shipping_entry = shop.metaobjects['database_localized_shipping_info'][seasonal_shipping_country_handle]
+  if seasonal_shipping_entry == blank
+    assign seasonal_shipping_entry = shop.metaobjects['database_localized_shipping'][seasonal_shipping_country_handle]
+  endif
+  if seasonal_shipping_entry == blank
+    assign seasonal_shipping_entries = shop.metaobjects['database_localized_shipping_info'].values
+    if seasonal_shipping_entries == blank
+      assign seasonal_shipping_entries = shop.metaobjects['database_localized_shipping'].values
+    endif
+    if seasonal_shipping_entries != blank and seasonal_shipping_country_iso != blank
+      for seasonal_shipping_entry_candidate in seasonal_shipping_entries
+        assign seasonal_entry_iso_candidate = seasonal_shipping_entry_candidate.country_iso_code.value | default: seasonal_shipping_entry_candidate.country_iso_code | default: seasonal_shipping_entry_candidate.iso_country_code.value | default: seasonal_shipping_entry_candidate.iso_country_code | upcase | strip
+        if seasonal_entry_iso_candidate == seasonal_shipping_country_iso
+          assign seasonal_shipping_entry = seasonal_shipping_entry_candidate
+          break
+        endif
+      endfor
+    endif
+  endif
   if seasonal_shipping_entry != blank and seasonal_shipping_country_iso != blank
     assign seasonal_entry_ship_to = seasonal_shipping_entry.ship_to_it.value | default: seasonal_shipping_entry.ship_to_it | append: '' | downcase
     assign seasonal_entry_has_free_shipping = seasonal_shipping_entry.free_shipping_available.value | default: seasonal_shipping_entry.free_shipping_available | append: '' | downcase

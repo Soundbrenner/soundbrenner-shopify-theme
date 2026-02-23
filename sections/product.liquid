@@ -204,6 +204,7 @@
   assign shopper_country_name = localization.country.name | default: localization.country.iso_code
   assign shopper_country_handle = shopper_country_iso | downcase
   assign shopper_country_shipping_entry = shop.metaobjects['database_localized_shipping_info'][shopper_country_handle]
+  assign shopper_country_shipping_entry_found = false
   assign shopper_country_ship_to_it = true
   assign shopper_country_taxes_included = false
   assign shopper_country_free_shipping_available = false
@@ -213,6 +214,7 @@
   assign shopper_country_shipping_text = blank
 
   if shopper_country_shipping_entry != blank
+    assign shopper_country_shipping_entry_found = true
     assign shopper_country_ship_to_it_value = shopper_country_shipping_entry.ship_to_it.value | default: shopper_country_shipping_entry.ship_to_it | append: '' | downcase
     assign shopper_country_taxes_included_value = shopper_country_shipping_entry.taxes_included_in_price.value | default: shopper_country_shipping_entry.taxes_included_in_price | append: '' | downcase
     assign shopper_country_free_shipping_available_value = shopper_country_shipping_entry.free_shipping_available.value | default: shopper_country_shipping_entry.free_shipping_available | append: '' | downcase
@@ -244,7 +246,9 @@
 
   assign shopper_country_advertised_min_time_number = shopper_country_advertised_min_time | plus: 0
   assign shopper_country_advertised_max_time_number = shopper_country_advertised_max_time | plus: 0
-  if shopper_country_ship_to_it == false
+  if shopper_country_shipping_entry_found == false
+    assign shopper_country_shipping_text = 'Ships worldwide'
+  elsif shopper_country_ship_to_it == false
     assign shopper_country_shipping_text = "We don't ship to " | append: shopper_country_name
   elsif shopper_country_advertised_min_time != blank and shopper_country_advertised_max_time != blank and shopper_country_advertised_min_time_number < 11 and shopper_country_advertised_max_time_number < 12
     assign shopper_country_shipping_text = shopper_country_advertised_min_time | append: ' - ' | append: shopper_country_advertised_max_time | append: ' days delivery in ' | append: shopper_country_name
