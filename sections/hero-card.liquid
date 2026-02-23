@@ -11,6 +11,38 @@
 {% assign hero_card_china_download_link = 'https://files.soundbrenner.com/downloads/TheMetronome.apk' %}
 {% assign seasonal_sale_name = settings.seasonal_sale_name | strip %}
 {% assign seasonal_sale_token = '{{ Seasonal sale name }}' %}
+{% assign shipping_country_token = '{{ Shipping country }}' %}
+{% assign free_shipping_threshold_token = '{{ Free shipping threshold }}' %}
+{% assign hero_card_shipping_country_name = localization.country.name | default: localization.country.iso_code | default: 'your country' %}
+{% assign hero_card_shipping_country_iso = localization.country.iso_code | upcase | strip %}
+{% assign hero_card_shipping_country_handle = hero_card_shipping_country_iso | downcase %}
+{% assign hero_card_shipping_is_blocked = false %}
+{% assign hero_card_shipping_has_free_shipping = false %}
+{% assign hero_card_free_shipping_threshold_display = '' %}
+{% assign hero_card_shipping_entry = shop.metaobjects['database_localized_shipping_info'][hero_card_shipping_country_handle] %}
+{% if hero_card_shipping_entry != blank and hero_card_shipping_country_iso != blank %}
+  {% assign hero_card_entry_ship_to = hero_card_shipping_entry.ship_to_it.value | default: hero_card_shipping_entry.ship_to_it | append: '' | downcase %}
+  {% assign hero_card_entry_has_free_shipping = hero_card_shipping_entry.free_shipping_available.value | default: hero_card_shipping_entry.free_shipping_available | append: '' | downcase %}
+  {% assign hero_card_entry_threshold = hero_card_shipping_entry.free_shipping_threshold_in_local_currency.value | default: hero_card_shipping_entry.free_shipping_threshold_in_local_currency %}
+  {% assign hero_card_entry_currency_code = hero_card_shipping_entry.shopify_currency.value | default: hero_card_shipping_entry.shopify_currency %}
+  {% assign hero_card_entry_currency_symbol = localization.country.currency.symbol | default: '' %}
+
+  {% if hero_card_entry_ship_to == 'false' or hero_card_entry_ship_to == '0' or hero_card_entry_ship_to == 'no' %}
+    {% assign hero_card_shipping_is_blocked = true %}
+  {% endif %}
+  {% if hero_card_entry_has_free_shipping == 'true' or hero_card_entry_has_free_shipping == '1' or hero_card_entry_has_free_shipping == 'yes' %}
+    {% assign hero_card_shipping_has_free_shipping = true %}
+  {% endif %}
+  {% if hero_card_entry_threshold != blank %}
+    {% if hero_card_entry_currency_symbol != blank %}
+      {% assign hero_card_free_shipping_threshold_display = hero_card_entry_currency_symbol | append: hero_card_entry_threshold %}
+    {% elsif hero_card_entry_currency_code != blank %}
+      {% assign hero_card_free_shipping_threshold_display = hero_card_entry_threshold | append: ' ' | append: hero_card_entry_currency_code %}
+    {% else %}
+      {% assign hero_card_free_shipping_threshold_display = hero_card_entry_threshold %}
+    {% endif %}
+  {% endif %}
+{% endif %}
 
 {% if hero_card_use_product_metaobjects %}
   {% if request.page_type == 'product' and product != blank %}
@@ -34,12 +66,32 @@
   {% assign hero_card_source_image_mobile = settings.seasonal_hero_image_mobile %}
   {% assign hero_card_kicker = settings.seasonal_hero_kicker %}
   {% assign hero_card_headline = settings.seasonal_hero_headline %}
-  {% assign hero_card_subheadline = settings.seasonal_hero_subheadline %}
+  {% assign hero_card_subheadline_free_shipping = settings.seasonal_hero_subheadline_free_shipping | strip %}
+  {% assign hero_card_subheadline_no_free_shipping = settings.seasonal_hero_subheadline_no_free_shipping | strip %}
+  {% assign hero_card_subheadline_blocked = settings.seasonal_hero_subheadline_blocked | strip %}
+  {% if hero_card_subheadline_free_shipping == blank %}
+    {% assign hero_card_subheadline_free_shipping = settings.seasonal_hero_subheadline | strip %}
+  {% endif %}
+  {% if hero_card_subheadline_no_free_shipping == blank %}
+    {% assign hero_card_subheadline_no_free_shipping = settings.seasonal_hero_subheadline | strip %}
+  {% endif %}
+  {% if hero_card_subheadline_blocked == blank %}
+    {% assign hero_card_subheadline_blocked = settings.seasonal_hero_subheadline | strip %}
+  {% endif %}
+  {% if hero_card_shipping_is_blocked %}
+    {% assign hero_card_subheadline = hero_card_subheadline_blocked %}
+  {% elsif hero_card_shipping_has_free_shipping %}
+    {% assign hero_card_subheadline = hero_card_subheadline_free_shipping %}
+  {% else %}
+    {% assign hero_card_subheadline = hero_card_subheadline_no_free_shipping %}
+  {% endif %}
   {% assign hero_card_button_label = settings.seasonal_hero_button_label %}
   {% assign hero_card_button_link = settings.seasonal_hero_button_link %}
   {% assign hero_card_kicker = hero_card_kicker | replace: seasonal_sale_token, seasonal_sale_name %}
   {% assign hero_card_headline = hero_card_headline | replace: seasonal_sale_token, seasonal_sale_name %}
   {% assign hero_card_subheadline = hero_card_subheadline | replace: seasonal_sale_token, seasonal_sale_name %}
+  {% assign hero_card_subheadline = hero_card_subheadline | replace: shipping_country_token, hero_card_shipping_country_name %}
+  {% assign hero_card_subheadline = hero_card_subheadline | replace: free_shipping_threshold_token, hero_card_free_shipping_threshold_display %}
   {% assign hero_card_button_label = hero_card_button_label | replace: seasonal_sale_token, seasonal_sale_name %}
   {% if hero_card_button_label != blank %}
     {% assign hero_card_show_button = true %}

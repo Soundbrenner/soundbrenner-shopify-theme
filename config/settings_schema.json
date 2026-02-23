@@ -164,8 +164,21 @@
       },
       {
         "type": "textarea",
-        "id": "seasonal_announcement_copy",
-        "label": "Announcement bar body"
+        "id": "seasonal_announcement_copy_free_shipping",
+        "label": "Announcement bar body (free shipping)",
+        "default": "Spring Sale: up to 48% off & free shipping in {{ Shipping country }} over {{ Free shipping threshold }}"
+      },
+      {
+        "type": "textarea",
+        "id": "seasonal_announcement_copy_no_free_shipping",
+        "label": "Announcement bar body (no free shipping)",
+        "default": "Spring Sale: up to 48% off in {{ Shipping country }}"
+      },
+      {
+        "type": "textarea",
+        "id": "seasonal_announcement_copy_blocked",
+        "label": "Announcement bar body (blocked)",
+        "default": "We are not shipping to {{ Shipping country }}. Select a different country."
       },
       {
         "type": "image_picker",
@@ -191,8 +204,21 @@
       },
       {
         "type": "textarea",
-        "id": "seasonal_hero_subheadline",
-        "label": "Seasonal hero card subheadline"
+        "id": "seasonal_hero_subheadline_free_shipping",
+        "label": "Seasonal hero card subheadline (free shipping)",
+        "default": "Save up to 48% and get free shipping in {{ Shipping country }} on orders over {{ Free shipping threshold }}."
+      },
+      {
+        "type": "textarea",
+        "id": "seasonal_hero_subheadline_no_free_shipping",
+        "label": "Seasonal hero card subheadline (no free shipping)",
+        "default": "Save up to 48% in {{ Shipping country }}."
+      },
+      {
+        "type": "textarea",
+        "id": "seasonal_hero_subheadline_blocked",
+        "label": "Seasonal hero card subheadline (blocked)",
+        "default": "We are not shipping to {{ Shipping country }}. Select a different country."
       },
       {
         "type": "text",

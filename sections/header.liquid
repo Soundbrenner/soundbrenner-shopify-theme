@@ -31,15 +31,70 @@
     assign show_country_flag = true
   endif
   assign seasonal_sale_name = settings.seasonal_sale_name | strip
-  assign announcement_text = settings.seasonal_announcement_copy | strip
-  assign announcement_text = announcement_text | replace: '{{ Seasonal sale name }}', seasonal_sale_name
+  assign seasonal_sale_token = '{{ Seasonal sale name }}'
+  assign shipping_country_token = '{{ Shipping country }}'
+  assign free_shipping_threshold_token = '{{ Free shipping threshold }}'
+  assign seasonal_shipping_country_name = localization.country.name | default: localization.country.iso_code | default: 'your country'
+  assign seasonal_shipping_country_iso = localization.country.iso_code | upcase | strip
+  assign seasonal_shipping_country_handle = seasonal_shipping_country_iso | downcase
+  assign seasonal_shipping_is_blocked = false
+  assign seasonal_shipping_has_free_shipping = false
+  assign seasonal_free_shipping_threshold_display = ''
+  assign seasonal_shipping_entry = shop.metaobjects['database_localized_shipping_info'][seasonal_shipping_country_handle]
+  if seasonal_shipping_entry != blank and seasonal_shipping_country_iso != blank
+    assign seasonal_entry_ship_to = seasonal_shipping_entry.ship_to_it.value | default: seasonal_shipping_entry.ship_to_it | append: '' | downcase
+    assign seasonal_entry_has_free_shipping = seasonal_shipping_entry.free_shipping_available.value | default: seasonal_shipping_entry.free_shipping_available | append: '' | downcase
+    assign seasonal_entry_threshold = seasonal_shipping_entry.free_shipping_threshold_in_local_currency.value | default: seasonal_shipping_entry.free_shipping_threshold_in_local_currency
+    assign seasonal_entry_currency_code = seasonal_shipping_entry.shopify_currency.value | default: seasonal_shipping_entry.shopify_currency
+    assign seasonal_entry_currency_symbol = localization.country.currency.symbol | default: ''
+
+    if seasonal_entry_ship_to == 'false' or seasonal_entry_ship_to == '0' or seasonal_entry_ship_to == 'no'
+      assign seasonal_shipping_is_blocked = true
+    endif
+    if seasonal_entry_has_free_shipping == 'true' or seasonal_entry_has_free_shipping == '1' or seasonal_entry_has_free_shipping == 'yes'
+      assign seasonal_shipping_has_free_shipping = true
+    endif
+    if seasonal_entry_threshold != blank
+      if seasonal_entry_currency_symbol != blank
+        assign seasonal_free_shipping_threshold_display = seasonal_entry_currency_symbol | append: seasonal_entry_threshold
+      elsif seasonal_entry_currency_code != blank
+        assign seasonal_free_shipping_threshold_display = seasonal_entry_threshold | append: ' ' | append: seasonal_entry_currency_code
+      else
+        assign seasonal_free_shipping_threshold_display = seasonal_entry_threshold
+      endif
+    endif
+  endif
+
+  assign announcement_text_free_shipping = settings.seasonal_announcement_copy_free_shipping | strip
+  assign announcement_text_no_free_shipping = settings.seasonal_announcement_copy_no_free_shipping | strip
+  assign announcement_text_blocked = settings.seasonal_announcement_copy_blocked | strip
+  if announcement_text_free_shipping == blank
+    assign announcement_text_free_shipping = settings.seasonal_announcement_copy | strip
+  endif
+  if announcement_text_no_free_shipping == blank
+    assign announcement_text_no_free_shipping = settings.seasonal_announcement_copy | strip
+  endif
+  if announcement_text_blocked == blank
+    assign announcement_text_blocked = settings.seasonal_announcement_copy | strip
+  endif
+
+  if seasonal_shipping_is_blocked
+    assign announcement_text = announcement_text_blocked
+  elsif seasonal_shipping_has_free_shipping
+    assign announcement_text = announcement_text_free_shipping
+  else
+    assign announcement_text = announcement_text_no_free_shipping
+  endif
+  assign announcement_text = announcement_text | replace: seasonal_sale_token, seasonal_sale_name
+  assign announcement_text = announcement_text | replace: shipping_country_token, seasonal_shipping_country_name
+  assign announcement_text = announcement_text | replace: free_shipping_threshold_token, seasonal_free_shipping_threshold_display
   assign show_announcement = false
   if announcement_text != blank
     assign show_announcement = true
   endif
   assign sale_end_date = settings.seasonal_sale_end_date | strip
   assign show_announcement_countdown = false
-  if show_announcement and sale_end_date != blank
+  if show_announcement and sale_end_date != blank and seasonal_shipping_is_blocked == false
     assign show_announcement_countdown = true
   endif
   assign announcement_gradient = settings.seasonal_announcement_gradient | default: 'linear-gradient(90deg, #E9CC92 0%, #92734F 33%, #92734F 66%, #E9CC92 100%)'
