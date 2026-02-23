@@ -114,11 +114,12 @@
     {% else %}
       {% assign hero_card_subheadline = hero_card_subheadline_no_free_shipping %}
     {% endif %}
-    {% assign hero_card_show_button = section.settings.show_button %}
-    {% assign hero_card_button_label = section.settings.button_label %}
-    {% assign hero_card_button_link = section.settings.button_link %}
-    {% if hero_card_show_button and hero_card_button_label == blank %}
-      {% assign hero_card_button_label = 'Placeholder' %}
+    {% assign hero_card_button_label = settings.seasonal_hero_button_label %}
+    {% assign hero_card_button_link = settings.seasonal_hero_button_link %}
+    {% if hero_card_button_label != blank %}
+      {% assign hero_card_show_button = true %}
+    {% else %}
+      {% assign hero_card_show_button = false %}
     {% endif %}
     {% assign hero_card_kicker = hero_card_kicker | replace: affiliate_name_token, hero_card_affiliate_name %}
     {% assign hero_card_headline = hero_card_headline | replace: affiliate_name_token, hero_card_affiliate_name %}
@@ -130,6 +131,7 @@
     {% assign hero_card_headline = hero_card_headline | replace: sale_name_token, hero_card_resolved_sale_name %}
     {% assign hero_card_subheadline = hero_card_subheadline | replace: sale_name_token, hero_card_resolved_sale_name %}
     {% assign hero_card_subheadline = hero_card_subheadline | replace: sitewide_discount_depth_token, hero_card_resolved_discount_depth %}
+    {% assign hero_card_button_label = hero_card_button_label | replace: sale_name_token, hero_card_resolved_sale_name %}
   {% else %}
     {% assign hero_card_hide_section = true %}
   {% endif %}
@@ -641,7 +643,7 @@
     {
       "type": "checkbox",
       "id": "use_affiliate_metaobject",
-      "label": "Use affiliate metaobject",
+      "label": "Use affiliate discount metaobject",
       "default": false,
       "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.use_product_page_metaobjects == false }}"
     },
@@ -696,14 +698,14 @@
       "id": "show_button",
       "label": "Show button",
       "default": false,
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.use_product_page_metaobjects == false }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.use_product_page_metaobjects == false and section.settings.use_affiliate_metaobject == false }}"
     },
     {
       "type": "text",
       "id": "button_label",
       "label": "Button label",
       "default": "Placeholder",
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button and section.settings.use_product_page_metaobjects == false }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button and section.settings.use_product_page_metaobjects == false and section.settings.use_affiliate_metaobject == false }}"
     },
     {
       "type": "select",
@@ -714,7 +716,7 @@
         { "value": "large", "label": "Large" },
         { "value": "medium", "label": "Medium" }
       ],
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button and section.settings.use_product_page_metaobjects == false }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button and section.settings.use_product_page_metaobjects == false and section.settings.use_affiliate_metaobject == false }}"
     },
     {
       "type": "select",
@@ -726,13 +728,13 @@
         { "value": "leading", "label": "Leading" },
         { "value": "trailing", "label": "Trailing" }
       ],
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button and section.settings.use_product_page_metaobjects == false }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button and section.settings.use_product_page_metaobjects == false and section.settings.use_affiliate_metaobject == false }}"
     },
     {
       "type": "url",
       "id": "button_link",
       "label": "Button link",
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button and section.settings.use_product_page_metaobjects == false }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button and section.settings.use_product_page_metaobjects == false and section.settings.use_affiliate_metaobject == false }}"
     },
     {
       "type": "checkbox",

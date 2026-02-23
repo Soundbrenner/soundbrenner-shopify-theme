@@ -13,14 +13,14 @@
       {
         "type": "text",
         "id": "seasonal_sale_name",
-        "label": "Seasonal deal name",
+        "label": "Seasonal sale name",
         "default": "Spring Sale",
         "info": "Use {{ Sale name }} to insert the sale name."
       },
       {
         "type": "number",
         "id": "sitewide_seasonal_discount_depth",
-        "label": "Sitewide seasonal discount depth",
+        "label": "Sitewide seasonal sale discount depth",
         "default": 48
       },
       {
@@ -118,28 +118,28 @@
       {
         "type": "image_picker",
         "id": "seasonal_hero_image_desktop",
-        "label": "Seasonal hero image desktop",
+        "label": "Seasonal sale hero image desktop",
         "info": "Target minimum 1240x380 at 2x export (2480x760)."
       },
       {
         "type": "image_picker",
         "id": "seasonal_hero_image_mobile",
-        "label": "Seasonal hero image mobile",
+        "label": "Seasonal sale hero image mobile",
         "info": "Target minimum 370x380 at 3x export (1110x1140)."
       },
       {
         "type": "text",
         "id": "seasonal_hero_kicker",
-        "label": "Hero card kicker"
+        "label": "Seasonal sale hero card kicker"
       },
       {
         "type": "textarea",
         "id": "seasonal_hero_headline",
-        "label": "Hero card headline"
+        "label": "Seasonal sale hero card headline"
       },
       {
         "type": "header",
-        "content": "Hero card subheadline"
+        "content": "Seasonal sale and affiliate discount hero card subheadline"
       },
       {
         "type": "textarea",
@@ -162,12 +162,12 @@
       {
         "type": "text",
         "id": "seasonal_hero_button_label",
-        "label": "Hero card button label"
+        "label": "Seasonal sale and affiliate discount button label"
       },
       {
         "type": "url",
         "id": "seasonal_hero_button_link",
-        "label": "Hero card button link"
+        "label": "Seasonal sale and affiliate discount button link"
       }
     ]
   },
