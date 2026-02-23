@@ -283,6 +283,13 @@
     });
   };
 
+  const CART_ICON_PLUS_SVG =
+    '<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.3571 22.6429H0V17.3571H17.3571V0H22.6429V17.3571H40V22.6429H22.6429V40H17.3571V22.6429Z" fill="white"/></svg>';
+  const CART_ICON_MINUS_SVG =
+    '<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 23.1429V17.8571H40V23.1429H0Z" fill="white"/></svg>';
+  const CART_ICON_REMOVE_SVG =
+    '<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.5555 40C7.44439 40 6.48143 39.6111 5.66661 38.8333C4.8518 38.0185 4.44439 37.0556 4.44439 35.9444V6.11111H2.22217V2.05556H13.1111V0H26.8888V2.05556H37.7777V6.11111H35.5555V35.9444C35.5555 37.0556 35.1481 38.0185 34.3333 38.8333C33.5185 39.6111 32.5555 40 31.4444 40H8.5555ZM13.4444 31.3889H17.5555V10.6667H13.4444V31.3889ZM22.4444 31.3889H26.5555V10.6667H22.4444V31.3889Z" fill="white"/></svg>';
+
   const dispatchCartEvents = (cart, source = 'unknown', itemCount = 0) => {
     const detail = {
       cart,
@@ -774,6 +781,12 @@
       this.discountInput = this.querySelector('[data-cart-discount-input]');
       this.discountListNode = this.querySelector('[data-cart-discount-list]');
       this.discountErrorNode = this.querySelector('[data-cart-discount-error]');
+      this.discountCodeErrorMessage =
+        (this.discountErrorNode && this.discountErrorNode.dataset.discountCodeError) ||
+        'Discount code cannot be applied to your cart';
+      this.shippingDiscountErrorMessage =
+        (this.discountErrorNode && this.discountErrorNode.dataset.shippingDiscountError) ||
+        'Shipping discounts are shown at checkout after adding an address';
       this.autoDiscountRowNode = this.querySelector('[data-cart-auto-discount-row]');
       this.autoDiscountTextNode = this.querySelector('[data-cart-auto-discount-text]');
       this.autoDiscountAmountNode = this.querySelector('[data-cart-auto-discount-amount]');
@@ -924,7 +937,18 @@
         .then((cart) => {
           const appliedCodes = getAppliedDiscountCodes(cart).map((code) => code.toLowerCase());
           if (!appliedCodes.includes(nextCode.toLowerCase())) {
-            this.showDiscountError('Discount code could not be applied.');
+            const discountCodes = Array.isArray(cart && cart.discount_codes) ? cart.discount_codes : [];
+            const attemptedCode = nextCode.toLowerCase();
+            const attemptedEntry = discountCodes.find((entry) => {
+              if (!entry || typeof entry !== 'object') return false;
+              const code = `${entry.code || ''}`.trim().toLowerCase();
+              return code === attemptedCode;
+            });
+            if (attemptedEntry && attemptedEntry.applicable === true) {
+              this.showDiscountError(this.shippingDiscountErrorMessage);
+            } else {
+              this.showDiscountError(this.discountCodeErrorMessage);
+            }
             return;
           }
 
@@ -932,7 +956,7 @@
           this.hideDiscountError();
         })
         .catch(() => {
-          this.showDiscountError('Discount code could not be applied.');
+          this.showDiscountError(this.discountCodeErrorMessage);
         });
     }
 
@@ -1044,7 +1068,7 @@
       const filteredCodes = existingCodes.filter((entry) => entry.toLowerCase() !== normalizedToRemove);
 
       applyDiscount(filteredCodes, { source: `${this.context}-discount-remove` }).catch(() => {
-        this.showDiscountError('Discount code could not be removed.');
+        this.showDiscountError(this.discountCodeErrorMessage);
       });
     }
 
@@ -1191,13 +1215,13 @@
 
       discountCodes.forEach((code) => {
         const item = document.createElement('li');
-        item.className = 'sb-cart-discount-pill font-caption weight-semibold';
+        item.className = 'sb-cart-discount-pill font-caption weight-bold';
         item.innerHTML = `
           <span>${escapeHtml(code)}</span>
           <button type="button" class="sb-cart-discount-pill__remove" data-cart-discount-remove="${escapeHtml(
             code
           )}" aria-label="Remove ${escapeHtml(code)}">
-            <span aria-hidden="true">&times;</span>
+            <span class="sb-cart-discount-pill__remove-icon" aria-hidden="true"></span>
           </button>
         `;
         fragment.appendChild(item);
@@ -1276,7 +1300,7 @@
                   aria-label="Decrease quantity"
                   ${minusButtonAttributes}
                 >
-                  <span class="sb-cart-quantity__icon sb-cart-quantity__icon--minus" aria-hidden="true"></span>
+                  <span class="sb-cart-quantity__icon sb-cart-quantity__icon--minus" aria-hidden="true">${CART_ICON_MINUS_SVG}</span>
                 </button>
                 <input
                   class="sb-cart-quantity__input font-caption weight-bold"
@@ -1289,11 +1313,11 @@
                   aria-label="Quantity"
                 >
                 <button type="button" class="sb-cart-quantity__button" data-cart-qty-plus aria-label="Increase quantity">
-                  <span class="sb-cart-quantity__icon sb-cart-quantity__icon--plus" aria-hidden="true"></span>
+                  <span class="sb-cart-quantity__icon sb-cart-quantity__icon--plus" aria-hidden="true">${CART_ICON_PLUS_SVG}</span>
                 </button>
               </div>
               <button type="button" class="sb-cart-line__remove" data-cart-remove aria-label="Remove item">
-                <span class="sb-cart-line__remove-icon" aria-hidden="true"></span>
+                <span class="sb-cart-line__remove-icon" aria-hidden="true">${CART_ICON_REMOVE_SVG}</span>
               </button>
             </div>
           </div>

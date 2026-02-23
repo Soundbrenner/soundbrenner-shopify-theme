@@ -70,7 +70,9 @@
 
   <p class="sb-cart-summary__row sb-cart-summary__row--shipping font-caption weight-regular">
     <span class="sb-cart-summary__row-leading">
-      <span class="sb-cart-summary__icon sb-cart-summary__icon--shipping" aria-hidden="true"></span>
+      <span class="sb-cart-summary__icon sb-cart-summary__icon--shipping" aria-hidden="true">
+        {{ 'icon-purchase-guarantee-shipping.svg' | inline_asset_content }}
+      </span>
       <span>{{ sb_cart_shipping_text }}</span>
     </span>
   </p>
@@ -97,14 +99,16 @@
   ></div>
 
   <p
-    class="sb-cart-summary__row sb-cart-summary__row--discount-auto font-caption weight-bold"
+    class="sb-cart-summary__row sb-cart-summary__row--discount-auto font-caption weight-regular"
     data-cart-auto-discount-row
     {% unless sb_cart_has_auto_discount %}
       hidden
     {% endunless %}
   >
     <span class="sb-cart-summary__row-leading">
-      <span class="sb-cart-summary__icon sb-cart-summary__icon--discount" aria-hidden="true"></span>
+      <span class="sb-cart-summary__icon sb-cart-summary__icon--discount" aria-hidden="true">
+        {{ 'icon-discount-tag-outline.svg' | inline_asset_content }}
+      </span>
       <span data-cart-auto-discount-text>{{ sb_cart_auto_discount_text }}</span>
     </span>
     <span class="sb-cart-shimmer-text" data-cart-auto-discount-amount data-shimmer-value="-{{ sb_cart_auto_discount_amount | escape }}">
@@ -125,12 +129,12 @@
     <div class="sb-cart-summary__discount-body">
       <div class="sb-cart-summary__discount-body-inner">
         <form class="sb-cart-summary__discount-form" data-cart-discount-form>
-          <label class="visually-hidden" for="{{ discount_input_id }}">Discount code</label>
           <input
             id="{{ discount_input_id }}"
             class="sb-cart-summary__discount-input font-caption weight-regular"
             type="text"
             name="discount"
+            aria-label="Discount code"
             placeholder="Discount code"
             autocomplete="off"
             data-cart-discount-input
@@ -139,10 +143,16 @@
             <span class="sb-button-radiant__label">Apply</span>
           </button>
         </form>
-        <p class="sb-cart-summary__discount-error font-caption2 weight-semibold" data-cart-discount-error hidden></p>
+        <p
+          class="sb-cart-summary__discount-error font-caption weight-regular"
+          data-cart-discount-error
+          data-discount-code-error="{{ 'cart.discount_code_error' | t | escape }}"
+          data-shipping-discount-error="{{ 'cart.shipping_discount_error' | t | escape }}"
+          hidden
+        ></p>
         <ul class="sb-cart-discount-list" data-cart-discount-list>
           {% for discount_code in discount_codes %}
-            <li class="sb-cart-discount-pill font-caption weight-semibold">
+            <li class="sb-cart-discount-pill font-caption weight-bold">
               <span>{{ discount_code }}</span>
               <button
                 type="button"
@@ -150,7 +160,7 @@
                 data-cart-discount-remove="{{ discount_code | escape }}"
                 aria-label="Remove {{ discount_code | escape }}"
               >
-                <span aria-hidden="true">&times;</span>
+                <span class="sb-cart-discount-pill__remove-icon" aria-hidden="true"></span>
               </button>
             </li>
           {% endfor %}
@@ -178,7 +188,7 @@
           data-cart-checkout-button
         >
           <span class="sb-button-radiant__icon" aria-hidden="true">
-            <span class="sb-cart-summary__checkout-icon"></span>
+            <span class="sb-cart-summary__checkout-icon">{{ 'icon-checkout-lock.svg' | inline_asset_content }}</span>
           </span>
           <span class="sb-button-radiant__label">Secure checkout</span>
         </button>
@@ -190,7 +200,7 @@
         data-cart-checkout-button
       >
         <span class="sb-button-radiant__icon" aria-hidden="true">
-          <span class="sb-cart-summary__checkout-icon"></span>
+          <span class="sb-cart-summary__checkout-icon">{{ 'icon-checkout-lock.svg' | inline_asset_content }}</span>
         </span>
         <span class="sb-button-radiant__label">Secure checkout</span>
       </a>

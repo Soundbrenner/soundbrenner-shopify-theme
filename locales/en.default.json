@@ -17,7 +17,9 @@
     "checkout": "Checkout",
     "title": "Cart",
     "update": "Update",
-    "remove": "Remove"
+    "remove": "Remove",
+    "discount_code_error": "Discount code cannot be applied to your cart",
+    "shipping_discount_error": "Shipping discounts are shown at checkout after adding an address"
   },
   "customers": {
     "login": {

@@ -81,7 +81,9 @@
                 aria-disabled="true"
               {% endif %}
             >
-              <span class="sb-cart-quantity__icon sb-cart-quantity__icon--minus" aria-hidden="true"></span>
+              <span class="sb-cart-quantity__icon sb-cart-quantity__icon--minus" aria-hidden="true">
+                {{ 'icon-quantity-remove.svg' | inline_asset_content }}
+              </span>
             </button>
             <input
               class="sb-cart-quantity__input font-caption weight-bold"
@@ -94,11 +96,13 @@
               aria-label="Quantity"
             >
             <button type="button" class="sb-cart-quantity__button" data-cart-qty-plus aria-label="Increase quantity">
-              <span class="sb-cart-quantity__icon sb-cart-quantity__icon--plus" aria-hidden="true"></span>
+              <span class="sb-cart-quantity__icon sb-cart-quantity__icon--plus" aria-hidden="true">
+                {{ 'icon-accordion-add.svg' | inline_asset_content }}
+              </span>
             </button>
           </div>
           <button type="button" class="sb-cart-line__remove" data-cart-remove aria-label="Remove item">
-            <span class="sb-cart-line__remove-icon" aria-hidden="true"></span>
+            <span class="sb-cart-line__remove-icon" aria-hidden="true">{{ 'icon-cart-delete.svg' | inline_asset_content }}</span>
           </button>
         </div>
       </div>
