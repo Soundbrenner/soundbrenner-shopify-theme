@@ -233,19 +233,12 @@
     endif
     if shopper_country_free_shipping_threshold != blank
       assign shopper_country_free_shipping_threshold_cents = shopper_country_free_shipping_threshold | times: 100
-      assign shopper_country_free_shipping_threshold_display = shopper_country_free_shipping_threshold_cents | money
       assign shopper_threshold_currency_symbol = localization.country.currency.symbol | default: ''
-      assign shopper_threshold_currency_code = localization.country.currency.iso_code | default: ''
-      if shopper_threshold_currency_symbol == '$' and shopper_threshold_currency_code != blank and shopper_threshold_currency_code != 'USD'
-        assign shopper_threshold_currency_prefix = shopper_threshold_currency_code | slice: 0, 2
-        assign shopper_threshold_currency_symbol = shopper_threshold_currency_prefix | append: '$'
-      endif
+      assign shopper_threshold_amount = shopper_country_free_shipping_threshold_cents | money_without_currency | strip
       if shopper_threshold_currency_symbol != blank
-        if shopper_country_free_shipping_threshold_display contains '$ '
-          assign shopper_country_free_shipping_threshold_display = shopper_country_free_shipping_threshold_display | replace_first: '$ ', shopper_threshold_currency_symbol
-        else
-          assign shopper_country_free_shipping_threshold_display = shopper_country_free_shipping_threshold_display | replace_first: '$', shopper_threshold_currency_symbol
-        endif
+        assign shopper_country_free_shipping_threshold_display = shopper_threshold_currency_symbol | append: shopper_threshold_amount
+      else
+        assign shopper_country_free_shipping_threshold_display = shopper_country_free_shipping_threshold_cents | money
       endif
     endif
   endif

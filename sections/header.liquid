@@ -34,6 +34,38 @@
   assign seasonal_sale_token = '{{ Seasonal sale name }}'
   assign shipping_country_token = '{{ Shipping country }}'
   assign free_shipping_threshold_token = '{{ Free shipping threshold }}'
+  assign affiliate_name_token = '{{ Affiliate name }}'
+  assign affiliate_discount_depth_token = '{{ Global affiliate discount depth }}'
+  assign global_affiliate_discount_depth = settings.global_affiliate_discount_depth | default: 20 | strip
+  assign affiliate_announcement_copy = settings.affiliate_announcement_copy | strip
+  if affiliate_announcement_copy == blank
+    assign affiliate_announcement_copy = '{{ Affiliate name }}: {{ Global affiliate discount depth }}% off & free shipping in {{ Shipping country }} over {{ Free shipping threshold }}'
+  endif
+  assign affiliate_announcement_gradient_value = 'linear-gradient(90deg, #67E8F9 0%, #1E293B 33%, #1E293B 66%, #67E8F9 100%)'
+  assign header_affiliate_metaobject = blank
+  if request.page_type == 'page' and page != blank
+    assign header_affiliate_metaobject = page.metafields.custom.affiliate.value | default: page.metafields.custom.affiliate
+    if header_affiliate_metaobject == blank
+      assign header_affiliate_metaobject = page.metafields.custom.affiliate_deal.value | default: page.metafields.custom.affiliate_deal
+    endif
+    if header_affiliate_metaobject == blank
+      assign header_affiliate_metaobject = page.metafields.custom.affiliate_profile.value | default: page.metafields.custom.affiliate_profile
+    endif
+  endif
+  assign is_affiliate_page = false
+  if header_affiliate_metaobject != blank
+    assign is_affiliate_page = true
+  endif
+  assign header_affiliate_name = ''
+  if header_affiliate_metaobject != blank
+    assign header_affiliate_name = header_affiliate_metaobject.full_name.value | default: header_affiliate_metaobject.full_name | strip
+    if header_affiliate_name == blank
+      assign header_affiliate_name = header_affiliate_metaobject.discount_name.value | default: header_affiliate_metaobject.discount_name | strip
+    endif
+  endif
+  if header_affiliate_name == blank and page != blank
+    assign header_affiliate_name = page.title | strip
+  endif
   assign seasonal_shipping_country_name = localization.country.name | default: localization.country.iso_code | default: 'your country'
   assign seasonal_shipping_country_iso = localization.country.iso_code | upcase | strip
   assign seasonal_shipping_country_handle = seasonal_shipping_country_iso | downcase
@@ -53,44 +85,45 @@
     endif
     if seasonal_entry_threshold != blank
       assign seasonal_entry_threshold_cents = seasonal_entry_threshold | times: 100
-      assign seasonal_free_shipping_threshold_display = seasonal_entry_threshold_cents | money
       assign seasonal_threshold_currency_symbol = localization.country.currency.symbol | default: ''
-      assign seasonal_threshold_currency_code = localization.country.currency.iso_code | default: ''
-      if seasonal_threshold_currency_symbol == '$' and seasonal_threshold_currency_code != blank and seasonal_threshold_currency_code != 'USD'
-        assign seasonal_threshold_currency_prefix = seasonal_threshold_currency_code | slice: 0, 2
-        assign seasonal_threshold_currency_symbol = seasonal_threshold_currency_prefix | append: '$'
-      endif
+      assign seasonal_threshold_amount = seasonal_entry_threshold_cents | money_without_currency | strip
       if seasonal_threshold_currency_symbol != blank
-        if seasonal_free_shipping_threshold_display contains '$ '
-          assign seasonal_free_shipping_threshold_display = seasonal_free_shipping_threshold_display | replace_first: '$ ', seasonal_threshold_currency_symbol
-        else
-          assign seasonal_free_shipping_threshold_display = seasonal_free_shipping_threshold_display | replace_first: '$', seasonal_threshold_currency_symbol
-        endif
+        assign seasonal_free_shipping_threshold_display = seasonal_threshold_currency_symbol | append: seasonal_threshold_amount
+      else
+        assign seasonal_free_shipping_threshold_display = seasonal_entry_threshold_cents | money
       endif
     endif
   endif
 
-  assign announcement_text_free_shipping = settings.seasonal_announcement_copy_free_shipping | strip
-  assign announcement_text_no_free_shipping = settings.seasonal_announcement_copy_no_free_shipping | strip
-  assign announcement_text_blocked = settings.seasonal_announcement_copy_blocked | strip
-  if announcement_text_free_shipping == blank
-    assign announcement_text_free_shipping = settings.seasonal_announcement_copy | strip
-  endif
-  if announcement_text_no_free_shipping == blank
-    assign announcement_text_no_free_shipping = settings.seasonal_announcement_copy | strip
-  endif
-  if announcement_text_blocked == blank
-    assign announcement_text_blocked = settings.seasonal_announcement_copy | strip
-  endif
-
-  if seasonal_shipping_is_blocked
-    assign announcement_text = announcement_text_blocked
-  elsif seasonal_shipping_has_free_shipping
-    assign announcement_text = announcement_text_free_shipping
+  if is_affiliate_page
+    assign announcement_text = affiliate_announcement_copy
+    assign announcement_text = announcement_text | replace: affiliate_name_token, header_affiliate_name
+    assign announcement_text = announcement_text | replace: affiliate_discount_depth_token, global_affiliate_discount_depth
+    assign announcement_gradient = affiliate_announcement_gradient_value
   else
-    assign announcement_text = announcement_text_no_free_shipping
+    assign announcement_text_free_shipping = settings.seasonal_announcement_copy_free_shipping | strip
+    assign announcement_text_no_free_shipping = settings.seasonal_announcement_copy_no_free_shipping | strip
+    assign announcement_text_blocked = settings.seasonal_announcement_copy_blocked | strip
+    if announcement_text_free_shipping == blank
+      assign announcement_text_free_shipping = settings.seasonal_announcement_copy | strip
+    endif
+    if announcement_text_no_free_shipping == blank
+      assign announcement_text_no_free_shipping = settings.seasonal_announcement_copy | strip
+    endif
+    if announcement_text_blocked == blank
+      assign announcement_text_blocked = settings.seasonal_announcement_copy | strip
+    endif
+
+    if seasonal_shipping_is_blocked
+      assign announcement_text = announcement_text_blocked
+    elsif seasonal_shipping_has_free_shipping
+      assign announcement_text = announcement_text_free_shipping
+    else
+      assign announcement_text = announcement_text_no_free_shipping
+    endif
+    assign announcement_text = announcement_text | replace: seasonal_sale_token, seasonal_sale_name
+    assign announcement_gradient = settings.seasonal_announcement_gradient | default: 'linear-gradient(90deg, #E9CC92 0%, #92734F 33%, #92734F 66%, #E9CC92 100%)'
   endif
-  assign announcement_text = announcement_text | replace: seasonal_sale_token, seasonal_sale_name
   assign announcement_text = announcement_text | replace: shipping_country_token, seasonal_shipping_country_name
   assign announcement_text = announcement_text | replace: free_shipping_threshold_token, seasonal_free_shipping_threshold_display
   assign show_announcement = false
@@ -99,10 +132,9 @@
   endif
   assign sale_end_date = settings.seasonal_sale_end_date | strip
   assign show_announcement_countdown = false
-  if show_announcement and sale_end_date != blank and seasonal_shipping_is_blocked == false
+  if show_announcement and sale_end_date != blank and seasonal_shipping_is_blocked == false and is_affiliate_page == false
     assign show_announcement_countdown = true
   endif
-  assign announcement_gradient = settings.seasonal_announcement_gradient | default: 'linear-gradient(90deg, #E9CC92 0%, #92734F 33%, #92734F 66%, #E9CC92 100%)'
   assign announcement_emoji_asset = 'emoji-sale-new-year.png'
   assign trustpilot_entry = metaobjects.trustpilot.values | first
   assign trustpilot_url = 'https://www.trustpilot.com/review/soundbrenner.com'
@@ -141,6 +173,8 @@
       assign announcement_emoji_asset = 'emoji-sale-holiday.png'
     when 'linear-gradient(90deg, var(--sb-color-primary-500) 0%, var(--sb-color-primary-700) 33%, var(--sb-color-primary-700) 66%, var(--sb-color-primary-500) 100%)'
       assign announcement_emoji_asset = 'emoji-sale-anniversary.png'
+    when 'linear-gradient(90deg, #67E8F9 0%, #1E293B 33%, #1E293B 66%, #67E8F9 100%)'
+      assign announcement_emoji_asset = 'emoji-sale-affiliate.png'
   endcase
 %}
 

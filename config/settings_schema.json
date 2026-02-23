@@ -18,6 +18,12 @@
         "info": "Use {{ Seasonal sale name }} to insert the sale name."
       },
       {
+        "type": "number",
+        "id": "global_affiliate_discount_depth",
+        "label": "Global affiliate discount depth",
+        "default": 20
+      },
+      {
         "type": "text",
         "id": "seasonal_sale_end_date",
         "label": "Seasonal sale end date",
@@ -52,6 +58,10 @@
             "label": "Anniversary Sale"
           },
           {
+            "value": "linear-gradient(90deg, #67E8F9 0%, #1E293B 33%, #1E293B 66%, #67E8F9 100%)",
+            "label": "Affiliate Sale"
+          },
+          {
             "value": "linear-gradient(90deg, #9CBDCD 0%, #F08835 33%, #F08835 66%, #9CBDCD 100%)",
             "label": "Summer Sale"
           },
@@ -80,6 +90,12 @@
       {
         "type": "header",
         "content": "Announcement bar body"
+      },
+      {
+        "type": "textarea",
+        "id": "affiliate_announcement_copy",
+        "label": "Affiliate page",
+        "default": "{{ Affiliate name }}: {{ Global affiliate discount depth }}% off & free shipping in {{ Shipping country }} over {{ Free shipping threshold }}"
       },
       {
         "type": "textarea",
