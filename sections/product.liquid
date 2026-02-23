@@ -234,6 +234,16 @@
     if shopper_country_free_shipping_threshold != blank
       assign shopper_country_free_shipping_threshold_cents = shopper_country_free_shipping_threshold | times: 100
       assign shopper_country_free_shipping_threshold_display = shopper_country_free_shipping_threshold_cents | money
+      assign shopper_threshold_currency_symbol = localization.country.currency.symbol | default: ''
+      assign shopper_threshold_currency_code = localization.country.currency.iso_code | default: ''
+      if shopper_threshold_currency_symbol == '$' and shopper_threshold_currency_code != blank and shopper_threshold_currency_code != 'USD'
+        assign shopper_threshold_currency_prefix = shopper_threshold_currency_code | slice: 0, 2
+        assign shopper_threshold_currency_symbol = shopper_threshold_currency_prefix | append: '$'
+      endif
+      if shopper_threshold_currency_symbol != blank
+        assign shopper_country_free_shipping_threshold_display = shopper_country_free_shipping_threshold_display | replace_first: '$ ', shopper_threshold_currency_symbol
+        assign shopper_country_free_shipping_threshold_display = shopper_country_free_shipping_threshold_display | replace_first: '$', shopper_threshold_currency_symbol
+      endif
     endif
   endif
 

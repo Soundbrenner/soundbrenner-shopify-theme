@@ -54,6 +54,16 @@
     if seasonal_entry_threshold != blank
       assign seasonal_entry_threshold_cents = seasonal_entry_threshold | times: 100
       assign seasonal_free_shipping_threshold_display = seasonal_entry_threshold_cents | money
+      assign seasonal_threshold_currency_symbol = localization.country.currency.symbol | default: ''
+      assign seasonal_threshold_currency_code = localization.country.currency.iso_code | default: ''
+      if seasonal_threshold_currency_symbol == '$' and seasonal_threshold_currency_code != blank and seasonal_threshold_currency_code != 'USD'
+        assign seasonal_threshold_currency_prefix = seasonal_threshold_currency_code | slice: 0, 2
+        assign seasonal_threshold_currency_symbol = seasonal_threshold_currency_prefix | append: '$'
+      endif
+      if seasonal_threshold_currency_symbol != blank
+        assign seasonal_free_shipping_threshold_display = seasonal_free_shipping_threshold_display | replace_first: '$ ', seasonal_threshold_currency_symbol
+        assign seasonal_free_shipping_threshold_display = seasonal_free_shipping_threshold_display | replace_first: '$', seasonal_threshold_currency_symbol
+      endif
     endif
   endif
 
@@ -1913,7 +1923,7 @@
   }
 
   .header__localization-panel-inner {
-    padding: 16px;
+    padding: 20px;
   }
 
   .header__localization-panel--left {
