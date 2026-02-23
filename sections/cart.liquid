@@ -1,6 +1,24 @@
 {% liquid
   assign primary_navigation = linklists['main-menu']
   assign cart_placeholder_image = 'icon-square-placeholder.svg' | asset_url
+  assign cart_shipping_country_iso = localization.country.iso_code | upcase | strip
+  assign cart_shipping_country_handle = cart_shipping_country_iso | downcase
+  assign cart_shipping_entry = shop.metaobjects['database_localized_shipping_info'][cart_shipping_country_handle]
+  assign cart_free_shipping_available = false
+  assign cart_free_shipping_threshold_cents = 0
+  if cart_shipping_entry != blank and cart_shipping_country_iso != blank
+    assign cart_entry_ship_to = cart_shipping_entry.ship_to_it.value | default: cart_shipping_entry.ship_to_it | append: '' | downcase
+    assign cart_entry_has_free_shipping = cart_shipping_entry.free_shipping_available.value | default: cart_shipping_entry.free_shipping_available | append: '' | downcase
+    assign cart_entry_threshold = cart_shipping_entry.free_shipping_threshold_in_local_currency.value | default: cart_shipping_entry.free_shipping_threshold_in_local_currency
+    if cart_entry_ship_to != 'false' and cart_entry_ship_to != '0' and cart_entry_ship_to != 'no'
+      if cart_entry_has_free_shipping == 'true' or cart_entry_has_free_shipping == '1' or cart_entry_has_free_shipping == 'yes'
+        assign cart_free_shipping_available = true
+        if cart_entry_threshold != blank
+          assign cart_free_shipping_threshold_cents = cart_entry_threshold | times: 100
+        endif
+      endif
+    endif
+  endif
 %}
 <script src="{{ 'cart-system.js' | asset_url }}" defer></script>
 
@@ -23,6 +41,15 @@
             {{ cart.item_count }} item{% if cart.item_count != 1 %}s{% endif %} in cart
           {% endif %}
         </p>
+        {% render 'sb-cart-free-shipping-progress',
+          available: cart_free_shipping_available,
+          threshold_cents: cart_free_shipping_threshold_cents,
+          subtotal_cents: cart.total_price,
+          currency: cart.currency.iso_code,
+          has_items: cart.item_count > 0,
+          filled_message: true,
+          extra_class: 'sb-cart-page__filled-free-shipping'
+        %}
       </header>
 
       <div class="sb-cart-page__layout">
@@ -36,7 +63,7 @@
           <div class="sb-cart-page__empty" data-cart-empty {% unless cart.empty? %}hidden{% endunless %}>
             <div class="sb-cart-page__empty-text-group">
               <h2 class="sb-cart-page__empty-title font-title weight-bold">Cart</h2>
-              <p class="sb-cart-page__empty-text font-caption weight-regular">
+              <p class="sb-cart-page__empty-text font-caption weight-regular" data-cart-empty-message>
                 Your cart is empty. Let's fill it with beautifully designed music gear.
               </p>
             </div>
@@ -188,6 +215,14 @@
   }
 
   .sb-cart-page__empty-text {
+    border-top: 1px solid var(--sb-color-neutral-600);
+    color: var(--sb-color-neutral-900);
+    margin: var(--sb-space-16) 0 0;
+    padding: var(--sb-space-16) 0 0;
+    width: 100%;
+  }
+
+  .sb-cart-page__filled-free-shipping {
     border-top: 1px solid var(--sb-color-neutral-600);
     color: var(--sb-color-neutral-900);
     margin: var(--sb-space-16) 0 0;

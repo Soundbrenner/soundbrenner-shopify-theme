@@ -647,10 +647,15 @@
       this.pendingLines = new Set();
       this.renderedDiscountError = false;
       this.removalTimers = new Map();
+      this.messageScopeNode =
+        this.context === 'drawer'
+          ? this.closest('[data-cart-drawer-panel]') || this
+          : this;
 
       this.statusNode = this.querySelector('[data-cart-status]');
       this.pageHeaderNode = this.querySelector('[data-cart-page-header]');
-      this.emptyMessageNode = this.querySelector('[data-cart-empty-message]');
+      this.emptyMessageNodes = this.messageScopeNode.querySelectorAll('[data-cart-empty-message]');
+      this.filledMessageNodes = this.messageScopeNode.querySelectorAll('[data-cart-filled-message]');
       this.itemListNode = this.querySelector('[data-cart-item-list]');
       this.emptyNode = this.querySelector('[data-cart-empty]');
       this.summaryNode = this.querySelector('[data-cart-summary]');
@@ -662,6 +667,10 @@
       this.discountErrorNode = this.querySelector('[data-cart-discount-error]');
       this.drawerCountNode = this.querySelector('[data-cart-drawer-count]');
       this.pageCountNode = this.querySelector('[data-cart-page-count]');
+      this.freeShippingNode = this.messageScopeNode.querySelector('[data-cart-free-shipping]');
+      this.freeShippingMessageNode = this.messageScopeNode.querySelector('[data-cart-free-shipping-message]');
+      this.freeShippingIntroFillNode = this.messageScopeNode.querySelector('[data-cart-free-shipping-intro-fill]');
+      this.freeShippingOutroFillNode = this.messageScopeNode.querySelector('[data-cart-free-shipping-outro-fill]');
       this.checkoutButtons = this.querySelectorAll('[data-cart-checkout-button]');
       this.clearButtons = this.querySelectorAll('[data-cart-clear]');
       this.placeholderImage = this.dataset.placeholderImage || '';
@@ -930,9 +939,13 @@
         this.pageHeaderNode.hidden = isEmpty;
       }
 
-      if (this.emptyMessageNode) {
-        this.emptyMessageNode.hidden = !isEmpty;
-      }
+      this.emptyMessageNodes.forEach((node) => {
+        node.hidden = !isEmpty;
+      });
+
+      this.filledMessageNodes.forEach((node) => {
+        node.hidden = isEmpty;
+      });
 
       if (this.drawerCountNode) {
         if (isEmpty) {
@@ -987,6 +1000,7 @@
         this.totalNode.textContent = formatMoney(cart && cart.total_price ? cart.total_price : 0, currency);
       }
 
+      this.renderFreeShipping(cart || {}, currency, isEmpty);
       this.renderDiscounts(cart || {});
       this.renderItems(cart || {}, currency);
 
@@ -1088,6 +1102,51 @@
 
       this.itemListNode.innerHTML = '';
       this.itemListNode.appendChild(fragment);
+    }
+
+    renderFreeShipping(cart, currency, isEmpty) {
+      if (!this.freeShippingNode) return;
+      if (isEmpty) {
+        this.freeShippingNode.hidden = true;
+        return;
+      }
+
+      const isAvailable = `${this.freeShippingNode.dataset.freeShippingAvailable || ''}`.toLowerCase() === 'true';
+      const thresholdCents = Number.parseInt(`${this.freeShippingNode.dataset.freeShippingThresholdCents || '0'}`, 10);
+      const subtotalCents = Number(cart && Number.isFinite(Number(cart.total_price)) ? cart.total_price : 0);
+      const shouldShow = isAvailable && Number.isFinite(thresholdCents) && thresholdCents > 0;
+
+      if (!shouldShow) {
+        this.freeShippingNode.hidden = true;
+        return;
+      }
+
+      const remainingCents = Math.max(0, thresholdCents - subtotalCents);
+      const reached = remainingCents <= 0;
+      const progressPercent = Math.max(0, Math.min(100, (subtotalCents / thresholdCents) * 100));
+
+      if (this.freeShippingMessageNode) {
+        if (reached) {
+          this.freeShippingMessageNode.innerHTML = "🥳 You've unlocked <strong>free shipping</strong>.";
+        } else {
+          this.freeShippingMessageNode.innerHTML = `👉 You're only <strong>${escapeHtml(
+            formatMoney(remainingCents, currency)
+          )}</strong> away from <strong>free shipping</strong>.`;
+        }
+      }
+
+      if (this.freeShippingIntroFillNode) {
+        this.freeShippingIntroFillNode.style.width = `${progressPercent}%`;
+        this.freeShippingIntroFillNode.classList.toggle('is-reached', reached);
+      }
+
+      if (this.freeShippingOutroFillNode) {
+        this.freeShippingOutroFillNode.style.width = reached ? '100%' : '0';
+        this.freeShippingOutroFillNode.classList.toggle('is-reached', reached);
+      }
+
+      this.freeShippingNode.classList.toggle('is-reached', reached);
+      this.freeShippingNode.hidden = false;
     }
 
     showStatus(message) {

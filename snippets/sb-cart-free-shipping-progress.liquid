@@ -1,0 +1,75 @@
+{% liquid
+  assign free_shipping_available = available | default: false
+  assign free_shipping_has_items = has_items | default: false
+  assign free_shipping_threshold_cents = threshold_cents | default: 0 | plus: 0
+  assign free_shipping_subtotal_cents = subtotal_cents | default: 0 | plus: 0
+  assign free_shipping_remaining_cents = free_shipping_threshold_cents | minus: free_shipping_subtotal_cents
+  assign free_shipping_reached = false
+  if free_shipping_available and free_shipping_threshold_cents > 0 and free_shipping_remaining_cents <= 0
+    assign free_shipping_reached = true
+  endif
+  assign free_shipping_progress_percent = 0
+  if free_shipping_available and free_shipping_threshold_cents > 0
+    assign free_shipping_progress_percent = free_shipping_subtotal_cents | times: 100.0 | divided_by: free_shipping_threshold_cents
+    if free_shipping_progress_percent > 100
+      assign free_shipping_progress_percent = 100
+    endif
+    if free_shipping_progress_percent < 0
+      assign free_shipping_progress_percent = 0
+    endif
+  endif
+  assign free_shipping_message = ''
+  if free_shipping_available
+    if free_shipping_reached
+      assign free_shipping_message = "🥳 You've unlocked <strong>free shipping</strong>."
+    elsif free_shipping_threshold_cents > 0
+      assign free_shipping_currency_symbol = localization.country.currency.symbol | default: ''
+      assign free_shipping_remaining_formatted = free_shipping_remaining_cents | money_without_currency | strip
+      if free_shipping_currency_symbol != blank
+        assign free_shipping_remaining_formatted = free_shipping_currency_symbol | append: free_shipping_remaining_formatted
+      else
+        assign free_shipping_remaining_formatted = free_shipping_remaining_cents | money
+      endif
+      assign free_shipping_message = "👉 You're only <strong>" | append: free_shipping_remaining_formatted | append: '</strong> away from <strong>free shipping</strong>.'
+    endif
+  endif
+%}
+
+<div
+  class="sb-cart-free-shipping{% if extra_class != blank %} {{ extra_class }}{% endif %}{% if free_shipping_reached %} is-reached{% endif %}"
+  data-cart-free-shipping
+  {% if filled_message %}data-cart-filled-message{% endif %}
+  data-free-shipping-available="{% if free_shipping_available %}true{% else %}false{% endif %}"
+  data-free-shipping-threshold-cents="{{ free_shipping_threshold_cents }}"
+  {% unless free_shipping_available and free_shipping_message != blank and free_shipping_has_items %}hidden{% endunless %}
+>
+  <p class="sb-cart-free-shipping__message font-caption weight-regular" data-cart-free-shipping-message>
+    {{ free_shipping_message }}
+  </p>
+
+  <div class="sb-cart-free-shipping__progress-row" data-cart-free-shipping-progress-row>
+    <div class="sb-cart-free-shipping__bar sb-cart-free-shipping__bar--intro">
+      <span
+        class="sb-cart-free-shipping__bar-fill sb-cart-free-shipping__bar-fill--intro{% if free_shipping_reached %} is-reached{% endif %}"
+        data-cart-free-shipping-intro-fill
+        style="width: {{ free_shipping_progress_percent }}%;"
+      ></span>
+    </div>
+
+    <div class="sb-cart-free-shipping__milestone-wrap">
+      <div class="sb-cart-free-shipping__milestone{% if free_shipping_reached %} is-reached{% endif %}">
+        <span class="sb-cart-free-shipping__milestone-icon" aria-hidden="true">
+          {{ 'icon-free-shipping-package.svg' | inline_asset_content }}
+        </span>
+      </div>
+      <p class="sb-cart-free-shipping__label font-caption weight-regular">Free shipping</p>
+    </div>
+
+    <div class="sb-cart-free-shipping__bar sb-cart-free-shipping__bar--outro">
+      <span
+        class="sb-cart-free-shipping__bar-fill sb-cart-free-shipping__bar-fill--outro{% if free_shipping_reached %} is-reached{% endif %}"
+        data-cart-free-shipping-outro-fill
+      ></span>
+    </div>
+  </div>
+</div>

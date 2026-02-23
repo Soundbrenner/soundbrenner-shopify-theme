@@ -1282,9 +1282,22 @@
             <span class="header__cart-drawer-close-icon" aria-hidden="true">{{ 'icon-cancel.svg' | inline_asset_content }}</span>
           </button>
         </div>
+        {% assign cart_drawer_free_shipping_available = false %}
+        {% if seasonal_shipping_has_free_shipping and seasonal_shipping_is_blocked == false %}
+          {% assign cart_drawer_free_shipping_available = true %}
+        {% endif %}
         <p class="header__cart-drawer-empty-message font-caption weight-regular" data-cart-empty-message {% unless cart.empty? %}hidden{% endunless %}>
           Your cart is empty. Let's fill it with beautifully designed music gear.
         </p>
+        {% render 'sb-cart-free-shipping-progress',
+          available: cart_drawer_free_shipping_available,
+          threshold_cents: seasonal_entry_threshold_cents,
+          subtotal_cents: cart.total_price,
+          currency: cart.currency.iso_code,
+          has_items: cart.item_count > 0,
+          filled_message: true,
+          extra_class: 'header__cart-drawer-free-shipping'
+        %}
       </div>
 
       <cart-items-component
@@ -3861,6 +3874,122 @@
     margin: var(--sb-space-16) 0 0;
     padding: var(--sb-space-16) 0 0;
     width: 100%;
+  }
+
+  .header__cart-drawer-free-shipping {
+    border-top: 1px solid var(--sb-color-neutral-600);
+    color: var(--sb-color-neutral-900);
+    margin: var(--sb-space-16) 0 0;
+    padding: var(--sb-space-16) 0 0;
+    width: 100%;
+  }
+
+  .sb-cart-free-shipping__message {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+  }
+
+  .sb-cart-free-shipping__message strong {
+    font-weight: 700;
+  }
+
+  .sb-cart-free-shipping__progress-row {
+    align-items: flex-start;
+    display: flex;
+    gap: 0;
+    margin-top: var(--sb-space-16);
+  }
+
+  .sb-cart-free-shipping__bar {
+    background: var(--sb-color-neutral-600);
+    border-radius: 999px;
+    height: var(--sb-space-8);
+    margin-top: var(--sb-space-20);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .sb-cart-free-shipping__bar--intro {
+    flex: 1 1 auto;
+  }
+
+  .sb-cart-free-shipping__bar--outro {
+    flex: 0 0 var(--sb-space-64);
+    width: var(--sb-space-64);
+  }
+
+  .sb-cart-free-shipping__bar-fill {
+    background: var(--sb-color-primary-500);
+    display: block;
+    height: 100%;
+    width: 0;
+  }
+
+  .sb-cart-free-shipping__bar-fill--intro {
+    border-radius: 999px 0 0 999px;
+  }
+
+  .sb-cart-free-shipping__bar-fill--intro.is-reached {
+    border-radius: 999px;
+  }
+
+  .sb-cart-free-shipping__bar-fill--outro {
+    border-radius: 999px;
+    width: 0;
+  }
+
+  .sb-cart-free-shipping__bar-fill--outro.is-reached {
+    width: 100%;
+  }
+
+  .sb-cart-free-shipping__milestone-wrap {
+    align-items: center;
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: var(--sb-space-8);
+  }
+
+  .sb-cart-free-shipping__milestone {
+    align-items: center;
+    background: var(--sb-color-neutral-200);
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 var(--sb-space-6) var(--sb-color-neutral-600);
+    display: inline-flex;
+    height: var(--sb-space-48);
+    justify-content: center;
+    width: var(--sb-space-48);
+  }
+
+  .sb-cart-free-shipping__milestone.is-reached {
+    box-shadow: inset 0 0 0 var(--sb-space-6) var(--sb-color-primary-500);
+  }
+
+  .sb-cart-free-shipping__milestone-icon {
+    color: var(--sb-color-primary-500);
+    display: inline-flex;
+    height: var(--sb-space-16);
+    width: var(--sb-space-16);
+  }
+
+  .sb-cart-free-shipping__milestone-icon svg {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .sb-cart-free-shipping__milestone-icon svg path:not([fill='none']),
+  .sb-cart-free-shipping__milestone-icon svg circle:not([fill='none']),
+  .sb-cart-free-shipping__milestone-icon svg rect:not([fill='none']) {
+    fill: currentColor !important;
+  }
+
+  .sb-cart-free-shipping__label {
+    color: var(--sb-color-neutral-900);
+    line-height: 1.2;
+    margin: 0;
+    text-align: center;
+    white-space: nowrap;
   }
 
   .header__cart-drawer-count {
