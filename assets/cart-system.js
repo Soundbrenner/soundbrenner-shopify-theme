@@ -1278,6 +1278,44 @@
     setHeaderCartCount(nextCount, { animate: true });
   });
 
+  document.addEventListener('submit', (event) => {
+    const form = event.target;
+    if (!(form instanceof HTMLFormElement)) return;
+    if (event.defaultPrevented) return;
+
+    const action = `${form.getAttribute('action') || ''}`.trim();
+    if (!action) return;
+    if (!/\/cart\/add(?:\.js)?(?:\?|$)/.test(action)) return;
+    if (form.hasAttribute('data-no-ajax-cart-add')) return;
+
+    event.preventDefault();
+
+    const formData = new FormData(form);
+    const variantId = `${formData.get('id') || ''}`.trim();
+    const quantityRaw = `${formData.get('quantity') || '1'}`.trim();
+    const quantity = clampCount(quantityRaw || 1) || 1;
+
+    if (!variantId) return;
+
+    const submitter = event.submitter instanceof HTMLElement ? event.submitter : null;
+    if (submitter instanceof HTMLButtonElement || submitter instanceof HTMLInputElement) {
+      submitter.disabled = true;
+    }
+
+    addToCart(variantId, {
+      quantity,
+      sourceElement: submitter || form,
+    })
+      .catch(() => {
+        // no-op
+      })
+      .finally(() => {
+        if (submitter instanceof HTMLButtonElement || submitter instanceof HTMLInputElement) {
+          submitter.disabled = false;
+        }
+      });
+  });
+
   refreshCart({ source: 'initial', animateBadge: false }).catch(() => {
     // no-op
   });

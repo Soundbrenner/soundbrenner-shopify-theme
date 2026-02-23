@@ -29,26 +29,26 @@
     data-placeholder-image="{{ cart_placeholder_image }}"
   >
     <div class="sb-cart-page">
-      <header class="sb-cart-page__header" data-cart-page-header {% if cart.empty? %}hidden{% endif %}>
-        <h1 class="sb-cart-page__title font-title weight-bold">
-          <span>{{ 'cart.title' | t }}</span>
-          <span class="sb-cart-page__count" data-cart-page-count {% if cart.item_count == 0 %}hidden{% endif %}>
-            {{ cart.item_count }}
-          </span>
-        </h1>
-        {% render 'sb-cart-free-shipping-progress',
-          available: cart_free_shipping_available,
-          threshold_cents: cart_free_shipping_threshold_cents,
-          subtotal_cents: cart.total_price,
-          currency: cart.currency.iso_code,
-          has_items: cart.item_count > 0,
-          filled_message: true,
-          extra_class: 'sb-cart-page__filled-free-shipping'
-        %}
-      </header>
-
       <div class="sb-cart-page__layout">
         <div class="sb-cart-page__items-wrap">
+          <header class="sb-cart-page__header" data-cart-page-header {% if cart.empty? %}hidden{% endif %}>
+            <h1 class="sb-cart-page__title font-title weight-bold">
+              <span>{{ 'cart.title' | t }}</span>
+              <span class="sb-cart-page__count" data-cart-page-count {% if cart.item_count == 0 %}hidden{% endif %}>
+                {{ cart.item_count }}
+              </span>
+            </h1>
+            {% render 'sb-cart-free-shipping-progress',
+              available: cart_free_shipping_available,
+              threshold_cents: cart_free_shipping_threshold_cents,
+              subtotal_cents: cart.total_price,
+              currency: cart.currency.iso_code,
+              has_items: cart.item_count > 0,
+              filled_message: true,
+              extra_class: 'sb-cart-page__filled-free-shipping'
+            %}
+          </header>
+
           {% render 'sb-cart-line-items',
             list_class: 'sb-cart-line-list sb-cart-line-list--page',
             hidden: cart.item_count == 0,
@@ -111,9 +111,12 @@
   }
 
   .sb-cart-page {
+    background: var(--sb-color-neutral-200);
+    border-radius: 24px;
+    box-sizing: border-box;
     margin: 0 auto;
     max-width: calc(var(--sb-space-128) * 9 + var(--sb-space-32));
-    padding: 0 var(--sb-space-20);
+    padding: var(--sb-space-20);
     width: 100%;
   }
 
@@ -164,6 +167,9 @@
   }
 
   .sb-cart-page__items-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-24);
     min-width: 0;
   }
 
@@ -202,15 +208,13 @@
   }
 
   .sb-cart-page__empty-text {
-    border-top: 1px solid var(--sb-color-neutral-600);
     color: var(--sb-color-neutral-900);
     margin: var(--sb-space-16) 0 0;
-    padding: var(--sb-space-16) 0 0;
+    padding: 0;
     width: 100%;
   }
 
   .sb-cart-page__filled-free-shipping {
-    border-top: 1px solid var(--sb-color-neutral-600);
     color: var(--sb-color-neutral-900);
     margin: var(--sb-space-16) 0 0;
     padding: 0;
@@ -312,14 +316,6 @@
     width: auto;
   }
 
-  .sb-cart-items--page.is-empty .sb-cart-page {
-    background: var(--sb-color-neutral-200);
-    border-radius: 24px;
-    box-sizing: border-box;
-    padding: var(--sb-space-48);
-    width: 100%;
-  }
-
   .sb-cart-items--page.is-empty .sb-cart-page__header {
     display: none;
   }
@@ -337,9 +333,10 @@
 
   .sb-cart-page__summary {
     align-self: start;
-    background: var(--sb-color-neutral-200);
+    background: transparent;
     border: 0;
-    border-radius: var(--sb-space-20);
+    border-radius: 0;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     gap: var(--sb-space-20);
@@ -399,9 +396,21 @@
   }
 
   @media screen and (min-width: 990px) {
+    .sb-cart-page {
+      padding: var(--sb-space-48);
+    }
+
     .sb-cart-page__layout {
       align-items: start;
+      gap: 0;
       grid-template-columns: minmax(0, 1fr) calc(var(--sb-space-128) * 3 + var(--sb-space-16));
+    }
+
+    .sb-cart-page__summary {
+      border-left: 1px solid var(--sb-color-neutral-600);
+      max-width: calc(var(--sb-space-128) * 3 + var(--sb-space-16));
+      padding: var(--sb-space-48);
+      width: calc(var(--sb-space-128) * 3 + var(--sb-space-16));
     }
   }
 {% endstylesheet %}
