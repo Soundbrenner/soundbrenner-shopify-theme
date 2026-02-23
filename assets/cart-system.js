@@ -1258,19 +1258,53 @@
         .map((item) => {
           const key = `${item && item.key ? item.key : ''}`;
           const quantity = clampCount(item && item.quantity ? item.quantity : 0);
-          const originalLinePrice = Number.isFinite(Number(item && item.original_line_price))
-            ? Number(item.original_line_price)
-            : 0;
-          const finalLinePrice = Number.isFinite(Number(item && item.final_line_price))
-            ? Number(item.final_line_price)
-            : 0;
           const image = `${getItemImageUrl(item) || this.placeholderImage}`;
-          return [key, quantity, originalLinePrice, finalLinePrice, image].join('|');
+          return [key, quantity, image].join('|');
         })
         .join('||');
 
-      // Prevent unnecessary full list re-renders (image flash) when cart content is unchanged.
-      if (nextItemsSignature === this.lastRenderedItemsSignature) return;
+      // Prevent unnecessary full list re-renders (image flash) when only price state changes.
+      // For discount changes we patch line-item prices in place.
+      if (nextItemsSignature === this.lastRenderedItemsSignature) {
+        items.forEach((item, index) => {
+          const line = index + 1;
+          const row = this.itemListNode.querySelector(`[data-cart-line="${line}"]`);
+          if (!(row instanceof HTMLElement)) return;
+
+          const originalLinePriceCents = Number.isFinite(Number(item.original_line_price))
+            ? Number(item.original_line_price)
+            : 0;
+          const finalLinePriceCents = Number.isFinite(Number(item.final_line_price))
+            ? Number(item.final_line_price)
+            : 0;
+          const hasDiscount = originalLinePriceCents > finalLinePriceCents;
+          const regularLinePrice = formatMoney(hasDiscount ? originalLinePriceCents : finalLinePriceCents, currency);
+          const discountedLinePrice = hasDiscount ? formatMoney(finalLinePriceCents, currency) : '';
+
+          const priceGroup = row.querySelector('.sb-cart-line__price-group');
+          if (!(priceGroup instanceof HTMLElement)) return;
+
+          priceGroup.innerHTML = `
+            <p
+              class="sb-cart-line__price sb-cart-shimmer-text font-caption weight-regular"
+              data-cart-line-price
+              data-shimmer-value="${escapeHtml(regularLinePrice)}"
+            >
+              ${escapeHtml(regularLinePrice)}
+            </p>
+            ${
+              hasDiscount
+                ? `<p
+                    class="sb-cart-line__discount-price sb-cart-shimmer-text font-caption weight-regular"
+                    data-cart-line-discount-price
+                    data-shimmer-value="${escapeHtml(discountedLinePrice)}"
+                  >${escapeHtml(discountedLinePrice)}</p>`
+                : ''
+            }
+          `;
+        });
+        return;
+      }
 
       const fragment = document.createDocumentFragment();
 
