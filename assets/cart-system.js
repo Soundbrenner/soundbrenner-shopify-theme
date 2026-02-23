@@ -677,8 +677,8 @@
           ? this.closest('[data-cart-drawer-panel]') || this
           : this;
 
-      this.statusNode = this.querySelector('[data-cart-status]');
-      this.pageHeaderNode = this.querySelector('[data-cart-page-header]');
+      this.statusNode = this.messageScopeNode.querySelector('[data-cart-status]');
+      this.pageHeaderNode = this.messageScopeNode.querySelector('[data-cart-page-header]');
       this.emptyMessageNodes = this.messageScopeNode.querySelectorAll('[data-cart-empty-message]');
       this.filledMessageNodes = this.messageScopeNode.querySelectorAll('[data-cart-filled-message]');
       this.itemListNode = this.querySelector('[data-cart-item-list]');
@@ -690,8 +690,8 @@
       this.discountInput = this.querySelector('[data-cart-discount-input]');
       this.discountListNode = this.querySelector('[data-cart-discount-list]');
       this.discountErrorNode = this.querySelector('[data-cart-discount-error]');
-      this.drawerCountNode = this.querySelector('[data-cart-drawer-count]');
-      this.pageCountNode = this.querySelector('[data-cart-page-count]');
+      this.drawerCountNode = this.messageScopeNode.querySelector('[data-cart-drawer-count]');
+      this.pageCountNode = this.messageScopeNode.querySelector('[data-cart-page-count]');
       this.freeShippingNode = this.messageScopeNode.querySelector('[data-cart-free-shipping]');
       this.freeShippingMessageNode = this.messageScopeNode.querySelector('[data-cart-free-shipping-message]');
       this.freeShippingIntroFillNode = this.messageScopeNode.querySelector('[data-cart-free-shipping-intro-fill]');
