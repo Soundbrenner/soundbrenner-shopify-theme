@@ -289,6 +289,8 @@
     '<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 23.1429V17.8571H40V23.1429H0Z" fill="white"/></svg>';
   const CART_ICON_REMOVE_SVG =
     '<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.5555 40C7.44439 40 6.48143 39.6111 5.66661 38.8333C4.8518 38.0185 4.44439 37.0556 4.44439 35.9444V6.11111H2.22217V2.05556H13.1111V0H26.8888V2.05556H37.7777V6.11111H35.5555V35.9444C35.5555 37.0556 35.1481 38.0185 34.3333 38.8333C33.5185 39.6111 32.5555 40 31.4444 40H8.5555ZM13.4444 31.3889H17.5555V10.6667H13.4444V31.3889ZM22.4444 31.3889H26.5555V10.6667H22.4444V31.3889Z" fill="white"/></svg>';
+  const CART_ICON_CANCEL_SVG =
+    '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.4964 16L0 14.5036L6.53237 8L0 1.4964L1.4964 0L8 6.53237L14.5036 0L16 1.4964L9.46763 8L16 14.5036L14.5036 16L8 9.46763L1.4964 16Z" fill="white"/></svg>';
 
   const dispatchCartEvents = (cart, source = 'unknown', itemCount = 0) => {
     const detail = {
@@ -781,6 +783,7 @@
       this.discountInput = this.querySelector('[data-cart-discount-input]');
       this.discountListNode = this.querySelector('[data-cart-discount-list]');
       this.discountErrorNode = this.querySelector('[data-cart-discount-error]');
+      this.discountErrorTextNode = this.querySelector('[data-cart-discount-error-text]');
       this.discountCodeErrorMessage =
         (this.discountErrorNode && this.discountErrorNode.dataset.discountCodeError) ||
         'Discount code cannot be applied to your cart';
@@ -920,8 +923,9 @@
 
       if (!(this.discountInput instanceof HTMLInputElement)) return;
 
-      const nextCode = this.discountInput.value.trim();
+      const nextCode = this.discountInput.value.trim().toUpperCase();
       if (!nextCode) return;
+      this.discountInput.value = nextCode;
 
       const existingCodes = getAppliedDiscountCodes(cachedCart || {});
       const normalizedExisting = new Set(existingCodes.map((code) => code.toLowerCase()));
@@ -1214,14 +1218,15 @@
       const fragment = document.createDocumentFragment();
 
       discountCodes.forEach((code) => {
+        const codeUpper = `${code || ''}`.trim().toUpperCase();
         const item = document.createElement('li');
         item.className = 'sb-cart-discount-pill font-caption weight-bold';
         item.innerHTML = `
-          <span>${escapeHtml(code)}</span>
+          <span>${escapeHtml(codeUpper)}</span>
           <button type="button" class="sb-cart-discount-pill__remove" data-cart-discount-remove="${escapeHtml(
-            code
-          )}" aria-label="Remove ${escapeHtml(code)}">
-            <span class="sb-cart-discount-pill__remove-icon" aria-hidden="true"></span>
+            codeUpper
+          )}" aria-label="Remove ${escapeHtml(codeUpper)}">
+            <span class="sb-cart-discount-pill__remove-icon" aria-hidden="true">${CART_ICON_CANCEL_SVG}</span>
           </button>
         `;
         fragment.appendChild(item);
@@ -1394,7 +1399,11 @@
 
     showDiscountError(message) {
       if (!this.discountErrorNode) return;
-      this.discountErrorNode.textContent = message;
+      if (this.discountErrorTextNode) {
+        this.discountErrorTextNode.textContent = message;
+      } else {
+        this.discountErrorNode.textContent = message;
+      }
       this.discountErrorNode.hidden = false;
       this.renderedDiscountError = true;
     }
@@ -1402,7 +1411,11 @@
     hideDiscountError() {
       if (!this.discountErrorNode) return;
       this.discountErrorNode.hidden = true;
-      this.discountErrorNode.textContent = '';
+      if (this.discountErrorTextNode) {
+        this.discountErrorTextNode.textContent = '';
+      } else {
+        this.discountErrorNode.textContent = '';
+      }
       this.renderedDiscountError = false;
     }
   }

@@ -4679,6 +4679,10 @@
   .sb-cart-summary__discount {
     display: flex;
     flex-direction: column;
+    gap: 0;
+  }
+
+  .sb-cart-summary__discount[open] {
     gap: var(--sb-space-16);
   }
 
@@ -4770,7 +4774,7 @@
     gap: var(--sb-space-16);
     min-height: 0;
     overflow: hidden;
-    padding-top: var(--sb-space-16);
+    padding-top: 0;
   }
 
   .sb-cart-summary__discount[open] .sb-cart-summary__discount-body-inner {
@@ -4779,22 +4783,24 @@
 
   .sb-cart-summary__discount-form {
     align-items: center;
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
     gap: 12px;
+    min-width: 0;
     width: 100%;
   }
 
   .sb-cart-summary__discount-input {
     background: var(--sb-color-always-white);
     border: 0;
-    border-radius: var(--sb-space-12);
+    border-radius: 999px;
     box-shadow: 0 0 10px 0 var(--sb-color-always-black-12);
     color: var(--sb-color-always-black);
-    flex: 1 1 auto;
     height: 36px;
     min-height: 36px;
     min-width: 0;
     padding: 0 var(--sb-space-12);
+    width: 100%;
   }
 
   .sb-cart-summary__discount-input::placeholder {
@@ -4809,7 +4815,7 @@
   }
 
   .sb-cart-summary__discount-apply {
-    flex: 0 0 auto;
+    max-width: 100%;
     min-height: 36px;
   }
 
@@ -4824,24 +4830,35 @@
     gap: 8px;
     justify-content: flex-start;
     margin: 0;
+    max-width: 100%;
     text-align: left;
+    width: 100%;
   }
 
-  .sb-cart-summary__discount-error::before {
-    background-color: currentColor;
-    content: '';
-    display: inline-block;
+  .sb-cart-summary__discount-error-icon {
+    color: currentColor;
+    display: inline-flex;
     flex: 0 0 auto;
     height: var(--sb-space-16);
-    -webkit-mask-image: url('{{ 'icon-error.svg' | asset_url }}');
-    -webkit-mask-position: center;
-    -webkit-mask-repeat: no-repeat;
-    -webkit-mask-size: contain;
-    mask-image: url('{{ 'icon-error.svg' | asset_url }}');
-    mask-position: center;
-    mask-repeat: no-repeat;
-    mask-size: contain;
+    line-height: 0;
     width: var(--sb-space-16);
+  }
+
+  .sb-cart-summary__discount-error-icon svg {
+    display: block;
+    height: var(--sb-space-16);
+    width: var(--sb-space-16);
+  }
+
+  .sb-cart-summary__discount-error-icon svg path:not([fill='none']),
+  .sb-cart-summary__discount-error-icon svg circle:not([fill='none']),
+  .sb-cart-summary__discount-error-icon svg rect:not([fill='none']) {
+    fill: currentColor !important;
+  }
+
+  .sb-cart-summary__discount-error [data-cart-discount-error-text] {
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   .sb-cart-discount-list {
@@ -4861,8 +4878,8 @@
     color: var(--sb-color-neutral-900);
     display: inline-flex;
     gap: 8px;
-    height: 30px;
-    min-height: 30px;
+    height: 36px;
+    min-height: 36px;
     padding: 0 16px;
   }
 
@@ -4879,24 +4896,29 @@
     width: 16px;
   }
 
-  .sb-cart-discount-pill:hover,
-  .sb-cart-discount-pill:focus-within {
-    background: var(--sb-color-neutral-600);
+  .sb-cart-discount-pill__remove-icon {
+    color: currentColor;
+    display: inline-flex;
+    height: 16px;
+    line-height: 0;
+    width: 16px;
   }
 
-  .sb-cart-discount-pill__remove-icon {
-    background-color: currentColor;
+  .sb-cart-discount-pill__remove-icon svg {
     display: block;
     height: 16px;
-    -webkit-mask-image: url('{{ 'icon-cancel.svg' | asset_url }}');
-    -webkit-mask-position: center;
-    -webkit-mask-repeat: no-repeat;
-    -webkit-mask-size: contain;
-    mask-image: url('{{ 'icon-cancel.svg' | asset_url }}');
-    mask-position: center;
-    mask-repeat: no-repeat;
-    mask-size: contain;
     width: 16px;
+  }
+
+  .sb-cart-discount-pill__remove-icon svg path:not([fill='none']),
+  .sb-cart-discount-pill__remove-icon svg circle:not([fill='none']),
+  .sb-cart-discount-pill__remove-icon svg rect:not([fill='none']) {
+    fill: currentColor !important;
+  }
+
+  .sb-cart-discount-pill__remove:hover,
+  .sb-cart-discount-pill__remove:focus-visible {
+    color: var(--sb-color-primary-500);
   }
 
   .sb-cart-summary__row--total {

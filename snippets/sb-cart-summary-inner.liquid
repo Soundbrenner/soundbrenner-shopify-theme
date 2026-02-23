@@ -71,7 +71,7 @@
   <p class="sb-cart-summary__row sb-cart-summary__row--shipping font-caption weight-regular">
     <span class="sb-cart-summary__row-leading">
       <span class="sb-cart-summary__icon sb-cart-summary__icon--shipping" aria-hidden="true">
-        {{ 'icon-purchase-guarantee-shipping.svg' | inline_asset_content }}
+        {{ 'icon-purchase-guarantee-shipping-no-padding.svg' | inline_asset_content }}
       </span>
       <span>{{ sb_cart_shipping_text }}</span>
     </span>
@@ -149,18 +149,26 @@
           data-discount-code-error="{{ 'cart.discount_code_error' | t | escape }}"
           data-shipping-discount-error="{{ 'cart.shipping_discount_error' | t | escape }}"
           hidden
-        ></p>
+        >
+          <span class="sb-cart-summary__discount-error-icon" aria-hidden="true">
+            {{ 'icon-error.svg' | inline_asset_content }}
+          </span>
+          <span data-cart-discount-error-text></span>
+        </p>
         <ul class="sb-cart-discount-list" data-cart-discount-list>
           {% for discount_code in discount_codes %}
+            {% assign discount_code_upper = discount_code | upcase %}
             <li class="sb-cart-discount-pill font-caption weight-bold">
-              <span>{{ discount_code }}</span>
+              <span>{{ discount_code_upper }}</span>
               <button
                 type="button"
                 class="sb-cart-discount-pill__remove"
-                data-cart-discount-remove="{{ discount_code | escape }}"
-                aria-label="Remove {{ discount_code | escape }}"
+                data-cart-discount-remove="{{ discount_code_upper | escape }}"
+                aria-label="Remove {{ discount_code_upper | escape }}"
               >
-                <span class="sb-cart-discount-pill__remove-icon" aria-hidden="true"></span>
+                <span class="sb-cart-discount-pill__remove-icon" aria-hidden="true">
+                  {{ 'icon-cancel.svg' | inline_asset_content }}
+                </span>
               </button>
             </li>
           {% endfor %}
