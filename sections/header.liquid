@@ -1568,6 +1568,8 @@
     text-align: center;
     white-space: normal;
     word-break: break-word;
+    text-wrap: pretty;
+    text-wrap: balance;
   }
 
   .header__announcement-countdown {
@@ -1651,7 +1653,7 @@
 
   .header__brand-logo {
     display: inline-flex;
-    height: var(--sb-space-36);
+    height: 36px;
     width: auto;
   }
 
@@ -1701,16 +1703,14 @@
     color: var(--sb-color-primary-500);
   }
 
-  @media screen and (min-width: 990px) and (max-width: 1279px) {
-    .header__menu-item {
-      max-width: var(--sb-space-128);
-    }
+  .header.is-nav-wrap .header__menu-item {
+    max-width: var(--sb-nav-wrap-max-item-width, var(--sb-space-128));
+  }
 
-    .header__menu-link {
-      line-height: 1.15;
-      text-align: center;
-      white-space: normal;
-    }
+  .header.is-nav-wrap .header__menu-link {
+    line-height: 1.15;
+    text-align: center;
+    white-space: normal;
   }
 
   .header__primary-menu {
@@ -1856,8 +1856,8 @@
 
   .header__primary-card-title-link {
     color: var(--sb-color-neutral-900);
-    hyphens: auto;
-    overflow-wrap: anywhere;
+    hyphens: manual;
+    overflow-wrap: break-word;
     word-break: normal;
   }
 
@@ -5391,6 +5391,106 @@
     let pageScrollLockY = 0;
     const isDesktopViewport = () => window.matchMedia('(min-width: 990px)').matches;
     const isMobileMenuOpen = () => Boolean(mobileMenuDrawer && mobileMenuDrawer.classList.contains('menu-open'));
+    const headerInnerElement = header.querySelector('.header__inner');
+    const desktopMenu = header.querySelector('.header__menu');
+    const desktopMenuItems = desktopMenu ? Array.from(desktopMenu.querySelectorAll('.header__menu-item')) : [];
+    const desktopBrand = header.querySelector('.header__brand');
+    const desktopUtilityIcons = header.querySelector('.header__utility-icons');
+    const navWrapSideGap = 12;
+    const navWrapMinItemWidth = 96;
+    const navWrapMaxItemWidth = 160;
+    let navLayoutRaf = null;
+    let navLayoutObserver = null;
+
+    const clearDesktopNavLayoutClasses = () => {
+      header.classList.remove('is-nav-wrap');
+      header.classList.remove('is-nav-compact');
+      if (desktopMenu) desktopMenu.style.removeProperty('--sb-nav-wrap-max-item-width');
+    };
+
+    const getDesktopNavRects = () => {
+      if (!desktopMenu || !desktopBrand || !desktopUtilityIcons) return null;
+      return {
+        menuRect: desktopMenu.getBoundingClientRect(),
+        brandRect: desktopBrand.getBoundingClientRect(),
+        utilityRect: desktopUtilityIcons.getBoundingClientRect()
+      };
+    };
+
+    const hasDesktopNavOverlap = () => {
+      const rects = getDesktopNavRects();
+      if (!rects) return false;
+      return (
+        rects.menuRect.left < (rects.brandRect.right + navWrapSideGap)
+        || rects.menuRect.right > (rects.utilityRect.left - navWrapSideGap)
+      );
+    };
+
+    const calculateNavWrapItemWidth = () => {
+      if (!desktopMenu || desktopMenuItems.length === 0) return null;
+      const rects = getDesktopNavRects();
+      if (!rects) return null;
+
+      const availableWidth = rects.utilityRect.left - rects.brandRect.right - (navWrapSideGap * 2);
+      const menuStyles = window.getComputedStyle(desktopMenu);
+      const menuGap = parseFloat(menuStyles.columnGap || menuStyles.gap || '0') || 0;
+      const totalGap = menuGap * Math.max(0, desktopMenuItems.length - 1);
+      const rawItemWidth = (availableWidth - totalGap) / desktopMenuItems.length;
+      if (!Number.isFinite(rawItemWidth)) return null;
+
+      return Math.max(navWrapMinItemWidth, Math.min(navWrapMaxItemWidth, Math.floor(rawItemWidth)));
+    };
+
+    const applyDesktopNavLayout = () => {
+      if (!isDesktopViewport() || !desktopMenu || desktopMenuItems.length === 0) {
+        clearDesktopNavLayoutClasses();
+        return;
+      }
+
+      clearDesktopNavLayoutClasses();
+
+      if (!hasDesktopNavOverlap()) return;
+
+      const wrapItemWidth = calculateNavWrapItemWidth();
+      if (wrapItemWidth && wrapItemWidth > 0) {
+        desktopMenu.style.setProperty('--sb-nav-wrap-max-item-width', `${wrapItemWidth}px`);
+      }
+      header.classList.add('is-nav-wrap');
+
+      if (!hasDesktopNavOverlap()) return;
+
+      header.classList.remove('is-nav-wrap');
+      if (desktopMenu) desktopMenu.style.removeProperty('--sb-nav-wrap-max-item-width');
+      header.classList.add('is-nav-compact');
+    };
+
+    const scheduleDesktopNavLayout = () => {
+      if (navLayoutRaf) window.cancelAnimationFrame(navLayoutRaf);
+      navLayoutRaf = window.requestAnimationFrame(() => {
+        navLayoutRaf = null;
+        applyDesktopNavLayout();
+      });
+    };
+
+    window.addEventListener('resize', scheduleDesktopNavLayout, { passive: true });
+    window.requestAnimationFrame(scheduleDesktopNavLayout);
+
+    if (document.fonts && typeof document.fonts.ready === 'object') {
+      document.fonts.ready.then(() => {
+        scheduleDesktopNavLayout();
+      });
+    }
+
+    if (window.ResizeObserver && headerInnerElement) {
+      navLayoutObserver = new ResizeObserver(() => {
+        scheduleDesktopNavLayout();
+      });
+      navLayoutObserver.observe(headerInnerElement);
+      if (desktopBrand) navLayoutObserver.observe(desktopBrand);
+      if (desktopUtilityIcons) navLayoutObserver.observe(desktopUtilityIcons);
+      if (desktopMenu) navLayoutObserver.observe(desktopMenu);
+    }
+
     const closeAllMobileAccordions = () => {
       if (!mobileMenuDrawer) return;
       mobileMenuDrawer.querySelectorAll('.menu-drawer__menu-container[open]').forEach((accordion) => {
@@ -5913,7 +6013,10 @@
 
       const updatePrimaryOpenState = () => {
         const isPrimaryOpen = Boolean(activeDropdownItem || localizationDropdownOpen);
-        if (window.matchMedia('(max-width: 989px)').matches) {
+        if (window.matchMedia('(max-width: 989px)').matches || header.classList.contains('is-nav-compact')) {
+          if (activeDropdownItem) activeDropdownItem.classList.remove('is-open');
+          activeDropdownItem = null;
+          localizationDropdownOpen = false;
           header.classList.remove('is-primary-open');
           clearPrimarySwitchTimer();
           header.classList.remove('is-primary-switching');
