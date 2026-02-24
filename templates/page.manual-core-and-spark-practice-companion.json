@@ -75,10 +75,10 @@
             "text": "<p>This video is the ultimate crash course to learn everything you need to know about how to use your Core in the shortest time possible. It’s the best way to get started, so we highly recommend you to watch this video!</p>"
           }
         },
-        "heading_small_bRbrA6": {
-          "type": "heading_small",
+        "vimeo_video_YefAQq": {
+          "type": "vimeo_video",
           "settings": {
-            "heading": "INSERT VIDEO"
+            "video_source": "585233834"
           }
         },
         "divider_2": {
@@ -201,7 +201,7 @@
         "chapter_2",
         "subheading_VNBViy",
         "body_2",
-        "heading_small_bRbrA6",
+        "vimeo_video_YefAQq",
         "divider_2",
         "subheading_QhB4a6",
         "body_3",
