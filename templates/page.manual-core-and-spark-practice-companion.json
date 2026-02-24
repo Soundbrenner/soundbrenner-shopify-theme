@@ -163,6 +163,18 @@
           "type": "divider",
           "settings": {}
         },
+        "heading_eWJh4B": {
+          "type": "heading",
+          "settings": {
+            "heading": "App & compatibility"
+          }
+        },
+        "text_HPx7dM": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Before you can start using your Core, you need to unlock it in our app first. This helps us check if there are any firmware updates available. Download our app by clicking the buttons below, scanning the QR code or searching for “Soundbrenner” in the Google Play or iOS App Store.</p><p><strong>Download app </strong><br/>The Metronome by Soundbrenner</p>"
+          }
+        },
         "chapter_6": {
           "type": "heading",
           "settings": {
@@ -228,6 +240,8 @@
         "body_5",
         "heading_small_DqeFGT",
         "divider_5",
+        "heading_eWJh4B",
+        "text_HPx7dM",
         "chapter_6",
         "accordion_item_1",
         "accordion_item_2",
