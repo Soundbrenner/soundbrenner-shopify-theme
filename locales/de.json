@@ -1,0 +1,62 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "404": {
+    "not_found": "Seite nicht gefunden.",
+    "back_to_shopping": "Zurück zum Einkaufen"
+  },
+  "blog": {
+    "article_comments": "Kommentare",
+    "article_metadata_html": "{{ date }} von {{ author }}",
+    "comment_form_body": "Kommentar",
+    "comment_form_email": "E-Mail",
+    "comment_form_name": "Name",
+    "comment_form_submit": "Beitrag",
+    "comment_form_title": "Kommentar hinzufügen"
+  },
+  "cart": {
+    "checkout": "Zur Kasse",
+    "title": "Warenkorb",
+    "update": "Aktualisieren",
+    "remove": "Entfernen",
+    "discount_code_error": "Rabattcode kann auf deinen Warenkorb nicht angewendet werden",
+    "shipping_discount_error": "Versandrabatte werden an der Kasse angezeigt, nachdem du eine Adresse eingegeben hast"
+  },
+  "customers": {
+    "login": {
+      "email": "E-Mail",
+      "password": "Passwort",
+      "submit": "Anmelden",
+      "title": "Anmelden"
+    }
+  },
+  "collections": {
+    "title": "Sammlungen"
+  },
+  "gift_card": {
+    "add_to_apple_wallet": "Zu Apple Wallet hinzufügen",
+    "card": "Geschenkkarte",
+    "expired": "Diese Geschenkkarte ist abgelaufen",
+    "expires_on": "Läuft ab am {{ expires_on }}",
+    "use_at_checkout": "Verwende diese Geschenkkarte beim Bezahlen"
+  },
+  "password": {
+    "title": "Dieser Laden ist privat",
+    "password": "Passwort",
+    "enter": "Eingeben"
+  },
+  "search": {
+    "title": "Suche",
+    "placeholder": "Durchsuche Artikel, Seiten oder Produkte",
+    "submit": "Suche",
+    "no_results_html": "Keine Ergebnisse für {{ terms }} gefunden",
+    "results_for_html": "{{ count }} Ergebnisse für {{ terms }} gefunden"
+  }
+}

@@ -1,0 +1,62 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "404": {
+    "not_found": "ページが見つかりません。",
+    "back_to_shopping": "買い物に戻る"
+  },
+  "blog": {
+    "article_comments": "コメント",
+    "article_metadata_html": "{{ date }}　{{ author }}より",
+    "comment_form_body": "コメント",
+    "comment_form_email": "電子メール",
+    "comment_form_name": "名前",
+    "comment_form_submit": "投稿",
+    "comment_form_title": "コメントを追加"
+  },
+  "cart": {
+    "checkout": "お会計",
+    "title": "カート",
+    "update": "更新",
+    "remove": "削除",
+    "discount_code_error": "割引コードはカートに適用できません",
+    "shipping_discount_error": "住所を入力すると、送料の割引が会計時に表示されます"
+  },
+  "customers": {
+    "login": {
+      "email": "電子メール",
+      "password": "パスワード",
+      "submit": "サインイン",
+      "title": "ログイン"
+    }
+  },
+  "collections": {
+    "title": "コレクション"
+  },
+  "gift_card": {
+    "add_to_apple_wallet": "Appleウォレットに追加",
+    "card": "ギフト券",
+    "expired": "このギフトカードは有効期限が切れています",
+    "expires_on": "有効期限：{{ expires_on }}",
+    "use_at_checkout": "このギフトカードをお会計時に使ってください"
+  },
+  "password": {
+    "title": "このショップは非公開です",
+    "password": "パスワード",
+    "enter": "入力"
+  },
+  "search": {
+    "title": "検索",
+    "placeholder": "記事、ページ、または製品を検索",
+    "submit": "検索",
+    "no_results_html": "{{ terms }}に該当する結果は見つかりませんでした",
+    "results_for_html": "{{ count }}件の検索結果が{{ terms }}に見つかりました"
+  }
+}
