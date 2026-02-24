@@ -392,6 +392,7 @@
       return new Intl.NumberFormat(locale, {
         style: 'currency',
         currency,
+        currencyDisplay: 'narrowSymbol',
       }).format(amount / 100);
     } catch (_) {
       return `${(amount / 100).toFixed(2)} ${currency}`;
@@ -1171,9 +1172,11 @@
         }
       });
 
-      refreshCart({ source: 'drawer-open', animateBadge: false }).catch(() => {
-        // no-op
-      });
+      if (!cachedCart) {
+        refreshCart({ source: 'drawer-open', animateBadge: false }).catch(() => {
+          // no-op
+        });
+      }
     }
 
     close({ immediate = false, skipHistory = false } = {}) {
@@ -1334,7 +1337,14 @@
       }
 
       if (cachedCart) {
-        this.render(cachedCart);
+        const preserveInitialMarkup =
+          !this.didInitialHydration &&
+          this.shouldPreserveInitialMarkup(cachedCart);
+        this.didInitialHydration = true;
+        this.render(cachedCart, {
+          source: 'initial',
+          preserveInitialMarkup,
+        });
       }
     }
 
@@ -1395,7 +1405,9 @@
         return false;
       }
 
-      if (itemCount === serverRows) {
+      // Preserve SSR DOM on first hydrate to avoid cart line flicker and currency/text flash.
+      // Server-rendered markup is the source of truth for initial paint.
+      if (serverRows > 0) {
         return true;
       }
 
@@ -1745,7 +1757,6 @@
         this.itemListNode.querySelector('[data-cart-line]') instanceof HTMLElement;
       const preserveNonEmptyServerState =
         preserveInitialMarkup &&
-        source === 'initial' &&
         hasServerRows;
       const isEmpty = preserveNonEmptyServerState ? false : itemCount === 0;
       const cartCurrency = `${cart && cart.currency ? cart.currency : ''}`.trim().toUpperCase();
@@ -1755,7 +1766,7 @@
       }
       const wasEmpty = this.classList.contains('is-empty');
       const shouldAnimateToEmpty = !wasEmpty && isEmpty;
-      const skipInitialValueMutation = preserveInitialMarkup && source === 'initial';
+      const skipInitialValueMutation = preserveInitialMarkup;
 
       const applyRenderState = () => {
         this.classList.toggle('is-empty', isEmpty);
@@ -1883,11 +1894,11 @@
         this.autoDiscountDividerNode.hidden = !summary.hasDiscount;
       }
 
-      if (this.autoDiscountTextNode && !(preserveInitialMarkup && source === 'initial')) {
+      if (this.autoDiscountTextNode && !preserveInitialMarkup) {
         this.autoDiscountTextNode.textContent = summary.text;
       }
 
-      if (this.autoDiscountAmountNode && !(preserveInitialMarkup && source === 'initial')) {
+      if (this.autoDiscountAmountNode && !preserveInitialMarkup) {
         this.autoDiscountAmountNode.textContent = summary.amountText;
         setShimmerValue(this.autoDiscountAmountNode, summary.amountText);
       }
@@ -1912,7 +1923,7 @@
         fragment.appendChild(item);
       });
 
-      if (preserveInitialMarkup && source === 'initial') {
+      if (preserveInitialMarkup) {
         return;
       }
 
@@ -1944,18 +1955,14 @@
       });
       const nextItemsSignature = buildItemsSignatureFromCart(items);
 
-      if (
-        preserveInitialMarkup &&
-        source === 'initial' &&
-        `${this.lastRenderedItemsSignature || ''}`.trim() !== ''
-      ) {
+      if (preserveInitialMarkup && `${this.lastRenderedItemsSignature || ''}`.trim() !== '') {
         return;
       }
 
       // Prevent unnecessary full list re-renders (image flash) when only price state changes.
       // For discount changes we patch line-item prices in place.
       if (nextItemsSignature === this.lastRenderedItemsSignature) {
-        if (preserveInitialMarkup && source === 'initial') {
+        if (preserveInitialMarkup || source === 'drawer-open') {
           return;
         }
         items.forEach((item, index) => {
