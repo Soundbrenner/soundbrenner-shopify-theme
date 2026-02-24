@@ -128,16 +128,7 @@
         "body_4": {
           "type": "text",
           "settings": {
-            "text": "<p>View the full specifications on the product page.</p>"
-          }
-        },
-        "button_CN7gAg": {
-          "type": "button",
-          "settings": {
-            "label": "View tech specs",
-            "button_size": "large",
-            "icon_position": "none",
-            "link": "shopify://products/wave-in-ear-monitors"
+            "text": "<p>Upgrade your practice with Plus, our optional premium service that unlocks the full capabilities of our app. While the Core itself provides a complete experience on its own, Plus offers extras such as cloud storage of your songs and setlists, among other features. Our subscription model supports the rollout of multiple significant app updates annually, so get ready for a continuous stream of exciting new features!</p><p>Your Core comes with a free 3-month trial that you can redeem by following the in-app instructions after connecting your wearable!</p>"
           }
         },
         "divider_4": {
@@ -219,7 +210,6 @@
         "divider_3",
         "chapter_4",
         "body_4",
-        "button_CN7gAg",
         "divider_4",
         "chapter_5",
         "body_5",
