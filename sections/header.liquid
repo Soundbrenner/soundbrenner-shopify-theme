@@ -1473,7 +1473,7 @@
   }
 
   :root {
-    --sb-header-height: calc(var(--sb-space-48) + var(--sb-space-12));
+    --sb-header-height: 60px;
     --sb-announcement-min-height: 0px;
   }
 
@@ -1482,7 +1482,7 @@
   }
 
   .header {
-    --sb-header-height: calc(var(--sb-space-48) + var(--sb-space-12));
+    --sb-header-height: 60px;
     --sb-announcement-min-height: 0px;
     --sb-announcement-row-gap: 6px;
     --sb-menu-unroll-duration: 420ms;
@@ -5251,7 +5251,7 @@
 
   .shopify-section:has(> .header) {
     min-height: calc(
-      var(--sb-header-height, calc(var(--sb-space-48) + var(--sb-space-12)))
+      var(--sb-header-height, 60px)
       + var(--sb-announcement-min-height, 0px)
     );
   }
