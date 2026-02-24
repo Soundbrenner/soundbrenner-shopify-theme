@@ -2,7 +2,7 @@
 {% liquid
   assign sb_theme_mode = 'dark'
   assign sb_theme_locked = false
-  assign sb_debug_version = '3.1'
+  assign sb_debug_version = '3.3'
   if request.page_type == 'collection' and collection != blank
     assign collection_settings_ref = collection.metafields.custom.collection_settings.value | default: collection.metafields.custom.collection_settings
     if collection_settings_ref != blank
@@ -232,6 +232,7 @@
         const thumbnailDiscountState = {
           globalRate: 0,
           variantRateById: new Map(),
+          variantRatesExcludeGlobal: false,
         };
         let thumbnailDiscountHydrationPromise = null;
 
@@ -265,6 +266,8 @@
           }
 
           const items = Array.isArray(cart?.items) ? cart.items : [];
+          let itemsOriginalTotal = 0;
+          let itemsFinalTotal = 0;
           items.forEach((item) => {
             const variantId = `${item?.variant_id || item?.id || ''}`.trim();
             if (!variantId) return;
@@ -272,9 +275,14 @@
             const originalLinePrice = Number(item?.original_line_price);
             const finalLinePrice = Number(item?.final_line_price);
             if (!Number.isFinite(originalLinePrice) || originalLinePrice <= 0) return;
-            if (!Number.isFinite(finalLinePrice) || finalLinePrice >= originalLinePrice) return;
+            if (!Number.isFinite(finalLinePrice) || finalLinePrice < 0) return;
+            const normalizedFinalLinePrice = Math.min(Math.max(0, finalLinePrice), originalLinePrice);
+            itemsOriginalTotal += originalLinePrice;
+            itemsFinalTotal += normalizedFinalLinePrice;
 
-            const lineRate = clampDiscountRate((originalLinePrice - finalLinePrice) / originalLinePrice);
+            if (normalizedFinalLinePrice >= originalLinePrice) return;
+
+            const lineRate = clampDiscountRate((originalLinePrice - normalizedFinalLinePrice) / originalLinePrice);
             if (lineRate <= 0) return;
 
             const existingRate = nextVariantRateById.get(variantId);
@@ -283,9 +291,27 @@
             }
           });
 
+          let variantRatesExcludeGlobal = false;
+          if (globalRate > 0 && itemsOriginalTotal > 0 && itemsFinalTotal >= 0) {
+            const weightedLineRate = clampDiscountRate((itemsOriginalTotal - itemsFinalTotal) / itemsOriginalTotal);
+            const originalCartTotal = Number(cart?.original_total_price || cart?.items_subtotal_price || 0);
+            const finalCartTotal = Number(cart?.total_price || 0);
+            const cartTotalRate =
+              originalCartTotal > 0 && finalCartTotal >= 0
+                ? clampDiscountRate((originalCartTotal - finalCartTotal) / originalCartTotal)
+                : weightedLineRate;
+            const combinedRateFromWeightedLine = clampDiscountRate(
+              1 - ((1 - globalRate) * (1 - weightedLineRate))
+            );
+            const deltaIfLinesIncludeGlobal = Math.abs(weightedLineRate - cartTotalRate);
+            const deltaIfLinesExcludeGlobal = Math.abs(combinedRateFromWeightedLine - cartTotalRate);
+            variantRatesExcludeGlobal = deltaIfLinesExcludeGlobal + 0.0005 < deltaIfLinesIncludeGlobal;
+          }
+
           return {
             globalRate: clampDiscountRate(globalRate),
             variantRateById: nextVariantRateById,
+            variantRatesExcludeGlobal,
           };
         };
 
@@ -294,15 +320,22 @@
           const nextState = readCartDiscountState(cart);
           thumbnailDiscountState.globalRate = nextState.globalRate;
           thumbnailDiscountState.variantRateById = nextState.variantRateById;
+          thumbnailDiscountState.variantRatesExcludeGlobal = Boolean(nextState.variantRatesExcludeGlobal);
         };
 
         const getThumbnailDiscountRate = (variantId) => {
+          const globalRate = thumbnailDiscountState.globalRate;
           const normalizedVariantId = `${variantId || ''}`.trim();
           if (normalizedVariantId) {
             const variantRate = thumbnailDiscountState.variantRateById.get(normalizedVariantId);
-            if (Number.isFinite(variantRate) && variantRate > 0) return variantRate;
+            if (Number.isFinite(variantRate) && variantRate > 0) {
+              if (globalRate > 0 && thumbnailDiscountState.variantRatesExcludeGlobal) {
+                return clampDiscountRate(1 - ((1 - globalRate) * (1 - variantRate)));
+              }
+              return clampDiscountRate(Math.max(variantRate, globalRate));
+            }
           }
-          return thumbnailDiscountState.globalRate;
+          return globalRate;
         };
 
         const applyThumbnailDiscountPricing = (thumbnail, purchaseState = {}) => {
