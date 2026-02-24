@@ -200,8 +200,8 @@
           "type": "divider",
           "settings": {}
         },
-        "heading_TKWCaD": {
-          "type": "heading",
+        "subheading_hhXcCi": {
+          "type": "subheading",
           "settings": {
             "heading": "Wear & care"
           }
@@ -231,8 +231,8 @@
           "type": "divider",
           "settings": {}
         },
-        "heading_DWkemw": {
-          "type": "heading",
+        "subheading_YbafmG": {
+          "type": "subheading",
           "settings": {
             "heading": "Lock system for the rig"
           }
@@ -258,37 +258,6 @@
         "divider_dn4KAP": {
           "type": "divider",
           "settings": {}
-        },
-        "heading_Jtrqqn": {
-          "type": "heading",
-          "settings": {
-            "heading": "Header large"
-          }
-        },
-        "text_6MfLJA": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Write your manual content here.</p>"
-          }
-        },
-        "button_afyijz": {
-          "type": "button",
-          "settings": {
-            "label": "Placeholder",
-            "button_size": "large",
-            "icon_position": "none",
-            "link": ""
-          }
-        },
-        "divider_U4X9T7": {
-          "type": "divider",
-          "settings": {}
-        },
-        "heading_ThEjbn": {
-          "type": "heading",
-          "settings": {
-            "heading": "Changing the watch straps"
-          }
         },
         "subheading_k7g7gq": {
           "type": "subheading",
@@ -392,21 +361,16 @@
         "text_4MqtCq",
         "button_86rHwW",
         "divider_6c6AAp",
-        "heading_TKWCaD",
+        "subheading_hhXcCi",
         "text_KYQ8qF",
         "button_kaepFn",
         "text_ecFNQA",
         "divider_ExTXVE",
-        "heading_DWkemw",
+        "subheading_YbafmG",
         "text_HgaFMq",
         "heading_small_KqcB8G",
         "text_mfDFqP",
         "divider_dn4KAP",
-        "heading_Jtrqqn",
-        "text_6MfLJA",
-        "button_afyijz",
-        "divider_U4X9T7",
-        "heading_ThEjbn",
         "subheading_k7g7gq",
         "text_NytJdp",
         "button_xMyAQB",
