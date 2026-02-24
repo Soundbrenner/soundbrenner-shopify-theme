@@ -35,7 +35,7 @@
         "chapter_1": {
           "type": "heading",
           "settings": {
-            "heading": "Read this first"
+            "heading": "Read this first, please"
           }
         },
         "body_1": {
@@ -61,6 +61,12 @@
           "type": "heading",
           "settings": {
             "heading": "First steps"
+          }
+        },
+        "subheading_VNBViy": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Video: the best way to get started"
           }
         },
         "body_2": {
@@ -205,6 +211,7 @@
         "button_1",
         "divider_1",
         "chapter_2",
+        "subheading_VNBViy",
         "body_2",
         "image_QD8E9d",
         "body_GnBhmE",
