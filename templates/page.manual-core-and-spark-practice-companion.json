@@ -290,6 +290,20 @@
           "type": "divider",
           "settings": {}
         },
+        "heading_RV3Y7M": {
+          "type": "heading",
+          "settings": {
+            "heading": "Navigating the device"
+          }
+        },
+        "divider_xADNhy": {
+          "type": "divider",
+          "settings": {}
+        },
+        "divider_8GrH8j": {
+          "type": "divider",
+          "settings": {}
+        },
         "chapter_6": {
           "type": "heading",
           "settings": {
@@ -376,6 +390,9 @@
         "button_xMyAQB",
         "heading_small_9UPCLh",
         "divider_pCzwPk",
+        "heading_RV3Y7M",
+        "divider_xADNhy",
+        "divider_8GrH8j",
         "chapter_6",
         "accordion_item_1",
         "accordion_item_2",
