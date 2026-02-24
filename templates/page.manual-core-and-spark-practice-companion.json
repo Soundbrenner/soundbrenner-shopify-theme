@@ -181,6 +181,12 @@
             "heading": "INSERT APP LINKS + QR CODE"
           }
         },
+        "text_4MqtCq": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Compatibility</strong></p><p>Requires an iPhone, iPad, iPod or Android device. More info on:</p>"
+          }
+        },
         "chapter_6": {
           "type": "heading",
           "settings": {
@@ -249,6 +255,7 @@
         "heading_eWJh4B",
         "text_HPx7dM",
         "heading_small_xffCmT",
+        "text_4MqtCq",
         "chapter_6",
         "accordion_item_1",
         "accordion_item_2",
