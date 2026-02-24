@@ -119,8 +119,8 @@
           "type": "divider",
           "settings": {}
         },
-        "chapter_4": {
-          "type": "heading",
+        "subheading_fEQfTx": {
+          "type": "subheading",
           "settings": {
             "heading": "Plus subscription"
           }
@@ -141,8 +141,8 @@
           "type": "divider",
           "settings": {}
         },
-        "chapter_5": {
-          "type": "heading",
+        "subheading_zLjb8j": {
+          "type": "subheading",
           "settings": {
             "heading": "Charging the Core"
           }
@@ -163,8 +163,8 @@
           "type": "divider",
           "settings": {}
         },
-        "heading_eWJh4B": {
-          "type": "heading",
+        "subheading_C8GVdi": {
+          "type": "subheading",
           "settings": {
             "heading": "App & compatibility"
           }
@@ -290,6 +290,122 @@
           "type": "divider",
           "settings": {}
         },
+        "heading_RV3Y7M": {
+          "type": "heading",
+          "settings": {
+            "heading": "Navigating the device"
+          }
+        },
+        "subheading_rjzpdY": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Device overview"
+          }
+        },
+        "image_rxgnT8": {
+          "type": "image",
+          "settings": {}
+        },
+        "divider_xADNhy": {
+          "type": "divider",
+          "settings": {}
+        },
+        "subheading_d3imP4": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Device controls"
+          }
+        },
+        "text_dydTbg": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Top button</strong></p><ul><li>Go backward</li><li>Stop editing selection</li><li>Power on & power off (long press)</li></ul><p><strong>Bottom button</strong></p><ul><li>Go forward</li><li>Start editing selection</li><li>Open app dock</li></ul><p><strong>Wheel</strong></p><ul><li>Navigate the app dock</li><li>Change values while editing a selection</li></ul><p><strong>Touch surface</strong></p><ul><li>Tap the soundwave twice quickly to start or pause a feature while inside an app</li><li>Tap the soundwave three or more times to tap tempo while inside the \"Metronome\" app</li></ul>"
+          }
+        },
+        "divider_8GrH8j": {
+          "type": "divider",
+          "settings": {}
+        },
+        "subheading_iL8Qey": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Power on & power off"
+          }
+        },
+        "text_mkJcQC": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Power on</strong><br/>Hold the top button for 1 second to turn on the Core.</p>"
+          }
+        },
+        "image_Dzc8kq": {
+          "type": "image",
+          "settings": {}
+        },
+        "text_9cDw6H": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Power off</strong></p><p>1. Hold the top button for 3 seconds until the power off prompt appears.</p>"
+          }
+        },
+        "image_fnMLty": {
+          "type": "image",
+          "settings": {}
+        },
+        "text_6Kej6h": {
+          "type": "text",
+          "settings": {
+            "text": "<p>2. Select yes, by pressing the bottom button.</p>"
+          }
+        },
+        "divider_xrGQeX": {
+          "type": "divider",
+          "settings": {}
+        },
+        "subheading_8r8K8r": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Navigation hierarchy"
+          }
+        },
+        "image_bxUAQc": {
+          "type": "image",
+          "settings": {}
+        },
+        "divider_JgwgWY": {
+          "type": "divider",
+          "settings": {}
+        },
+        "subheading_UTgFBp": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Touch interactions"
+          }
+        },
+        "text_VAA3iK": {
+          "type": "text",
+          "settings": {
+            "text": "<p>The Core features a capacitive touch surface. To ensure it can reliably detect your inputs, make sure that you use two fingers flat across the surface. Don’t just use your fingertips!</p><p><strong>Start or pause a feature</strong></p><p>Tap the soundwave twice quickly to start or pause certain features. Works in \"Metronome\" app, \"Timer\" app, \"Stopwatch\" app and the \"Smartphone music remote\".</p>"
+          }
+        },
+        "image_mgU7ky": {
+          "type": "image",
+          "settings": {}
+        },
+        "text_4aafcq": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Tap tempo</strong></p><p>Tap the soundwave three times or more at a steady pace. The Core will set a new tempo that matches the average pace of your taps. Works in \"Metronome\" app only.</p>"
+          }
+        },
+        "image_UGq7br": {
+          "type": "image",
+          "settings": {}
+        },
+        "divider_eGmUQA": {
+          "type": "divider",
+          "settings": {}
+        },
         "chapter_6": {
           "type": "heading",
           "settings": {
@@ -347,15 +463,15 @@
         "button_rF6dEJ",
         "button_9nmwUx",
         "divider_3",
-        "chapter_4",
+        "subheading_fEQfTx",
         "heading_small_DAHEkY",
         "body_4",
         "divider_4",
-        "chapter_5",
+        "subheading_zLjb8j",
         "body_5",
         "heading_small_DqeFGT",
         "divider_5",
-        "heading_eWJh4B",
+        "subheading_C8GVdi",
         "text_HPx7dM",
         "heading_small_xffCmT",
         "text_4MqtCq",
@@ -376,6 +492,29 @@
         "button_xMyAQB",
         "heading_small_9UPCLh",
         "divider_pCzwPk",
+        "heading_RV3Y7M",
+        "subheading_rjzpdY",
+        "image_rxgnT8",
+        "divider_xADNhy",
+        "subheading_d3imP4",
+        "text_dydTbg",
+        "divider_8GrH8j",
+        "subheading_iL8Qey",
+        "text_mkJcQC",
+        "image_Dzc8kq",
+        "text_9cDw6H",
+        "image_fnMLty",
+        "text_6Kej6h",
+        "divider_xrGQeX",
+        "subheading_8r8K8r",
+        "image_bxUAQc",
+        "divider_JgwgWY",
+        "subheading_UTgFBp",
+        "text_VAA3iK",
+        "image_mgU7ky",
+        "text_4aafcq",
+        "image_UGq7br",
+        "divider_eGmUQA",
         "chapter_6",
         "accordion_item_1",
         "accordion_item_2",
