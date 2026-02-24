@@ -15,13 +15,12 @@
         "sidebar_item_YzQXrh": {
           "type": "sidebar_item",
           "settings": {
-            "content_type": "article",
-            "article": "",
-            "product": "",
-            "title": "",
+            "content_type": "product",
+            "article": "articles/soundbrenner-holiday-gift-guide-2025",
+            "product": "baseball-cap",
+            "title": "Test",
             "url": "",
-            "image": "",
-            "description": ""
+            "description": "Test"
           }
         },
         "sidebar_item_2": {
@@ -32,7 +31,6 @@
             "product": "",
             "title": "",
             "url": "",
-            "image": "",
             "description": ""
           }
         }
@@ -51,7 +49,19 @@
     "seasonal_hero": {
       "type": "hero-card",
       "settings": {
-        "use_seasonal_hero_card": true
+        "use_seasonal_hero_card": true,
+        "use_affiliate_metaobject": false,
+        "use_resource_title_description": false,
+        "use_product_page_metaobjects": false,
+        "kicker": "",
+        "headline": "",
+        "subheadline": "",
+        "show_button": false,
+        "button_label": "Placeholder",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": "",
+        "enable_app_download_buttons": false
       }
     }
   },
