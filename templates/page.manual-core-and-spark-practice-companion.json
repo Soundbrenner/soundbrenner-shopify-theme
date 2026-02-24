@@ -75,32 +75,20 @@
             "text": "<p>This video is the ultimate crash course to learn everything you need to know about how to use your Core in the shortest time possible. It’s the best way to get started, so we highly recommend you to watch this video!</p>"
           }
         },
-        "image_QD8E9d": {
-          "type": "image",
+        "heading_small_bRbrA6": {
+          "type": "heading_small",
           "settings": {
-            "image": "shopify://shop_images/Property_1_Wave_1.jpg"
-          }
-        },
-        "body_GnBhmE": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Now experiment with various ear tip materials and sizes. Silicone is durable and easy to use, while foam provides up to 36dB of passive noise isolation. Compress the foam tips before insertion, letting them expand in your ears.<br/><br/>After selecting your preferred ear tips, route the cable over your ears from behind before inserting the earphones. Happy listening!</p>"
-          }
-        },
-        "image_tVbxTK": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/Property_1_Wave_2.jpg"
+            "heading": "INSERT VIDEO"
           }
         },
         "divider_2": {
           "type": "divider",
           "settings": {}
         },
-        "chapter_3": {
-          "type": "heading",
+        "subheading_QhB4a6": {
+          "type": "subheading",
           "settings": {
-            "heading": "In the box"
+            "heading": "What's in the box"
           }
         },
         "body_3": {
@@ -112,10 +100,10 @@
         "button_rF6dEJ": {
           "type": "button",
           "settings": {
-            "label": "View in the box",
+            "label": "Core 2 in the box",
             "button_size": "large",
             "icon_position": "none",
-            "link": "shopify://products/wave-in-ear-monitors"
+            "link": "shopify://products/core-2-practice-companion"
           }
         },
         "divider_3": {
@@ -213,11 +201,9 @@
         "chapter_2",
         "subheading_VNBViy",
         "body_2",
-        "image_QD8E9d",
-        "body_GnBhmE",
-        "image_tVbxTK",
+        "heading_small_bRbrA6",
         "divider_2",
-        "chapter_3",
+        "subheading_QhB4a6",
         "body_3",
         "button_rF6dEJ",
         "divider_3",
