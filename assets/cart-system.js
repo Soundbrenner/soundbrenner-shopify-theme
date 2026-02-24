@@ -1391,18 +1391,18 @@
       if (!(this.itemListNode instanceof HTMLElement)) return false;
 
       const serverRows = this.itemListNode.querySelectorAll('[data-cart-line]').length;
+      // If server rendered lines exist, keep them for first hydration.
+      // This prevents blank cart flashes if the initial cart.js payload is delayed or inconsistent.
+      if (serverRows > 0) {
+        return true;
+      }
+
       if (serverRows <= 0) {
         return itemCount === 0;
       }
 
       if (itemCount <= 0) {
         return false;
-      }
-
-      // Preserve SSR DOM on first hydrate to avoid cart line flicker and currency/text flash.
-      // Server-rendered markup is the source of truth for initial paint.
-      if (serverRows > 0) {
-        return true;
       }
 
       const serverSignature = `${this.lastRenderedItemsSignature || ''}`.trim();
@@ -2332,9 +2332,7 @@
       });
   });
 
-  if (!isOnCartPage) {
-    refreshCart({ source: 'initial', animateBadge: false }).catch(() => {
-      // no-op
-    });
-  }
+  refreshCart({ source: 'initial', animateBadge: false }).catch(() => {
+    // no-op
+  });
 })();
