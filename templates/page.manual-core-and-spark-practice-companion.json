@@ -284,6 +284,22 @@
           "type": "divider",
           "settings": {}
         },
+        "heading_ThEjbn": {
+          "type": "heading",
+          "settings": {
+            "heading": "Changing the watch straps"
+          }
+        },
+        "text_NytJdp": {
+          "type": "text",
+          "settings": {
+            "text": "<p>To change your watch strap, simply turn the device on its back and open the two rivets on each side.</p><p>We’ve created a range of stylish strap options for the Soundbrenner Core and Spark. They’re made from the finest materials such as silicone, woven nylon or Italian leather. Explore our latest collection on:</p>"
+          }
+        },
+        "divider_pCzwPk": {
+          "type": "divider",
+          "settings": {}
+        },
         "chapter_6": {
           "type": "heading",
           "settings": {
@@ -369,6 +385,9 @@
         "text_6MfLJA",
         "button_afyijz",
         "divider_U4X9T7",
+        "heading_ThEjbn",
+        "text_NytJdp",
+        "divider_pCzwPk",
         "chapter_6",
         "accordion_item_1",
         "accordion_item_2",
