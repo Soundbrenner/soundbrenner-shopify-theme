@@ -746,36 +746,38 @@
           </div>
         {% endif %}
       {% endif %}
-      <a
-        class="header__icon-link header__icon-link--search header__icon-link--desktop-only"
-        href="{{ routes.search_url }}"
-        aria-label="Search"
-      >
-        <span class="header__icon-asset" aria-hidden="true">
-          {{ 'icon-search-padded.svg' | inline_asset_content }}
-        </span>
-      </a>
-      <a class="header__icon-link header__icon-link--account" href="{{ routes.account_url }}" aria-label="Account">
-        <span class="header__icon-asset" aria-hidden="true">
-          {{ 'icon-account-padded.svg' | inline_asset_content }}
-        </span>
-      </a>
+      <div class="header__utility-icons">
+        <a
+          class="header__icon-link header__icon-link--search header__icon-link--desktop-only"
+          href="{{ routes.search_url }}"
+          aria-label="Search"
+        >
+          <span class="header__icon-asset" aria-hidden="true">
+            {{ 'icon-search-padded.svg' | inline_asset_content }}
+          </span>
+        </a>
+        <a class="header__icon-link header__icon-link--account" href="{{ routes.account_url }}" aria-label="Account">
+          <span class="header__icon-asset" aria-hidden="true">
+            {{ 'icon-account-padded.svg' | inline_asset_content }}
+          </span>
+        </a>
 
-      <a
-        class="header__icon-link header__icon-link--cart"
-        href="{{ routes.cart_url }}"
-        data-header-cart-link
-        data-header-cart-page="{% if request.page_type == 'cart' %}true{% else %}false{% endif %}"
-        aria-label="Cart"
-        aria-expanded="false"
-      >
-        <span class="header__cart-count-badge font-caption weight-bold" data-header-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>
-          {% if cart.item_count > 99 %}99+{% else %}{{ cart.item_count }}{% endif %}
-        </span>
-        <span class="header__icon-asset" aria-hidden="true">
-          {{ 'icon-cart-padded.svg' | inline_asset_content }}
-        </span>
-      </a>
+        <a
+          class="header__icon-link header__icon-link--cart"
+          href="{{ routes.cart_url }}"
+          data-header-cart-link
+          data-header-cart-page="{% if request.page_type == 'cart' %}true{% else %}false{% endif %}"
+          aria-label="Cart"
+          aria-expanded="false"
+        >
+          <span class="header__cart-count-badge font-caption weight-bold{% if cart.item_count > 9 %} is-double-digit{% endif %}" data-header-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>
+            {% if cart.item_count > 99 %}99+{% else %}{{ cart.item_count }}{% endif %}
+          </span>
+          <span class="header__icon-asset" aria-hidden="true">
+            {{ 'icon-cart-padded.svg' | inline_asset_content }}
+          </span>
+        </a>
+      </div>
     </div>
   </div>
 </header>
@@ -1944,6 +1946,15 @@
     margin-left: auto;
     position: relative;
     z-index: 2;
+  }
+
+  .header__utility-icons {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: var(--sb-space-16);
+    justify-content: flex-end;
+    width: calc((var(--sb-space-24) * 2) + var(--sb-space-16));
   }
 
   .header__icons--left {
@@ -3870,6 +3881,10 @@
   }
 
   @media screen and (min-width: 990px) {
+    .header__utility-icons {
+      width: calc((var(--sb-space-24) * 3) + (var(--sb-space-16) * 2));
+    }
+
     .header__primary-backdrop {
       -webkit-backdrop-filter: blur(var(--sb-space-8));
       backdrop-filter: blur(var(--sb-space-8));
