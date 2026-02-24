@@ -372,6 +372,36 @@
           "type": "image",
           "settings": {}
         },
+        "divider_JgwgWY": {
+          "type": "divider",
+          "settings": {}
+        },
+        "subheading_UTgFBp": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Touch interactions"
+          }
+        },
+        "text_VAA3iK": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Write your manual content here.</p>"
+          }
+        },
+        "image_mgU7ky": {
+          "type": "image",
+          "settings": {}
+        },
+        "text_4aafcq": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Write your manual content here.</p>"
+          }
+        },
+        "image_UGq7br": {
+          "type": "image",
+          "settings": {}
+        },
         "divider_eGmUQA": {
           "type": "divider",
           "settings": {}
@@ -478,6 +508,12 @@
         "divider_xrGQeX",
         "subheading_8r8K8r",
         "image_bxUAQc",
+        "divider_JgwgWY",
+        "subheading_UTgFBp",
+        "text_VAA3iK",
+        "image_mgU7ky",
+        "text_4aafcq",
+        "image_UGq7br",
         "divider_eGmUQA",
         "chapter_6",
         "accordion_item_1",
