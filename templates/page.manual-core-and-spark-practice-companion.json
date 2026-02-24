@@ -237,6 +237,18 @@
             "heading": "Lock system for the rig"
           }
         },
+        "text_HgaFMq": {
+          "type": "text",
+          "settings": {
+            "text": "<p>To remove the Core from its rig, twist it counterclockwise and take it off.</p>"
+          }
+        },
+        "heading_small_KqcB8G": {
+          "type": "heading_small",
+          "settings": {
+            "heading": "INSERT IMAGE"
+          }
+        },
         "divider_dn4KAP": {
           "type": "divider",
           "settings": {}
@@ -318,6 +330,8 @@
         "text_ecFNQA",
         "divider_ExTXVE",
         "heading_DWkemw",
+        "text_HgaFMq",
+        "heading_small_KqcB8G",
         "divider_dn4KAP",
         "chapter_6",
         "accordion_item_1",
