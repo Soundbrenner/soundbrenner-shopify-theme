@@ -316,7 +316,7 @@
         </div>
 
         {% if show_announcement_countdown %}
-          <div class="header__announcement-countdown" data-announcement-countdown data-sale-end-date="{{ sale_end_date | escape }}" hidden>
+          <div class="header__announcement-countdown is-initializing" data-announcement-countdown data-sale-end-date="{{ sale_end_date | escape }}">
             <div class="header__announcement-countdown-group">
               <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-days>00</span>
               <span class="header__announcement-countdown-label font-caption2 weight-semibold">days</span>
@@ -769,9 +769,9 @@
         aria-label="Cart"
         aria-expanded="false"
       >
-        <sup class="header__cart-count-badge font-caption weight-bold" data-header-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>
+        <span class="header__cart-count-badge font-caption weight-bold" data-header-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>
           {% if cart.item_count > 99 %}99+{% else %}{{ cart.item_count }}{% endif %}
-        </sup>
+        </span>
         <span class="header__icon-asset" aria-hidden="true">
           {{ 'icon-cart-padded.svg' | inline_asset_content }}
         </span>
@@ -1548,6 +1548,11 @@
     gap: var(--sb-space-12);
     justify-content: center;
     width: 100%;
+  }
+
+  .header__announcement-countdown.is-initializing {
+    opacity: 0;
+    visibility: hidden;
   }
 
   .header__announcement-countdown[hidden] {
@@ -2603,9 +2608,11 @@
     color: var(--sb-color-always-white);
     display: inline-flex;
     font-family: var(--font-display--family);
+    font-size: var(--font-size-caption);
     font-weight: 700;
     height: var(--sb-space-20);
     justify-content: center;
+    line-height: 1;
     min-width: var(--sb-space-20);
     padding: 0 var(--sb-space-4);
     position: absolute;
@@ -5617,6 +5624,7 @@
 
           if (shouldShowCountdown) {
             countdownRoot.removeAttribute('hidden');
+            countdownRoot.classList.remove('is-initializing');
           } else {
             countdownRoot.setAttribute('hidden', '');
           }
