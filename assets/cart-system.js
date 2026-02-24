@@ -378,7 +378,7 @@
     const amount = Number.isFinite(Number(cents)) ? Math.round(Number(cents)) : 0;
     try {
       if (window.Shopify && typeof window.Shopify.formatMoney === 'function') {
-        const shopifyFormatted = window.Shopify.formatMoney(amount);
+        const shopifyFormatted = window.Shopify.formatMoney(amount, '${{amount}}');
         if (`${shopifyFormatted || ''}`.trim() !== '') {
           return shopifyFormatted;
         }
@@ -387,15 +387,14 @@
       // no-op
     }
 
-    const locale = `${document.documentElement.getAttribute('lang') || ''}`.trim() || undefined;
     try {
-      return new Intl.NumberFormat(locale, {
-        style: 'currency',
-        currency,
-        currencyDisplay: 'narrowSymbol',
+      const formatted = new Intl.NumberFormat(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
       }).format(amount / 100);
+      return `$${formatted}`;
     } catch (_) {
-      return `${(amount / 100).toFixed(2)} ${currency}`;
+      return `$${(amount / 100).toFixed(2)}`;
     }
   };
 
@@ -1172,11 +1171,6 @@
         }
       });
 
-      if (!cachedCart) {
-        refreshCart({ source: 'drawer-open', animateBadge: false }).catch(() => {
-          // no-op
-        });
-      }
     }
 
     close({ immediate = false, skipHistory = false } = {}) {
@@ -2338,7 +2332,9 @@
       });
   });
 
-  refreshCart({ source: 'initial', animateBadge: false }).catch(() => {
-    // no-op
-  });
+  if (!isOnCartPage) {
+    refreshCart({ source: 'initial', animateBadge: false }).catch(() => {
+      // no-op
+    });
+  }
 })();
