@@ -231,6 +231,16 @@
           "type": "divider",
           "settings": {}
         },
+        "heading_DWkemw": {
+          "type": "heading",
+          "settings": {
+            "heading": "Lock system for the rig"
+          }
+        },
+        "divider_dn4KAP": {
+          "type": "divider",
+          "settings": {}
+        },
         "chapter_6": {
           "type": "heading",
           "settings": {
@@ -307,6 +317,8 @@
         "button_kaepFn",
         "text_ecFNQA",
         "divider_ExTXVE",
+        "heading_DWkemw",
+        "divider_dn4KAP",
         "chapter_6",
         "accordion_item_1",
         "accordion_item_2",
