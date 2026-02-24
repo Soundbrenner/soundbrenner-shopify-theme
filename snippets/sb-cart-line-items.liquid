@@ -10,29 +10,61 @@
   {% for item in cart.items %}
     {% liquid
       assign item_line = forloop.index
+      assign item_key = item.key | default: ''
       assign item_title = item.product.title | default: item.title
       assign item_variant = item.variant_title
       if item_variant == 'Default Title'
         assign item_variant = blank
       endif
       assign item_image = item.image | image_url: width: 256
+      assign item_hover_image = blank
+      assign item_variant_hover_photo = item.variant.metafields.custom.sbv2_hover_photo.value | default: item.variant.metafields.custom.sbv2_hover_photo
+      if item_variant_hover_photo != blank
+        assign item_hover_image = item_variant_hover_photo | image_url: width: 256
+      endif
+      if item_hover_image == blank
+        assign item_product_hover_photo = item.product.metafields.custom.sbv2_hover_photo.value | default: item.product.metafields.custom.sbv2_hover_photo
+        if item_product_hover_photo != blank
+          assign item_hover_image = item_product_hover_photo | image_url: width: 256
+        endif
+      endif
       assign item_has_discount = false
       if item.original_line_price > item.final_line_price
         assign item_has_discount = true
       endif
     %}
-    <li class="sb-cart-line" data-cart-line="{{ item_line }}">
+    <li
+      class="sb-cart-line"
+      data-cart-line="{{ item_line }}"
+      {% if item_key != blank %}
+        data-cart-item-key="{{ item_key | escape }}"
+      {% endif %}
+      {% if item_hover_image != blank %}
+        data-cart-hover-image="{{ item_hover_image | escape }}"
+      {% endif %}
+    >
       <a class="sb-cart-line__media" href="{{ item.url }}">
         {% if item_image != blank %}
-          <img class="sb-cart-line__image" src="{{ item_image }}" alt="{{ item_title | escape }}" loading="lazy" width="128" height="128">
+          <img class="sb-cart-line__image sb-cart-line__image--primary" src="{{ item_image }}" alt="{{ item_title | escape }}" loading="lazy" width="128" height="128">
         {% else %}
           <img
-            class="sb-cart-line__image"
+            class="sb-cart-line__image sb-cart-line__image--primary"
             src="{{ sb_cart_placeholder_image }}"
             alt="{{ item_title | escape }}"
             loading="lazy"
             width="128"
             height="128"
+          >
+        {% endif %}
+        {% if item_hover_image != blank %}
+          <img
+            class="sb-cart-line__image sb-cart-line__image--hover"
+            src="{{ item_hover_image }}"
+            alt=""
+            loading="lazy"
+            width="128"
+            height="128"
+            aria-hidden="true"
           >
         {% endif %}
       </a>

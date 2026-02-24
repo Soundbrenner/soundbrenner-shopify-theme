@@ -277,7 +277,10 @@
         this.handleDocumentClick = this.handleDocumentClick.bind(this);
         this.handleRequestClose = this.handleRequestClose.bind(this);
 
-        if (this.panel) this.panel.classList.remove('is-active');
+        if (this.panel) {
+          this.panel.classList.remove('is-active');
+          this.panel.classList.remove('is-closing');
+        }
         if (this.button) this.button.setAttribute('aria-expanded', 'false');
         this.removeAttribute('data-open');
 
@@ -324,13 +327,8 @@
 
         this.button.setAttribute('aria-expanded', 'true');
         this.setAttribute('data-open', 'true');
-        // Commit collapsed state first so opening transition runs instead of snapping.
-        this.panel.classList.remove('is-active');
-        void this.panel.offsetHeight;
-        window.requestAnimationFrame(() => {
-          if (!this.panel || !this.isOpen) return;
-          this.panel.classList.add('is-active');
-        });
+        this.panel.classList.remove('is-closing');
+        this.panel.classList.add('is-active');
 
         document.addEventListener('click', this.handleDocumentClick);
         document.addEventListener('keyup', this.handleKeyUp);
@@ -351,7 +349,19 @@
 
         this.button.setAttribute('aria-expanded', 'false');
         this.removeAttribute('data-open');
+        this.panel.classList.add('is-closing');
         this.panel.classList.remove('is-active');
+        let closeSettled = false;
+        const finalizeClose = (event) => {
+          if (event && event.target !== this.panel) return;
+          if (event && event.propertyName !== 'grid-template-rows') return;
+          if (closeSettled || this.isOpen || !this.panel) return;
+          closeSettled = true;
+          this.panel.classList.remove('is-closing');
+          this.dispatchToggleState(false);
+        };
+        this.panel.addEventListener('transitionend', finalizeClose, { once: true });
+        window.setTimeout(finalizeClose, 620);
 
         if (this.localizationForm && typeof this.localizationForm.resetForm === 'function') {
           this.localizationForm.resetForm();
@@ -360,7 +370,6 @@
         document.removeEventListener('click', this.handleDocumentClick);
         document.removeEventListener('keyup', this.handleKeyUp);
 
-        this.dispatchToggleState(false);
       }
 
       handleKeyUp(event) {

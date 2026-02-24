@@ -138,7 +138,11 @@
 {% stylesheet %}
   .sb-cart-page-section {
     padding-bottom: 0;
-    padding-top: calc(var(--sb-header-height) + var(--sb-announcement-min-height, 0px) + var(--sb-space-96));
+    padding-top: calc(
+      var(--sb-header-height, calc(var(--sb-space-48) + var(--sb-space-12)))
+      + var(--sb-announcement-min-height, 0px)
+      + var(--sb-space-96)
+    );
   }
 
   .sb-cart-page {
@@ -205,9 +209,12 @@
   }
 
   .sb-cart-line-list--page {
-    margin-top: 0;
-    padding-bottom: var(--sb-space-24);
-    padding-top: var(--sb-space-24);
+    margin-bottom: var(--sb-space-24);
+    margin-top: var(--sb-space-24);
+    padding-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
   }
 
   .sb-cart-line-list--page[hidden] {
@@ -376,7 +383,11 @@
     gap: var(--sb-space-20);
     padding: 0;
     position: sticky;
-    top: calc(var(--sb-header-height) + var(--sb-announcement-min-height, 0px) + var(--sb-space-20));
+    top: calc(
+      var(--sb-header-height, calc(var(--sb-space-48) + var(--sb-space-12)))
+      + var(--sb-announcement-min-height, 0px)
+      + var(--sb-space-20)
+    );
   }
 
   .sb-cart-page__summary[hidden] {

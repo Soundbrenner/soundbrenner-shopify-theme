@@ -607,6 +607,7 @@
         try {
           if (window.SBCart && typeof window.SBCart.add === 'function') {
             await window.SBCart.add(variantId, {
+              sourceElement: submitButton,
               sourceId: `hero-card-${variantId}`,
               sourceData: {
                 source: 'hero-card',

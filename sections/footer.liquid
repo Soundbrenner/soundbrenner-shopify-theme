@@ -290,9 +290,10 @@
       0 4px 4px 0 var(--sb-color-always-black-25) inset !important;
   }
 
-  .sb-footer__newsletter-klaviyo:not(.is-success) .klaviyo-form:hover,
-  .sb-footer__newsletter-klaviyo:not(.is-success) .klaviyo-form:active,
-  .sb-footer__newsletter-klaviyo:not(.is-success) .klaviyo-form:focus-within {
+  .sb-footer__newsletter-klaviyo:not(.is-success) .klaviyo-form:has(input[type='email']:hover),
+  .sb-footer__newsletter-klaviyo:not(.is-success) .klaviyo-form:has(input[type='email']:focus),
+  .sb-footer__newsletter-klaviyo:not(.is-success) .klaviyo-form:has(input[type='email']:active),
+  .sb-footer__newsletter-klaviyo:not(.is-success) .klaviyo-form:has(input[type='email']:focus-visible) {
     background-color: var(--sb-color-neutral-600) !important;
   }
 

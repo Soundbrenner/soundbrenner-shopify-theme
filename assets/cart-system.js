@@ -11,6 +11,275 @@
   const CART_ROW_REMOVE_DELAY = 170;
   const CART_ROW_REMOVE_FALLBACK = 360;
   const CART_DISCOUNT_DISCLOSURE_DURATION = 280;
+  const BUTTON_SUCCESS_RESET_DELAY = 900;
+  const ATC_BURST_SVG = `
+    <svg aria-hidden="true" class="sb-atc-burst-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g class="check">
+        <circle class="ring" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></circle>
+        <path class="tick" d="M9 12.75L11.25 15L15 9.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+      </g>
+      <g class="burst">
+        <g style="--index: 0;"><line class="line" stroke-linecap="round" pathLength="1" x1="12" y1="8.5" x2="12" y2="15.5" stroke="currentColor"></line></g>
+        <g style="--index: 1;"><line class="line" stroke-linecap="round" pathLength="1" x1="12" y1="8.5" x2="12" y2="15.5" stroke="currentColor"></line></g>
+        <g style="--index: 2;"><line class="line" stroke-linecap="round" pathLength="1" x1="12" y1="8.5" x2="12" y2="15.5" stroke="currentColor"></line></g>
+        <g style="--index: 3;"><line class="line" stroke-linecap="round" pathLength="1" x1="12" y1="8.5" x2="12" y2="15.5" stroke="currentColor"></line></g>
+        <g style="--index: 4;"><line class="line" stroke-linecap="round" pathLength="1" x1="12" y1="8.5" x2="12" y2="15.5" stroke="currentColor"></line></g>
+        <g style="--index: 5;"><line class="line" stroke-linecap="round" pathLength="1" x1="12" y1="8.5" x2="12" y2="15.5" stroke="currentColor"></line></g>
+        <g style="--index: 6;"><line class="line" stroke-linecap="round" pathLength="1" x1="12" y1="8.5" x2="12" y2="15.5" stroke="currentColor"></line></g>
+        <g style="--index: 7;"><line class="line" stroke-linecap="round" pathLength="1" x1="12" y1="8.5" x2="12" y2="15.5" stroke="currentColor"></line></g>
+      </g>
+    </svg>
+  `;
+
+  const ensureAtcAnimationStyles = (() => {
+    let didInject = false;
+
+    return () => {
+      if (didInject || typeof document === 'undefined') return;
+      if (document.querySelector('style[data-sb-atc-animation-styles]')) {
+        didInject = true;
+        return;
+      }
+
+      const style = document.createElement('style');
+      style.setAttribute('data-sb-atc-animation-styles', 'true');
+      style.textContent = `
+        fly-to-cart {
+          --offset-y: var(--sb-space-8);
+          --x-timing: cubic-bezier(0.7, -5, 0.98, 0.5);
+          --y-timing: cubic-bezier(0.15, 0.57, 0.9, 1.05);
+          --scale-timing: cubic-bezier(0.85, 0.05, 0.96, 1);
+          position: fixed;
+          width: var(--width, var(--sb-space-40));
+          height: var(--height, var(--sb-space-40));
+          left: 0;
+          top: 0;
+          z-index: 120;
+          pointer-events: none;
+          border-radius: 999px;
+          overflow: hidden;
+          object-fit: cover;
+          background-size: cover;
+          background-position: center;
+          opacity: 0;
+          background-color: var(--sb-color-neutral-700);
+          translate: var(--start-x, 0) var(--start-y, 0);
+          transform: translate(-50%, -50%);
+          animation-name: sb-fly-travel-x, sb-fly-travel-y, sb-fly-travel-scale;
+          animation-timing-function: var(--x-timing), var(--y-timing), var(--scale-timing);
+          animation-duration: 0.6s;
+          animation-fill-mode: both;
+          animation-composition: accumulate;
+          will-change: transform, translate, opacity;
+        }
+
+        fly-to-cart.fly-to-cart--quick {
+          --x-timing: cubic-bezier(0, -0.1, 1, 0.32);
+          --y-timing: cubic-bezier(0, 0.92, 0.92, 1.04);
+          --scale-timing: cubic-bezier(0.86, 0.08, 0.98, 0.98);
+        }
+
+        fly-to-cart.fly-to-cart--sticky {
+          --x-timing: cubic-bezier(0.98, -0.8, 0.92, 0.5);
+          --y-timing: cubic-bezier(0.14, 0.56, 0.92, 1.04);
+          --scale-timing: cubic-bezier(0.86, 0.08, 0.98, 0.98);
+          animation-duration: 0.8s;
+        }
+
+        @keyframes sb-fly-travel-x {
+          to {
+            translate: var(--travel-x, 0) 0;
+          }
+        }
+
+        @keyframes sb-fly-travel-y {
+          to {
+            translate: 0 var(--travel-y, 0);
+          }
+        }
+
+        @keyframes sb-fly-travel-scale {
+          0% {
+            opacity: var(--start-opacity, 1);
+          }
+
+          5% {
+            opacity: 1;
+          }
+
+          100% {
+            border-radius: 999px;
+            opacity: 1;
+            transform: translate(-50%, calc(-50% + var(--offset-y))) scale(0.25);
+          }
+        }
+
+        .sb-atc-button {
+          position: relative;
+          overflow: visible;
+        }
+
+        .sb-atc-burst {
+          position: absolute;
+          inset: 50% auto auto 50%;
+          width: var(--sb-space-32);
+          height: var(--sb-space-32);
+          translate: -50% -50%;
+          color: var(--sb-color-always-white);
+          pointer-events: none;
+          opacity: 0;
+          overflow: visible;
+          z-index: 1;
+        }
+
+        .sb-atc-burst .burst {
+          rotate: 20deg;
+          transform-box: fill-box;
+          transform-origin: center;
+        }
+
+        .sb-atc-burst .check {
+          opacity: 0.2;
+          scale: 0.8;
+          filter: blur(2px);
+          transform: translateZ(0);
+          transform-box: fill-box;
+          transform-origin: center;
+        }
+
+        .sb-atc-burst .line,
+        .sb-atc-burst .ring,
+        .sb-atc-burst .tick {
+          transform-box: fill-box;
+          transform-origin: center;
+        }
+
+        .sb-atc-burst .line {
+          stroke-dasharray: 1.5 1.5;
+          stroke-dashoffset: -1.5;
+          translate: 0 -180%;
+        }
+
+        .sb-atc-burst g {
+          transform-origin: center;
+          rotate: calc(var(--index) * (360 / 8) * 1deg);
+        }
+
+        .sb-atc-button[data-added='true'] .sb-atc-burst {
+          opacity: 1;
+        }
+
+        .sb-atc-button[data-added='true'] .sb-atc-burst .check {
+          opacity: 1;
+          scale: 1;
+          filter: blur(0);
+        }
+
+        .sb-atc-button[data-added='true'] .sb-atc-burst .tick {
+          scale: 1.75;
+        }
+
+        .sb-atc-button[data-added='true'] .sb-atc-burst .ring {
+          opacity: 0;
+          scale: 1;
+        }
+
+        .sb-atc-button[data-added='true'] .sb-atc-burst .line {
+          stroke-dashoffset: 1.5;
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+          .sb-atc-button[data-added='true'] .sb-atc-burst .check {
+            transition-property: opacity, scale, filter;
+            transition-duration: 0.2s;
+            transition-delay: 0.07s;
+            transition-timing-function: ease-out;
+          }
+
+          .sb-atc-button[data-added='true'] .sb-atc-burst .tick {
+            transition-property: scale;
+            transition-duration: 0.1s;
+            transition-delay: 0.73s;
+            transition-timing-function: ease-out;
+          }
+
+          .sb-atc-button[data-added='true'] .sb-atc-burst .ring {
+            transition-property: opacity, scale;
+            transition-duration: 0.2s;
+            transition-delay: 0.67s;
+            transition-timing-function: ease-out;
+          }
+
+          .sb-atc-button[data-added='true'] .sb-atc-burst .line {
+            transition-property: stroke-dashoffset;
+            transition-duration: 0.32s;
+            transition-delay: 0.67s;
+            transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+          }
+        }
+      `;
+
+      document.head.appendChild(style);
+      didInject = true;
+    };
+  })();
+
+  class FlyToCartElement extends HTMLElement {
+    connectedCallback() {
+      const source =
+        (this.sourceElement && this.sourceElement instanceof Element && this.sourceElement) ||
+        (this.source && this.source instanceof Element && this.source) ||
+        null;
+      const destination =
+        (this.destinationElement && this.destinationElement instanceof Element && this.destinationElement) ||
+        (this.destination && this.destination instanceof Element && this.destination) ||
+        null;
+
+      if (!source || !destination) {
+        this.remove();
+        return;
+      }
+
+      const sourceRect = source.getBoundingClientRect();
+      const destinationRect = destination.getBoundingClientRect();
+
+      if (!sourceRect.width || !sourceRect.height || !destinationRect.width || !destinationRect.height) {
+        this.remove();
+        return;
+      }
+
+      const startX = sourceRect.left + sourceRect.width / 2;
+      const startY = sourceRect.top + sourceRect.height / 2;
+      const endX = destinationRect.left + destinationRect.width / 2;
+      const endY = destinationRect.top + destinationRect.height / 2;
+
+      this.style.setProperty('--start-x', `${startX}px`);
+      this.style.setProperty('--start-y', `${startY}px`);
+      this.style.setProperty('--travel-x', `${endX - startX}px`);
+      this.style.setProperty('--travel-y', `${endY - startY}px`);
+      if (`${this.dataset.useSourceSize || ''}`.toLowerCase() === 'true') {
+        this.style.setProperty('--width', `${sourceRect.width}px`);
+        this.style.setProperty('--height', `${sourceRect.height}px`);
+      }
+
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+          const animations = this.getAnimations();
+          if (!animations.length) {
+            window.setTimeout(() => this.remove(), 640);
+            return;
+          }
+          Promise.allSettled(animations.map((animation) => animation.finished)).finally(() => {
+            this.remove();
+          });
+        });
+      });
+    }
+  }
+
+  if (!customElements.get('fly-to-cart')) {
+    customElements.define('fly-to-cart', FlyToCartElement);
+  }
   const prefersReducedMotion = () =>
     window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const supportsViewTransitions = () =>
@@ -379,59 +648,144 @@
     return fetchInFlight;
   };
 
-  const animateFlyToCart = ({ sourceElement, imageSrc }) => {
-    if (!sourceElement || !imageSrc) return;
+  const getNodeMediaSource = (node) => {
+    if (!(node instanceof Element)) return '';
+    const tagName = `${node.tagName || ''}`.toLowerCase();
+    if (tagName === 'img') {
+      const imageNode = /** @type {HTMLImageElement} */ (node);
+      return imageNode.currentSrc || imageNode.getAttribute('src') || '';
+    }
+    if (tagName === 'video') {
+      const poster = node.getAttribute('poster') || '';
+      if (poster) return poster;
+      return node.getAttribute('src') || '';
+    }
+    return '';
+  };
 
-    const cartTrigger = document.querySelector('[data-header-cart-link]');
-    if (!cartTrigger) return;
+  const getHeroCardMediaSource = (button) => {
+    const heroCard = button.closest('.sb-framing-card');
+    if (!(heroCard instanceof HTMLElement)) return '';
+    const styleValue = `${heroCard.getAttribute('style') || ''}`;
+    if (!styleValue) return '';
+    const match = styleValue.match(/url\(['"]?([^'")]+)['"]?\)/i);
+    return match && match[1] ? match[1] : '';
+  };
 
-    const sourceRect = sourceElement.getBoundingClientRect();
-    const targetRect = cartTrigger.getBoundingClientRect();
+  const resolveButtonElement = (sourceElement) => {
+    if (sourceElement instanceof HTMLButtonElement) return sourceElement;
+    if (sourceElement instanceof HTMLFormElement) {
+      const formSubmitButton = sourceElement.querySelector(
+        'button[type="submit"], button[name="add"], [data-add-to-cart], [data-hero-card-submit], [data-addon-add-to-cart]'
+      );
+      if (formSubmitButton instanceof HTMLButtonElement) return formSubmitButton;
+    }
+    if (!(sourceElement instanceof Element)) return null;
+    return sourceElement.closest('button, [role="button"]');
+  };
 
-    if (!sourceRect.width || !sourceRect.height || !targetRect.width || !targetRect.height) {
-      return;
+  const ensureButtonBurst = (button) => {
+    if (!(button instanceof HTMLElement)) return null;
+    let burst = button.querySelector('[data-sb-atc-burst]');
+    if (burst) return burst;
+    ensureAtcAnimationStyles();
+    button.classList.add('sb-atc-button');
+    burst = document.createElement('span');
+    burst.className = 'sb-atc-burst';
+    burst.setAttribute('data-sb-atc-burst', 'true');
+    burst.setAttribute('aria-hidden', 'true');
+    burst.innerHTML = ATC_BURST_SVG;
+    button.appendChild(burst);
+    return burst;
+  };
+
+  const animateButtonSuccess = (sourceElement, { duration = BUTTON_SUCCESS_RESET_DELAY } = {}) => {
+    const button = resolveButtonElement(sourceElement);
+    if (!button) return;
+    if (prefersReducedMotion()) return;
+    ensureButtonBurst(button);
+    if (!button.classList.contains('sb-atc-button')) {
+      button.classList.add('sb-atc-button');
+    }
+    button.setAttribute('data-added', 'true');
+    const existingTimer = Number.parseInt(button.dataset.sbAtcResetTimer || '', 10);
+    if (Number.isFinite(existingTimer)) {
+      window.clearTimeout(existingTimer);
+    }
+    const timerId = window.setTimeout(() => {
+      button.removeAttribute('data-added');
+      delete button.dataset.sbAtcResetTimer;
+    }, Math.max(250, Number(duration) || BUTTON_SUCCESS_RESET_DELAY));
+    button.dataset.sbAtcResetTimer = `${timerId}`;
+  };
+
+  const resolveFlyToCartMode = (sourceElement) => {
+    if (!(sourceElement instanceof Element)) return 'fly-to-cart--main';
+    if (sourceElement.closest('.sb-product-main__sticky-bar-wrap')) return 'fly-to-cart--sticky';
+    if (sourceElement.closest('.quick-add, .quick-add-modal')) return 'fly-to-cart--quick';
+    return 'fly-to-cart--main';
+  };
+
+  const resolveFlyImageSource = (sourceElement, imageSrc = '') => {
+    if (`${imageSrc || ''}`.trim() !== '') return `${imageSrc}`.trim();
+    if (!(sourceElement instanceof Element)) return '';
+
+    const thumbnailScope = sourceElement.closest('.sb-product-thumbnail');
+    if (thumbnailScope) {
+      const thumbnailActiveMedia = thumbnailScope.querySelector(
+        '.sb-product-thumbnail__carousel-slide[aria-hidden="false"] .sb-product-thumbnail__media-item'
+      );
+      const thumbnailActiveSource = getNodeMediaSource(thumbnailActiveMedia);
+      if (thumbnailActiveSource) return thumbnailActiveSource;
+
+      const thumbnailFallbackMedia = thumbnailScope.querySelector('.sb-product-thumbnail__media-item');
+      const thumbnailFallbackSource = getNodeMediaSource(thumbnailFallbackMedia);
+      if (thumbnailFallbackSource) return thumbnailFallbackSource;
     }
 
-    const imageNode = document.createElement('img');
-    imageNode.src = imageSrc;
-    imageNode.alt = '';
-    imageNode.setAttribute('aria-hidden', 'true');
-    imageNode.style.position = 'fixed';
-    imageNode.style.left = `${sourceRect.left + sourceRect.width / 2 - 24}px`;
-    imageNode.style.top = `${sourceRect.top + sourceRect.height / 2 - 24}px`;
-    imageNode.style.width = `${Math.max(48, Math.min(96, sourceRect.width * 0.35))}px`;
-    imageNode.style.height = imageNode.style.width;
-    imageNode.style.borderRadius = '999px';
-    imageNode.style.objectFit = 'cover';
-    imageNode.style.pointerEvents = 'none';
-    imageNode.style.zIndex = '120';
-    imageNode.style.boxShadow = '0 0 var(--sb-space-24) 0 var(--sb-color-always-black-25)';
-    document.body.appendChild(imageNode);
+    const addonScope = sourceElement.closest('.sb-product-main__popular-addon-item');
+    if (addonScope) {
+      const addonImage = addonScope.querySelector('[data-addon-image] img, [data-addon-image]');
+      const addonImageSource = getNodeMediaSource(addonImage);
+      if (addonImageSource) return addonImageSource;
+    }
 
-    const deltaX = targetRect.left + targetRect.width / 2 - (sourceRect.left + sourceRect.width / 2);
-    const deltaY = targetRect.top + targetRect.height / 2 - (sourceRect.top + sourceRect.height / 2);
+    const productScope = sourceElement.closest('.sb-product-main');
+    if (productScope) {
+      const productMedia = productScope.querySelector(
+        '.sb-product-main__media-item:first-child .sb-product-main__media-asset, .sb-product-main__media-asset'
+      );
+      const productMediaSource = getNodeMediaSource(productMedia);
+      if (productMediaSource) return productMediaSource;
+    }
 
-    const animation = imageNode.animate(
-      [
-        { transform: 'translate3d(0, 0, 0) scale(1)', opacity: 1 },
-        {
-          transform: `translate3d(${deltaX}px, ${deltaY}px, 0) scale(0.2)`,
-          opacity: 0.2,
-        },
-      ],
-      {
-        duration: 420,
-        easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)',
-        fill: 'forwards',
-      }
-    );
+    const heroMediaSource = getHeroCardMediaSource(sourceElement);
+    if (heroMediaSource) return heroMediaSource;
 
-    const cleanup = () => {
-      imageNode.remove();
-    };
+    const nearestImage = sourceElement.closest('article, section, form, .shopify-section')?.querySelector('img');
+    const nearestImageSource = getNodeMediaSource(nearestImage);
+    if (nearestImageSource) return nearestImageSource;
 
-    animation.addEventListener('finish', cleanup, { once: true });
-    animation.addEventListener('cancel', cleanup, { once: true });
+    return '';
+  };
+
+  const animateFlyToCart = ({ sourceElement, imageSrc }) => {
+    if (!(sourceElement instanceof Element)) return;
+    if (prefersReducedMotion()) return;
+    const cartTrigger = document.querySelector('[data-header-cart-link]');
+    if (!(cartTrigger instanceof Element)) return;
+    const resolvedImageSource = resolveFlyImageSource(sourceElement, imageSrc);
+    if (!resolvedImageSource) return;
+
+    ensureAtcAnimationStyles();
+
+    const flyNode = document.createElement('fly-to-cart');
+    flyNode.classList.add(resolveFlyToCartMode(sourceElement));
+    flyNode.style.setProperty('background-image', `url("${resolvedImageSource.replace(/"/g, '\\"')}")`);
+    flyNode.style.setProperty('--start-opacity', '0');
+    flyNode.sourceElement = sourceElement;
+    flyNode.destinationElement = cartTrigger;
+    document.body.appendChild(flyNode);
   };
 
   const addToCart = async (
@@ -475,6 +829,7 @@
       itemCount: normalizedQuantity,
     });
 
+    animateButtonSuccess(sourceElement);
     animateFlyToCart({ sourceElement, imageSrc });
 
     const drawer = document.querySelector('cart-drawer-component');
@@ -799,6 +1154,7 @@
       this.context = this.dataset.context || 'drawer';
       this.pendingLines = new Set();
       this.renderedDiscountError = false;
+      this.discountSubmitRequestId = 0;
       this.removalTimers = new Map();
       this.lastRenderedItemsSignature = '';
       this.messageScopeNode =
@@ -1044,6 +1400,10 @@
 
       if (!(this.discountInput instanceof HTMLInputElement)) return;
 
+      const requestId = this.discountSubmitRequestId + 1;
+      this.discountSubmitRequestId = requestId;
+      this.hideDiscountError();
+
       const nextCode = this.discountInput.value.trim().toUpperCase();
       if (!nextCode) return;
       this.discountInput.value = nextCode;
@@ -1060,6 +1420,7 @@
       const nextCodes = [...existingCodes, nextCode];
       applyDiscount(nextCodes, { source: `${this.context}-discount-add`, commit: false })
         .then((cart) => {
+          if (requestId !== this.discountSubmitRequestId) return;
           const appliedCodes = getAppliedDiscountCodes(cart).map((code) => code.toLowerCase());
           const existingCodesLower = existingCodes.map((code) => code.toLowerCase());
           if (!appliedCodes.includes(nextCode.toLowerCase())) {
@@ -1090,6 +1451,7 @@
           }
 
           const finalizeSuccess = () => {
+            if (requestId !== this.discountSubmitRequestId) return;
             this.discountInput.value = '';
             this.hideDiscountError();
           };
@@ -1099,9 +1461,11 @@
             animateBadge: false,
           })
             .then(() => {
+              if (requestId !== this.discountSubmitRequestId) return;
               finalizeSuccess();
             })
             .catch(() => {
+              if (requestId !== this.discountSubmitRequestId) return;
               updateCartAndDispatch(cart, `${this.context}-discount-add`, {
                 animateBadge: false,
                 itemCount: cart.item_count || 0,
@@ -1110,6 +1474,7 @@
             });
         })
         .catch(() => {
+          if (requestId !== this.discountSubmitRequestId) return;
           this.showDiscountError(this.discountCodeErrorMessage);
         });
     }
@@ -1394,6 +1759,14 @@
       if (!this.itemListNode) return;
 
       const items = Array.isArray(cart.items) ? cart.items : [];
+      const existingHoverImageByKey = new Map();
+      this.itemListNode.querySelectorAll('[data-cart-item-key]').forEach((row) => {
+        if (!(row instanceof HTMLElement)) return;
+        const key = `${row.getAttribute('data-cart-item-key') || ''}`.trim();
+        const hoverImage = `${row.getAttribute('data-cart-hover-image') || ''}`.trim();
+        if (!key || !hoverImage) return;
+        existingHoverImageByKey.set(key, hoverImage);
+      });
       const nextItemsSignature = items
         .map((item) => {
           const key = `${item && item.key ? item.key : ''}`;
@@ -1450,14 +1823,23 @@
 
       items.forEach((item, index) => {
         const line = index + 1;
+        const itemKey = `${item && item.key ? item.key : ''}`.trim();
+        const hoverImageUrl = `${existingHoverImageByKey.get(itemKey) || ''}`.trim();
         const lineItem = document.createElement('li');
         lineItem.className = 'sb-cart-line';
         lineItem.setAttribute('data-cart-line', `${line}`);
+        if (itemKey) {
+          lineItem.setAttribute('data-cart-item-key', itemKey);
+        }
+        if (hoverImageUrl) {
+          lineItem.setAttribute('data-cart-hover-image', hoverImageUrl);
+        }
 
         const title = escapeHtml(item.product_title || item.title || 'Product');
         const productUrl = escapeHtml(item.url || '#');
         const variantTitle = escapeHtml(getItemVariantTitle(item));
         const imageUrl = escapeHtml(getItemImageUrl(item) || this.placeholderImage);
+        const escapedHoverImageUrl = hoverImageUrl ? escapeHtml(hoverImageUrl) : '';
         const quantity = clampCount(item.quantity || 0);
         const effectiveQuantity = Math.max(1, quantity);
         const originalLinePriceCents = Number.isFinite(Number(item.original_line_price))
@@ -1473,7 +1855,12 @@
 
         lineItem.innerHTML = `
           <a class="sb-cart-line__media" href="${productUrl}">
-            <img class="sb-cart-line__image" src="${imageUrl}" alt="${title}" loading="eager" width="128" height="128">
+            <img class="sb-cart-line__image sb-cart-line__image--primary" src="${imageUrl}" alt="${title}" loading="eager" width="128" height="128">
+            ${
+              escapedHoverImageUrl
+                ? `<img class="sb-cart-line__image sb-cart-line__image--hover" src="${escapedHoverImageUrl}" alt="" loading="eager" width="128" height="128" aria-hidden="true">`
+                : ''
+            }
           </a>
           <div class="sb-cart-line__content">
             <div class="sb-cart-line__meta">
@@ -1657,6 +2044,8 @@
     fetch: fetchCart,
     refresh: refreshCart,
     add: addToCart,
+    animateButtonSuccess,
+    animateFlyToCart,
     clear: clearCart,
     changeLine,
     applyDiscount,
