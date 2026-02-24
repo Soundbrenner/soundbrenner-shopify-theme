@@ -259,6 +259,31 @@
           "type": "divider",
           "settings": {}
         },
+        "heading_Jtrqqn": {
+          "type": "heading",
+          "settings": {
+            "heading": "Header large"
+          }
+        },
+        "text_6MfLJA": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Write your manual content here.</p>"
+          }
+        },
+        "button_afyijz": {
+          "type": "button",
+          "settings": {
+            "label": "Placeholder",
+            "button_size": "large",
+            "icon_position": "none",
+            "link": ""
+          }
+        },
+        "divider_U4X9T7": {
+          "type": "divider",
+          "settings": {}
+        },
         "chapter_6": {
           "type": "heading",
           "settings": {
@@ -340,6 +365,10 @@
         "heading_small_KqcB8G",
         "text_mfDFqP",
         "divider_dn4KAP",
+        "heading_Jtrqqn",
+        "text_6MfLJA",
+        "button_afyijz",
+        "divider_U4X9T7",
         "chapter_6",
         "accordion_item_1",
         "accordion_item_2",
