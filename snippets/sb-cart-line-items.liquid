@@ -43,7 +43,10 @@
         data-cart-hover-image="{{ item_hover_image | escape }}"
       {% endif %}
     >
-      <a class="sb-cart-line__media" href="{{ item.url }}">
+      <a
+        class="sb-cart-line__media{% if item_hover_image != blank %} sb-cart-line__media--has-hover{% endif %}"
+        href="{{ item.url }}"
+      >
         {% if item_image != blank %}
           <img class="sb-cart-line__image sb-cart-line__image--primary" src="{{ item_image }}" alt="{{ item_title | escape }}" loading="lazy" width="128" height="128">
         {% else %}

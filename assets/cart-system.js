@@ -554,6 +554,15 @@
     return '';
   };
 
+  const buildItemsSignatureFromCart = (items = []) =>
+    items
+      .map((item) => {
+        const key = `${item && item.key ? item.key : ''}`.trim();
+        const quantity = clampCount(item && item.quantity ? item.quantity : 0);
+        return [key, quantity].join('|');
+      })
+      .join('||');
+
   const setShimmerValue = (node, value = '') => {
     if (!(node instanceof HTMLElement)) return;
     node.setAttribute('data-shimmer-value', `${value == null ? '' : value}`);
@@ -1204,6 +1213,20 @@
       this.checkoutButtons = this.querySelectorAll('[data-cart-checkout-button]');
       this.clearButtons = this.querySelectorAll('[data-cart-clear]');
       this.placeholderImage = this.dataset.placeholderImage || '';
+      this.lastRenderedItemsSignature = (() => {
+        if (!(this.itemListNode instanceof HTMLElement)) return '';
+        const rows = Array.from(this.itemListNode.querySelectorAll('[data-cart-line]'));
+        if (!rows.length) return '';
+        return rows
+          .map((row) => {
+            if (!(row instanceof HTMLElement)) return '|0';
+            const key = `${row.getAttribute('data-cart-item-key') || ''}`.trim();
+            const qtyInput = row.querySelector('[data-cart-qty-input]');
+            const quantity = qtyInput instanceof HTMLInputElement ? clampCount(qtyInput.value) : 0;
+            return [key, quantity].join('|');
+          })
+          .join('||');
+      })();
 
       this.boundHandleCartChanged = this.handleCartChanged.bind(this);
       this.boundHandleClick = this.handleClick.bind(this);
@@ -1770,14 +1793,7 @@
         if (!key || !hoverImage) return;
         existingHoverImageByKey.set(key, hoverImage);
       });
-      const nextItemsSignature = items
-        .map((item) => {
-          const key = `${item && item.key ? item.key : ''}`;
-          const quantity = clampCount(item && item.quantity ? item.quantity : 0);
-          const image = `${getItemImageUrl(item) || this.placeholderImage}`;
-          return [key, quantity, image].join('|');
-        })
-        .join('||');
+      const nextItemsSignature = buildItemsSignatureFromCart(items);
 
       // Prevent unnecessary full list re-renders (image flash) when only price state changes.
       // For discount changes we patch line-item prices in place.
@@ -1843,6 +1859,9 @@
         const variantTitle = escapeHtml(getItemVariantTitle(item));
         const imageUrl = escapeHtml(getItemImageUrl(item) || this.placeholderImage);
         const escapedHoverImageUrl = hoverImageUrl ? escapeHtml(hoverImageUrl) : '';
+        const mediaClass = escapedHoverImageUrl
+          ? 'sb-cart-line__media sb-cart-line__media--has-hover'
+          : 'sb-cart-line__media';
         const quantity = clampCount(item.quantity || 0);
         const effectiveQuantity = Math.max(1, quantity);
         const originalLinePriceCents = Number.isFinite(Number(item.original_line_price))
@@ -1857,7 +1876,7 @@
         const minusButtonAttributes = effectiveQuantity <= 1 ? 'disabled aria-disabled="true"' : '';
 
         lineItem.innerHTML = `
-          <a class="sb-cart-line__media" href="${productUrl}">
+          <a class="${mediaClass}" href="${productUrl}">
             <img class="sb-cart-line__image sb-cart-line__image--primary" src="${imageUrl}" alt="${title}" loading="eager" width="128" height="128">
             ${
               escapedHoverImageUrl

@@ -327,6 +327,11 @@ body .shopify-policy__body .rte > * + * {
   transform: scale(1.015);
 }
 
+/* Shared thumbnail loading placeholder background */
+.sb-product-thumbnail__media-item {
+  background: var(--sb-color-neutral-200);
+}
+
 /* Keep video edges from showing default black compositor background */
 .sb-product-thumbnail__video.sb-product-thumbnail__media-item,
 video.sb-product-main__media-asset {

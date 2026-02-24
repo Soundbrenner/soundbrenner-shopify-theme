@@ -4386,6 +4386,7 @@
 
   .sb-cart-line__media {
     aspect-ratio: 1 / 1;
+    background: var(--sb-color-neutral-100);
     border-radius: 8px;
     box-shadow: 0 var(--sb-space-2) var(--sb-space-8) 0 var(--sb-color-always-black-12);
     display: block;
@@ -4394,7 +4395,7 @@
     max-width: var(--sb-cart-thumb-size);
     min-height: var(--sb-cart-thumb-size);
     min-width: var(--sb-cart-thumb-size);
-    overflow: visible;
+    overflow: hidden;
     position: relative;
     transform: scale(1);
     transform-origin: center;
@@ -4427,6 +4428,11 @@
     .sb-cart-line__media:hover,
     .sb-cart-line__media:focus-visible {
       transform: scale(1.02);
+    }
+
+    .sb-cart-line__media--has-hover:hover .sb-cart-line__image--primary,
+    .sb-cart-line__media--has-hover:focus-visible .sb-cart-line__image--primary {
+      opacity: 0;
     }
 
     .sb-cart-line__media:hover .sb-cart-line__image--hover,
@@ -4552,7 +4558,7 @@
     border-radius: 8px;
     display: inline-flex;
     height: 36px;
-    width: 100px;
+    width: 112px;
   }
 
   .sb-cart-quantity:hover,
@@ -4610,14 +4616,14 @@
     border-radius: 8px;
     caret-color: var(--sb-color-primary-500);
     color: var(--sb-color-neutral-900);
-    flex: 0 0 28px;
+    flex: 0 0 40px;
     height: 28px;
     margin: 0;
     min-height: 28px;
-    min-width: 28px;
+    min-width: 40px;
     padding: 0;
     text-align: center;
-    width: 28px;
+    width: 40px;
   }
 
   .sb-cart-quantity__input:focus-visible {
@@ -4761,7 +4767,7 @@
     flex-wrap: nowrap;
     justify-content: space-between;
     list-style: none;
-    margin: 20px 0 0;
+    margin: 20px 0 20px;
     max-width: 360px;
     padding: 0;
     width: 100%;
@@ -4873,7 +4879,7 @@
   }
 
   .sb-cart-summary__row--discount-auto {
-    color: var(--sb-color-primary-500);
+    color: var(--sb-color-blue-500);
   }
 
   .sb-cart-summary__row--discount-auto [data-cart-auto-discount-text] {
@@ -4881,8 +4887,8 @@
   }
 
   .sb-cart-summary__row--discount-auto .sb-cart-shimmer-text {
-    --sb-cart-shimmer-text-color: var(--sb-color-primary-500);
-    --sb-cart-shimmer-color-light: var(--sb-color-primary-300);
+    --sb-cart-shimmer-text-color: var(--sb-color-blue-500);
+    --sb-cart-shimmer-color-light: var(--sb-color-blue-300, var(--sb-color-blue-500));
   }
 
   .sb-cart-summary__discount {
