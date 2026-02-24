@@ -284,6 +284,16 @@
           "type": "divider",
           "settings": {}
         },
+        "heading_ThEjbn": {
+          "type": "heading",
+          "settings": {
+            "heading": "Changing the watch straps"
+          }
+        },
+        "divider_pCzwPk": {
+          "type": "divider",
+          "settings": {}
+        },
         "chapter_6": {
           "type": "heading",
           "settings": {
@@ -369,6 +379,8 @@
         "text_6MfLJA",
         "button_afyijz",
         "divider_U4X9T7",
+        "heading_ThEjbn",
+        "divider_pCzwPk",
         "chapter_6",
         "accordion_item_1",
         "accordion_item_2",
