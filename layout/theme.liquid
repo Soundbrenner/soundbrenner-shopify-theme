@@ -158,51 +158,6 @@
           });
         }
 
-        const revealGroups = document.querySelectorAll('[data-sb-reveal]');
-        if (!revealGroups.length) return;
-
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-          revealGroups.forEach((group) => group.classList.add('is-inview'));
-          return;
-        }
-
-        if (!('IntersectionObserver' in window)) {
-          revealGroups.forEach((group) => group.classList.add('is-inview'));
-          return;
-        }
-
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (!entry.isIntersecting && entry.intersectionRatio <= 0) return;
-              entry.target.classList.add('is-inview');
-              observer.unobserve(entry.target);
-            });
-          },
-          {
-            threshold: 0,
-            rootMargin: '0px',
-          }
-        );
-
-        revealGroups.forEach((group) => {
-          group.classList.add('sb-reveal--animate');
-
-          const rect = group.getBoundingClientRect();
-          const inInitialView = rect.top < window.innerHeight && rect.bottom > 0;
-
-          if (inInitialView) {
-            // Ensure above-the-fold items animate after initial paint.
-            window.requestAnimationFrame(() => {
-              window.requestAnimationFrame(() => {
-                group.classList.add('is-inview');
-              });
-            });
-            return;
-          }
-
-          observer.observe(group);
-        });
       })();
     </script>
     <script>
