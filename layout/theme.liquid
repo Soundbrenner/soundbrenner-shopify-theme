@@ -2,7 +2,7 @@
 {% liquid
   assign sb_theme_mode = 'dark'
   assign sb_theme_locked = false
-  assign sb_debug_version = '3.5'
+  assign sb_debug_version = '3.7'
   if request.page_type == 'collection' and collection != blank
     assign collection_settings_ref = collection.metafields.custom.collection_settings.value | default: collection.metafields.custom.collection_settings
     if collection_settings_ref != blank
@@ -209,7 +209,7 @@
         };
 
         const thumbnailFallbackGlobalRate = clampDiscountRate(
-          Number({{ settings.sitewide_seasonal_discount_depth | default: 0 | json }}) / 100
+          Number({{ settings.storefront_default_order_discount_depth | default: 15 | json }}) / 100
         );
 
         const thumbnailProductOverrideEntries = [
@@ -248,7 +248,7 @@
         thumbnailProductOverrideEntries.forEach((entry) => {
           const productId = `${entry?.productId || ''}`.trim();
           const rate = clampDiscountRate(Number(entry?.discountPercent || 0) / 100);
-          if (!productId || rate <= 0) return;
+          if (!productId || productId === '0' || rate <= 0) return;
           thumbnailProductOverrideRateById.set(productId, rate);
         });
 

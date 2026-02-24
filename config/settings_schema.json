@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "Soundbrenner theme",
-    "theme_version": "3.5",
+    "theme_version": "3.7",
     "theme_author": "Florian Simmendinger",
     "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
     "theme_support_url": "https://support.shopify.com/"
@@ -34,6 +34,12 @@
         "content": "Storefront price overrides"
       },
       {
+        "type": "number",
+        "id": "storefront_default_order_discount_depth",
+        "label": "Storefront default order discount depth",
+        "default": 15
+      },
+      {
         "type": "text",
         "id": "storefront_price_override_product_id_1",
         "label": "Override product ID 1",
@@ -49,7 +55,7 @@
         "type": "text",
         "id": "storefront_price_override_product_id_2",
         "label": "Override product ID 2",
-        "default": ""
+        "default": "0"
       },
       {
         "type": "number",
@@ -61,7 +67,7 @@
         "type": "text",
         "id": "storefront_price_override_product_id_3",
         "label": "Override product ID 3",
-        "default": ""
+        "default": "0"
       },
       {
         "type": "number",
@@ -73,7 +79,7 @@
         "type": "text",
         "id": "storefront_price_override_product_id_4",
         "label": "Override product ID 4",
-        "default": ""
+        "default": "0"
       },
       {
         "type": "number",
