@@ -780,7 +780,7 @@
           </div>
         {% endif %}
       {% endif %}
-      <div class="header__utility-icons">
+      <div class="header__utility-icons" style="min-width: var(--sb-space-20);">
         <a
           class="header__icon-link header__icon-link--cart"
           href="{{ routes.cart_url }}"
@@ -788,11 +788,12 @@
           data-header-cart-page="{% if request.page_type == 'cart' %}true{% else %}false{% endif %}"
           aria-label="Cart"
           aria-expanded="false"
+          style="align-items: center; display: inline-flex; height: var(--sb-space-20); justify-content: center; min-height: var(--sb-space-20); min-width: var(--sb-space-20); width: var(--sb-space-20);"
         >
           <span class="header__cart-count-badge font-caption weight-bold{% if cart.item_count > 9 %} is-double-digit{% endif %}" data-header-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>
             {% if cart.item_count > 99 %}99+{% else %}{{ cart.item_count }}{% endif %}
           </span>
-          <span class="header__icon-asset" aria-hidden="true">
+          <span class="header__icon-asset" aria-hidden="true" style="align-items: center; display: inline-flex; height: var(--sb-space-20); justify-content: center; width: var(--sb-space-20);">
             {{ 'icon-primary-navigation-cart.svg' | inline_asset_content }}
           </span>
         </a>

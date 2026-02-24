@@ -1236,6 +1236,7 @@
       this.removalTimers = new Map();
       this.lastRenderedItemsSignature = '';
       this.didInitialHydration = false;
+      this.hasServerRenderedRows = false;
       this.messageScopeNode =
         this.context === 'drawer'
           ? this.closest('[data-cart-drawer-panel]') || this
@@ -1281,6 +1282,9 @@
       this.clearButtons = this.querySelectorAll('[data-cart-clear]');
       this.placeholderImage = this.dataset.placeholderImage || '';
       this.displayCurrency = `${this.dataset.currency || ''}`.trim().toUpperCase();
+      this.hasServerRenderedRows =
+        this.itemListNode instanceof HTMLElement &&
+        this.itemListNode.querySelector('[data-cart-line]') instanceof HTMLElement;
       this.lastRenderedItemsSignature = (() => {
         if (!(this.itemListNode instanceof HTMLElement)) return '';
         const rows = Array.from(this.itemListNode.querySelectorAll('[data-cart-line]'));
@@ -1331,6 +1335,12 @@
       }
 
       if (cachedCart) {
+        const cachedItemCount = clampCount(cachedCart && cachedCart.item_count ? cachedCart.item_count : 0);
+        const shouldIgnoreCachedCart =
+          this.hasServerRenderedRows && cachedItemCount === 0;
+        if (shouldIgnoreCachedCart) {
+          return;
+        }
         const preserveInitialMarkup =
           !this.didInitialHydration &&
           this.shouldPreserveInitialMarkup(cachedCart);
@@ -1376,6 +1386,17 @@
       if (!event || !event.detail || !event.detail.cart) return;
       const source = `${event.detail.source || ''}`.trim();
       const cart = event.detail.cart;
+      const incomingItemCount = clampCount(cart && cart.item_count ? cart.item_count : 0);
+
+      if (
+        !this.didInitialHydration &&
+        this.hasServerRenderedRows &&
+        source !== 'initial' &&
+        incomingItemCount === 0
+      ) {
+        return;
+      }
+
       const preserveInitialMarkup =
         !this.didInitialHydration &&
         source === 'initial' &&
