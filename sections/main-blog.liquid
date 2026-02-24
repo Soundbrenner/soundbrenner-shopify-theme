@@ -1,113 +1,169 @@
 {% liquid
   assign posts_per_page = section.settings.posts_per_page | default: 12
-  assign mobile_insert_after = section.settings.mobile_insert_after | default: 2
   assign sidebar_blocks = section.blocks | where: 'type', 'sidebar_item'
-  assign has_sidebar_items = false
-  if sidebar_blocks.size > 0
-    assign has_sidebar_items = true
-  endif
+  assign first_sidebar_block = sidebar_blocks[0]
+  assign second_sidebar_block = sidebar_blocks[1]
 %}
 
 <section class="sb-blog-overview">
   <div class="sb-blog-overview__inner">
-    <div class="sb-blog-overview__main">
-      {% if section.settings.show_blog_title %}
-        <header class="sb-blog-overview__header">
-          <h1 class="sb-blog-overview__title font-title weight-bold">{{ blog.title }}</h1>
-          <p class="sb-blog-overview__meta font-caption weight-regular">
-            {{ blog.articles_count }} articles
-          </p>
-        </header>
-      {% endif %}
+    {% if section.settings.show_blog_title %}
+      <header class="sb-blog-overview__header">
+        <h1 class="sb-blog-overview__title font-title weight-bold">{{ blog.title }}</h1>
+      </header>
+    {% endif %}
 
-      {% paginate blog.articles by posts_per_page %}
-        {% capture sidebar_markup %}
-          <div class="sb-blog-sidebar-stack">
-            {% if has_sidebar_items %}
-              {% for block in sidebar_blocks limit: 5 %}
-                {% render 'sb-blog-sidebar-card', block: block %}
-              {% endfor %}
-            {% else %}
-              {% for fallback_article in blog.articles limit: 5 %}
-                {% render 'sb-blog-sidebar-card', fallback_article: fallback_article %}
-              {% endfor %}
-            {% endif %}
-          </div>
-        {% endcapture %}
+    {% paginate blog.articles by posts_per_page %}
+      {% liquid
+        assign show_featured_layout = false
+        if paginate.current_page == 1
+          assign show_featured_layout = true
+        endif
 
-        <div class="sb-blog-overview__list-wrap">
-          <div class="sb-blog-overview__list">
-            {% assign sidebar_inserted_mobile = false %}
-            {% for article in blog.articles %}
-              <article class="sb-blog-overview-card">
-                <a class="sb-blog-overview-card__media" href="{{ article.url }}">
-                  {% if article.image != blank %}
-                    {{
-                      article.image
-                      | image_url: width: 1600
-                      | image_tag:
-                        widths: '400,800,1200,1600',
-                        sizes: '(max-width: 989px) calc(100vw - 40px), 800px',
-                        class: 'sb-blog-overview-card__image',
-                        loading: 'lazy',
-                        alt: article.title
-                    }}
-                  {% else %}
-                    <div class="sb-blog-overview-card__image sb-blog-overview-card__image--placeholder" aria-hidden="true"></div>
-                  {% endif %}
-                </a>
-                <div class="sb-blog-overview-card__content">
-                  <p class="sb-blog-overview-card__meta font-caption2 weight-regular">
-                    {{ article.published_at | date: format: 'abbreviated_date' }}
-                  </p>
-                  <h2 class="sb-blog-overview-card__title font-callout weight-semibold">
-                    <a href="{{ article.url }}">{{ article.title }}</a>
-                  </h2>
-                  {% if article.excerpt_or_content != blank %}
-                    <p class="sb-blog-overview-card__excerpt font-caption weight-regular">
-                      {{ article.excerpt_or_content | strip_html | truncatewords: 35 }}
-                    </p>
-                  {% endif %}
-                </div>
-              </article>
+        assign archive_offset = 0
+        if show_featured_layout
+          assign archive_offset = 9
+        endif
 
-              {% if sidebar_markup != blank and sidebar_inserted_mobile == false and forloop.index == mobile_insert_after %}
-                {% assign sidebar_inserted_mobile = true %}
-                <div class="sb-blog-overview__sidebar sb-blog-overview__sidebar--mobile" aria-label="{{ section.settings.sidebar_heading }}">
-                  {% if section.settings.sidebar_heading != blank %}
-                    <h3 class="sb-blog-sidebar-stack__heading font-callout weight-semibold">
-                      {{ section.settings.sidebar_heading }}
-                    </h3>
-                  {% endif %}
-                  {{ sidebar_markup }}
+        assign fallback_sidebar_article_one = blog.articles[0]
+        assign fallback_sidebar_article_two = blog.articles[1]
+
+        assign has_three_articles = false
+        if blog.articles[2] != blank
+          assign has_three_articles = true
+        endif
+
+        assign has_nine_articles = false
+        if blog.articles[8] != blank
+          assign has_nine_articles = true
+        endif
+      %}
+
+      {% capture sidebar_card_one_markup %}
+        {% if first_sidebar_block != blank %}
+          {% render 'sb-blog-sidebar-card', block: first_sidebar_block %}
+        {% elsif fallback_sidebar_article_one != blank %}
+          {% render 'sb-blog-sidebar-card', fallback_article: fallback_sidebar_article_one %}
+        {% endif %}
+      {% endcapture %}
+
+      {% capture sidebar_card_two_markup %}
+        {% if second_sidebar_block != blank %}
+          {% render 'sb-blog-sidebar-card', block: second_sidebar_block %}
+        {% elsif fallback_sidebar_article_two != blank %}
+          {% render 'sb-blog-sidebar-card', fallback_article: fallback_sidebar_article_two %}
+        {% endif %}
+      {% endcapture %}
+
+      <div class="sb-blog-overview__layout">
+        <div class="sb-blog-overview__main-column">
+          {% if show_featured_layout %}
+            <div class="sb-blog-overview__featured" aria-label="Featured articles">
+              <div class="sb-blog-overview__row sb-blog-overview__row--feature">
+                {% for article in blog.articles limit: 1 %}
+                  {% render 'sb-blog-overview-article-card',
+                    article: article,
+                    blog_title: blog.title,
+                    card_class: 'sb-blog-overview-card--feature',
+                    show_excerpt: true
+                  %}
+                {% endfor %}
+              </div>
+
+              <div class="sb-blog-overview__row sb-blog-overview__row--half">
+                {% for article in blog.articles limit: 2 offset: 1 %}
+                  {% render 'sb-blog-overview-article-card',
+                    article: article,
+                    blog_title: blog.title,
+                    card_class: 'sb-blog-overview-card--half',
+                    show_excerpt: false
+                  %}
+                {% endfor %}
+              </div>
+
+              {% if sidebar_card_one_markup != blank and has_three_articles %}
+                <div class="sb-blog-overview__mobile-insert" aria-label="{{ section.settings.sidebar_heading }}">
+                  {{ sidebar_card_one_markup }}
                 </div>
               {% endif %}
-            {% endfor %}
-          </div>
 
-          {% if sidebar_markup != blank and sidebar_inserted_mobile == false %}
-            <div class="sb-blog-overview__sidebar sb-blog-overview__sidebar--mobile" aria-label="{{ section.settings.sidebar_heading }}">
-              {% if section.settings.sidebar_heading != blank %}
-                <h3 class="sb-blog-sidebar-stack__heading font-callout weight-semibold">
-                  {{ section.settings.sidebar_heading }}
-                </h3>
+              <div class="sb-blog-overview__row sb-blog-overview__row--third">
+                {% for article in blog.articles limit: 3 offset: 3 %}
+                  {% render 'sb-blog-overview-article-card',
+                    article: article,
+                    blog_title: blog.title,
+                    card_class: 'sb-blog-overview-card--third',
+                    show_excerpt: false
+                  %}
+                {% endfor %}
+              </div>
+
+              <div class="sb-blog-overview__row sb-blog-overview__row--third">
+                {% for article in blog.articles limit: 3 offset: 6 %}
+                  {% render 'sb-blog-overview-article-card',
+                    article: article,
+                    blog_title: blog.title,
+                    card_class: 'sb-blog-overview-card--third',
+                    show_excerpt: false
+                  %}
+                {% endfor %}
+              </div>
+
+              {% if sidebar_card_two_markup != blank and has_nine_articles %}
+                <div class="sb-blog-overview__mobile-insert" aria-label="{{ section.settings.sidebar_heading }}">
+                  {{ sidebar_card_two_markup }}
+                </div>
               {% endif %}
-              {{ sidebar_markup }}
             </div>
+          {% endif %}
+
+          <div class="sb-blog-overview__archive" aria-label="Archive">
+            {% if section.settings.archive_heading != blank %}
+              <h2 class="sb-blog-overview__archive-title font-title weight-bold">{{ section.settings.archive_heading }}</h2>
+            {% endif %}
+
+            <div class="sb-blog-overview__archive-list">
+              {% for article in blog.articles offset: archive_offset %}
+                {% render 'sb-blog-overview-article-card',
+                  article: article,
+                  blog_title: blog.title,
+                  card_class: 'sb-blog-overview-card--archive',
+                  show_excerpt: false
+                %}
+              {% endfor %}
+            </div>
+          </div>
+
+          {% if paginate.pages > 1 %}
+            <nav class="sb-blog-overview__pagination font-caption weight-regular" aria-label="Pagination">
+              {{ paginate | default_pagination }}
+            </nav>
           {% endif %}
         </div>
 
-        <aside class="sb-blog-overview__sidebar sb-blog-overview__sidebar--desktop" aria-label="{{ section.settings.sidebar_heading }}">
-          <div class="sb-blog-overview__sidebar-placeholder" aria-hidden="true"></div>
-        </aside>
+        <aside class="sb-blog-overview__sidebar" aria-label="{{ section.settings.sidebar_heading }}">
+          <div class="sb-blog-overview__sidebar-stack" data-sb-blog-sticky-stack>
+            {% if section.settings.sidebar_heading != blank %}
+              <h3 class="sb-blog-overview__sidebar-heading font-callout weight-semibold" data-sb-sidebar-sticky-card>
+                {{ section.settings.sidebar_heading }}
+              </h3>
+            {% endif %}
 
-        {% if paginate.pages > 1 %}
-          <nav class="sb-blog-overview__pagination font-caption weight-regular" aria-label="Pagination">
-            {{ paginate | default_pagination }}
-          </nav>
-        {% endif %}
-      {% endpaginate %}
-    </div>
+            {% if sidebar_card_one_markup != blank %}
+              <div class="sb-blog-overview__sidebar-card-wrap" data-sb-sidebar-sticky-card>
+                {{ sidebar_card_one_markup }}
+              </div>
+            {% endif %}
+
+            {% if sidebar_card_two_markup != blank %}
+              <div class="sb-blog-overview__sidebar-card-wrap" data-sb-sidebar-sticky-card>
+                {{ sidebar_card_two_markup }}
+              </div>
+            {% endif %}
+          </div>
+        </aside>
+      </div>
+    {% endpaginate %}
   </div>
 </section>
 
@@ -124,17 +180,8 @@
     );
   }
 
-  .sb-blog-overview__main {
-    display: grid;
-    gap: var(--sb-space-64);
-    grid-template-columns: calc(var(--sb-space-128) * 6 + var(--sb-space-32)) minmax(0, 1fr);
-  }
-
   .sb-blog-overview__header {
-    display: flex;
-    flex-direction: column;
-    gap: var(--sb-space-8);
-    margin-bottom: var(--sb-space-32);
+    margin-bottom: var(--sb-space-48);
   }
 
   .sb-blog-overview__title {
@@ -142,28 +189,52 @@
     margin: 0;
   }
 
-  .sb-blog-overview__meta {
-    color: var(--sb-color-neutral-800);
-    margin: 0;
+  .sb-blog-overview__layout {
+    align-items: start;
+    column-gap: var(--sb-space-64);
+    display: grid;
+    grid-template-columns: calc((var(--sb-space-128) * 6) + var(--sb-space-32)) minmax(0, 1fr);
   }
 
-  .sb-blog-overview__list-wrap {
+  .sb-blog-overview__main-column {
     min-width: 0;
   }
 
-  .sb-blog-overview__list {
+  .sb-blog-overview__featured {
     display: flex;
     flex-direction: column;
-    gap: var(--sb-space-32);
+    gap: var(--sb-space-30);
+  }
+
+  .sb-blog-overview__row {
+    min-width: 0;
+  }
+
+  .sb-blog-overview__row--half,
+  .sb-blog-overview__row--third {
+    column-gap: var(--sb-space-30);
+    display: grid;
+  }
+
+  .sb-blog-overview__row--half {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sb-blog-overview__row--third {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .sb-blog-overview-card {
+    background: var(--sb-color-neutral-200);
     border-radius: var(--sb-space-24);
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
     overflow: hidden;
   }
 
   .sb-blog-overview-card__media {
-    aspect-ratio: 16 / 9;
+    background: var(--sb-color-neutral-400);
     display: block;
     overflow: hidden;
   }
@@ -181,12 +252,14 @@
 
   .sb-blog-overview-card__content {
     display: flex;
+    flex: 1 0 auto;
     flex-direction: column;
     gap: var(--sb-space-12);
-    padding-top: var(--sb-space-20);
+    padding: var(--sb-space-24);
   }
 
-  .sb-blog-overview-card__meta {
+  .sb-blog-overview-card__category,
+  .sb-blog-overview-card__date {
     color: var(--sb-color-neutral-800);
     margin: 0;
   }
@@ -210,91 +283,144 @@
     margin: 0;
   }
 
+  .sb-blog-overview-card--feature .sb-blog-overview-card__media {
+    aspect-ratio: 20 / 9;
+  }
+
+  .sb-blog-overview-card--half .sb-blog-overview-card__media,
+  .sb-blog-overview-card--third .sb-blog-overview-card__media {
+    aspect-ratio: 16 / 9;
+  }
+
+  .sb-blog-overview__archive {
+    margin-top: var(--sb-space-96);
+  }
+
+  .sb-blog-overview__archive-title {
+    color: var(--sb-color-neutral-900);
+    margin: 0 0 var(--sb-space-30);
+  }
+
+  .sb-blog-overview__archive-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sb-blog-overview-card--archive {
+    background: transparent;
+    border-radius: 0;
+    border-bottom: 1px solid var(--sb-color-neutral-600);
+    column-gap: var(--sb-space-24);
+    display: grid;
+    grid-template-columns: calc((var(--sb-space-128) * 2) + var(--sb-space-12)) minmax(0, 1fr);
+    margin: 0;
+    padding: 0 0 var(--sb-space-24);
+  }
+
+  .sb-blog-overview-card--archive + .sb-blog-overview-card--archive {
+    margin-top: var(--sb-space-24);
+  }
+
+  .sb-blog-overview-card--archive .sb-blog-overview-card__media {
+    aspect-ratio: 16 / 9;
+    border-radius: var(--sb-space-12);
+  }
+
+  .sb-blog-overview-card--archive .sb-blog-overview-card__content {
+    padding: 0;
+  }
+
   .sb-blog-overview__sidebar {
     min-width: 0;
   }
 
-  .sb-blog-overview__sidebar-placeholder {
-    background: var(--sb-color-blue-500);
-    border-radius: var(--sb-space-24);
-    min-height: calc(var(--sb-space-128) * 4);
-    position: sticky;
-    top: var(--sb-space-96);
-    width: 100%;
-  }
-
-  .sb-blog-overview__sidebar--mobile {
-    display: none;
-  }
-
-  .sb-blog-sidebar-stack__heading {
-    color: var(--sb-color-neutral-900);
-    margin: 0 0 var(--sb-space-20);
-  }
-
-  .sb-blog-sidebar-stack {
+  .sb-blog-overview__sidebar-stack {
     display: flex;
     flex-direction: column;
-    gap: var(--sb-space-20);
+    gap: var(--sb-space-32);
   }
 
-  .sb-blog-sidebar-card {
-    display: grid;
-    gap: var(--sb-space-12);
-    grid-template-columns: var(--sb-space-96) minmax(0, 1fr);
+  .sb-blog-overview__sidebar-heading,
+  .sb-blog-overview__sidebar-card-wrap {
+    position: sticky;
   }
 
-  .sb-blog-sidebar-card__media {
-    border-radius: var(--sb-space-12);
-    display: block;
+  .sb-blog-overview__sidebar-heading {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+  }
+
+  .sb-blog-overview__sidebar-card-wrap .sb-blog-sidebar-card {
+    background: var(--sb-color-neutral-200);
+    border-radius: var(--sb-space-24);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
     overflow: hidden;
   }
 
-  .sb-blog-sidebar-card__image {
-    aspect-ratio: 1 / 1;
-    display: block;
-    height: 100%;
-    object-fit: cover;
-    width: 100%;
+  .sb-blog-overview__sidebar-card-wrap .sb-blog-sidebar-card__media {
+    border-radius: 0;
+    max-height: calc(var(--sb-space-128) + var(--sb-space-64));
   }
 
-  .sb-blog-sidebar-card__image--placeholder {
-    background: var(--sb-color-neutral-300);
+  .sb-blog-overview__sidebar-card-wrap .sb-blog-sidebar-card__image {
+    aspect-ratio: 16 / 9;
   }
 
-  .sb-blog-sidebar-card__content {
-    display: flex;
-    flex-direction: column;
-    gap: var(--sb-space-6);
-    min-width: 0;
+  .sb-blog-overview__sidebar-card-wrap .sb-blog-sidebar-card__content {
+    gap: var(--sb-space-12);
+    padding: var(--sb-space-24);
   }
 
-  .sb-blog-sidebar-card__title {
+  .sb-blog-overview .sb-blog-sidebar-card__title {
     color: var(--sb-color-neutral-900);
     margin: 0;
     text-decoration: none;
   }
 
-  .sb-blog-sidebar-card__title:hover,
-  .sb-blog-sidebar-card__title:focus-visible {
+  .sb-blog-overview .sb-blog-sidebar-card__title:hover,
+  .sb-blog-overview .sb-blog-sidebar-card__title:focus-visible {
     color: var(--sb-color-primary-500);
   }
 
-  .sb-blog-sidebar-card__meta {
+  .sb-blog-overview .sb-blog-sidebar-card__meta,
+  .sb-blog-overview .sb-blog-sidebar-card__text {
     color: var(--sb-color-neutral-800);
     margin: 0;
   }
 
-  .sb-blog-sidebar-card__text {
-    color: var(--sb-color-neutral-800);
-    margin: 0;
+  .sb-blog-overview__mobile-insert {
+    display: none;
+  }
+
+  .sb-blog-overview__mobile-insert .sb-blog-sidebar-card {
+    background: var(--sb-color-neutral-200);
+    border-radius: var(--sb-space-24);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .sb-blog-overview__mobile-insert .sb-blog-sidebar-card__media {
+    border-radius: 0;
+  }
+
+  .sb-blog-overview__mobile-insert .sb-blog-sidebar-card__image {
+    aspect-ratio: 16 / 9;
+  }
+
+  .sb-blog-overview__mobile-insert .sb-blog-sidebar-card__content {
+    gap: var(--sb-space-12);
+    padding: var(--sb-space-24);
   }
 
   .sb-blog-overview__pagination {
-    margin-top: var(--sb-space-32);
+    margin-top: var(--sb-space-48);
   }
 
   .sb-blog-overview__pagination .pagination {
+    align-items: center;
     display: flex;
     gap: var(--sb-space-8);
     list-style: none;
@@ -303,29 +429,106 @@
   }
 
   @media screen and (max-width: 989px) {
-    .sb-blog-overview__main {
-      display: block;
+    .sb-blog-overview {
+      padding: var(--sb-space-48) 0;
     }
 
     .sb-blog-overview__header {
+      margin-bottom: var(--sb-space-30);
+    }
+
+    .sb-blog-overview__layout {
+      display: block;
+    }
+
+    .sb-blog-overview__featured {
+      gap: 0;
+    }
+
+    .sb-blog-overview__row--half,
+    .sb-blog-overview__row--third {
+      display: block;
+    }
+
+    .sb-blog-overview-card {
       margin-bottom: var(--sb-space-24);
     }
 
-    .sb-blog-overview__sidebar--desktop {
+    .sb-blog-overview-card--archive {
+      background: var(--sb-color-neutral-200);
+      border-radius: var(--sb-space-24);
+      border-bottom: 0;
+      display: flex;
+      margin: 0 0 var(--sb-space-24);
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .sb-blog-overview-card--archive .sb-blog-overview-card__media {
+      aspect-ratio: 16 / 9;
+      border-radius: 0;
+    }
+
+    .sb-blog-overview-card--archive .sb-blog-overview-card__content {
+      padding: var(--sb-space-24);
+    }
+
+    .sb-blog-overview__archive {
+      margin-top: var(--sb-space-48);
+    }
+
+    .sb-blog-overview__archive-title {
+      margin-bottom: var(--sb-space-24);
+    }
+
+    .sb-blog-overview__sidebar {
       display: none;
     }
 
-    .sb-blog-overview__sidebar--mobile {
+    .sb-blog-overview__mobile-insert {
       display: block;
-      margin-top: var(--sb-space-24);
+      margin-bottom: var(--sb-space-24);
     }
   }
 {% endstylesheet %}
 
+{% javascript %}
+  (() => {
+    const stacks = Array.from(document.querySelectorAll('[data-sb-blog-sticky-stack]'));
+    if (!stacks.length) return;
+
+    const parseSpaceVar = (name, fallback) => {
+      const rawValue = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+      const parsed = Number.parseFloat(rawValue);
+      return Number.isFinite(parsed) ? parsed : fallback;
+    };
+
+    const applyStickyOffsets = () => {
+      const baseTop = parseSpaceVar('--sb-space-96', 96);
+      const gap = parseSpaceVar('--sb-space-32', 32);
+
+      stacks.forEach((stack) => {
+        const cards = Array.from(stack.querySelectorAll('[data-sb-sidebar-sticky-card]'));
+        let currentTop = baseTop;
+
+        cards.forEach((card) => {
+          card.style.top = `${currentTop}px`;
+          currentTop += card.offsetHeight + gap;
+        });
+      });
+    };
+
+    window.addEventListener('resize', applyStickyOffsets);
+    window.addEventListener('load', applyStickyOffsets);
+
+    applyStickyOffsets();
+  })();
+{% endjavascript %}
+
 {% schema %}
 {
   "name": "Main blog",
-  "max_blocks": 5,
+  "max_blocks": 2,
   "settings": [
     {
       "type": "checkbox",
@@ -337,19 +540,16 @@
       "type": "range",
       "id": "posts_per_page",
       "label": "Posts per page",
-      "min": 4,
+      "min": 9,
       "max": 24,
       "step": 1,
-      "default": 12
+      "default": 18
     },
     {
-      "type": "range",
-      "id": "mobile_insert_after",
-      "label": "Show mobile sidebar after post",
-      "min": 1,
-      "max": 6,
-      "step": 1,
-      "default": 2
+      "type": "text",
+      "id": "archive_heading",
+      "label": "Archive heading",
+      "default": "Archive"
     },
     {
       "type": "text",
@@ -407,7 +607,7 @@
           "type": "image_picker",
           "id": "image",
           "label": "Custom image",
-          "info": "Target minimum 720x720 at 2x export (360x360)."
+          "info": "Target minimum 752x423 at 2x export (376x212)."
         },
         {
           "type": "text",
@@ -421,6 +621,9 @@
     {
       "name": "Main blog",
       "blocks": [
+        {
+          "type": "sidebar_item"
+        },
         {
           "type": "sidebar_item"
         }

@@ -1,0 +1,60 @@
+{% liquid
+  assign card_style_class = card_class | default: ''
+  assign category_text = article.tags.first
+  if category_text == blank
+    assign category_text = blog_title
+  endif
+
+  assign card_title_class = 'font-body weight-bold'
+  if card_style_class == 'sb-blog-overview-card--feature'
+    assign card_title_class = 'font-callout weight-bold'
+  endif
+
+  assign image_sizes = '(max-width: 989px) calc(100vw - 40px), 800px'
+  if card_style_class == 'sb-blog-overview-card--half'
+    assign image_sizes = '(max-width: 989px) calc(100vw - 40px), 385px'
+  elsif card_style_class == 'sb-blog-overview-card--third'
+    assign image_sizes = '(max-width: 989px) calc(100vw - 40px), 246px'
+  elsif card_style_class == 'sb-blog-overview-card--archive'
+    assign image_sizes = '(max-width: 989px) calc(100vw - 40px), 266px'
+  endif
+%}
+
+{% if article != blank %}
+  <article class="sb-blog-overview-card {{ card_style_class }}">
+    <a class="sb-blog-overview-card__media" href="{{ article.url }}">
+      {% if article.image != blank %}
+        {{
+          article.image
+          | image_url: width: 1200
+          | image_tag:
+            widths: '246,385,533,800,1200',
+            sizes: image_sizes,
+            class: 'sb-blog-overview-card__image',
+            loading: 'lazy',
+            alt: article.title
+        }}
+      {% else %}
+        <div class="sb-blog-overview-card__image sb-blog-overview-card__image--placeholder" aria-hidden="true"></div>
+      {% endif %}
+    </a>
+
+    <div class="sb-blog-overview-card__content">
+      <p class="sb-blog-overview-card__category font-caption weight-semibold">{{ category_text }}</p>
+
+      <h2 class="sb-blog-overview-card__title {{ card_title_class }}">
+        <a href="{{ article.url }}">{{ article.title }}</a>
+      </h2>
+
+      <p class="sb-blog-overview-card__date font-caption weight-semibold">
+        {{ article.published_at | date: format: 'abbreviated_date' }}
+      </p>
+
+      {% if show_excerpt and article.excerpt_or_content != blank %}
+        <p class="sb-blog-overview-card__excerpt font-caption weight-regular">
+          {{ article.excerpt_or_content | strip_html | truncatewords: 30 }}
+        </p>
+      {% endif %}
+    </div>
+  </article>
+{% endif %}
