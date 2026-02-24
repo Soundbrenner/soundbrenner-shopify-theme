@@ -54,6 +54,7 @@
   <cart-items-component
     class="sb-cart-items sb-cart-items--page{% if cart.empty? %} is-empty{% endif %}"
     data-context="page"
+    data-currency="{{ localization.country.currency.iso_code | default: cart.currency.iso_code }}"
     data-placeholder-image="{{ cart_placeholder_image }}"
   >
     <div class="sb-cart-page">
@@ -205,8 +206,10 @@
   }
 
   .sb-cart-line-list--page {
+    flex: 0 0 auto;
     margin-bottom: var(--sb-space-24);
     margin-top: var(--sb-space-24);
+    overflow: visible;
     padding-bottom: 0;
     padding-left: 0;
     padding-right: 0;
@@ -383,7 +386,7 @@
     gap: var(--sb-space-20);
     padding: 0;
     position: sticky;
-    top: var(--sb-space-96);
+    top: 0;
   }
 
   .sb-cart-page__summary[hidden] {

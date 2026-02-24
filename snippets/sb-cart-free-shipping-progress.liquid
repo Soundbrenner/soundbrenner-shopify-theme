@@ -23,13 +23,7 @@
     if free_shipping_reached
       assign free_shipping_message = "🥳 You've unlocked <strong>free shipping</strong>."
     elsif free_shipping_threshold_cents > 0
-      assign free_shipping_currency_symbol = localization.country.currency.symbol | default: ''
-      assign free_shipping_remaining_formatted = free_shipping_remaining_cents | money_without_currency | strip
-      if free_shipping_currency_symbol != blank
-        assign free_shipping_remaining_formatted = free_shipping_currency_symbol | append: free_shipping_remaining_formatted
-      else
-        assign free_shipping_remaining_formatted = free_shipping_remaining_cents | money
-      endif
+      assign free_shipping_remaining_formatted = free_shipping_remaining_cents | money
       assign free_shipping_message = "👉 You're only <strong>" | append: free_shipping_remaining_formatted | append: '</strong> away from <strong>free shipping</strong>.'
     endif
   endif

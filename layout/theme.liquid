@@ -136,6 +136,7 @@
           const storageKey = 'sb_theme_debug_mode';
           const savedThemeMode = window.localStorage ? window.localStorage.getItem(storageKey) : '';
           const validModes = ['light', 'dark'];
+          const isThemeLocked = root.hasAttribute('data-theme-locked');
 
           const setThemeMode = (mode) => {
             if (!validModes.includes(mode)) return;
@@ -144,14 +145,12 @@
             if (window.localStorage) window.localStorage.setItem(storageKey, mode);
           };
 
-          if (savedThemeMode && validModes.includes(savedThemeMode)) {
+          if (savedThemeMode && validModes.includes(savedThemeMode) && !isThemeLocked) {
             setThemeMode(savedThemeMode);
-          } else {
-            const initialTheme = (root.getAttribute('data-theme') || 'dark') === 'light' ? 'light' : 'dark';
-            setThemeMode(initialTheme);
           }
 
           themeDebugToggle.addEventListener('click', () => {
+            if (isThemeLocked) return;
             const currentTheme = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
             const nextTheme = currentTheme === 'light' ? 'dark' : 'light';
             setThemeMode(nextTheme);

@@ -381,8 +381,9 @@
 
   const formatMoney = (cents, currency = 'USD') => {
     const amount = Number.isFinite(Number(cents)) ? Number(cents) : 0;
+    const locale = `${document.documentElement.getAttribute('lang') || ''}`.trim() || undefined;
     try {
-      return new Intl.NumberFormat(undefined, {
+      return new Intl.NumberFormat(locale, {
         style: 'currency',
         currency,
       }).format(amount / 100);
@@ -642,6 +643,7 @@
   let cachedCart = null;
   let fetchInFlight = null;
   let nextAddSourceElement = null;
+  const pendingHoverImageByVariantId = new Map();
   const isCartLikePayload = (value) => {
     if (!value || typeof value !== 'object') return false;
     if (!Array.isArray(value.items)) return false;
@@ -804,6 +806,33 @@
     return '';
   };
 
+  const resolveCartLineHoverImageSource = (sourceElement) => {
+    if (!(sourceElement instanceof Element)) return '';
+
+    const cartLine = sourceElement.closest('[data-cart-line]');
+    if (cartLine instanceof HTMLElement) {
+      const rowHoverImage = `${cartLine.getAttribute('data-cart-hover-image') || ''}`.trim();
+      if (rowHoverImage) return rowHoverImage;
+    }
+
+    const mediaWrap = sourceElement.closest('.sb-product-thumbnail__media-wrap');
+    if (mediaWrap instanceof HTMLElement) {
+      const mediaWrapHoverImage = `${mediaWrap.dataset.hoverImage || ''}`.trim();
+      if (mediaWrapHoverImage) return mediaWrapHoverImage;
+    }
+
+    const thumbnailScope = sourceElement.closest('.sb-product-thumbnail');
+    if (thumbnailScope instanceof HTMLElement) {
+      const selectedSwatch = thumbnailScope.querySelector('.sb-product-thumbnail__swatch.is-selected');
+      if (selectedSwatch instanceof HTMLElement) {
+        const swatchHoverImage = `${selectedSwatch.dataset.thumbnailHoverImage || ''}`.trim();
+        if (swatchHoverImage) return swatchHoverImage;
+      }
+    }
+
+    return '';
+  };
+
   const animateFlyToCart = ({ sourceElement, imageSrc }) => {
     if (!(sourceElement instanceof Element)) return;
     if (prefersReducedMotion()) return;
@@ -840,6 +869,14 @@
 
     if (normalizedQuantity <= 0) {
       throw new Error('Invalid quantity');
+    }
+
+    const normalizedVariantId = Number.parseInt(variantIdValue, 10);
+    if (Number.isFinite(normalizedVariantId) && normalizedVariantId > 0) {
+      const hoverImage = resolveCartLineHoverImageSource(sourceElement);
+      if (hoverImage) {
+        pendingHoverImageByVariantId.set(`${normalizedVariantId}`, hoverImage);
+      }
     }
 
     const formData = new FormData();
@@ -1237,6 +1274,7 @@
       this.checkoutButtons = this.querySelectorAll('[data-cart-checkout-button]');
       this.clearButtons = this.querySelectorAll('[data-cart-clear]');
       this.placeholderImage = this.dataset.placeholderImage || '';
+      this.displayCurrency = `${this.dataset.currency || ''}`.trim().toUpperCase();
       this.lastRenderedItemsSignature = (() => {
         if (!(this.itemListNode instanceof HTMLElement)) return '';
         const rows = Array.from(this.itemListNode.querySelectorAll('[data-cart-line]'));
@@ -1325,14 +1363,13 @@
       if (!event || !event.detail || !event.detail.cart) return;
       const source = `${event.detail.source || ''}`.trim();
       const cart = event.detail.cart;
-
-      if (!this.didInitialHydration && source === 'initial' && this.shouldPreserveInitialMarkup(cart)) {
-        this.didInitialHydration = true;
-        return;
-      }
+      const preserveInitialMarkup =
+        !this.didInitialHydration &&
+        source === 'initial' &&
+        this.shouldPreserveInitialMarkup(cart);
 
       this.didInitialHydration = true;
-      this.render(cart);
+      this.render(cart, { source, preserveInitialMarkup });
     }
 
     shouldPreserveInitialMarkup(cart) {
@@ -1342,7 +1379,7 @@
 
       const serverRows = this.itemListNode.querySelectorAll('[data-cart-line]').length;
       if (itemCount === 0) {
-        return serverRows === 0;
+        return true;
       }
 
       const serverSignature = `${this.lastRenderedItemsSignature || ''}`.trim();
@@ -1684,12 +1721,24 @@
       });
     }
 
-    render(cart) {
+    render(cart, { source = '', preserveInitialMarkup = false } = {}) {
       const itemCount = clampCount(cart && cart.item_count ? cart.item_count : 0);
-      const isEmpty = itemCount === 0;
-      const currency = `${cart && cart.currency ? cart.currency : 'USD'}`;
+      const hasServerRows =
+        this.itemListNode instanceof HTMLElement &&
+        this.itemListNode.querySelector('[data-cart-line]') instanceof HTMLElement;
+      const preserveNonEmptyServerState =
+        preserveInitialMarkup &&
+        source === 'initial' &&
+        hasServerRows;
+      const isEmpty = preserveNonEmptyServerState ? false : itemCount === 0;
+      const cartCurrency = `${cart && cart.currency ? cart.currency : ''}`.trim().toUpperCase();
+      const currency = (this.displayCurrency || cartCurrency || 'USD').trim().toUpperCase();
+      if (!this.displayCurrency && cartCurrency) {
+        this.displayCurrency = cartCurrency;
+      }
       const wasEmpty = this.classList.contains('is-empty');
       const shouldAnimateToEmpty = !wasEmpty && isEmpty;
+      const skipInitialValueMutation = preserveInitialMarkup && source === 'initial';
 
       const applyRenderState = () => {
         this.classList.toggle('is-empty', isEmpty);
@@ -1716,7 +1765,9 @@
             this.drawerCountNode.textContent = '';
             this.drawerCountNode.hidden = true;
           } else {
-            this.drawerCountNode.textContent = itemCount > 99 ? '99+' : `${itemCount}`;
+            if (!skipInitialValueMutation) {
+              this.drawerCountNode.textContent = itemCount > 99 ? '99+' : `${itemCount}`;
+            }
             this.drawerCountNode.hidden = false;
           }
         }
@@ -1726,7 +1777,9 @@
             this.pageCountNode.textContent = '';
             this.pageCountNode.hidden = true;
           } else {
-            this.pageCountNode.textContent = `${itemCount}`;
+            if (!skipInitialValueMutation) {
+              this.pageCountNode.textContent = `${itemCount}`;
+            }
             this.pageCountNode.hidden = false;
           }
         }
@@ -1760,7 +1813,7 @@
           }
         });
 
-        if (this.subtotalNode) {
+        if (this.subtotalNode && !skipInitialValueMutation) {
           const subtotalCents = Number.isFinite(Number(cart && cart.original_total_price))
             ? Number(cart.original_total_price)
             : (cart && cart.items_subtotal_price ? cart.items_subtotal_price : 0);
@@ -1772,7 +1825,7 @@
           setShimmerValue(this.subtotalNode, subtotalText);
         }
 
-        if (this.totalNode) {
+        if (this.totalNode && !skipInitialValueMutation) {
           const totalText = formatMoney(
             cart && cart.total_price ? cart.total_price : 0,
             currency
@@ -1781,9 +1834,11 @@
           setShimmerValue(this.totalNode, totalText);
         }
 
-        this.renderFreeShipping(cart || {}, currency, isEmpty);
-        this.renderDiscounts(cart || {}, currency);
-        this.renderItems(cart || {}, currency);
+        if (!skipInitialValueMutation) {
+          this.renderFreeShipping(cart || {}, currency, isEmpty);
+        }
+        this.renderDiscounts(cart || {}, currency, { source, preserveInitialMarkup });
+        this.renderItems(cart || {}, currency, { source, preserveInitialMarkup });
 
         const drawer = this.closest('cart-drawer-component');
         if (drawer && typeof drawer.updateStickyState === 'function') {
@@ -1800,7 +1855,7 @@
       applyRenderState();
     }
 
-    renderDiscounts(cart, currency = 'USD') {
+    renderDiscounts(cart, currency = 'USD', { source = '', preserveInitialMarkup = false } = {}) {
       const summary = getCartDiscountSummary(cart || {}, currency);
 
       if (this.autoDiscountRowNode) {
@@ -1811,11 +1866,11 @@
         this.autoDiscountDividerNode.hidden = !summary.hasDiscount;
       }
 
-      if (this.autoDiscountTextNode) {
+      if (this.autoDiscountTextNode && !(preserveInitialMarkup && source === 'initial')) {
         this.autoDiscountTextNode.textContent = summary.text;
       }
 
-      if (this.autoDiscountAmountNode) {
+      if (this.autoDiscountAmountNode && !(preserveInitialMarkup && source === 'initial')) {
         this.autoDiscountAmountNode.textContent = summary.amountText;
         setShimmerValue(this.autoDiscountAmountNode, summary.amountText);
       }
@@ -1840,15 +1895,20 @@
         fragment.appendChild(item);
       });
 
+      if (preserveInitialMarkup && source === 'initial') {
+        return;
+      }
+
       this.discountListNode.innerHTML = '';
       this.discountListNode.appendChild(fragment);
     }
 
-    renderItems(cart, currency) {
+    renderItems(cart, currency, { source = '', preserveInitialMarkup = false } = {}) {
       if (!this.itemListNode) return;
 
       const items = Array.isArray(cart.items) ? cart.items : [];
       const existingHoverImageByKey = new Map();
+      const existingHoverImageByVariantId = new Map();
       this.itemListNode.querySelectorAll('[data-cart-item-key]').forEach((row) => {
         if (!(row instanceof HTMLElement)) return;
         const key = `${row.getAttribute('data-cart-item-key') || ''}`.trim();
@@ -1856,11 +1916,32 @@
         if (!key || !hoverImage) return;
         existingHoverImageByKey.set(key, hoverImage);
       });
+      this.itemListNode.querySelectorAll('[data-cart-line]').forEach((row) => {
+        if (!(row instanceof HTMLElement)) return;
+        const variantId = Number.parseInt(`${row.getAttribute('data-cart-variant-id') || ''}`, 10);
+        const hoverImage = `${row.getAttribute('data-cart-hover-image') || ''}`.trim();
+        if (!Number.isFinite(variantId) || variantId <= 0 || !hoverImage) return;
+        const variantIdKey = `${variantId}`;
+        existingHoverImageByVariantId.set(variantIdKey, hoverImage);
+        pendingHoverImageByVariantId.set(variantIdKey, hoverImage);
+      });
       const nextItemsSignature = buildItemsSignatureFromCart(items);
+
+      if (
+        preserveInitialMarkup &&
+        source === 'initial' &&
+        items.length === 0 &&
+        `${this.lastRenderedItemsSignature || ''}`.trim() !== ''
+      ) {
+        return;
+      }
 
       // Prevent unnecessary full list re-renders (image flash) when only price state changes.
       // For discount changes we patch line-item prices in place.
       if (nextItemsSignature === this.lastRenderedItemsSignature) {
+        if (preserveInitialMarkup && source === 'initial') {
+          return;
+        }
         items.forEach((item, index) => {
           const line = index + 1;
           const row = this.itemListNode.querySelector(`[data-cart-line="${line}"]`);
@@ -1906,19 +1987,26 @@
       items.forEach((item, index) => {
         const line = index + 1;
         const itemKey = `${item && item.key ? item.key : ''}`.trim();
-        const hoverImageUrl = `${existingHoverImageByKey.get(itemKey) || ''}`.trim();
+        const variantId = Number.parseInt(`${item && item.variant_id ? item.variant_id : ''}`, 10);
+        const variantIdKey = Number.isFinite(variantId) && variantId > 0 ? `${variantId}` : '';
+        const hoverImageUrl = `${existingHoverImageByKey.get(itemKey)
+          || (variantIdKey ? existingHoverImageByVariantId.get(variantIdKey) : '')
+          || (variantIdKey ? pendingHoverImageByVariantId.get(variantIdKey) : '')
+          || ''}`.trim();
         const lineItem = document.createElement('li');
         lineItem.className = 'sb-cart-line';
         lineItem.setAttribute('data-cart-line', `${line}`);
         if (itemKey) {
           lineItem.setAttribute('data-cart-item-key', itemKey);
         }
-        const variantId = Number.parseInt(`${item && item.variant_id ? item.variant_id : ''}`, 10);
         if (Number.isFinite(variantId) && variantId > 0) {
           lineItem.setAttribute('data-cart-variant-id', `${variantId}`);
         }
         if (hoverImageUrl) {
           lineItem.setAttribute('data-cart-hover-image', hoverImageUrl);
+          if (variantIdKey) {
+            pendingHoverImageByVariantId.set(variantIdKey, hoverImageUrl);
+          }
         }
 
         const title = escapeHtml(item.product_title || item.title || 'Product');
