@@ -221,6 +221,12 @@
             "link": ""
           }
         },
+        "text_ecFNQA": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Silicone strap & body strap</strong></p><p>Both straps are very durable and suitable for all environmental conditions.</p><p><strong>Italian leather straps</strong></p><p>We only use premium quality leather sourced from Italy. Any variations in color or markings such as scars and wrinkles are inherent to the natural beauty and uniqueness of genuine leather.</p><p>Over time the leather will mold to your wrist and develop a patina finish. To maximize its durability, we suggest to limit the leather’s contact with moisture.</p>"
+          }
+        },
         "divider_ExTXVE": {
           "type": "divider",
           "settings": {}
@@ -299,6 +305,7 @@
         "heading_TKWCaD",
         "text_KYQ8qF",
         "button_kaepFn",
+        "text_ecFNQA",
         "divider_ExTXVE",
         "chapter_6",
         "accordion_item_1",
