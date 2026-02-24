@@ -212,6 +212,15 @@
             "text": "<p><strong>Core</strong></p><p>The Core is splash resistant (IP65). This means it can withstand light rain or water splashes, for example while washing your hands. However, it can not withstand heavy rain, showers or water immersion.</p><p>The Core contains strong magnets that may interfere with some medical devices. Read the \"Safety & regulatory information\" section at the end of this manual for more information.</p><h4>Tip</h4><p>Don't store your Core for extended periods (over 3 months) with an empty battery, as this can lead to permanent battery damage.</p>"
           }
         },
+        "button_kaepFn": {
+          "type": "button",
+          "settings": {
+            "label": "Battery maintenance guide",
+            "button_size": "large",
+            "icon_position": "none",
+            "link": ""
+          }
+        },
         "divider_ExTXVE": {
           "type": "divider",
           "settings": {}
@@ -289,6 +298,7 @@
         "divider_6c6AAp",
         "heading_TKWCaD",
         "text_KYQ8qF",
+        "button_kaepFn",
         "divider_ExTXVE",
         "chapter_6",
         "accordion_item_1",
