@@ -98,12 +98,7 @@
         </div>
 
         <aside class="sb-blog-overview__sidebar sb-blog-overview__sidebar--desktop" aria-label="{{ section.settings.sidebar_heading }}">
-          {% if section.settings.sidebar_heading != blank %}
-            <h3 class="sb-blog-sidebar-stack__heading font-callout weight-semibold">
-              {{ section.settings.sidebar_heading }}
-            </h3>
-          {% endif %}
-          {{ sidebar_markup }}
+          <div class="sb-blog-overview__sidebar-placeholder" aria-hidden="true"></div>
         </aside>
 
         {% if paginate.pages > 1 %}
@@ -123,13 +118,16 @@
 
   .sb-blog-overview__inner {
     margin: 0 auto;
-    width: min(var(--page-width), calc(100% - (var(--page-margin) * 2)));
+    width: min(
+      calc((var(--sb-space-128) * 9) + var(--sb-space-64) + var(--sb-space-24)),
+      calc(100% - (var(--page-margin) * 2))
+    );
   }
 
   .sb-blog-overview__main {
     display: grid;
     gap: var(--sb-space-64);
-    grid-template-columns: minmax(0, calc(var(--sb-space-128) * 6 + var(--sb-space-32))) minmax(0, 1fr);
+    grid-template-columns: calc(var(--sb-space-128) * 6 + var(--sb-space-32)) minmax(0, 1fr);
   }
 
   .sb-blog-overview__header {
@@ -214,6 +212,15 @@
 
   .sb-blog-overview__sidebar {
     min-width: 0;
+  }
+
+  .sb-blog-overview__sidebar-placeholder {
+    background: var(--sb-color-blue-500);
+    border-radius: var(--sb-space-24);
+    min-height: calc(var(--sb-space-128) * 4);
+    position: sticky;
+    top: var(--sb-space-96);
+    width: 100%;
   }
 
   .sb-blog-overview__sidebar--mobile {
