@@ -338,6 +338,16 @@
             "text": "<p><strong>Power on</strong><br/>Hold the top button for 1 second to turn on the Core.</p>"
           }
         },
+        "image_Dzc8kq": {
+          "type": "image",
+          "settings": {}
+        },
+        "text_9cDw6H": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Power off</strong></p><ol><li>Hold the top button for 3 seconds until the power off prompt appears.</li></ol>"
+          }
+        },
         "divider_xrGQeX": {
           "type": "divider",
           "settings": {}
@@ -437,6 +447,8 @@
         "divider_8GrH8j",
         "subheading_iL8Qey",
         "text_mkJcQC",
+        "image_Dzc8kq",
+        "text_9cDw6H",
         "divider_xrGQeX",
         "chapter_6",
         "accordion_item_1",
