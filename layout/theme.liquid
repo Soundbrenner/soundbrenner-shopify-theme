@@ -2,7 +2,7 @@
 {% liquid
   assign sb_theme_mode = 'dark'
   assign sb_theme_locked = false
-  assign sb_debug_version = '3.4'
+  assign sb_debug_version = '3.5'
   if request.page_type == 'collection' and collection != blank
     assign collection_settings_ref = collection.metafields.custom.collection_settings.value | default: collection.metafields.custom.collection_settings
     if collection_settings_ref != blank
@@ -197,14 +197,6 @@
         ]);
 
         const storefrontMoneyFormat = {{ shop.money_format | json }};
-        const thumbnailShopRoot = (() => {
-          const rootPath =
-            window.Shopify && window.Shopify.routes && typeof window.Shopify.routes.root === 'string'
-              ? window.Shopify.routes.root
-              : '/';
-          return rootPath.endsWith('/') ? rootPath : `${rootPath}/`;
-        })();
-        const thumbnailCartUrl = (path) => `${thumbnailShopRoot}${path}`;
 
         const parseCents = (value) => {
           const nextValue = Number.parseInt(`${value ?? ''}`.trim(), 10);
@@ -220,6 +212,25 @@
           Number({{ settings.sitewide_seasonal_discount_depth | default: 0 | json }}) / 100
         );
 
+        const thumbnailProductOverrideEntries = [
+          {
+            productId: {{ settings.storefront_price_override_product_id_1 | default: '' | strip | json }},
+            discountPercent: Number({{ settings.storefront_price_override_discount_depth_1 | default: 0 | json }}),
+          },
+          {
+            productId: {{ settings.storefront_price_override_product_id_2 | default: '' | strip | json }},
+            discountPercent: Number({{ settings.storefront_price_override_discount_depth_2 | default: 0 | json }}),
+          },
+          {
+            productId: {{ settings.storefront_price_override_product_id_3 | default: '' | strip | json }},
+            discountPercent: Number({{ settings.storefront_price_override_discount_depth_3 | default: 0 | json }}),
+          },
+          {
+            productId: {{ settings.storefront_price_override_product_id_4 | default: '' | strip | json }},
+            discountPercent: Number({{ settings.storefront_price_override_discount_depth_4 | default: 0 | json }}),
+          },
+        ];
+
         const formatMoneyCents = (cents) => {
           const normalizedCents = Number.isFinite(Number(cents)) ? Math.round(Number(cents)) : 0;
           if (window.Shopify && typeof window.Shopify.formatMoney === 'function') {
@@ -233,117 +244,31 @@
           }).format(normalizedCents / 100);
         };
 
+        const thumbnailProductOverrideRateById = new Map();
+        thumbnailProductOverrideEntries.forEach((entry) => {
+          const productId = `${entry?.productId || ''}`.trim();
+          const rate = clampDiscountRate(Number(entry?.discountPercent || 0) / 100);
+          if (!productId || rate <= 0) return;
+          thumbnailProductOverrideRateById.set(productId, rate);
+        });
+
         const thumbnailDiscountState = {
-          globalRate: 0,
-          variantRateById: new Map(),
-          variantRatesExcludeGlobal: false,
+          globalRate: thumbnailFallbackGlobalRate,
+          productRateById: thumbnailProductOverrideRateById,
         };
-        let thumbnailDiscountHydrationPromise = null;
 
-        const readCartDiscountState = (cart) => {
-          const nextVariantRateById = new Map();
-          const cartLevelDiscountApplications = Array.isArray(cart?.cart_level_discount_applications)
-            ? cart.cart_level_discount_applications
-            : [];
-
-          let hasCartLevelPercentageDiscount = false;
-          let percentageMultiplier = 1;
-
-          cartLevelDiscountApplications.forEach((discountApplication) => {
-            const valueType = `${discountApplication?.value_type || ''}`.trim().toLowerCase();
-            const value = Number(discountApplication?.value);
-            if (valueType !== 'percentage' || !Number.isFinite(value) || value <= 0) return;
-            hasCartLevelPercentageDiscount = true;
-            percentageMultiplier *= 1 - clampDiscountRate(value / 100);
-          });
-
-          let globalRate = hasCartLevelPercentageDiscount
-            ? 1 - percentageMultiplier
+        const getThumbnailDiscountRate = (productId) => {
+          const globalRate = thumbnailDiscountState.globalRate;
+          const normalizedProductId = `${productId || ''}`.trim();
+          const productRate = normalizedProductId
+            ? Number(thumbnailDiscountState.productRateById.get(normalizedProductId) || 0)
             : 0;
 
-          if (!hasCartLevelPercentageDiscount && cartLevelDiscountApplications.length > 0) {
-            const originalTotalPrice = Number(cart?.original_total_price || cart?.items_subtotal_price || 0);
-            const finalTotalPrice = Number(cart?.total_price || 0);
-            if (originalTotalPrice > 0 && finalTotalPrice >= 0 && finalTotalPrice < originalTotalPrice) {
-              globalRate = clampDiscountRate((originalTotalPrice - finalTotalPrice) / originalTotalPrice);
-            }
+          if (globalRate > 0 && productRate > 0) {
+            return clampDiscountRate(1 - ((1 - globalRate) * (1 - productRate)));
           }
 
-          if (globalRate <= 0 && thumbnailFallbackGlobalRate > 0) {
-            globalRate = thumbnailFallbackGlobalRate;
-          }
-
-          const items = Array.isArray(cart?.items) ? cart.items : [];
-          let itemsOriginalTotal = 0;
-          let itemsFinalTotal = 0;
-          items.forEach((item) => {
-            const variantId = `${item?.variant_id || item?.id || ''}`.trim();
-            if (!variantId) return;
-
-            const originalLinePrice = Number(item?.original_line_price);
-            const finalLinePrice = Number(item?.final_line_price);
-            if (!Number.isFinite(originalLinePrice) || originalLinePrice <= 0) return;
-            if (!Number.isFinite(finalLinePrice) || finalLinePrice < 0) return;
-            const normalizedFinalLinePrice = Math.min(Math.max(0, finalLinePrice), originalLinePrice);
-            itemsOriginalTotal += originalLinePrice;
-            itemsFinalTotal += normalizedFinalLinePrice;
-
-            if (normalizedFinalLinePrice >= originalLinePrice) return;
-
-            const lineRate = clampDiscountRate((originalLinePrice - normalizedFinalLinePrice) / originalLinePrice);
-            if (lineRate <= 0) return;
-
-            const existingRate = nextVariantRateById.get(variantId);
-            if (!Number.isFinite(existingRate) || lineRate > existingRate) {
-              nextVariantRateById.set(variantId, lineRate);
-            }
-          });
-
-          let variantRatesExcludeGlobal = false;
-          if (globalRate > 0 && itemsOriginalTotal > 0 && itemsFinalTotal >= 0) {
-            const weightedLineRate = clampDiscountRate((itemsOriginalTotal - itemsFinalTotal) / itemsOriginalTotal);
-            const originalCartTotal = Number(cart?.original_total_price || cart?.items_subtotal_price || 0);
-            const finalCartTotal = Number(cart?.total_price || 0);
-            const cartTotalRate =
-              originalCartTotal > 0 && finalCartTotal >= 0
-                ? clampDiscountRate((originalCartTotal - finalCartTotal) / originalCartTotal)
-                : weightedLineRate;
-            const combinedRateFromWeightedLine = clampDiscountRate(
-              1 - ((1 - globalRate) * (1 - weightedLineRate))
-            );
-            const deltaIfLinesIncludeGlobal = Math.abs(weightedLineRate - cartTotalRate);
-            const deltaIfLinesExcludeGlobal = Math.abs(combinedRateFromWeightedLine - cartTotalRate);
-            variantRatesExcludeGlobal = deltaIfLinesExcludeGlobal + 0.0005 < deltaIfLinesIncludeGlobal;
-          }
-
-          return {
-            globalRate: clampDiscountRate(globalRate),
-            variantRateById: nextVariantRateById,
-            variantRatesExcludeGlobal,
-          };
-        };
-
-        const setThumbnailDiscountStateFromCart = (cart) => {
-          if (!cart || typeof cart !== 'object') return;
-          const nextState = readCartDiscountState(cart);
-          thumbnailDiscountState.globalRate = nextState.globalRate;
-          thumbnailDiscountState.variantRateById = nextState.variantRateById;
-          thumbnailDiscountState.variantRatesExcludeGlobal = Boolean(nextState.variantRatesExcludeGlobal);
-        };
-
-        const getThumbnailDiscountRate = (variantId) => {
-          const globalRate = thumbnailDiscountState.globalRate;
-          const normalizedVariantId = `${variantId || ''}`.trim();
-          if (normalizedVariantId) {
-            const variantRate = thumbnailDiscountState.variantRateById.get(normalizedVariantId);
-            if (Number.isFinite(variantRate) && variantRate > 0) {
-              if (globalRate > 0 && thumbnailDiscountState.variantRatesExcludeGlobal) {
-                return clampDiscountRate(1 - ((1 - globalRate) * (1 - variantRate)));
-              }
-              return clampDiscountRate(Math.max(variantRate, globalRate));
-            }
-          }
-          return globalRate;
+          return clampDiscountRate(Math.max(globalRate, productRate));
         };
 
         const applyThumbnailDiscountPricing = (thumbnail, purchaseState = {}) => {
@@ -354,7 +279,7 @@
           const comparePriceElement = thumbnail.querySelector('[data-thumbnail-price-compare]');
           if (!priceRow || !currentPriceElement || !comparePriceElement) return;
 
-          const nextVariantId = `${purchaseState.variantId || thumbnail.dataset.thumbnailVariantId || ''}`.trim();
+          const nextProductId = `${purchaseState.productId || thumbnail.dataset.thumbnailProductId || ''}`.trim();
           const currentPriceCents = parseCents(
             purchaseState.currentPriceCents ?? thumbnail.dataset.thumbnailPriceCents
           );
@@ -366,7 +291,7 @@
           const comparePriceText = `${purchaseState.comparePriceText || ''}`.trim();
 
           if (Number.isFinite(currentPriceCents) && currentPriceCents > 0) {
-            const discountRate = getThumbnailDiscountRate(nextVariantId);
+            const discountRate = getThumbnailDiscountRate(nextProductId);
             const hasDiscount = discountRate > 0;
             const discountedPriceCents = hasDiscount
               ? Math.max(0, Math.round(currentPriceCents * (1 - discountRate)))
@@ -418,29 +343,6 @@
           scope.querySelectorAll('.sb-product-thumbnail').forEach((thumbnail) => {
             applyThumbnailDiscountPricing(thumbnail);
           });
-        };
-
-        const hydrateThumbnailDiscountState = () => {
-          if (thumbnailDiscountHydrationPromise) return thumbnailDiscountHydrationPromise;
-
-          thumbnailDiscountHydrationPromise = fetch(thumbnailCartUrl('cart.js'), {
-            method: 'GET',
-            headers: { Accept: 'application/json' },
-            credentials: 'same-origin',
-          })
-            .then((response) => {
-              if (!response.ok) throw new Error('Cart pricing hydration failed');
-              return response.json();
-            })
-            .then((cart) => {
-              setThumbnailDiscountStateFromCart(cart);
-              syncThumbnailDiscountPricingScope(document);
-            })
-            .catch(() => {
-              // Keep default thumbnail pricing if cart fetch is unavailable.
-            });
-
-          return thumbnailDiscountHydrationPromise;
         };
 
         const getSelectedSwatch = (row) =>
@@ -1144,13 +1046,6 @@
           syncThumbnailPurchaseState(button);
         });
 
-        document.addEventListener('cart:update', (event) => {
-          const cart = event?.detail?.resource;
-          if (!cart || typeof cart !== 'object') return;
-          setThumbnailDiscountStateFromCart(cart);
-          syncThumbnailDiscountPricingScope(document);
-        });
-
         window.SBProductThumbnail = {
           ThemeEvents,
           dispatchSwatchVariantEvents,
@@ -1162,7 +1057,6 @@
         };
 
         initThumbnailMediaScope(document, { initSwatchInteractions: true });
-        hydrateThumbnailDiscountState();
         document.addEventListener('shopify:section:load', (event) => {
           initThumbnailMediaScope(event.target, { initSwatchInteractions: true });
         });

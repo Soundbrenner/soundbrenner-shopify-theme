@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "Soundbrenner theme",
-    "theme_version": "3.4",
+    "theme_version": "3.5",
     "theme_author": "Florian Simmendinger",
     "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
     "theme_support_url": "https://support.shopify.com/"
@@ -28,6 +28,58 @@
         "id": "sitewide_affiliate_discount_depth",
         "label": "Sitewide affiliate discount depth",
         "default": 20
+      },
+      {
+        "type": "header",
+        "content": "Storefront price overrides"
+      },
+      {
+        "type": "text",
+        "id": "storefront_price_override_product_id_1",
+        "label": "Override product ID 1",
+        "default": "4365763903553"
+      },
+      {
+        "type": "number",
+        "id": "storefront_price_override_discount_depth_1",
+        "label": "Override discount depth 1",
+        "default": 50
+      },
+      {
+        "type": "text",
+        "id": "storefront_price_override_product_id_2",
+        "label": "Override product ID 2",
+        "default": ""
+      },
+      {
+        "type": "number",
+        "id": "storefront_price_override_discount_depth_2",
+        "label": "Override discount depth 2",
+        "default": 0
+      },
+      {
+        "type": "text",
+        "id": "storefront_price_override_product_id_3",
+        "label": "Override product ID 3",
+        "default": ""
+      },
+      {
+        "type": "number",
+        "id": "storefront_price_override_discount_depth_3",
+        "label": "Override discount depth 3",
+        "default": 0
+      },
+      {
+        "type": "text",
+        "id": "storefront_price_override_product_id_4",
+        "label": "Override product ID 4",
+        "default": ""
+      },
+      {
+        "type": "number",
+        "id": "storefront_price_override_discount_depth_4",
+        "label": "Override discount depth 4",
+        "default": 0
       },
       {
         "type": "text",

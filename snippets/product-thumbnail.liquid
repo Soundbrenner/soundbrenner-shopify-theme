@@ -243,6 +243,7 @@
 
 <article
   class="sb-product-thumbnail"
+  {% if product != blank %}data-thumbnail-product-id="{{ product.id }}"{% endif %}
   data-thumbnail-variant-id="{{ thumbnail_variant_id }}"
   data-thumbnail-base-url="{{ thumbnail_url }}"
   {% if thumbnail_price_cents != blank %}data-thumbnail-price-cents="{{ thumbnail_price_cents }}"{% endif %}
