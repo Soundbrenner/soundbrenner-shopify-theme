@@ -249,6 +249,12 @@
             "heading": "INSERT IMAGE"
           }
         },
+        "text_mfDFqP": {
+          "type": "text",
+          "settings": {
+            "text": "<p>To put the Core on its rig, hover it right above the rig and let go. Once the Core drops on the rig, it will magnetically snap into place.</p><p>When placing the Core on its rig, make sure the buttons point towards the direction of your hand. To wear the Core on your other wrist, you can change the orientation of the screen in our mobile app.</p><h4>Tip</h4><p>Make sure that you hear and feel the spring-loaded pin when the Core locks into place on the rig. This will ensure it can’t fall off.</p>"
+          }
+        },
         "divider_dn4KAP": {
           "type": "divider",
           "settings": {}
@@ -332,6 +338,7 @@
         "heading_DWkemw",
         "text_HgaFMq",
         "heading_small_KqcB8G",
+        "text_mfDFqP",
         "divider_dn4KAP",
         "chapter_6",
         "accordion_item_1",
