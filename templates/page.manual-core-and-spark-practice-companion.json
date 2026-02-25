@@ -842,6 +842,27 @@
             "heading": "Get help"
           }
         },
+        "text_bR3bMT": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Connecting to your mobile device</strong></p><p>If you have trouble connecting to your mobile device, follow the steps outlined in the article below.</p>"
+          }
+        },
+        "button_BYVWaA": {
+          "type": "button",
+          "settings": {
+            "label": "Connection troubleshooting",
+            "button_size": "large",
+            "icon_position": "none",
+            "link": "https://support.soundbrenner.com/hc/en-us/articles/14659487836313-Core-Core-2-Spark-connection-troubleshooting"
+          }
+        },
+        "text_6mCaUq": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Soft restart</strong></p><p>If your device shows unexpected behavior, hold both buttons for 5 seconds and keep them pressed until recovery mode launches. Select restart with the bottom button to soft restart. If your device is unresponsive, try performing a hard restart.</p>"
+          }
+        },
         "divider_b3iNpz": {
           "type": "divider",
           "settings": {}
@@ -1038,6 +1059,9 @@
         "heading_8JzcNh",
         "vimeo_video_9C4c6x",
         "subheading_CEbFYN",
+        "text_bR3bMT",
+        "button_BYVWaA",
+        "text_6mCaUq",
         "divider_b3iNpz",
         "chapter_6",
         "accordion_item_1",
