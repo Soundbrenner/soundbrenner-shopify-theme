@@ -418,6 +418,52 @@
           "type": "divider",
           "settings": {}
         },
+        "heading_KPp8G4": {
+          "type": "heading",
+          "settings": {
+            "heading": "Practice tracker (Core 2/Spark only)"
+          }
+        },
+        "subheading_4FUbLa": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Header medium"
+          }
+        },
+        "text_TLzjQj": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Write your manual content here.</p>"
+          }
+        },
+        "image_FfyzYr": {
+          "type": "image",
+          "settings": {}
+        },
+        "text_6R9XD8": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Write your manual content here.</p>"
+          }
+        },
+        "image_NyDj7h": {
+          "type": "image",
+          "settings": {}
+        },
+        "text_Wph8pr": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Write your manual content here.</p>"
+          }
+        },
+        "divider_bc3Uzm": {
+          "type": "divider",
+          "settings": {}
+        },
+        "divider_yGiD6W": {
+          "type": "divider",
+          "settings": {}
+        },
         "chapter_6": {
           "type": "heading",
           "settings": {
@@ -531,6 +577,15 @@
         "text_kBrneM",
         "image_J9tiAi",
         "divider_Fnahzw",
+        "heading_KPp8G4",
+        "subheading_4FUbLa",
+        "text_TLzjQj",
+        "image_FfyzYr",
+        "text_6R9XD8",
+        "image_NyDj7h",
+        "text_Wph8pr",
+        "divider_bc3Uzm",
+        "divider_yGiD6W",
         "chapter_6",
         "accordion_item_1",
         "accordion_item_2",
