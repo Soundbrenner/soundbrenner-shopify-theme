@@ -963,6 +963,13 @@
             "question": "Privacy policy",
             "answer": "<p><a href=\"https://support.soundbrenner.com/hc/en-us/articles/900001248483-Privacy-policy-mobile-app\" target=\"_blank\" title=\"https://support.soundbrenner.com/hc/en-us/articles/900001248483-Privacy-policy-mobile-app\">Our mobile app's privacy policy can be viewed here.</a></p>"
           }
+        },
+        "accordion_item_ebWN9y": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Disposal and recycling information",
+            "answer": "<p>Your Soundbrenner Core/Spark should be disposed at a recycling center due to the device’s electronic nature in order to encourage sustainable reuse and conservation of resources.</p>"
+          }
         }
       },
       "block_order": [
@@ -1133,7 +1140,8 @@
         "accordion_item_DxTmxW",
         "accordion_item_Q6Gzia",
         "accordion_item_jEVqLT",
-        "accordion_item_x6nkte"
+        "accordion_item_x6nkte",
+        "accordion_item_ebWN9y"
       ],
       "settings": {}
     },
