@@ -949,6 +949,13 @@
             "question": "Warranty",
             "answer": "<p><a href=\"https://support.soundbrenner.com/hc/en-us/articles/900001269586-Terms-of-warranty\" target=\"_blank\" title=\"https://support.soundbrenner.com/hc/en-us/articles/900001269586-Terms-of-warranty\">Our terms of warranty can be viewed here.</a></p>"
           }
+        },
+        "accordion_item_jEVqLT": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Terms of use",
+            "answer": "<p><a href=\"https://support.soundbrenner.com/hc/en-us/articles/900001248683-Terms-of-use-mobile-app\" target=\"_blank\" title=\"https://support.soundbrenner.com/hc/en-us/articles/900001248683-Terms-of-use-mobile-app\">Our mobile app's terms of use can be viewed here.</a></p>"
+          }
         }
       },
       "block_order": [
@@ -1117,7 +1124,8 @@
         "accordion_item_RrChAK",
         "accordion_item_cJrmFb",
         "accordion_item_DxTmxW",
-        "accordion_item_Q6Gzia"
+        "accordion_item_Q6Gzia",
+        "accordion_item_jEVqLT"
       ],
       "settings": {}
     },
