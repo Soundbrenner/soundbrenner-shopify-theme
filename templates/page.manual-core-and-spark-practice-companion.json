@@ -766,6 +766,18 @@
           "type": "divider",
           "settings": {}
         },
+        "heading_CkQRPN": {
+          "type": "heading",
+          "settings": {
+            "heading": "Other apps"
+          }
+        },
+        "text_8awQtz": {
+          "type": "text",
+          "settings": {
+            "text": "<h3>Timer</h3><p>Press the bottom button to select if you want to edit the hours, minutes or seconds. Once selected, use the wheel to edit the time. Tap the soundwave twice quickly to start or pause the timer.</p><h3>Stopwatch</h3><p>Tap the soundwave twice quickly to start or pause the stopwatch.</p><h3>Alarm</h3><p>To create an alarm, select \"New alarm\" with the wheel and press the bottom button. Use the wheel to set the time of your alarm. With the bottom button, select which days the alarm should be active and turn each on by twisting the wheel right. The alarm will be active on days that are underlined. If no days are underlined, the alarm will be by default active on all days. </p><p>Change the state of the alarm by selecting \"On\" with the bottom button. Twist the wheel to the right to select \"Off\" or \"Delete\". Confirm your selection by pressing the bottom button.</p><h3>Settings</h3><p><strong>Airplane mode</strong><br/>Disable all radio signals such as Bluetooth. While airplane mode is on, your Core won’t be able to communicate with your mobile device.</p><p><strong>Bluetooth</strong><br/>Shows your current connection status. Press the bottom button to unpair and make your Core ready to pair again.</p><p><strong>Factory reset</strong><br/>This will erase all data and preferences and reset the Core back to factory settings. The device will be locked until the setup is completed with the Soundbrenner app.</p>"
+          }
+        },
         "divider_b3iNpz": {
           "type": "divider",
           "settings": {}
@@ -949,6 +961,8 @@
         "text_p6RUM9",
         "image_ctxrVb",
         "divider_yGiD6W",
+        "heading_CkQRPN",
+        "text_8awQtz",
         "divider_b3iNpz",
         "chapter_6",
         "accordion_item_1",
