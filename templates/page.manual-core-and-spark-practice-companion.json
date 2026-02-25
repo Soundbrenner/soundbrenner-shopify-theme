@@ -863,6 +863,16 @@
             "text": "<p><strong>Soft restart</strong></p><p>If your device shows unexpected behavior, hold both buttons for 5 seconds and keep them pressed until recovery mode launches. Select restart with the bottom button to soft restart. If your device is unresponsive, try performing a hard restart.</p>"
           }
         },
+        "image_L8yyXG": {
+          "type": "image",
+          "settings": {}
+        },
+        "text_nGgRmi": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Hard restart</strong></p><p>This only works if your Core/Spark is unresponsive. Make sure the charging cable is connected to a power source. Then attach the charging cable to the magnetic port. Detach it and attach the charging cable a second time to complete the hard restart.</p>"
+          }
+        },
         "divider_b3iNpz": {
           "type": "divider",
           "settings": {}
@@ -1062,6 +1072,8 @@
         "text_bR3bMT",
         "button_BYVWaA",
         "text_6mCaUq",
+        "image_L8yyXG",
+        "text_nGgRmi",
         "divider_b3iNpz",
         "chapter_6",
         "accordion_item_1",
