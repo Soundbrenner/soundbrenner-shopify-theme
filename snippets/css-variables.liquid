@@ -92,6 +92,8 @@
     --font-size-form-input: 1rem;
     --font-size-caption: 0.875rem;
     --font-size-caption-2: 0.75rem;
+    --font-hero-line-height:
+      {% if sb_display_font_family_downcase contains 'merriweather' %}1.25{% else %}1.1{% endif %};
     --font-title-line-height:
       {% if sb_display_font_family_downcase contains 'merriweather' %}1.35{% else %}1.25{% endif %};
 
@@ -438,7 +440,7 @@
   .font-hero {
     font-family: var(--font-display--family);
     font-size: var(--font-size-hero);
-    line-height: 1.1;
+    line-height: var(--font-hero-line-height);
   }
 
   .font-title {
@@ -456,7 +458,7 @@
   .font-body {
     font-family: var(--font-primary--family);
     font-size: var(--font-size-body);
-    line-height: 1.35;
+    line-height: 1.4;
   }
 
   .font-caption {

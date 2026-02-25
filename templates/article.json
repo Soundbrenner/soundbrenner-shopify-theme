@@ -11,24 +11,11 @@
   "sections": {
     "main": {
       "type": "main-blog-post",
-      "blocks": {
-        "sidebar_item_6NQzz9": {
-          "type": "sidebar_item",
-          "settings": {
-            "content_type": "article",
-            "article": "",
-            "product": "",
-            "title": "",
-            "url": "",
-            "description": ""
-          }
-        }
-      },
-      "block_order": [
-        "sidebar_item_6NQzz9"
-      ],
       "settings": {
-        "sidebar_heading": "Top articles and product picks"
+        "sidebar_promo_title": "The Metronome app by Soundbrenner",
+        "sidebar_promo_text": "Make music practice addictive. Try it free.",
+        "sidebar_promo_button_label": "Learn more",
+        "sidebar_promo_button_link": ""
       }
     },
     "seasonal_hero": {
