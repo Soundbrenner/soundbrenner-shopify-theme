@@ -453,7 +453,7 @@
         "text_Wph8pr": {
           "type": "text",
           "settings": {
-            "text": "<p>Write your manual content here.</p>"
+            "text": "<p>Tap twice quickly during an active session to pause or end it. When editing the session, you can delete it or adjust its start and end times.</p>"
           }
         },
         "divider_bc3Uzm": {
