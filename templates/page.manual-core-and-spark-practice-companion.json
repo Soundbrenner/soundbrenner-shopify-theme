@@ -808,6 +808,18 @@
             "text": "<p>To create an alarm, select \"New alarm\" with the wheel and press the bottom button. Use the wheel to set the time of your alarm. With the bottom button, select which days the alarm should be active and turn each on by twisting the wheel right. The alarm will be active on days that are underlined. If no days are underlined, the alarm will be by default active on all days. </p><p>Change the state of the alarm by selecting \"On\" with the bottom button. Twist the wheel to the right to select \"Off\" or \"Delete\". Confirm your selection by pressing the bottom button.</p>"
           }
         },
+        "subheading_8T3AUg": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Settings"
+          }
+        },
+        "text_DcDGni": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Airplane mode</strong></p><p>Disable all radio signals such as Bluetooth. While airplane mode is on, your device won’t be able to communicate with your mobile device.</p><p><strong>Bluetooth</strong></p><p>Shows your current connection status. Press the bottom button to unpair and make your device ready to pair again.</p><p><strong>Factory reset</strong></p><p>This will erase all data and preferences and reset the Core/Spark back to factory settings. The device will be locked until the setup is completed with the Soundbrenner app.</p>"
+          }
+        },
         "divider_b3iNpz": {
           "type": "divider",
           "settings": {}
@@ -998,6 +1010,8 @@
         "text_rfGpyy",
         "subheading_3rT9jG",
         "text_hdLRXH",
+        "subheading_8T3AUg",
+        "text_DcDGni",
         "divider_b3iNpz",
         "chapter_6",
         "accordion_item_1",
