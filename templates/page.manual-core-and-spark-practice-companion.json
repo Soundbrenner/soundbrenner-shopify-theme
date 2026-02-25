@@ -679,6 +679,63 @@
           "type": "divider",
           "settings": {}
         },
+        "heading_w4TnW9": {
+          "type": "heading",
+          "settings": {
+            "heading": "Smartwatch"
+          }
+        },
+        "subheading_nPMqjm": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Smartphone notifications"
+          }
+        },
+        "text_U3HEgD": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Smartphone notifications are supported for iOS and Android mobile devices. The Core/Spark will receive the same notifications as your mobile device and is compatible with all apps. At the moment it’s not possible to enable or disable notifications for particular apps independently from your mobile device.</p><p>For the Core/Spark to receive notifications, iOS and Android require a number of permissions. When you connect your device for the first time to our app, we will ask for these permissions automatically during the device setup. </p><p>If you are unable to receive notifications after the setup, check out our troubleshooting article here:</p>"
+          }
+        },
+        "button_QrUATG": {
+          "type": "button",
+          "settings": {
+            "label": "View article (English only)",
+            "button_size": "large",
+            "icon_position": "none",
+            "link": "https://support.soundbrenner.com/hc/en-us/articles/900003275486-Core-smartphone-notifications-troubleshooting"
+          }
+        },
+        "text_X9Jggx": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Reading notifications</strong></p><p>New notifications automatically appear on the Core/Spark when you wake its screen.</p>"
+          }
+        },
+        "image_pWEwmn": {
+          "type": "image",
+          "settings": {}
+        },
+        "text_rAXGi4": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Write your manual content here.</p>"
+          }
+        },
+        "image_JwgLWG": {
+          "type": "image",
+          "settings": {}
+        },
+        "text_nVhP36": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Write your manual content here.</p>"
+          }
+        },
+        "divider_BmnLkM": {
+          "type": "divider",
+          "settings": {}
+        },
         "divider_yGiD6W": {
           "type": "divider",
           "settings": {}
@@ -846,6 +903,16 @@
         "text_BGtakD",
         "image_fbRE9a",
         "divider_NC9YAa",
+        "heading_w4TnW9",
+        "subheading_nPMqjm",
+        "text_U3HEgD",
+        "button_QrUATG",
+        "text_X9Jggx",
+        "image_pWEwmn",
+        "text_rAXGi4",
+        "image_JwgLWG",
+        "text_nVhP36",
+        "divider_BmnLkM",
         "divider_yGiD6W",
         "chapter_6",
         "accordion_item_1",
