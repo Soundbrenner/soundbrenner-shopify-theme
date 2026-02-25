@@ -323,18 +323,16 @@
       </div>
       <div class="sb-blog-overview__sticky-backdrop" data-sb-blog-filter-backdrop aria-hidden="true"></div>
 
-      {% if section.settings.show_blog_title %}
-        <header class="sb-blog-overview__header">
-          <p class="sb-blog-overview__eyebrow font-caption weight-regular">
-            {% if paginate.current_page > 1 %}
-              Archive
-            {% else %}
-              Latest
-            {% endif %}
-          </p>
-          <h1 class="sb-blog-overview__title font-title weight-bold">{{ blog_page_title }}</h1>
-        </header>
-      {% endif %}
+      <header class="sb-blog-overview__header">
+        <p class="sb-blog-overview__eyebrow font-caption weight-regular">
+          {% if paginate.current_page > 1 %}
+            Archive
+          {% else %}
+            Latest
+          {% endif %}
+        </p>
+        <h1 class="sb-blog-overview__title font-title weight-bold">{{ blog_page_title }}</h1>
+      </header>
 
       {% liquid
         assign show_featured_layout = false
@@ -504,8 +502,8 @@
           {% endif %}
 
           <div class="sb-blog-overview__archive{% unless show_featured_layout %} sb-blog-overview__archive--paginated{% endunless %}" aria-label="Archive">
-            {% if show_featured_layout and section.settings.archive_heading != blank %}
-              <h2 class="sb-blog-overview__archive-title font-title weight-bold">{{ section.settings.archive_heading }}</h2>
+            {% if show_featured_layout %}
+              <h2 class="sb-blog-overview__archive-title font-title weight-bold">Archive</h2>
             {% endif %}
 
             <div class="sb-blog-overview__archive-list">
@@ -2091,18 +2089,6 @@
   "name": "Main blog",
   "settings": [
     {
-      "type": "checkbox",
-      "id": "show_blog_title",
-      "label": "Show blog title",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "archive_heading",
-      "label": "Archive heading",
-      "default": "Archive"
-    },
-    {
       "type": "header",
       "content": "Sidebar box 1"
     },
@@ -2151,7 +2137,7 @@
       "type": "text",
       "id": "sidebar_promo_button_label",
       "label": "Promo button label",
-      "default": "Learn now"
+      "default": "Learn more"
     },
     {
       "type": "url",

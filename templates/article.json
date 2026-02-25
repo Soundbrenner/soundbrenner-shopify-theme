@@ -31,9 +31,40 @@
       "settings": {
         "sidebar_heading": "Top articles and product picks"
       }
+    },
+    "seasonal_hero": {
+      "type": "hero-card",
+      "settings": {
+        "use_seasonal_hero_card": true,
+        "use_affiliate_metaobject": false,
+        "use_resource_title_description": false,
+        "use_product_page_metaobjects": false,
+        "kicker": "",
+        "headline": "",
+        "subheadline": "",
+        "show_button": false,
+        "button_label": "Placeholder",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": "",
+        "enable_app_download_buttons": false
+      }
+    },
+    "often_bought_together": {
+      "type": "often-bought-together",
+      "settings": {
+        "title": "Often bought together",
+        "use_manual_products": false,
+        "manual_product_1": "",
+        "manual_product_2": "",
+        "manual_product_3": "",
+        "manual_product_4": ""
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "seasonal_hero",
+    "often_bought_together"
   ]
 }

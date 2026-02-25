@@ -214,19 +214,19 @@
 
         const thumbnailProductOverrideEntries = [
           {
-            productId: {{ settings.storefront_price_override_product_id_1 | default: '' | strip | json }},
+            productId: {{ all_products[settings.storefront_price_override_product_id_1].id | default: '' | json }},
             discountPercent: Number({{ settings.storefront_price_override_discount_depth_1 | default: 0 | json }}),
           },
           {
-            productId: {{ settings.storefront_price_override_product_id_2 | default: '' | strip | json }},
+            productId: {{ all_products[settings.storefront_price_override_product_id_2].id | default: '' | json }},
             discountPercent: Number({{ settings.storefront_price_override_discount_depth_2 | default: 0 | json }}),
           },
           {
-            productId: {{ settings.storefront_price_override_product_id_3 | default: '' | strip | json }},
+            productId: {{ all_products[settings.storefront_price_override_product_id_3].id | default: '' | json }},
             discountPercent: Number({{ settings.storefront_price_override_discount_depth_3 | default: 0 | json }}),
           },
           {
-            productId: {{ settings.storefront_price_override_product_id_4 | default: '' | strip | json }},
+            productId: {{ all_products[settings.storefront_price_override_product_id_4].id | default: '' | json }},
             discountPercent: Number({{ settings.storefront_price_override_discount_depth_4 | default: 0 | json }}),
           },
         ];

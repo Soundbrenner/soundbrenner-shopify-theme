@@ -40,10 +40,9 @@
         "default": 15
       },
       {
-        "type": "text",
+        "type": "product",
         "id": "storefront_price_override_product_id_1",
-        "label": "Override product ID 1",
-        "default": "4365763903553"
+        "label": "Override product 1"
       },
       {
         "type": "number",
@@ -52,10 +51,9 @@
         "default": 50
       },
       {
-        "type": "text",
+        "type": "product",
         "id": "storefront_price_override_product_id_2",
-        "label": "Override product ID 2",
-        "default": "0"
+        "label": "Override product 2"
       },
       {
         "type": "number",
@@ -64,10 +62,9 @@
         "default": 0
       },
       {
-        "type": "text",
+        "type": "product",
         "id": "storefront_price_override_product_id_3",
-        "label": "Override product ID 3",
-        "default": "0"
+        "label": "Override product 3"
       },
       {
         "type": "number",
@@ -76,10 +73,9 @@
         "default": 0
       },
       {
-        "type": "text",
+        "type": "product",
         "id": "storefront_price_override_product_id_4",
-        "label": "Override product ID 4",
-        "default": "0"
+        "label": "Override product 4"
       },
       {
         "type": "number",

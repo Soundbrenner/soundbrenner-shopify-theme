@@ -12,8 +12,6 @@
     "main": {
       "type": "main-blog",
       "settings": {
-        "show_blog_title": true,
-        "archive_heading": "Archive",
         "sidebar_popular_item_1_article": "articles/soundbrenner-core-vs-pulse",
         "sidebar_popular_item_2_article": "articles/why-you-should-use-a-vibrating-metronome",
         "sidebar_popular_item_3_article": "articles/best-earplugs-for-musicians-in-recommended-by-musicians",
@@ -21,7 +19,7 @@
         "sidebar_popular_item_5_article": "articles/why-every-musician-should-invest-in-in-ear-monitors",
         "sidebar_promo_title": "The Metronome app by Soundbrenner",
         "sidebar_promo_text": "Make music practice addictive. Try it free.",
-        "sidebar_promo_button_label": "Learn now",
+        "sidebar_promo_button_label": "Learn more",
         "sidebar_promo_button_link": "shopify://pages/the-metronome-app"
       }
     },
