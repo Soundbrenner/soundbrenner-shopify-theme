@@ -900,6 +900,13 @@
             "question": "Warning: medical device interference",
             "answer": "<p>If you use any medical device that may be affected by the Soundbrenner Core/Spark, consult with your physician before using the product. Medical devices include (but are not limited to):</p><ul><li>Coronary Stents</li><li>Defibrillators</li><li>Pacemakers</li><li>Any other implanted medical device</li></ul><p>Stop using the Soundbrenner Core/Spark if you suspect that it is interfering with your medical device or if you experience any discomfort.</p>"
           }
+        },
+        "accordion_item_RHcGrL": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Warning: frequent and prolonged usage",
+            "answer": "<p>Frequent and prolonged use of the Soundbrenner Core/Spark may cause skin irritation in some users. If you experience itchiness, redness, and/or swelling while using the Soundbrenner Core/Spark, remove the device immediately and stop using it until your skin returns to normal. Consult your doctor should any of the symptoms persist.</p>"
+          }
         }
       },
       "block_order": [
@@ -1061,7 +1068,8 @@
         "divider_89iXCF",
         "heading_jbn8mk",
         "accordion_item_YML4rP",
-        "accordion_item_EHWHD7"
+        "accordion_item_EHWHD7",
+        "accordion_item_RHcGrL"
       ],
       "settings": {}
     },
