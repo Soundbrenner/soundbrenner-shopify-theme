@@ -548,6 +548,12 @@
           "type": "image",
           "settings": {}
         },
+        "text_TqbGXK": {
+          "type": "text",
+          "settings": {
+            "text": "<h4>Tip</h4><p>An alternative way to start the metronome is to long-press the bottom button. Once you release the button, the metronome starts. This makes it easy to sync your device's starting time with the rhythm of something you're listening to.</p>"
+          }
+        },
         "divider_yGiD6W": {
           "type": "divider",
           "settings": {}
@@ -690,6 +696,7 @@
         "subheading_NydDnh",
         "text_pitfrD",
         "image_FV98pp",
+        "text_TqbGXK",
         "divider_yGiD6W",
         "chapter_6",
         "accordion_item_1",
