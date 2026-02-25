@@ -616,6 +616,30 @@
             "text": "<p>Launch the \"Microphone Tuner\" app and play a note - your device will detect the closest note and the cent deviation to it. As you tune, the LED ring changes from red to green to signal that the note is perfectly tuned.</p><p>Customize the tuning reference from 440 Hz to your preference by pressing the bottom button and twisting the wheel.</p>"
           }
         },
+        "image_D7bYPy": {
+          "type": "image",
+          "settings": {}
+        },
+        "divider_pgRMDY": {
+          "type": "divider",
+          "settings": {}
+        },
+        "subheading_tTkj9B": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Contact tuner"
+          }
+        },
+        "text_hfkATY": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Core 1 includes the \"Contact tuner\" app pre-installed. For Core 2, purchasing a magnetic tuning accessory is required. You can either get a tuning clip, or tuning mounts with adhesives. Both come with a unique code to unlock the \"Contact tuner\" app on Core 2. Contact tuning is designed to work with guitar, bass guitar, ukulele and violin.</p><h4>Tip</h4><p>If you want to purchase magnetic tuning accessories, go to:</p>"
+          }
+        },
+        "image_4Q8cPB": {
+          "type": "image",
+          "settings": {}
+        },
         "divider_yGiD6W": {
           "type": "divider",
           "settings": {}
@@ -771,6 +795,11 @@
         "heading_kFjpNR",
         "subheading_bE3ihU",
         "text_r7gJrb",
+        "image_D7bYPy",
+        "divider_pgRMDY",
+        "subheading_tTkj9B",
+        "text_hfkATY",
+        "image_4Q8cPB",
         "divider_yGiD6W",
         "chapter_6",
         "accordion_item_1",
