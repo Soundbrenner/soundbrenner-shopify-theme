@@ -977,6 +977,13 @@
             "question": "EU compliance statement",
             "answer": "<p>Soundbrenner Limited hereby declares that the Soundbrenner Core/Spark is in compliance with the essential requirements and other relevant provisions of Directive 1995/5/EC.</p>"
           }
+        },
+        "accordion_item_cBk3Ra": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "FCC compliance statement",
+            "answer": "<p>The device complies with part 15 of the FCC rules. Operation is subject to the following two conditions:</p><ul><li>This device may not cause harmful interference</li><li>This device must accept any interference received, including interference that may cause undesired operation</li></ul>"
+          }
         }
       },
       "block_order": [
@@ -1149,7 +1156,8 @@
         "accordion_item_jEVqLT",
         "accordion_item_x6nkte",
         "accordion_item_ebWN9y",
-        "accordion_item_9qnJwy"
+        "accordion_item_9qnJwy",
+        "accordion_item_cBk3Ra"
       ],
       "settings": {}
     },
