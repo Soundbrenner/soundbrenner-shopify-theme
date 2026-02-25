@@ -516,6 +516,22 @@
           "type": "divider",
           "settings": {}
         },
+        "subheading_t9TDDQ": {
+          "type": "subheading",
+          "settings": {
+            "heading": "How to feel the beat"
+          }
+        },
+        "text_3WUEWG": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Using a vibrational metronome is different. When you first start using the Core/Spark, you need to get used to it first. Don’t give up - you’ll get better over time. It’s just like learning to practice with a traditional metronome!</p><p>Over time, the vibration can even become a subconscious feeling that helps you keep the beat without thinking about it.</p>"
+          }
+        },
+        "divider_fjemp8": {
+          "type": "divider",
+          "settings": {}
+        },
         "divider_yGiD6W": {
           "type": "divider",
           "settings": {}
@@ -652,6 +668,9 @@
         "text_rgUPrz",
         "image_E3Fych",
         "divider_3w6Xgd",
+        "subheading_t9TDDQ",
+        "text_3WUEWG",
+        "divider_fjemp8",
         "divider_yGiD6W",
         "chapter_6",
         "accordion_item_1",
