@@ -1,0 +1,594 @@
+{
+  "generatedAt": "2026-02-26T00:42:16.802Z",
+  "model": "gpt-4o-mini",
+  "poolCount": 112,
+  "candidateCount": 28,
+  "candidates": [
+    {
+      "id": "gid://shopify/Article/595087917307",
+      "title": "The Soundbrenner Christmas Gift Guide 2025",
+      "primary_reason": "Seasonal campaign",
+      "reason_code": "seasonal_campaign",
+      "confidence": 0.9,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/595087917307",
+        "title": "The Soundbrenner Christmas Gift Guide 2025",
+        "publishedAt": "2025-12-11T09:52:41Z",
+        "tags": [
+          "Gift guides"
+        ],
+        "snippet": "Shopping for someone who loves quality audio? Soundbrenner's holiday lineup has something for everyone, from professionals to casual listeners. Here's our guide to finding the perfect gift. Best overall: Soundbrenner Wave in-ear monitors ($179, now $93) The Wave isn't just for musicians. These professional-grade IEMs work for anyone who cares about sound quality. For musicians: Studio-grade monitoring with a hybrid 1",
+        "reasons": [
+          "seasonal_campaign",
+          "listicle"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/594798117115",
+      "title": "The ultimate Soundbrenner Black Friday guide",
+      "primary_reason": "Seasonal campaign",
+      "reason_code": "seasonal_campaign",
+      "confidence": 0.9,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/594798117115",
+        "title": "The ultimate Soundbrenner Black Friday guide",
+        "publishedAt": "2025-10-30T03:44:50Z",
+        "tags": [
+          "Gift guides"
+        ],
+        "snippet": "Best gear to upgrade your setup Black Friday is the perfect time to elevate your music setup with Soundbrenner’s award-winning tools. Whether you’re a touring musician, a passionate practice warrior, or a serious music listener, these products will transform how you make and experience music. #1 Wave in-ear monitors: professional sound in your pocket Why it’s #1: If there’s one piece of Soundbrenner gear that deserve",
+        "reasons": [
+          "seasonal_campaign",
+          "listicle"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/594181718267",
+      "title": "Introducing the Soundbrenner Spark",
+      "primary_reason": "Announcement",
+      "reason_code": "announcement",
+      "confidence": 0.9,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/594181718267",
+        "title": "Introducing the Soundbrenner Spark",
+        "publishedAt": "2025-08-04T05:05:16Z",
+        "tags": [
+          "By_product Spark practice companion",
+          "Company news"
+        ],
+        "snippet": "The Soundbrenner Spark is a kid-sized wearable inspired by the award-winning Core 2 . Designed for children aged 5 to 15, Spark brings professional-grade haptic rhythm tools to smaller wrists in a fun, durable format built for learning through play. It adapts Core 2 features into a compact design with silent vibrations, built-in tuning, a decibel meter, and more—all optimized for intuitive, screen-free practice. What",
+        "reasons": [
+          "announcement"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/593534943483",
+      "title": "Eco-friendly upgrades every musician should try for Earth Day 2025",
+      "primary_reason": "Seasonal campaign",
+      "reason_code": "seasonal_campaign",
+      "confidence": 0.9,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/593534943483",
+        "title": "Festival season 2025: the 10 essentials to survive Glastonbury, Tomorrowland & Fuji Rock",
+        "publishedAt": "2025-05-09T09:32:19Z",
+        "tags": [
+          "By_product Minuendo earplugs",
+          "Product tips"
+        ],
+        "snippet": "This isn’t your cute little influencer guide with crochet tops and glitter fanny packs. This is the survival kit for people who actually live the festival—camping in the rain, dancing till sunrise, and losing their voices before the second day is over. Each festival comes with its own hazards: Glastonbury is mud and chaos. Tomorrowland is overdrive. Fuji Rock? It’s beautiful and brutal. Whether it’s your first time o",
+        "reasons": [
+          "seasonal_campaign"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/592117203195",
+      "title": "Top 10 best music gear so far in 2023",
+      "primary_reason": "Older year",
+      "reason_code": "older_year",
+      "confidence": 0.9,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/592117203195",
+        "title": "Top 10 best music gear so far in 2023",
+        "publishedAt": "2024-08-16T04:35:40Z",
+        "tags": [
+          "Product tips"
+        ],
+        "snippet": "2023 is proving to be an exciting year for musicians. From cutting-edge tech to beloved classics, the world of music gear is buzzing with options. In this blog, we'll walk you through the top 10 pieces of gear that have caught our attention this year. P.S. We at Soundbrenner are hosting a massive giveaway (worth US $2500) featuring all the gear mentioned below! You can sign up for it here . (The giveaway ends on the ",
+        "reasons": [
+          "older_year",
+          "listicle"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/592115466491",
+      "title": "Core Limited Edition 2022: Introducing the space cadet blue",
+      "primary_reason": "Older year",
+      "reason_code": "older_year",
+      "confidence": 0.9,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/592115466491",
+        "title": "Core Limited Edition 2022: Introducing the space cadet blue",
+        "publishedAt": "2024-08-15T19:03:00Z",
+        "tags": [
+          "By_product Core 2 practice companion",
+          "Company news"
+        ],
+        "snippet": "Something special is launching... Are you ready to take your music practice to new heights? Introducing the all new 2022 Core Limited Edition in Space Cadet Blue . Voted by YOU, our musician community, as our top color choice of 2022. Only 250 units will be available upon its first release. Save the date and watch out for the exciting drop on Friday, July 15th, 2022, at 9:00 AM PST! You can also sign up to get priori",
+        "reasons": [
+          "older_year",
+          "announcement"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/592115400955",
+      "title": "Exciting updates on The Metronome App by Soundbrenner",
+      "primary_reason": "Announcement",
+      "reason_code": "announcement",
+      "confidence": 0.9,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/592115400955",
+        "title": "Exciting updates on The Metronome App by Soundbrenner",
+        "publishedAt": "2024-08-15T18:40:34Z",
+        "tags": [
+          "By_product The Metronome app",
+          "Company news"
+        ],
+        "snippet": "Musicians, we’re thrilled to share our latest updates to The Metronome App by Soundbrenner (version 1.30.0). These new features are the top suggestions requested by you ! This app is currently available on iOS only, with an Android version launching later this year. What's new in The Metronome app by Soundbrenner? New features for all app users Playback counter Get organized for your next practice or performance by s",
+        "reasons": [
+          "announcement"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/592114843899",
+      "title": "Genki Wave: Introducing the midi controller ring for musicians",
+      "primary_reason": "Announcement",
+      "reason_code": "announcement",
+      "confidence": 0.9,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/592114843899",
+        "title": "Genki Wave: Introducing the midi controller ring for musicians",
+        "publishedAt": "2024-08-15T16:31:16Z",
+        "tags": [
+          "By_product Genki Wave MIDI ring",
+          "Company news"
+        ],
+        "snippet": "Unlock your creative expression with Genki Wave You might have seen videos of musicians wearing this ring and waving their hands around. No, it's not witchcraft or a new form of sorcery. Meet the Genki Wave ring - your finger armor for music creativity. At Soundbrenner, we're no strangers to the world of innovative music wearables. When we came across the Wave ring, we were instantly intrigued. Designed to help you c",
+        "reasons": [
+          "announcement"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/594457002235",
+      "title": "Best in-ear monitors for singers: from rehearsal to recording",
+      "primary_reason": "Listicle",
+      "reason_code": "listicle",
+      "confidence": 0.8,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/594457002235",
+        "title": "Best in-ear monitors for singers: from rehearsal to recording",
+        "publishedAt": "2025-09-05T08:14:31Z",
+        "tags": [
+          "By_product Wave in-ear monitors",
+          "Product tips"
+        ],
+        "snippet": "For singers, the way you hear yourself is directly tied to how well you perform. When monitoring falls short, pitch accuracy suffers, vocal strain increases, and confidence quickly fades. Traditional stage wedges or consumer earbuds often make matters worse, leaving vocalists battling against noisy environments instead of focusing on their delivery. That’s why in-ear monitors (IEMs) have become the gold standard for ",
+        "reasons": [
+          "listicle"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/594334941435",
+      "title": "Best gifts for musicians and creators in 2025",
+      "primary_reason": "Listicle",
+      "reason_code": "listicle",
+      "confidence": 0.8,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/594334941435",
+        "title": "Best gifts for musicians and creators in 2025",
+        "publishedAt": "2025-08-22T05:15:10Z",
+        "tags": [
+          "Gift guides"
+        ],
+        "snippet": "Finding the right gift for musicians, gamers, or creators can be challenging. The best presents are useful every day, improve their creative workflow, and show you understand their passion. This guide highlights the best gifts for musicians in 2025 that focus on sound, comfort, and inspiration. 1. Wave in ear monitors – professional sound for musicians and creators If you want a gift that will truly impress, the Wave",
+        "reasons": [
+          "listicle"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/593678369019",
+      "title": "3 signs the Soundbrenner Wave in-ear monitors might (in the best way) ruin your life",
+      "primary_reason": "Listicle",
+      "reason_code": "listicle",
+      "confidence": 0.8,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/593678369019",
+        "title": "3 signs the Soundbrenner Wave in-ear monitors might (in the best way) ruin your life",
+        "publishedAt": "2025-06-05T10:01:58Z",
+        "tags": [
+          "By_product Wave in-ear monitors",
+          "Product tips"
+        ],
+        "snippet": "Looking for the best in-ear monitors under $100? We need to have an honest conversation. The Soundbrenner Wave in-ear monitors are about to disrupt your entire audio ecosystem, and frankly, we're not sorry about it. 1. You'll become that person who notices bad audio everywhere Remember when you were blissfully unaware that your friend's Bluetooth speaker sounded like it was drowning in a fishbowl? Those days are over",
+        "reasons": [
+          "listicle"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/592842195195",
+      "title": "Top 5: Best microphones for musicians and creators in 2025",
+      "primary_reason": "Listicle",
+      "reason_code": "listicle",
+      "confidence": 0.8,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/592842195195",
+        "title": "Top 5: Best microphones for musicians and creators in 2025",
+        "publishedAt": "2025-01-29T05:11:02Z",
+        "tags": [
+          "Music insights"
+        ],
+        "snippet": "A great microphone can transform your craft, whether you’re recording music, creating a podcast, or producing content for your audience. As technology evolves, 2025 brings a wealth of microphone options catering to various needs and budgets. Here are the top 5 microphones for musicians and creators in 2025. These selections represent the best in sound quality, versatility, and value, with one mic standing out for red",
+        "reasons": [
+          "listicle"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/592388849915",
+      "title": "Top 12 In-ear monitors under $100, $300, $500, and $1000",
+      "primary_reason": "Listicle",
+      "reason_code": "listicle",
+      "confidence": 0.8,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/592388849915",
+        "title": "Top 12 In-ear monitors under $100, $300, $500, and $1000",
+        "publishedAt": "2024-10-10T10:13:04Z",
+        "tags": [
+          "By_product Wave in-ear monitors",
+          "Product tips"
+        ],
+        "snippet": "Looking for a new pair of in-ear monitors (IEMs) without breaking the bank? We’ve got you covered! Whether you're a casual listener or a budding professional, we’ve compiled the best IEMs at various price points. From affordable options under $100 to premium picks under $1000, this list is designed to help you find the right fit for your needs and budget. In-ear monitors under $100 1. Soundbrenner WAVE If you're look",
+        "reasons": [
+          "listicle"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/592118874363",
+      "title": "Music traditions from around the world: Our top 10 picks",
+      "primary_reason": "Listicle",
+      "reason_code": "listicle",
+      "confidence": 0.8,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/592118874363",
+        "title": "Music traditions from around the world: Our top 10 picks",
+        "publishedAt": "2024-08-16T12:59:43Z",
+        "tags": [
+          "Music insights"
+        ],
+        "snippet": "Let’s embark on a melodic journey that spans continents and cultures. Music is a universal language that knows no limits and carries stories, emotions, and history. Here, we are diving into 10 remarkable music traditions from around the world. They are bound to captivate your senses and ignite your curiosity. So, let's set the stage for a symphony of cultural exploration! 1. Gamelan – Indonesia: Source: ThoughtCo The",
+        "reasons": [
+          "listicle"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/592118022395",
+      "title": "Soundbrenner Wave: The best in-ear monitors for musicians who actually care about sound",
+      "primary_reason": "Listicle",
+      "reason_code": "listicle",
+      "confidence": 0.8,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/592118022395",
+        "title": "Soundbrenner Wave: The best in-ear monitors for musicians who actually care about sound",
+        "publishedAt": "2024-08-16T08:23:14Z",
+        "tags": [
+          "By_product Wave in-ear monitors",
+          "Company news"
+        ],
+        "snippet": "Music isn’t just audio. It’s pressure, motion, and feeling. It’s the kick drum in your chest and the snare crack that locks in with your heartbeat. However, most earbuds flatten the experience. Enter the Soundbrenner Wave - the in-ear monitor engineered for musicians, producers, and anyone who refuses to compromise on sound. This isn’t just another pair of earbuds; it’s a tool built to elevate your craft. Hear everyt",
+        "reasons": [
+          "listicle"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/592117727483",
+      "title": "Top 10 saxophone accessories every saxophonist needs to have",
+      "primary_reason": "Listicle",
+      "reason_code": "listicle",
+      "confidence": 0.8,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/592117727483",
+        "title": "Top 10 saxophone accessories every saxophonist needs to have",
+        "publishedAt": "2024-08-16T05:59:33Z",
+        "tags": [
+          "By_instrument Woodwind",
+          "Product tips"
+        ],
+        "snippet": "Whether you're a seasoned player or just starting your musical journey, a good collection of essential saxophone accessories is vital. They are the tools that keep your music flowing smoothly. Today, we'll explore the top 10 must-have saxophone accessories, helping you create a harmonious symphony of preparedness. 1. Soundbrenner's wearable metronomes Core 2 , Core Steel , Pulse Transform your saxophone practice with",
+        "reasons": [
+          "listicle"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/592117301499",
+      "title": "Top 10 bass accessories and tools every bass player needs to have",
+      "primary_reason": "Listicle",
+      "reason_code": "listicle",
+      "confidence": 0.8,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/592117301499",
+        "title": "Top 10 bass accessories and tools every bass player needs to have",
+        "publishedAt": "2024-08-16T04:53:57Z",
+        "tags": [
+          "By_instrument Bass guitar",
+          "Product tips"
+        ],
+        "snippet": "Get ready to take the stage by storm with your groovy tunes. Whether you're a seasoned bassist or just starting out, having the right bass accessories at your fingertips can make all the difference in your performance. That's why we've put together a list of the top 10 must-have bass accessories. Let's dive in and make sure you're prepared to hit those low notes with finesse. 1. Soundbrenner's wearable metronomes Cor",
+        "reasons": [
+          "listicle"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/592116809979",
+      "title": "Top 10 cello accessories and tools every cello player needs to have",
+      "primary_reason": "Listicle",
+      "reason_code": "listicle",
+      "confidence": 0.8,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/592116809979",
+        "title": "Top 10 cello accessories and tools every cello player needs to have",
+        "publishedAt": "2024-08-16T03:00:10Z",
+        "tags": [
+          "By_instrument Orchestral strings",
+          "Product tips"
+        ],
+        "snippet": "Whether you're a new cellist or a professional, you need to get yourself these accessories and tools! Your collection of cello accessories is a treasure chest of essentials that ensure your musical journey remains harmonious. Let's dive in! 1. Soundbrenner's wearable metronomes Core 2 Core Steel Pulse The Soundbrenner Core , 2 , and Pulse vibrating metronomes offer a revolutionary way to enhance your cello practice. ",
+        "reasons": [
+          "listicle"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/592116416763",
+      "title": "Top 5 songs to learn on drums for beginners",
+      "primary_reason": "Listicle",
+      "reason_code": "listicle",
+      "confidence": 0.8,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/592116416763",
+        "title": "Top 5 songs to learn on drums for beginners",
+        "publishedAt": "2024-08-16T01:28:16Z",
+        "tags": [
+          "By_instrument Drums",
+          "Music insights"
+        ],
+        "snippet": "If you’ve just bought your first drum set, you might be having a hard time deciding what to practice. Besides rudiments and basic grooves, learning songs is a great way to improve your skills as a beginner. Here are our top 5 picks of rock songs to learn on drums for beginners! 1. Back in Black (AC/DC) This classic rock song features a basic backbeat with some simple but effective fills. This is a great song to jam w",
+        "reasons": [
+          "listicle"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/592115695867",
+      "title": "Top 10 drum accessories and tools every drummer needs to have",
+      "primary_reason": "Listicle",
+      "reason_code": "listicle",
+      "confidence": 0.8,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/592115695867",
+        "title": "Top 10 drum accessories and tools every drummer needs to have",
+        "publishedAt": "2024-08-15T20:20:46Z",
+        "tags": [
+          "By_instrument Drums",
+          "Product tips"
+        ],
+        "snippet": "Whether you’re a beginner drummer or a seasoned professional, having the right accessories and tools is essential. These trusty items protect your drums from the rigors of travel and help you improve your drumming skills. So, what are the top 10 must-have drum accessories? Let's dive in and discover the items you need to keep your beat intact. 1. Soundbrenner's wearable metronomes Core 2 , Core Steel , Pulse The Soun",
+        "reasons": [
+          "listicle"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/592115630331",
+      "title": "Top 10 guitar accessories and tools every guitarist needs to have",
+      "primary_reason": "Listicle",
+      "reason_code": "listicle",
+      "confidence": 0.8,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/592115630331",
+        "title": "Top 10 guitar accessories and tools every guitarist needs to have",
+        "publishedAt": "2024-08-15T19:53:48Z",
+        "tags": [
+          "By_instrument Acoustic guitar",
+          "By_instrument Bass guitar",
+          "By_instrument Electric guitar",
+          "Product tips"
+        ],
+        "snippet": "Whether you're a seasoned performer or just strumming your way through life, one thing remains constant: your trusty guitar accessories. These tools are not just simple accessories; they are essential treasures that can save the day when you least expect it. So, let's dive into the top 10 must-have guitar accessories and tools that every guitarist should have in their gig bag. 1. Soundbrenner's wearable metronomes Co",
+        "reasons": [
+          "listicle"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/592115433723",
+      "title": "Weird instruments: Our top 6 picks in the world of music",
+      "primary_reason": "Listicle",
+      "reason_code": "listicle",
+      "confidence": 0.8,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/592115433723",
+        "title": "Weird instruments: Our top 6 picks in the world of music",
+        "publishedAt": "2024-08-15T18:55:31Z",
+        "tags": [
+          "Music insights"
+        ],
+        "snippet": "Imagine a world where rhythm isn't just carried by drums and guitars, but by instruments so bizarre that they redefine the very essence of music. Today, we embark on a journey into the realm of sonic oddities - the top 6 weird instruments that add a refreshing and unconventional twist to the symphony of sounds. 1. Cross-Grainger Kangaroo-Pouch Tone-Tool Source: Omeka Originating from the curious minds of Percy Graing",
+        "reasons": [
+          "listicle",
+          "off_focus"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/592115073275",
+      "title": "Unique instruments: Our top 5 picks in the world of music",
+      "primary_reason": "Listicle",
+      "reason_code": "listicle",
+      "confidence": 0.8,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/592115073275",
+        "title": "Unique instruments: Our top 5 picks in the world of music",
+        "publishedAt": "2024-08-15T17:20:37Z",
+        "tags": [
+          "Music insights"
+        ],
+        "snippet": "Today, we're embarking on a journey to uncover the top 5 most unique instruments from around the globe – the kind that will leave you utterly amazed and your ears craving more. So, let's plunge into a realm of musical creativity that's truly a captivating harmony of originality! 1. Nyckelharpa Source: Other Minds From the frosty realms of Sweden comes this unique instrument that has been around for more than 600 year",
+        "reasons": [
+          "listicle"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/592114811131",
+      "title": "What is rhythm in music? A guide for beginners",
+      "primary_reason": "Listicle",
+      "reason_code": "listicle",
+      "confidence": 0.8,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/592114811131",
+        "title": "What is rhythm in music? A guide for beginners",
+        "publishedAt": "2024-08-15T16:15:01Z",
+        "tags": [
+          "Music insights"
+        ],
+        "snippet": "In this post, we'll explore the importance of rhythm in music and other art forms. We'll also examine how rhythm can influence our daily lives. Understanding rhythm and its significance can open new avenues for expressive exploration and change the way you relate to the rhythmic aspect of music. Read on to learn all about it! Rhythm in music In various music genres, rhythm can be one of the most defining characterist",
+        "reasons": [
+          "listicle"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/592114090235",
+      "title": "5 best music courses online 2025",
+      "primary_reason": "Listicle",
+      "reason_code": "listicle",
+      "confidence": 0.8,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/592114090235",
+        "title": "5 best music courses online 2025",
+        "publishedAt": "2025-01-05T05:30:00Z",
+        "tags": [
+          "Product tips"
+        ],
+        "snippet": "Gone are the days when learning music was limited to The Juilliard School or Berklee College. Music is more accessible than ever before, with numerous online music courses, tutorials, and classes available. With so many options claiming to be the best, which programs are worth your time and investment? We have rounded up the top online music courses to make your selection easier: Top 5 online music courses Not all mu",
+        "reasons": [
+          "listicle"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/592113828091",
+      "title": "10 best guitar apps",
+      "primary_reason": "Listicle",
+      "reason_code": "listicle",
+      "confidence": 0.8,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/592113828091",
+        "title": "10 best guitar apps",
+        "publishedAt": "2024-08-15T11:43:40Z",
+        "tags": [
+          "By_instrument Acoustic guitar",
+          "By_instrument Bass guitar",
+          "By_instrument Electric guitar",
+          "Product tips"
+        ],
+        "snippet": "There’s an app out there for pretty much anything and everything. Guitar apps can be especially tedious to choose from, with so many options and new ones being added each year. So which guitar apps will hit the right chord with you, figuratively and literally, and have you happily strumming away? That depends on what you are looking for in an app. How to pick the best guitar apps for you Before you start the hunt for",
+        "reasons": [
+          "listicle"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/592113041659",
+      "title": "12 best gifts for music lovers 2025",
+      "primary_reason": "Listicle",
+      "reason_code": "listicle",
+      "confidence": 0.8,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/592113041659",
+        "title": "12 best gifts for music lovers 2025",
+        "publishedAt": "2024-08-15T10:43:59Z",
+        "tags": [
+          "Gift guides"
+        ],
+        "snippet": "It's been an inexplicable year for our music lovers - if you are looking for gift ideas to cheer them up, we've got you. Here are our 12 best gifts for music lovers to keep up their creative energies. 1. Soundbrenner Core 2 The Soundbrenner Core is the first smartwatch for music lovers. With a sleek interface, the Core features a silent, vibrating metronome (so nobody has to listen to that infuriating click again), a",
+        "reasons": [
+          "listicle"
+        ]
+      }
+    },
+    {
+      "id": "gid://shopify/Article/592117924091",
+      "title": "One-hit wonders in music: What makes a one-hit wonder?",
+      "primary_reason": "Off-focus",
+      "reason_code": "off_focus",
+      "confidence": 0.7,
+      "keep_if": "optional",
+      "source": {
+        "id": "gid://shopify/Article/592117924091",
+        "title": "One-hit wonders in music: What makes a one-hit wonder?",
+        "publishedAt": "2024-08-16T07:36:59Z",
+        "tags": [
+          "Music insights"
+        ],
+        "snippet": "Ever found yourself humming along to a tune that you haven’t heard in years, only to realize that you can’t remember any other song by that artist? Yup, you’ve stumbled upon a one-hit wonder! Today, we're diving into the fascinating world of one-hit wonders in music and uncovering the secret sauce that makes them so memorable. So, grab your headphones, tune into your favorite playlist, and let’s get started! What is ",
+        "reasons": [
+          "off_focus"
+        ]
+      }
+    }
+  ],
+  "notes": "The selected candidates primarily consist of seasonal campaigns, announcements, and listicles that are either outdated or lack evergreen value."
+}

@@ -1,0 +1,171 @@
+<section class="sb-quote-section full-width" data-sb-reveal>
+  <div class="sb-quote-section__layout">
+    <div class="sb-quote-section__copy" data-sb-reveal-item>
+      <p class="sb-quote-section__quote font-hero weight-regular">
+        <span class="sb-quote-section__quote-primary">{{ section.settings.quote_primary | escape }}</span>
+        {% if section.settings.quote_secondary != blank %}
+          <span class="sb-quote-section__quote-secondary">{{ section.settings.quote_secondary | escape | newline_to_br }}</span>
+        {% endif %}
+      </p>
+    </div>
+
+    <div class="sb-quote-section__pattern" aria-hidden="true">
+      <div class="sb-quote-section__wave">
+        <img
+          class="sb-quote-section__wave-image"
+          src="{{ 'quote-section-wave.svg' | asset_url }}"
+          alt=""
+          loading="lazy"
+          width="988"
+          height="448"
+        >
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .sb-quote-section {
+    --sb-quote-section-copy-padding: 48px;
+    background: var(--sb-color-neutral-100);
+    overflow-x: hidden;
+    overflow-x: clip;
+    width: 100%;
+  }
+
+  .sb-quote-section__layout {
+    column-gap: 24px;
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 1fr);
+    margin: 0 auto;
+    width: var(--content-width, 100%);
+  }
+
+  .sb-quote-section__copy {
+    padding: var(--sb-quote-section-copy-padding) 0;
+  }
+
+  .sb-quote-section__quote {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+  }
+
+  .sb-quote-section__quote-primary {
+    color: var(--sb-color-neutral-900);
+  }
+
+  .sb-quote-section__quote-secondary {
+    color: var(--sb-color-neutral-800);
+  }
+
+  .sb-quote-section__pattern {
+    align-self: stretch;
+    color: var(--sb-color-neutral-600);
+    min-height: 0;
+    margin-right: calc(((100vw - var(--content-width, 100vw)) / -2) - 24px);
+    overflow: visible;
+    position: relative;
+  }
+
+  .sb-quote-section__wave {
+    --sb-quote-section-fade-size: 20%;
+    --sb-quote-section-wave-height: max(0px, calc(100% - (var(--sb-quote-section-copy-padding) * 2)));
+    bottom: auto;
+    height: var(--sb-quote-section-wave-height);
+    left: 0;
+    -webkit-mask-image: linear-gradient(
+      180deg,
+      transparent 0,
+      #000 var(--sb-quote-section-fade-size),
+      #000 calc(100% - var(--sb-quote-section-fade-size)),
+      transparent 100%
+    );
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-image: linear-gradient(
+      180deg,
+      transparent 0,
+      #000 var(--sb-quote-section-fade-size),
+      #000 calc(100% - var(--sb-quote-section-fade-size)),
+      transparent 100%
+    );
+    mask-repeat: no-repeat;
+    mask-size: 100% 100%;
+    pointer-events: none;
+    position: absolute;
+    top: var(--sb-quote-section-copy-padding);
+    width: max-content;
+  }
+
+  .sb-quote-section__wave-image {
+    display: block;
+    height: 100%;
+    max-width: none;
+    width: auto;
+  }
+
+  @media (max-width: 1024px) {
+    .sb-quote-section__layout {
+      grid-template-columns: minmax(0, 1fr);
+      margin: 0;
+      position: relative;
+      width: 100%;
+    }
+
+    .sb-quote-section__copy {
+      padding-inline: var(--page-margin);
+      position: relative;
+      z-index: 2;
+    }
+
+    .sb-quote-section__pattern {
+      bottom: 0;
+      grid-column: 1;
+      grid-row: 1;
+      left: 0;
+      margin-right: 0;
+      overflow: visible;
+      pointer-events: none;
+      position: absolute;
+      right: 0;
+      top: 0;
+      z-index: 1;
+    }
+
+    .sb-quote-section__wave {
+      left: 40vw;
+      right: auto;
+    }
+  }
+
+  @media (max-width: 749px) {
+    .sb-quote-section {
+      --sb-quote-section-copy-padding: 30px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Quote section",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "quote_primary",
+      "label": "Quote primary text",
+      "default": "Great musicians aren't born. They're crafted."
+    },
+    {
+      "type": "textarea",
+      "id": "quote_secondary",
+      "label": "Quote secondary text",
+      "default": "Success is simply the sum of every hour you spent in the practice room.\n\nAt Soundbrenner, we don't believe in shortcuts - only better tools for the journey to mastery."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Quote section"
+    }
+  ]
+}
+{% endschema %}

@@ -53,10 +53,162 @@
         "show_app_download_google_play": true,
         "show_app_download_china": false
       }
+    },
+    "quote_section_home": {
+      "type": "quote-section",
+      "name": "Quote section",
+      "settings": {
+        "quote_primary": "Great musicians aren't born. They're crafted.",
+        "quote_secondary": "Success is simply the sum of every hour you spent in the practice room.\n\nAt Soundbrenner, we don't believe in shortcuts - only better tools for the journey to mastery."
+      }
+    },
+    "highlights_shipping_returns": {
+      "type": "top-feature-highlights",
+      "name": "Top feature highlights",
+      "blocks": {
+        "item_XhrLhe": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/Property_1_Local_shipping.svg",
+            "gradient_value": "linear-gradient(135deg, #FF0739 0%, #8E3BFF 100%)",
+            "title": "Worldwide shipping",
+            "body": "<p>Get your favorite products delivered to your doorstep.</p>"
+          }
+        },
+        "item_3b7Q9L": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/Property_1_Verified_user.svg",
+            "gradient_value": "linear-gradient(135deg, #E67702 0%, #FF4700 100%)",
+            "title": "1-year warranty",
+            "body": "<p>Guaranteed quality and lasting satisfaction with every purchase.</p>"
+          }
+        },
+        "item_i8WCRx": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/Property_1_Autorenew.svg",
+            "gradient_value": "linear-gradient(135deg, #0097FF 0%, #00FCA4 100%)",
+            "title": "30-day money-back guarantee",
+            "body": "<p>Enjoy risk-free shopping with straightforward returns.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_XhrLhe",
+        "item_3b7Q9L",
+        "item_i8WCRx"
+      ],
+      "settings": {
+        "title": "Why shop on soundbrenner.com"
+      }
+    },
+    "accordion_shipping_returns": {
+      "type": "accordion",
+      "name": "Accordion",
+      "blocks": {
+        "accordion_item_3dBtKD": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Do you ship internationally?",
+            "answer": "<p>Absolutely! We're a global company and ship to almost every country in the world. To find out if we ship to you, simply initiate the checkout process and see if your country is available for selection.</p>"
+          }
+        },
+        "accordion_item_RhXpPr": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "What are the shipping costs and times?",
+            "answer": "<p>Simply initiate the checkout process and enter your address. Our system will tell you the shipping costs and give you an estimate for the duration.</p>"
+          }
+        },
+        "accordion_item_Xg9qb8": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Can I return Soundbrenner products if I change my mind?",
+            "answer": "<p>Yes! If you purchased an item from our web store but decide it's not for you, you can return it within 30 days of delivery for a refund. However, shipping fees will be deducted from your refund, even if your order qualified for free shipping. This helps balance the cost of returns, as there are additional expenses beyond shipping, such as restocking. For full details, check out our <a href=\"/policies/refund-policy\" title=\"Refund Policy\">refund policy</a>.</p>"
+          }
+        },
+        "accordion_item_cwxVmi": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Do you offer a product warranty?",
+            "answer": "<p>Yes, we offer a 1 year warranty on all of our products. If your item has a defect due to a mistake on our part, we will send you a replacement free of charge. For more information check our <a href=\"/pages/terms-of-warranty\" title=\"Terms of warranty\">terms of warranty</a>.</p>"
+          }
+        },
+        "accordion_item_xqk77R": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "When will I receive the tracking number?",
+            "answer": "<p>When your order is dispatched, you'll receive an email with tracking details.</p>"
+          }
+        },
+        "accordion_item_HneDrm": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Do you ship to P.O. boxes?",
+            "answer": "<p>Our logistic partners require a signature upon delivery so unfortunately they are unable to make deliveries to P.O. boxes.</p>"
+          }
+        },
+        "accordion_item_gNhhK8": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Do I have to pay additional taxes and duties?",
+            "answer": "<p>We try to avoid international shipments whenever possible and ship locally instead, so your government won't charge you additional taxes or duties. However, sometimes there is no way around international shipments. In many countries, we prepay all applicable taxes and duties and ship \"Delivered Duties Paid\" (DDP), so you won’t have to pay anything upon delivery. On our website, we clearly display whether taxes and duties are already included in the price or may be due upon delivery, based on the location you set up. For more information check our <a href=\"/policies/shipping-policy\" title=\"Shipping Policy\">shipping policy</a>.</p>"
+          }
+        },
+        "accordion_item_9h7JaD": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "How do I initiate a return?",
+            "answer": "<p><a href=\"/pages/contact-us\" title=\"Contact us\">Contact us</a> and our team will guide you through the next steps.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "accordion_item_3dBtKD",
+        "accordion_item_RhXpPr",
+        "accordion_item_Xg9qb8",
+        "accordion_item_cwxVmi",
+        "accordion_item_xqk77R",
+        "accordion_item_HneDrm",
+        "accordion_item_gNhhK8",
+        "accordion_item_9h7JaD"
+      ],
+      "settings": {
+        "use_custom_title": false,
+        "custom_title": "Frequently asked questions",
+        "show_subtitle": true
+      }
+    },
+    "hero_card_bottom_seasonal": {
+      "type": "hero-card",
+      "name": "Hero card",
+      "settings": {
+        "use_seasonal_hero_card": true,
+        "use_affiliate_metaobject": false,
+        "use_resource_title_description": false,
+        "use_product_page_metaobjects": false,
+        "kicker": "",
+        "headline": "",
+        "subheadline": "",
+        "show_button": false,
+        "button_label": "",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": "",
+        "show_app_download_qr": false,
+        "show_app_download_app_store": false,
+        "show_app_download_google_play": false,
+        "show_app_download_china": false
+      }
     }
   },
   "order": [
     "main",
-    "hero_card_HFy7pm"
+    "hero_card_HFy7pm",
+    "quote_section_home",
+    "highlights_shipping_returns",
+    "accordion_shipping_returns",
+    "hero_card_bottom_seasonal"
   ]
 }
