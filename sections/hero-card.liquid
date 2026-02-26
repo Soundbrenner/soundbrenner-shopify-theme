@@ -227,6 +227,29 @@
   {% assign hero_card_desktop_image = hero_card_fallback_image_desktop %}
 {% endif %}
 
+{% assign hero_card_app_download_mode = false %}
+{% assign hero_card_show_app_download_qr = false %}
+{% assign hero_card_show_app_download_app_store = false %}
+{% assign hero_card_show_app_download_google_play = false %}
+{% assign hero_card_show_app_download_china = false %}
+{% assign hero_card_show_app_downloads = false %}
+{% if hero_card_product_mode == false and hero_card_use_seasonal == false and hero_card_use_affiliate_metaobject == false and hero_card_use_resource_copy == false %}
+  {% assign hero_card_app_download_mode = true %}
+  {% assign hero_card_show_app_download_qr = section.settings.show_app_download_qr %}
+  {% assign hero_card_show_app_download_app_store = section.settings.show_app_download_app_store %}
+  {% assign hero_card_show_app_download_google_play = section.settings.show_app_download_google_play %}
+  {% assign hero_card_show_app_download_china = section.settings.show_app_download_china %}
+  {% if section.settings.enable_app_download_buttons %}
+    {% assign hero_card_show_app_download_qr = true %}
+    {% assign hero_card_show_app_download_app_store = true %}
+    {% assign hero_card_show_app_download_google_play = true %}
+    {% assign hero_card_show_app_download_china = true %}
+  {% endif %}
+  {% if hero_card_show_app_download_qr or hero_card_show_app_download_app_store or hero_card_show_app_download_google_play or hero_card_show_app_download_china %}
+    {% assign hero_card_show_app_downloads = true %}
+  {% endif %}
+{% endif %}
+
 {% if hero_card_hide_section %}
   <script>
     (() => {
@@ -261,84 +284,92 @@
         {% if hero_card_subheadline != blank %}
           <p class="sb-framing-card__subheadline font-body weight-semibold">{{ hero_card_subheadline }}</p>
         {% endif %}
-        {% if hero_card_show_button %}
-          {% if hero_card_product_mode %}
-            <form method="post" action="/cart/add" class="sb-framing-card__product-form" data-hero-card-product-form>
-              <input type="hidden" name="id" value="{{ hero_card_selected_variant.id }}" data-hero-card-variant-id>
-              <button
-                type="submit"
-                class="sb-framing-card__product-button sb-button-radiant sb-button-radiant--large sb-button-radiant--leading-icon font-caption weight-bold"
-                aria-label="Add to cart"
-                data-hero-card-submit
-              >
-                <span class="sb-framing-card__product-button-icon" aria-hidden="true">
-                  <img
-                    class="sb-framing-card__product-button-icon-image"
-                    src="{{ 'icon-add-to-cart.svg' | asset_url }}"
-                    alt=""
-                    width="16"
-                    height="16"
-                  >
+        {% if hero_card_show_button and hero_card_product_mode %}
+          <form method="post" action="/cart/add" class="sb-framing-card__product-form" data-hero-card-product-form>
+            <input type="hidden" name="id" value="{{ hero_card_selected_variant.id }}" data-hero-card-variant-id>
+            <button
+              type="submit"
+              class="sb-framing-card__product-button sb-button-radiant sb-button-radiant--large sb-button-radiant--leading-icon font-caption weight-bold"
+              aria-label="Add to cart"
+              data-hero-card-submit
+            >
+              <span class="sb-framing-card__product-button-icon" aria-hidden="true">
+                <img
+                  class="sb-framing-card__product-button-icon-image"
+                  src="{{ 'icon-add-to-cart.svg' | asset_url }}"
+                  alt=""
+                  width="16"
+                  height="16"
+                >
+              </span>
+              <span class="sb-framing-card__product-button-copy">
+                <span class="sb-framing-card__product-button-label" data-hero-card-button-label>Add to cart</span>
+                <span class="sb-framing-card__product-button-prices">
+                  <span class="sb-framing-card__product-button-price sb-framing-card__product-button-price--compare" data-hero-card-compare-price></span>
+                  <span class="sb-framing-card__product-button-price sb-framing-card__product-button-price--current" data-hero-card-current-price></span>
                 </span>
-                <span class="sb-framing-card__product-button-copy">
-                  <span class="sb-framing-card__product-button-label" data-hero-card-button-label>Add to cart</span>
-                  <span class="sb-framing-card__product-button-prices">
-                    <span class="sb-framing-card__product-button-price sb-framing-card__product-button-price--compare" data-hero-card-compare-price></span>
-                    <span class="sb-framing-card__product-button-price sb-framing-card__product-button-price--current" data-hero-card-current-price></span>
-                  </span>
-                </span>
-              </button>
-            </form>
-          {% else %}
-            {% render 'radiant-button',
-              label: hero_card_button_label,
-              link: hero_card_button_link,
-              size: section.settings.button_size,
-              icon_position: section.settings.icon_position,
-              extra_class: 'sb-framing-card__button'
-            %}
-          {% endif %}
+              </span>
+            </button>
+          </form>
         {% endif %}
 
-        {% if section.settings.enable_app_download_buttons and hero_card_product_mode == false and hero_card_use_seasonal == false and hero_card_use_affiliate_metaobject == false and hero_card_use_resource_copy == false %}
+        {% if hero_card_app_download_mode and hero_card_show_app_downloads %}
           <div class="sb-framing-card__app-downloads">
-          <div class="sb-framing-card__app-downloads-qr" aria-hidden="true">
-            <img
-              src="{{ 'app-download-qr-metronome-app.png' | asset_url }}"
-              alt=""
-              loading="lazy"
-              width="80"
-              height="80"
-            >
+            {% if hero_card_show_app_download_qr %}
+              <div class="sb-framing-card__app-downloads-qr" aria-hidden="true">
+                <img
+                  src="{{ 'app-download-qr-metronome-app.png' | asset_url }}"
+                  alt=""
+                  loading="lazy"
+                  width="80"
+                  height="80"
+                >
+              </div>
+            {% endif %}
+
+            {% if hero_card_show_app_download_app_store %}
+              <a class="sb-framing-card__app-download-link" href="{{ hero_card_app_store_link }}" target="_blank" rel="noopener noreferrer">
+                <img
+                  class="sb-framing-card__app-download-badge sb-framing-card__app-download-badge--app-store"
+                  src="{{ 'app-download-app-store.png' | asset_url }}"
+                  alt="Download on the App Store"
+                  loading="lazy"
+                >
+              </a>
+            {% endif %}
+
+            {% if hero_card_show_app_download_google_play %}
+              <a class="sb-framing-card__app-download-link" href="{{ hero_card_google_play_link }}" target="_blank" rel="noopener noreferrer">
+                <img
+                  class="sb-framing-card__app-download-badge sb-framing-card__app-download-badge--google-play"
+                  src="{{ 'app-download-google-play.png' | asset_url }}"
+                  alt="Get it on Google Play"
+                  loading="lazy"
+                >
+              </a>
+            {% endif %}
+
+            {% if hero_card_show_app_download_china %}
+              <a class="sb-framing-card__app-download-link" href="{{ hero_card_china_download_link }}" target="_blank" rel="noopener noreferrer">
+                <img
+                  class="sb-framing-card__app-download-badge sb-framing-card__app-download-badge--china"
+                  src="{{ 'app-download-china.png' | asset_url }}"
+                  alt="Download in China"
+                  loading="lazy"
+                >
+              </a>
+            {% endif %}
           </div>
+        {% endif %}
 
-          <a class="sb-framing-card__app-download-link" href="{{ hero_card_app_store_link }}" target="_blank" rel="noopener noreferrer">
-            <img
-              class="sb-framing-card__app-download-badge sb-framing-card__app-download-badge--app-store"
-              src="{{ 'app-download-app-store.png' | asset_url }}"
-              alt="Download on the App Store"
-              loading="lazy"
-            >
-          </a>
-
-          <a class="sb-framing-card__app-download-link" href="{{ hero_card_google_play_link }}" target="_blank" rel="noopener noreferrer">
-            <img
-              class="sb-framing-card__app-download-badge sb-framing-card__app-download-badge--google-play"
-              src="{{ 'app-download-google-play.png' | asset_url }}"
-              alt="Get it on Google Play"
-              loading="lazy"
-            >
-          </a>
-
-          <a class="sb-framing-card__app-download-link" href="{{ hero_card_china_download_link }}" target="_blank" rel="noopener noreferrer">
-            <img
-              class="sb-framing-card__app-download-badge sb-framing-card__app-download-badge--china"
-              src="{{ 'app-download-china.png' | asset_url }}"
-              alt="Download in China"
-              loading="lazy"
-            >
-          </a>
-          </div>
+        {% if hero_card_show_button and hero_card_product_mode == false %}
+          {% render 'radiant-button',
+            label: hero_card_button_label,
+            link: hero_card_button_link,
+            size: section.settings.button_size,
+            icon_position: section.settings.icon_position,
+            extra_class: 'sb-framing-card__button'
+          %}
         {% endif %}
       </div>
     </div>
@@ -732,10 +763,38 @@
     },
     {
       "type": "checkbox",
-      "id": "enable_app_download_buttons",
-      "label": "Enable app download buttons",
+      "id": "show_app_download_qr",
+      "label": "Show app download QR code",
       "default": false,
       "visible_if": "{{ section.settings.use_product_page_metaobjects == false and section.settings.use_seasonal_hero_card == false and section.settings.use_affiliate_metaobject == false and section.settings.use_resource_title_description == false }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_app_download_app_store",
+      "label": "Show App Store download button",
+      "default": false,
+      "visible_if": "{{ section.settings.use_product_page_metaobjects == false and section.settings.use_seasonal_hero_card == false and section.settings.use_affiliate_metaobject == false and section.settings.use_resource_title_description == false }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_app_download_google_play",
+      "label": "Show Google Play download button",
+      "default": false,
+      "visible_if": "{{ section.settings.use_product_page_metaobjects == false and section.settings.use_seasonal_hero_card == false and section.settings.use_affiliate_metaobject == false and section.settings.use_resource_title_description == false }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_app_download_china",
+      "label": "Show China download button",
+      "default": false,
+      "visible_if": "{{ section.settings.use_product_page_metaobjects == false and section.settings.use_seasonal_hero_card == false and section.settings.use_affiliate_metaobject == false and section.settings.use_resource_title_description == false }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_app_download_buttons",
+      "label": "Enable app download buttons (legacy)",
+      "default": false,
+      "visible_if": "{{ false }}"
     }
   ],
   "presets": [
