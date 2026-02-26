@@ -53,12 +53,12 @@
             "collection": "wearables",
             "collection_name_override": "",
             "compare_link": "shopify://pages/compare-wearables",
-            "product_1": "",
-            "product_2": "",
-            "product_3": "",
-            "product_4": "",
-            "product_5": "",
-            "product_6": ""
+            "product_1": "pulse-vibrating-metronome",
+            "product_2": "core-2-practice-companion",
+            "product_3": "spark-practice-companion",
+            "product_4": "pulse-body-strap",
+            "product_5": "wearable-charging-cable",
+            "product_6": "core-leather-strap"
           }
         },
         "collection_item_earplugs": {
