@@ -35,7 +35,17 @@
     assign article_category_text = blog.title
   endif
 
-  assign article_read_duration_text = article.metafields.article.read_time.value | default: article.metafields.article.read_time | append: '' | strip
+  assign article_plain_text = article.content | strip_html | replace: '&nbsp;', ' ' | replace: '&#160;', ' ' | strip
+  assign article_word_count = article_plain_text | split: ' ' | size
+  assign article_read_duration_minutes = article_word_count | plus: 219 | divided_by: 220
+  if article_read_duration_minutes < 1
+    assign article_read_duration_minutes = 1
+  endif
+  assign article_read_duration_text = article_read_duration_minutes | append: ''
+  assign article_excerpt_text = article.excerpt | strip_html | strip
+  if article_excerpt_text == blank
+    assign article_excerpt_text = article_plain_text | truncatewords: 36
+  endif
 
   assign seasonal_sale_name = settings.seasonal_sale_name | strip
   assign sale_name_token = '{{ Sale name }}'
@@ -93,23 +103,6 @@
   assign sidebar_promo_text = sidebar_promo_text | replace: shipping_country_token, sidebar_shipping_country_name
   assign sidebar_promo_text = sidebar_promo_text | replace: free_shipping_threshold_token, sidebar_free_shipping_threshold_display
   assign sidebar_promo_button_label = sidebar_promo_button_label | replace: sale_name_token, seasonal_sale_name
-
-  assign author_name_titlecase = ''
-  assign author_words = article.author | strip | downcase | split: ' '
-  for author_word in author_words
-    assign author_word_clean = author_word | strip
-    if author_word_clean != blank
-      assign author_word_title = author_word_clean | capitalize
-      if author_name_titlecase == blank
-        assign author_name_titlecase = author_word_title
-      else
-        assign author_name_titlecase = author_name_titlecase | append: ' ' | append: author_word_title
-      endif
-    endif
-  endfor
-  if author_name_titlecase == blank
-    assign author_name_titlecase = article.author
-  endif
 %}
 
 {% liquid
@@ -320,7 +313,7 @@
             aria-controls="SbBlogPostCategoriesPanel-{{ section.id }}"
             data-sb-blog-post-filter-trigger
           >
-            <span>{{ mobile_categories_trigger_label | escape }}</span>
+            <span class="sb-blog-post__sticky-filter-label sb-blog-post__sticky-filter-label--mobile">{{ mobile_categories_trigger_label | escape }}</span>
             <span class="sb-blog-post__sticky-filter-caret" aria-hidden="true">
               {{ 'icon-chevron.svg' | inline_asset_content }}
             </span>
@@ -399,6 +392,13 @@
             </div>
           </div>
         </div>
+        {%
+          render 'radiant-button',
+          link: routes.all_products_collection_url,
+          label: 'Explore our shop',
+          size: 'medium',
+          extra_class: 'sb-blog-post__sticky-nav-shop-button sb-blog-post__sticky-nav-shop-button--mobile font-caption weight-bold'
+        %}
       </div>
     </div>
     <div class="sb-blog-post__sticky-backdrop" data-sb-blog-post-filter-backdrop aria-hidden="true"></div>
@@ -444,8 +444,8 @@
             </p>
           {% endif %}
           <h1 class="sb-blog-post__title font-title weight-bold">{{ article.title }}</h1>
-          {% if article.excerpt != blank %}
-            <p class="sb-blog-post__excerpt font-body weight-semibold">{{ article.excerpt | strip_html }}</p>
+          {% if article_excerpt_text != blank %}
+            <p class="sb-blog-post__excerpt font-body weight-semibold">{{ article_excerpt_text }}</p>
           {% endif %}
         </header>
 
@@ -475,7 +475,7 @@
 
         <div class="sb-blog-post__postscript">
           <div class="sb-blog-post__postscript-divider" aria-hidden="true"></div>
-          <p class="sb-blog-post__postscript-author font-body weight-bold">by {{ author_name_titlecase }}</p>
+          <p class="sb-blog-post__postscript-author font-body weight-bold">by Team Soundbrenner</p>
 
           {% if section.settings.about_box_content != blank %}
             <section class="sb-blog-post__about-box rte font-body weight-regular" aria-label="About Soundbrenner">
@@ -873,7 +873,7 @@
     font-family: var(--font-primary--family);
     font-size: var(--font-size-body);
     font-weight: 400;
-    line-height: 1.35;
+    line-height: 1.4;
     margin-top: 0;
   }
 
@@ -885,8 +885,112 @@
     margin-top: 24px;
   }
 
+  .sb-blog-post__content > * + :is(
+    img,
+    picture,
+    figure,
+    p:has(> img:only-child),
+    p:has(> a:only-child > img:only-child)
+  ) {
+    margin-top: 30px;
+  }
+
+  .sb-blog-post__content > :is(
+    img,
+    picture,
+    figure,
+    p:has(> img:only-child),
+    p:has(> a:only-child > img:only-child)
+  ) + * {
+    margin-top: 30px;
+  }
+
+  .sb-blog-post__content > h2 {
+    color: var(--sb-color-neutral-900);
+    font-family: var(--font-primary--family);
+    font-size: var(--font-size-callout);
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  .sb-blog-post__content > h2:not(:first-child) {
+    margin-top: 30px;
+  }
+
+  .sb-blog-post__content > h3 {
+    color: var(--sb-color-neutral-900);
+    font-family: var(--font-primary--family);
+    font-size: var(--font-size-body);
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  .sb-blog-post__content > h3:not(:first-child) {
+    margin-top: 24px;
+  }
+
+  .sb-blog-post__content > h4 {
+    color: var(--sb-color-neutral-900);
+    font-family: var(--font-primary--family);
+    font-size: var(--font-size-caption);
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .sb-blog-post__content > h4:not(:first-child) {
+    margin-top: 24px;
+  }
+
+  .sb-blog-post__content > :is(h2, h3, h4) + :is(p, ul, ol, blockquote) {
+    margin-top: 12px;
+  }
+
+  .sb-blog-post__content > :is(ul, ol) {
+    padding-left: 24px;
+  }
+
+  .sb-blog-post__content > :is(ul, ol) li + li {
+    margin-top: 12px;
+  }
+
+  .sb-blog-post__content > blockquote {
+    border-left: 2px solid var(--sb-color-neutral-600);
+    padding-left: 20px;
+  }
+
+  .sb-blog-post__content > blockquote > * {
+    margin: 0;
+  }
+
+  .sb-blog-post__content > blockquote > * + * {
+    margin-top: 12px;
+  }
+
+  .sb-blog-post__content :is(strong, b) {
+    font-weight: 700;
+  }
+
+  .sb-blog-post__content :is(em, i) {
+    font-style: italic;
+  }
+
+  .sb-blog-post__content a,
+  .sb-blog-post__content a:visited {
+    color: var(--sb-color-primary-500);
+    text-decoration: none;
+  }
+
+  .sb-blog-post__content a:hover,
+  .sb-blog-post__content a:focus-visible {
+    color: var(--sb-color-primary-500);
+    text-decoration: underline;
+  }
+
   .sb-blog-post__content img {
     border-radius: 24px;
+    display: block;
+    height: auto;
+    width: 100%;
   }
 
   .sb-blog-post__media + .sb-blog-post__mobile-promo + .sb-blog-post__content {
@@ -1146,14 +1250,41 @@
     .sb-blog-post__sticky-nav--mobile {
       --sb-blog-post-sticky-nav-padding-y: 12px;
       --sb-blog-post-filter-popout-offset: calc(16px + var(--sb-blog-post-sticky-nav-padding-y));
+      align-items: center;
       background: var(--sb-color-neutral-200);
       border-radius: 24px;
       box-shadow: inset 0 0 0 1px var(--sb-color-neutral-600);
-      column-gap: 0;
-      grid-template-columns: minmax(0, 1fr);
+      column-gap: 16px;
+      grid-template-columns: minmax(0, 1fr) auto;
       justify-items: start;
       padding: var(--sb-blog-post-sticky-nav-padding-y) 12px;
       width: calc(100vw - (var(--sb-sticky-inline-margin) * 2));
+    }
+
+    .sb-blog-post__sticky-nav--mobile .sb-blog-post__sticky-dropdown {
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .sb-blog-post__sticky-filter--mobile {
+      justify-content: flex-start;
+      max-width: 100%;
+      min-width: 0;
+    }
+
+    .sb-blog-post__sticky-filter-label--mobile {
+      flex: 1 1 auto;
+      line-height: 1.2;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .sb-blog-post__sticky-nav-shop-button--mobile {
+      justify-self: end;
+      margin-left: 0;
+      white-space: nowrap;
     }
 
     html.is-blog-post-filter-open .sb-blog-post__sticky-nav--mobile,

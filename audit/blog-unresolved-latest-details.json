@@ -1,0 +1,58 @@
+[
+  {
+    "id": "gid://shopify/Article/592094101755",
+    "status": "failed",
+    "error": "This operation was aborted",
+    "t": 1772061436436,
+    "file": "blog-llm-rewrite-report-2026-02-25T23-17-16-434Z.json",
+    "title": "The ultimate beginner’s guide to recording drums"
+  },
+  {
+    "id": "gid://shopify/Article/592092561659",
+    "status": "failed",
+    "error": "This operation was aborted",
+    "t": 1772061436436,
+    "file": "blog-llm-rewrite-report-2026-02-25T23-17-16-434Z.json",
+    "title": "A guide to supporting the mental health and wellbeing of musicians"
+  },
+  {
+    "id": "gid://shopify/Article/592091807995",
+    "status": "failed",
+    "error": "This operation was aborted",
+    "t": 1772061436436,
+    "file": "blog-llm-rewrite-report-2026-02-25T23-17-16-434Z.json",
+    "title": "Buying electric guitars - your ultimate guide!"
+  },
+  {
+    "id": "gid://shopify/Article/592087220475",
+    "status": "failed",
+    "error": "Asset image preservation failed (missing images: 1)",
+    "t": 1772061436436,
+    "file": "blog-llm-rewrite-report-2026-02-25T23-17-16-434Z.json",
+    "title": "Motivate your child to practice instrument"
+  },
+  {
+    "id": "gid://shopify/Article/592113041659",
+    "status": "failed",
+    "error": "This operation was aborted",
+    "t": 1772061436180,
+    "file": "blog-llm-rewrite-report-2026-02-25T23-17-16-177Z.json",
+    "title": "12 best gifts for music lovers 2025"
+  },
+  {
+    "id": "gid://shopify/Article/592105308411",
+    "status": "failed",
+    "error": "This operation was aborted",
+    "t": 1772061436180,
+    "file": "blog-llm-rewrite-report-2026-02-25T23-17-16-177Z.json",
+    "title": "How to develop a solid rhythm foundation and rock the beat"
+  },
+  {
+    "id": "gid://shopify/Article/592099377403",
+    "status": "failed",
+    "error": "This operation was aborted",
+    "t": 1772061436180,
+    "file": "blog-llm-rewrite-report-2026-02-25T23-17-16-177Z.json",
+    "title": "10 best gifts for clarinet players in 2025"
+  }
+]

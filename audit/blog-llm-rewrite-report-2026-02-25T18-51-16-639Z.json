@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-02-25T18:51:16.658Z",
+  "shop": "soundbrenner.myshopify.com",
+  "apiVersion": "2025-10",
+  "mode": "apply",
+  "model": "gpt-4o-mini",
+  "selectedCount": 1,
+  "items": [
+    {
+      "index": 1,
+      "id": "gid://shopify/Article/594750046459",
+      "title": "Why esports pros are ditching gaming headsets for IEMs (and you should too)",
+      "url": "https://soundbrenner.myshopify.com/blogs/articles/why-esports-pros-are-ditching-gaming-headsets-for-iems-and-you-should-too",
+      "status": "failed",
+      "error": "fetch failed"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-02-25T18:51:19.288Z",
+  "shop": "soundbrenner.myshopify.com",
+  "apiVersion": "2025-10",
+  "mode": "apply",
+  "model": "gpt-4o-mini",
+  "selectedCount": 1,
+  "items": [
+    {
+      "index": 1,
+      "id": "gid://shopify/Article/592087875835",
+      "title": "The Best Tools to Learn Guitar",
+      "url": "https://soundbrenner.myshopify.com/blogs/articles/best-tools-to-learn-guitar",
+      "status": "failed",
+      "error": "Asset preservation failed (missing images: 0, missing links: 2)"
+    }
+  ]
+}

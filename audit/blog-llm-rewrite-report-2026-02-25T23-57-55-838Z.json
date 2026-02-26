@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-02-25T23:57:55.840Z",
+  "shop": "soundbrenner.myshopify.com",
+  "apiVersion": "2025-10",
+  "mode": "apply",
+  "model": "gpt-4o-mini",
+  "selectedCount": 1,
+  "items": [
+    {
+      "index": 1,
+      "id": "gid://shopify/Article/592113041659",
+      "title": "12 best gifts for music lovers 2025",
+      "url": "https://soundbrenner.myshopify.com/blogs/articles/12-best-gifts-for-music-lovers",
+      "status": "failed",
+      "error": "This operation was aborted"
+    }
+  ]
+}

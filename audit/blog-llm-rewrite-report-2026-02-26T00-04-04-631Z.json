@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-02-26T00:04:04.632Z",
+  "shop": "soundbrenner.myshopify.com",
+  "apiVersion": "2025-10",
+  "mode": "apply",
+  "model": "gpt-4o-mini",
+  "selectedCount": 1,
+  "items": [
+    {
+      "index": 1,
+      "id": "gid://shopify/Article/592105308411",
+      "title": "How to develop a solid rhythm foundation and rock the beat",
+      "url": "https://soundbrenner.myshopify.com/blogs/articles/how-to-develop-a-solid-rhythm-foundation-and-rock-the-beat",
+      "status": "failed",
+      "error": "This operation was aborted"
+    }
+  ]
+}

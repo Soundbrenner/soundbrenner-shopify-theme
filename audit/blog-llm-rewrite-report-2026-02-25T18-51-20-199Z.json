@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-02-25T18:51:20.200Z",
+  "shop": "soundbrenner.myshopify.com",
+  "apiVersion": "2025-10",
+  "mode": "apply",
+  "model": "gpt-4o-mini",
+  "selectedCount": 1,
+  "items": [
+    {
+      "index": 1,
+      "id": "gid://shopify/Article/592108519675",
+      "title": "How to improve your rhythm with a metronome",
+      "url": "https://soundbrenner.myshopify.com/blogs/articles/how-to-improve-your-rhythm-with-a-metronome",
+      "status": "failed",
+      "error": "Asset preservation failed (missing images: 0, missing links: 1)"
+    }
+  ]
+}

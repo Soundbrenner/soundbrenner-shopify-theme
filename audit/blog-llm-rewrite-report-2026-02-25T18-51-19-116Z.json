@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-02-25T18:51:19.118Z",
+  "shop": "soundbrenner.myshopify.com",
+  "apiVersion": "2025-10",
+  "mode": "apply",
+  "model": "gpt-4o-mini",
+  "selectedCount": 1,
+  "items": [
+    {
+      "index": 1,
+      "id": "gid://shopify/Article/592092856571",
+      "title": "How to practice polyrhythms with the Soundbrenner metronome",
+      "url": "https://soundbrenner.myshopify.com/blogs/articles/how-to-practice-polyrhythms-with-the-soundbrenner-metronome",
+      "status": "failed",
+      "error": "Asset preservation failed (missing images: 1, missing links: 1)"
+    }
+  ]
+}
