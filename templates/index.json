@@ -37,17 +37,17 @@
           "type": "collection_item",
           "settings": {
             "collection": "in-ear-monitors",
-            "title": "In-ear monitors",
+            "title": "",
             "description": "",
             "explore_label": "Explore collection",
-            "explore_link": "",
+            "explore_link": "shopify://collections/in-ear-monitors",
             "compare_label": "Compare",
             "compare_link": "shopify://pages/compare-in-ear-monitors",
-            "product_1": "",
-            "product_2": "",
-            "product_3": "",
-            "product_4": "",
-            "product_5": ""
+            "product_1": "wave-pro-in-ear-monitors",
+            "product_2": "wave-in-ear-monitors",
+            "product_3": "usb-c-to-3-5mm-audio-adapter",
+            "product_4": "wave-over-ear-cable-2-5m-8-2-ft-with-microphone",
+            "product_5": "foam-ear-tips-3-pack"
           }
         },
         "collection_item_wearables": {
