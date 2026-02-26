@@ -32,10 +32,84 @@
     },
     "collection_overview_home": {
       "type": "collection-overview",
+      "blocks": {
+        "collection_item_in_ear_monitors": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "in-ear-monitors",
+            "title": "In-ear monitors",
+            "description": "",
+            "explore_label": "Explore collection",
+            "explore_link": "",
+            "compare_label": "Compare",
+            "compare_link": "shopify://pages/compare-in-ear-monitors",
+            "product_1": "",
+            "product_2": "",
+            "product_3": "",
+            "product_4": "",
+            "product_5": ""
+          }
+        },
+        "collection_item_wearables": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "wearables",
+            "title": "Wearables",
+            "description": "",
+            "explore_label": "Explore collection",
+            "explore_link": "",
+            "compare_label": "Compare",
+            "compare_link": "shopify://pages/compare-wearables",
+            "product_1": "",
+            "product_2": "",
+            "product_3": "",
+            "product_4": "",
+            "product_5": ""
+          }
+        },
+        "collection_item_earplugs": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "minuendo-earplugs",
+            "title": "Earplugs",
+            "description": "",
+            "explore_label": "Explore collection",
+            "explore_link": "",
+            "compare_label": "Compare",
+            "compare_link": "",
+            "product_1": "",
+            "product_2": "",
+            "product_3": "",
+            "product_4": "",
+            "product_5": ""
+          }
+        },
+        "collection_item_more_products": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "more-products",
+            "title": "More products",
+            "description": "",
+            "explore_label": "Explore collection",
+            "explore_link": "",
+            "compare_label": "Compare",
+            "compare_link": "",
+            "product_1": "",
+            "product_2": "",
+            "product_3": "",
+            "product_4": "",
+            "product_5": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_item_in_ear_monitors",
+        "collection_item_wearables",
+        "collection_item_earplugs",
+        "collection_item_more_products"
+      ],
       "settings": {
-        "read_all_url": "shopify://pages/all-reviews",
-        "fallback_reviews_count": "X,XXX",
-        "fallback_rating": 5
+        "read_all_url": "shopify://pages/all-reviews"
       }
     },
     "press_ticker_home": {

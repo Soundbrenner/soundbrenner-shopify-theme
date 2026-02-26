@@ -22,9 +22,8 @@
     assign section_title = section.settings.title
 
     for block in section.blocks
-      assign block_testimonial_source = block.settings.testimonial.value | default: block.settings.testimonial.reference.value | default: block.settings.testimonial.reference | default: block.settings.testimonial
-      assign block_testimonial_items = block_testimonial_source.items.value | default: block_testimonial_source.items.references | default: block_testimonial_source.items
-      if block_testimonial_source != blank and block_testimonial_items != blank
+      assign block_testimonial = block.settings.testimonial.value | default: block.settings.testimonial.reference.value | default: block.settings.testimonial.reference | default: block.settings.testimonial
+      if block_testimonial != blank
         assign manual_has_items = true
         break
       endif
@@ -108,66 +107,60 @@
         {% else %}
           {% for block in section.blocks %}
             {% liquid
-              assign testimonial_source = block.settings.testimonial.value | default: block.settings.testimonial.reference.value | default: block.settings.testimonial.reference | default: block.settings.testimonial
-              assign testimonial_items = testimonial_source.items.value | default: testimonial_source.items.references | default: testimonial_source.items
-              assign testimonial_index = block.settings.testimonial_index | default: 1
-              assign testimonial_offset = testimonial_index | minus: 1
+              assign expert_entry = block.settings.testimonial.value | default: block.settings.testimonial.reference.value | default: block.settings.testimonial.reference | default: block.settings.testimonial
             %}
-            {% if testimonial_source == blank or testimonial_items == blank %}
+            {% if expert_entry == blank %}
               {% continue %}
             {% endif %}
 
-            {% for selected_item in testimonial_items limit: 1 offset: testimonial_offset %}
-              {% liquid
-                assign expert_entry = selected_item.value | default: selected_item.reference.value | default: selected_item.reference | default: selected_item
-                assign expert_image = expert_entry.image.value | default: expert_entry.image
-                assign expert_name = expert_entry.name.value | default: expert_entry.name
-                assign expert_title = expert_entry.title.value | default: expert_entry.title
-                assign expert_quote = expert_entry.quote.value | default: expert_entry.quote
+            {% liquid
+              assign expert_image = expert_entry.image.value | default: expert_entry.image
+              assign expert_name = expert_entry.name.value | default: expert_entry.name
+              assign expert_title = expert_entry.title.value | default: expert_entry.title
+              assign expert_quote = expert_entry.quote.value | default: expert_entry.quote
 
-                assign expert_image_url = ''
-                if expert_image != blank
-                  assign expert_image_request_width = 849
-                  if expert_image.width != blank
-                    assign expert_image_request_width = expert_image.width | at_most: 849
-                  endif
-                  assign expert_image_url = expert_image | image_url: width: expert_image_request_width
-                  assign expert_image_url_prefix = expert_image_url | slice: 0, 7
-                  assign expert_image_url_prefix_slash = expert_image_url | slice: 0, 8
-                  if expert_image_url_prefix == 'files/'
-                    assign expert_image_url = '/cdn/shop/' | append: expert_image_url
-                  elsif expert_image_url_prefix_slash == '/files/'
-                    assign expert_image_url = '/cdn/shop' | append: expert_image_url
-                  endif
+              assign expert_image_url = ''
+              if expert_image != blank
+                assign expert_image_request_width = 849
+                if expert_image.width != blank
+                  assign expert_image_request_width = expert_image.width | at_most: 849
                 endif
-              %}
+                assign expert_image_url = expert_image | image_url: width: expert_image_request_width
+                assign expert_image_url_prefix = expert_image_url | slice: 0, 7
+                assign expert_image_url_prefix_slash = expert_image_url | slice: 0, 8
+                if expert_image_url_prefix == 'files/'
+                  assign expert_image_url = '/cdn/shop/' | append: expert_image_url
+                elsif expert_image_url_prefix_slash == '/files/'
+                  assign expert_image_url = '/cdn/shop' | append: expert_image_url
+                endif
+              endif
+            %}
 
-              <article class="sb-expert-testimonials-carousel__item" data-sb-carousel-item data-sb-reveal-item {{ block.shopify_attributes }}>
-                <div class="sb-expert-testimonials-carousel__media">
-                  {% if expert_image_url != blank %}
-                    <img
-                      src="{{ expert_image_url }}"
-                      alt="{{ expert_name | default: expert_title | default: expert_quote | escape }}"
-                      loading="lazy"
-                      width="283"
-                      height="283"
-                    >
-                  {% else %}
-                    <div class="sb-expert-testimonials-carousel__media-placeholder" aria-hidden="true"></div>
-                  {% endif %}
-                </div>
+            <article class="sb-expert-testimonials-carousel__item" data-sb-carousel-item data-sb-reveal-item {{ block.shopify_attributes }}>
+              <div class="sb-expert-testimonials-carousel__media">
+                {% if expert_image_url != blank %}
+                  <img
+                    src="{{ expert_image_url }}"
+                    alt="{{ expert_name | default: expert_title | default: expert_quote | escape }}"
+                    loading="lazy"
+                    width="283"
+                    height="283"
+                  >
+                {% else %}
+                  <div class="sb-expert-testimonials-carousel__media-placeholder" aria-hidden="true"></div>
+                {% endif %}
+              </div>
 
-                {% if expert_name != blank %}
-                  <p class="sb-expert-testimonials-carousel__name font-callout weight-bold">{{ expert_name }}</p>
-                {% endif %}
-                {% if expert_title != blank %}
-                  <p class="sb-expert-testimonials-carousel__role font-body weight-regular">{{ expert_title }}</p>
-                {% endif %}
-                {% if expert_quote != blank %}
-                  <p class="sb-expert-testimonials-carousel__quote font-body weight-regular">{{ expert_quote }}</p>
-                {% endif %}
-              </article>
-            {% endfor %}
+              {% if expert_name != blank %}
+                <p class="sb-expert-testimonials-carousel__name font-callout weight-bold">{{ expert_name }}</p>
+              {% endif %}
+              {% if expert_title != blank %}
+                <p class="sb-expert-testimonials-carousel__role font-body weight-regular">{{ expert_title }}</p>
+              {% endif %}
+              {% if expert_quote != blank %}
+                <p class="sb-expert-testimonials-carousel__quote font-body weight-regular">{{ expert_quote }}</p>
+              {% endif %}
+            </article>
           {% endfor %}
         {% endif %}
       </div>
@@ -358,18 +351,9 @@
         {
           "type": "metaobject",
           "id": "testimonial",
-          "label": "Testimonial source",
-          "metaobject_type": "sbv2_expert_testimonials_carousel",
-          "info": "Select a testimonials carousel source."
-        },
-        {
-          "type": "range",
-          "id": "testimonial_index",
-          "label": "Testimonial number",
-          "min": 1,
-          "max": 10,
-          "step": 1,
-          "default": 1
+          "label": "Testimonial",
+          "metaobject_type": "sbv2_expert_testimonials_carousel_item",
+          "info": "Select an individual testimonial."
         }
       ]
     }
