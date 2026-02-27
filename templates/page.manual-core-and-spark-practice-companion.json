@@ -935,7 +935,9 @@
         },
         "image_L8yyXG": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_28.jpg"
+          }
         },
         "text_nGgRmi": {
           "type": "text",
@@ -945,7 +947,9 @@
         },
         "image_7Wy3B7": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_2.jpg"
+          }
         },
         "divider_89iXCF": {
           "type": "divider",
