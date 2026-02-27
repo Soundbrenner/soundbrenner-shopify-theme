@@ -5347,6 +5347,7 @@
       }
     ];
     let pageScrollLockY = 0;
+    let pageScrollLockMode = null;
     const isDesktopViewport = () => window.matchMedia('(min-width: 990px)').matches;
     const isMobileMenuOpen = () => Boolean(mobileMenuDrawer && mobileMenuDrawer.classList.contains('menu-open'));
     const headerInnerElement = header.querySelector('.header__inner');
@@ -5604,36 +5605,76 @@
       mobileMenuReviewDate.textContent = `${Number.isFinite(reviewDay) ? reviewDay : 8} ${month}, ${year}`;
     };
     renderMobileMenuReview();
-    const syncPageScrollLock = () => {
-      const cartDrawerElement = document.querySelector('[data-cart-drawer]');
-      const cartOpen = Boolean(cartDrawerElement && !cartDrawerElement.hasAttribute('hidden'));
-      const shouldLock = isMobileMenuOpen() || cartOpen;
-      if (shouldLock) {
-        if (document.body.dataset.sbScrollLocked === 'true') return;
-        pageScrollLockY = window.scrollY || window.pageYOffset || 0;
-        document.documentElement.classList.add('sb-scroll-locked');
-        document.body.classList.add('sb-scroll-locked');
-        document.documentElement.style.overflow = 'hidden';
-        document.body.style.position = 'fixed';
-        document.body.style.top = `-${pageScrollLockY}px`;
-        document.body.style.left = '0';
-        document.body.style.right = '0';
-        document.body.style.width = '100%';
-        document.body.dataset.sbScrollLocked = 'true';
-        return;
-      }
-
-      if (document.body.dataset.sbScrollLocked !== 'true') return;
-      document.documentElement.classList.remove('sb-scroll-locked');
-      document.body.classList.remove('sb-scroll-locked');
-      document.documentElement.style.overflow = '';
+    const clearBodyFixedScrollLockStyles = () => {
       document.body.style.position = '';
       document.body.style.top = '';
       document.body.style.left = '';
       document.body.style.right = '';
       document.body.style.width = '';
+    };
+    const releasePageScrollLock = ({ restoreScroll = true } = {}) => {
+      if (document.body.dataset.sbScrollLocked !== 'true') {
+        pageScrollLockMode = null;
+        return;
+      }
+
+      const previousLockMode = pageScrollLockMode;
+      document.documentElement.classList.remove('sb-scroll-locked');
+      document.body.classList.remove('sb-scroll-locked');
+      document.documentElement.style.overflow = '';
+      clearBodyFixedScrollLockStyles();
       delete document.body.dataset.sbScrollLocked;
-      window.scrollTo(0, pageScrollLockY);
+      pageScrollLockMode = null;
+
+      if (restoreScroll && previousLockMode === 'fixed') {
+        lastY = pageScrollLockY;
+        window.scrollTo(0, pageScrollLockY);
+        return;
+      }
+
+      lastY = window.scrollY || window.pageYOffset || 0;
+    };
+    const getPageScrollLockMode = () => {
+      if (isMobileMenuOpen()) return 'fixed';
+      const cartDrawerElement = document.querySelector('[data-cart-drawer]');
+      const cartOpen = Boolean(
+        cartDrawerElement
+        && !cartDrawerElement.hasAttribute('hidden')
+        && cartDrawerElement.classList.contains('is-open')
+      );
+      if (!cartOpen) return null;
+      return isDesktopViewport() ? 'overflow' : 'fixed';
+    };
+    const syncPageScrollLock = () => {
+      const nextLockMode = getPageScrollLockMode();
+      if (!nextLockMode) {
+        releasePageScrollLock();
+        return;
+      }
+
+      if (document.body.dataset.sbScrollLocked === 'true' && pageScrollLockMode === nextLockMode) return;
+      if (document.body.dataset.sbScrollLocked === 'true') {
+        releasePageScrollLock({ restoreScroll: false });
+      }
+
+      pageScrollLockY = window.scrollY || window.pageYOffset || 0;
+      lastY = pageScrollLockY;
+      document.documentElement.classList.add('sb-scroll-locked');
+      document.body.classList.add('sb-scroll-locked');
+      document.documentElement.style.overflow = 'hidden';
+
+      if (nextLockMode === 'fixed') {
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${pageScrollLockY}px`;
+        document.body.style.left = '0';
+        document.body.style.right = '0';
+        document.body.style.width = '100%';
+      } else {
+        clearBodyFixedScrollLockStyles();
+      }
+
+      document.body.dataset.sbScrollLocked = 'true';
+      pageScrollLockMode = nextLockMode;
     };
     const openMobileMenu = () => {
       if (!mobileMenuDrawer || !mobileMenuToggle || isDesktopViewport()) return;
@@ -5844,6 +5885,7 @@
     let upwardTravel = 0;
     let hiddenOffset = 0;
     let topExitMode = lastY <= topThreshold;
+    let scrollSyncLocked = false;
 
     const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
     const headerSection = header.closest('.shopify-section');
@@ -5923,12 +5965,17 @@
         applyOffset();
       }
     };
+    const setScrollSyncLocked = (locked) => {
+      scrollSyncLocked = Boolean(locked);
+      lastY = getWindowY();
+    };
 
     window.SBHeaderNav = {
       ...(window.SBHeaderNav || {}),
       captureState: captureHeaderState,
       restoreState: restoreHeaderState,
-      refreshScrollMode: refreshHeaderScrollMode
+      refreshScrollMode: refreshHeaderScrollMode,
+      setScrollSyncLocked
     };
 
     let syncPrimaryBackdropOnScroll = () => {};
@@ -5950,8 +5997,7 @@
       let pointerY = 0;
       let allowHoverPrimaryMenuOpen = false;
       const menuSafePadding = 8;
-      const primaryHoverOpenDelayMs = 72;
-      const primaryHoverSwitchDelayMs = 48;
+      const primaryHoverOpenDelayMs = 36;
       const primaryHoverSettleDelayMs = 34;
       const primaryHoverMoveThresholdPx = 10;
       const headerInner = header.querySelector('.header__inner');
@@ -6143,11 +6189,14 @@
         if (!menuItem) return;
         clearHoverOpenTimer();
         clearCloseMenuTimer();
+        if (activeDropdownItem) {
+          setActiveDropdownItem(menuItem);
+          return;
+        }
         hoverOpenCandidateItem = menuItem;
         hoverOpenPointerStartX = event ? event.clientX : pointerX;
         hoverOpenPointerStartY = event ? event.clientY : pointerY;
-        const delay = activeDropdownItem ? primaryHoverSwitchDelayMs : primaryHoverOpenDelayMs;
-        hoverOpenTimer = window.setTimeout(runHoverOpenIntent, delay);
+        hoverOpenTimer = window.setTimeout(runHoverOpenIntent, primaryHoverOpenDelayMs);
       };
 
       const getDropdownTrackBounds = () => {
@@ -6378,6 +6427,15 @@
     };
 
     const onWindowScroll = () => {
+      if (document.body.dataset.sbScrollLocked === 'true') {
+        lastY = pageScrollLockY;
+        return;
+      }
+      if (scrollSyncLocked) {
+        lastY = getWindowY();
+        syncPrimaryBackdropOnScroll();
+        return;
+      }
       sync(getWindowY());
       syncPrimaryBackdropOnScroll();
     };
@@ -6386,6 +6444,7 @@
     window.addEventListener(
       'resize',
       () => {
+        syncPageScrollLock();
         refreshHeaderScrollMode();
         sync(getWindowY(), { force: true });
         scheduleHeaderSectionMinHeightSync();

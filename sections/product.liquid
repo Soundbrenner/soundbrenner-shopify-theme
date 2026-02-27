@@ -55,6 +55,14 @@
     assign product_rating = rating_value.rating | default: rating_value | plus: 0
   endif
   assign product_reviews_count = product.metafields.reviews.rating_count.value | default: 0 | plus: 0 | round: 0
+  assign product_rating_tooltip = product_rating | round: 2 | append: ''
+  assign product_rating_tooltip_parts = product_rating_tooltip | split: '.'
+  assign product_rating_tooltip_decimal = product_rating_tooltip_parts[1] | default: ''
+  if product_rating_tooltip_decimal == blank
+    assign product_rating_tooltip = product_rating_tooltip | append: '.00'
+  elsif product_rating_tooltip_decimal.size == 1
+    assign product_rating_tooltip = product_rating_tooltip | append: '0'
+  endif
 
   if product_settings_ref != blank
     assign product_tagline = product_settings_ref.tagline.value | default: product_settings_ref.tagline
@@ -442,7 +450,7 @@
   data-product-title="{{ product.title | escape }}"
   data-selector-list-option-position="{{ selector_list_option_position }}"
 >
-  <div class="sb-product-main__sticky-bar-wrap{% if product_has_page_header %} sb-product-main__sticky-bar-wrap--segmented-controls{% endif %}" data-sb-sticky-top-navigation>
+  <div class="sb-product-main__sticky-bar-wrap{% if product_has_page_header %} sb-product-main__sticky-bar-wrap--segmented-controls{% else %} sb-product-main__sticky-bar-wrap--hidden{% endif %}" data-sb-sticky-top-navigation>
     <div class="sb-product-main__sticky-bar{% unless product_has_page_header %} sb-product-main__sticky-bar--no-segmented{% endunless %}" data-sticky-buy-bar>
       <div class="sb-product-main__sticky-info">
         <div class="sb-product-main__sticky-image-wrap" aria-hidden="true">
@@ -480,9 +488,10 @@
           {% unless product_hide_reviews %}
             <div class="sb-product-main__sticky-reviews">
               <a
-                class="sb-product-main__sticky-stars"
+                class="sb-product-main__sticky-stars sb-product-thumbnail__stars"
                 href="#klaviyo-product-reviews-wrapper"
                 data-sticky-reviews-link
+                data-rating-tooltip="{{ product_rating_tooltip }}"
                 aria-label="Go to reviews"
               >
                 {% assign sticky_star_icon_url = 'icon-review-star.svg' | asset_url %}
@@ -1799,13 +1808,13 @@
       box-shadow: none;
       box-sizing: border-box;
       display: block;
-      padding: 0 var(--sb-supplementary-sticky-inline-margin) 8px;
+      padding: 8px var(--sb-supplementary-sticky-inline-margin) 8px;
       width: 100%;
     }
 
     .sb-product-main__sticky-bar-wrap--segmented-controls .sb-product-main__sticky-info,
     .sb-product-main__sticky-bar-wrap--segmented-controls .sb-product-main__sticky-add-button {
-      display: none;
+      display: none !important;
     }
 
     .sb-product-main__sticky-bar-wrap--segmented-controls .sb-product-main__sticky-segmented-wrap {
@@ -1815,31 +1824,31 @@
     }
 
     .sb-product-main__sticky-bar-wrap--segmented-controls .sb-product-main__sticky-segmented {
-      --sb-segment-gap: var(--sb-space-8);
+      --sb-segment-gap: 8px;
       align-items: stretch;
       background: var(--sb-color-neutral-100);
-      border-radius: var(--sb-space-24);
+      border-radius: 24px;
       display: flex;
-      gap: var(--sb-space-8);
-      height: var(--sb-space-36);
+      gap: 8px;
+      height: 36px;
       min-inline-size: 0;
       max-width: none;
       overflow: hidden;
-      padding: var(--sb-space-4);
+      padding: 4px;
       position: relative;
       width: 100%;
     }
 
     .sb-product-main__sticky-bar-wrap--segmented-controls .sb-product-main__sticky-segment-indicator {
       background: var(--sb-color-neutral-600);
-      border-radius: var(--sb-space-24);
-      height: calc(100% - (var(--sb-space-4) * 2));
-      left: var(--sb-space-4);
+      border-radius: 24px;
+      height: calc(100% - 8px);
+      left: 4px;
       pointer-events: none;
       position: absolute;
-      top: var(--sb-space-4);
+      top: 4px;
       transition: left 420ms cubic-bezier(0.22, 1, 0.36, 1), width 420ms cubic-bezier(0.22, 1, 0.36, 1);
-      width: calc((100% - (var(--sb-space-4) * 2) - var(--sb-segment-gap)) / 2);
+      width: calc((100% - 8px - var(--sb-segment-gap)) / 2);
       will-change: left, width;
     }
 
@@ -1847,7 +1856,7 @@
       align-items: center;
       background: transparent;
       border: 0;
-      border-radius: var(--sb-space-24);
+      border-radius: 24px;
       color: var(--sb-color-neutral-900);
       cursor: pointer;
       display: flex;
@@ -1855,7 +1864,7 @@
       justify-content: center;
       min-height: 0;
       overflow: hidden;
-      padding: 0 var(--sb-space-12);
+      padding: 0 12px;
       position: relative;
       text-align: center;
       text-overflow: ellipsis;
@@ -1886,18 +1895,21 @@
       z-index: 40;
     }
 
+    .sb-product-main__sticky-bar-wrap--hidden {
+      display: none;
+    }
+
     .sb-product-main__sticky-bar {
-      --sb-sticky-segment-max-width: 500px;
       align-items: center;
       background: var(--sb-color-neutral-200);
-      border-radius: var(--sb-space-24);
+      border-radius: 24px;
       box-shadow: inset 0 0 0 1px var(--sb-color-neutral-600);
       display: grid;
-      gap: var(--sb-space-36);
-      grid-template-columns: minmax(0, 1fr) minmax(0, var(--sb-sticky-segment-max-width)) minmax(0, 1fr);
+      gap: 36px;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 500px) minmax(0, 1fr);
       margin-inline: auto;
       max-width: 1240px;
-      padding: var(--sb-space-12) var(--sb-space-24);
+      padding: 12px 24px;
       width: min(1240px, calc(100vw - (var(--sb-sticky-inline-margin) * 2)));
     }
 
@@ -1909,16 +1921,16 @@
       align-items: center;
       display: flex;
       flex: 1 1 auto;
-      gap: var(--sb-space-12);
+      gap: 12px;
       min-inline-size: 0;
     }
 
     .sb-product-main__sticky-image-wrap {
-      border-radius: var(--sb-space-12);
+      border-radius: 12px;
       flex: 0 0 auto;
-      height: var(--sb-space-48);
+      height: 48px;
       overflow: hidden;
-      width: var(--sb-space-48);
+      width: 48px;
     }
 
     .sb-product-main__sticky-image {
@@ -1933,20 +1945,24 @@
     }
 
     .sb-product-main__sticky-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
       min-inline-size: 0;
     }
 
     .sb-product-main__sticky-meta--no-reviews {
       align-items: center;
       display: flex;
-      min-height: var(--sb-space-48);
+      gap: 0;
+      min-height: 48px;
     }
 
     .sb-product-main__sticky-price-stack {
       align-items: center;
       display: flex;
       flex-direction: row;
-      gap: var(--sb-space-8);
+      gap: 8px;
     }
 
     .sb-product-main__sticky-compare-price {
@@ -1961,7 +1977,7 @@
     .sb-product-main__sticky-reviews {
       align-items: center;
       display: flex;
-      gap: var(--sb-space-8);
+      gap: 8px;
       margin-top: 0;
     }
 
@@ -2010,7 +2026,16 @@
     .sb-product-main__sticky-stars:hover,
     .sb-product-main__sticky-stars:focus-visible {
       cursor: pointer;
+    }
+
+    .sb-product-main__sticky-stars:hover .sb-product-main__sticky-star,
+    .sb-product-main__sticky-stars:focus-visible .sb-product-main__sticky-star {
       opacity: 0.75;
+    }
+
+    .sb-product-main__sticky-stars.sb-product-thumbnail__stars[data-rating-tooltip]::after {
+      font-size: var(--font-size-caption);
+      padding: 4px 8px;
     }
 
     .sb-product-main__sticky-review-count:hover,
@@ -2025,6 +2050,7 @@
       justify-self: center;
       min-width: 0;
       width: 100%;
+      max-width: 500px;
     }
 
     .sb-product-main__sticky-segmented-wrap,
@@ -2034,43 +2060,43 @@
 
     .sb-product-main__sticky-segmented {
       background: var(--sb-color-neutral-100);
-      border-radius: var(--sb-space-24);
-      --sb-segment-gap: var(--sb-space-8);
+      border-radius: 24px;
+      --sb-segment-gap: 8px;
       align-items: stretch;
       display: flex;
-      gap: var(--sb-space-8);
-      height: var(--sb-space-36);
+      gap: 8px;
+      height: 36px;
       max-width: none;
       overflow: hidden;
-      padding: var(--sb-space-4);
+      padding: 4px;
       position: relative;
-      width: min(100%, var(--sb-sticky-segment-max-width));
+      width: 100%;
     }
 
     .sb-product-main__sticky-segment-indicator {
       background: var(--sb-color-neutral-600);
-      border-radius: var(--sb-space-24);
-      height: calc(100% - (var(--sb-space-4) * 2));
-      left: var(--sb-space-4);
+      border-radius: 24px;
+      height: calc(100% - 8px);
+      left: 4px;
       pointer-events: none;
       position: absolute;
-      top: var(--sb-space-4);
+      top: 4px;
       transition: left 420ms cubic-bezier(0.22, 1, 0.36, 1), width 420ms cubic-bezier(0.22, 1, 0.36, 1);
-      width: calc((100% - (var(--sb-space-4) * 2) - var(--sb-segment-gap)) / 2);
+      width: calc((100% - 8px - var(--sb-segment-gap)) / 2);
       will-change: left, width;
     }
 
     .sb-product-main__sticky-segment-pill {
       background: transparent;
       border: 0;
-      border-radius: var(--sb-space-24);
+      border-radius: 24px;
       color: var(--sb-color-neutral-900);
       cursor: pointer;
       display: flex;
       flex: 1 1 50%;
       justify-content: center;
       min-height: 0;
-      padding: 0 var(--sb-space-12);
+      padding: 0 12px;
       text-align: center;
       align-items: center;
       position: relative;
@@ -2094,28 +2120,32 @@
       justify-self: end;
     }
 
-    @media (max-width: 989px) {
-      .sb-product-main__sticky-bar {
-        column-gap: var(--sb-space-24);
-        grid-template-columns: minmax(0, 1fr) auto;
-        row-gap: var(--sb-space-16);
-      }
+  }
 
-      .sb-product-main__sticky-segmented-wrap {
-        display: block;
-        grid-column: 1 / -1;
-        grid-row: 2;
-      }
+  @media (min-width: 750px) and (max-width: 1359px) {
+    .sb-product-main__sticky-bar {
+      column-gap: 24px;
+      grid-template-columns: minmax(0, 1fr) auto;
+      row-gap: 16px;
+    }
 
-      .sb-product-main__sticky-segmented {
-        max-width: none;
-        width: 100%;
-      }
+    .sb-product-main__sticky-segmented-wrap {
+      display: block;
+      grid-column: 1 / -1;
+      grid-row: 2;
+      justify-self: stretch;
+      max-width: none;
+      width: 100%;
+    }
 
-      .sb-product-main__sticky-add-button {
-        grid-column: 2;
-        grid-row: 1;
-      }
+    .sb-product-main__sticky-segmented {
+      max-width: none;
+      width: 100%;
+    }
+
+    .sb-product-main__sticky-add-button {
+      grid-column: 2;
+      grid-row: 1;
     }
   }
 
@@ -3372,7 +3402,6 @@
       const addButtonLabel = addButton ? addButton.querySelector('[data-add-button-label]') : null;
       const stickyBarWrap = root.querySelector('.sb-product-main__sticky-bar-wrap');
       const stickyBar = root.querySelector('[data-sticky-buy-bar]');
-      const stickyInfo = root.querySelector('.sb-product-main__sticky-info');
       const stickyImage = root.querySelector('[data-sticky-image]');
       const stickyComparePriceElement = root.querySelector('[data-sticky-compare-price]');
       const stickyCurrentPriceElement = root.querySelector('[data-sticky-current-price]');
@@ -3386,6 +3415,8 @@
       const stickySegmentButtons = Array.from(root.querySelectorAll('[data-sticky-segment-option]'));
       const mobileSegmentedMediaQuery = window.matchMedia('(max-width: 749px)');
       const hasStickySegmentedControls = Boolean(stickySegmentedControls && stickySegmentButtons.length);
+      const shouldDeferStickyBarUntilPastAddButton = !hasStickySegmentedControls;
+      let isDeferredStickyBarVisible = !shouldDeferStickyBarUntilPastAddButton;
       const headerElement = document.querySelector('.header');
       const priceRow = root.querySelector('[data-product-price-row]');
       const comparePriceElement = root.querySelector('[data-product-compare-price]');
@@ -3558,44 +3589,8 @@
         stickySegmentIndicator.style.height = `${nextHeight}px`;
       };
 
-      const isVisibleStickyChild = (element) =>
-        element instanceof HTMLElement && !element.hidden && element.getClientRects().length > 0;
-
-      const measureStickyInfoContentWidth = () => {
-        if (!stickyInfo) return 0;
-        const visibleChildren = Array.from(stickyInfo.children).filter(isVisibleStickyChild);
-        if (!visibleChildren.length) return 0;
-        const stickyInfoStyles = window.getComputedStyle(stickyInfo);
-        const gap = Number.parseFloat(stickyInfoStyles.columnGap || stickyInfoStyles.gap || '0') || 0;
-
-        let totalWidth = 0;
-        visibleChildren.forEach((child) => {
-          totalWidth += child.getBoundingClientRect().width || 0;
-        });
-        totalWidth += gap * Math.max(0, visibleChildren.length - 1);
-        return totalWidth;
-      };
-
       const syncStickySegmentWidth = () => {
-        if (!stickyBar || !stickySegmentedControls || !stickyInfo || !stickyAddButton) return;
-
-        if (window.matchMedia('(max-width: 989px)').matches) {
-          stickyBar.style.removeProperty('--sb-sticky-segment-max-width');
-          return;
-        }
-
-        const rootStyles = window.getComputedStyle(document.documentElement);
-        const minSideGap = Number.parseFloat(rootStyles.getPropertyValue('--sb-space-36')) || 36;
-        const maxSegmentWidth = 500;
-        const barWidth = stickyBar.getBoundingClientRect().width || 0;
-        if (!barWidth) return;
-
-        const leftContentWidth = measureStickyInfoContentWidth();
-        const rightContentWidth = stickyAddButton.getBoundingClientRect().width || 0;
-        const dominantSideWidth = Math.max(leftContentWidth, rightContentWidth);
-        const availableWidth = barWidth - (dominantSideWidth * 2) - (minSideGap * 2);
-        const nextSegmentWidth = Math.max(0, Math.min(maxSegmentWidth, Math.floor(availableWidth)));
-        stickyBar.style.setProperty('--sb-sticky-segment-max-width', `${nextSegmentWidth}px`);
+        // Segmented width is fully handled by CSS breakpoints.
       };
 
       const getSegmentManagedSections = (productSection) => {
@@ -3883,19 +3878,60 @@
         stickyImage.style.backgroundSize = 'cover';
       };
 
-      const getStickyTopGap = () => {
+      const getResolvedStickyTopGap = () => {
         if (!stickyBarWrap) return 16;
         const spacingValue = window.getComputedStyle(stickyBarWrap).getPropertyValue('--sb-supplementary-sticky-top-gap');
         const spacing = Number.parseFloat(spacingValue);
         return Number.isFinite(spacing) ? spacing : 16;
       };
 
-      function syncStickyBarTop() {
-        if (!stickyBarWrap || !headerElement) return;
+      const getStickyTopGap = () => {
+        if (shouldDeferStickyBarUntilPastAddButton && !isDeferredStickyBarVisible) return 0;
+        return getResolvedStickyTopGap();
+      };
+
+      const getStickyBarTopPosition = () => {
         const spacing = getStickyTopGap();
-        const headerBottom = headerElement.getBoundingClientRect().bottom;
-        const nextTop = Math.max(headerBottom + spacing, spacing);
-        stickyBarWrap.style.top = `${nextTop}px`;
+        if (!headerElement) return spacing;
+        const headerStyles = window.getComputedStyle(headerElement);
+        const headerBorderBottom = Number.parseFloat(headerStyles.borderBottomWidth) || 0;
+        const headerBottom = headerElement.getBoundingClientRect().bottom - headerBorderBottom;
+        return Math.max(headerBottom + spacing, spacing);
+      };
+
+      const shouldShowDeferredStickyBar = () => {
+        if (!stickyBarWrap) return false;
+        if (!shouldDeferStickyBarUntilPastAddButton) return true;
+        if (!addButton) return true;
+        const addButtonRect = addButton.getBoundingClientRect();
+        return addButtonRect.bottom <= getStickyBarTopPosition();
+      };
+
+      const syncDeferredStickyBarVisibility = () => {
+        if (!stickyBarWrap || !shouldDeferStickyBarUntilPastAddButton) return false;
+        const nextVisible = shouldShowDeferredStickyBar();
+        if (nextVisible === isDeferredStickyBarVisible) return false;
+        isDeferredStickyBarVisible = nextVisible;
+        stickyBarWrap.classList.toggle('sb-product-main__sticky-bar-wrap--hidden', !nextVisible);
+        return true;
+      };
+
+      let stickyBarTopRafId = 0;
+      const scheduleStickyBarTopSync = () => {
+        if (stickyBarTopRafId) return;
+        stickyBarTopRafId = window.requestAnimationFrame(() => {
+          stickyBarTopRafId = 0;
+          syncStickyBarTop();
+        });
+      };
+
+      function syncStickyBarTop() {
+        if (!stickyBarWrap) return;
+        const nextTop = getStickyBarTopPosition();
+        const nextTopValue = `${Math.floor(nextTop)}px`;
+        if (stickyBarWrap.style.top !== nextTopValue) {
+          stickyBarWrap.style.top = nextTopValue;
+        }
       }
 
       const getFirstVisibleTemplateSection = () => {
@@ -3914,10 +3950,9 @@
       function syncStickyBarMetrics({ immediateIndicator = true } = {}) {
         if (!stickyBarWrap) return;
         const stickyHeight = stickyBarWrap.getBoundingClientRect().height || 0;
-        const space96Value = window.getComputedStyle(document.documentElement).getPropertyValue('--sb-space-96');
         const stickyTopGap = getStickyTopGap();
-        const headingOffset = Number.parseFloat(space96Value) || 96;
-        const firstSectionOffset = stickyHeight + stickyTopGap;
+        const headingOffset = 96;
+        const firstSectionOffset = hasStickySegmentedControls ? (stickyHeight + stickyTopGap) : 0;
         const pageStickyOffset = firstSectionOffset + headingOffset;
         root.style.setProperty('--sb-product-sticky-bar-height', `${stickyHeight}px`);
         root.style.setProperty('--sb-product-sticky-offset', `${firstSectionOffset}px`);
@@ -3940,9 +3975,8 @@
       const getReviewsScrollOffset = (targetAbsoluteTop) => {
         const currentScrollTop = window.scrollY || window.pageYOffset || 0;
         const isScrollingDown = targetAbsoluteTop > currentScrollTop;
-        const space96Value = window.getComputedStyle(document.documentElement).getPropertyValue('--sb-space-96');
         const stickyTopGap = getStickyTopGap();
-        const headingGap = Number.parseFloat(space96Value) || 96;
+        const headingGap = 96;
         const stickyHeight = stickyBarWrap?.getBoundingClientRect().height || 0;
         const expandedHeaderTop = headerElement
           ? Math.max((headerElement.getBoundingClientRect().height || 0) + stickyTopGap, stickyTopGap)
@@ -4004,30 +4038,48 @@
         true
       );
 
+      syncDeferredStickyBarVisibility();
       syncStickyBarMetrics({ immediateIndicator: true });
       syncStickyBarTop();
+      scheduleStickyBarTopSync();
       syncMobileSegmentedHeaderState();
-      window.setTimeout(() => syncStickyBarMetrics({ immediateIndicator: true }), 80);
-      window.setTimeout(() => syncStickyBarMetrics({ immediateIndicator: true }), 300);
-      window.setTimeout(syncStickyBarTop, 300);
+      window.setTimeout(() => {
+        syncDeferredStickyBarVisibility();
+        syncStickyBarMetrics({ immediateIndicator: true });
+        scheduleStickyBarTopSync();
+      }, 80);
+      window.setTimeout(() => {
+        syncDeferredStickyBarVisibility();
+        syncStickyBarMetrics({ immediateIndicator: true });
+        syncStickyBarTop();
+        scheduleStickyBarTopSync();
+      }, 300);
 
       window.addEventListener(
         'scroll',
         () => {
           captureSegmentScroll();
+          const stickyVisibilityChanged = syncDeferredStickyBarVisibility();
           syncStickyBarTop();
+          if (stickyVisibilityChanged) {
+            syncStickyBarMetrics({ immediateIndicator: true });
+          }
+          scheduleStickyBarTopSync();
         },
         { passive: true }
       );
       window.addEventListener('resize', () => {
+        syncDeferredStickyBarVisibility();
         syncStickyBarMetrics({ immediateIndicator: true });
         syncStickyBarTop();
+        scheduleStickyBarTopSync();
         syncMobileSegmentedHeaderState();
       });
 
       const mainContent = document.querySelector('#MainContent');
       if (mainContent) {
         const sectionObserver = new MutationObserver(() => {
+          syncDeferredStickyBarVisibility();
           syncStickyBarMetrics({ immediateIndicator: true });
           syncStickyBarTop();
         });
@@ -4036,6 +4088,11 @@
           subtree: false,
         });
       }
+
+      document.addEventListener('sb:cart-drawer:state-change', () => {
+        syncStickyBarTop();
+        scheduleStickyBarTopSync();
+      });
 
       const initGalleryVideos = () => {
         if (!mediaGrid) return;

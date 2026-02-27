@@ -1202,6 +1202,7 @@
       window.requestAnimationFrame(() => {
         this.drawer.classList.add(CART_OPEN_CLASS);
         this.updateStickyState();
+        this.dispatchStateChange();
       });
 
       if (this.trigger) {
@@ -1209,7 +1210,6 @@
       }
 
       this.setupHistoryListener();
-      this.dispatchStateChange();
 
       this.querySelectorAll('cart-items-component').forEach((component) => {
         if (component && typeof component.hideDiscountError === 'function') {
@@ -1223,6 +1223,7 @@
       if (!this.drawer || this.drawer.hasAttribute('hidden')) return;
 
       this.drawer.classList.remove(CART_OPEN_CLASS);
+      this.dispatchStateChange();
 
       const finalizeClose = () => {
         if (!this.drawer) return;

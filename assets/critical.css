@@ -339,7 +339,7 @@ body .shopify-policy__body .rte > * + * {
 .sb-product-thumbnail__stars[data-rating-tooltip]::before {
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
-  border-top: 4px solid var(--sb-color-primary-500);
+  border-top: 4px solid var(--sb-color-reviews);
   bottom: calc(100% + 3px);
   content: '';
   left: 50%;
@@ -348,9 +348,9 @@ body .shopify-policy__body .rte > * + * {
 }
 
 .sb-product-thumbnail__stars[data-rating-tooltip]::after {
-  background: var(--sb-color-primary-500);
+  background: var(--sb-color-reviews);
   border-radius: 999px;
-  color: var(--sb-color-always-white);
+  color: var(--sb-color-always-black);
   content: attr(data-rating-tooltip);
   font-family: var(--font-primary--family);
   font-size: var(--font-size-body);
