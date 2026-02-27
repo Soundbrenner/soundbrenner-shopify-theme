@@ -174,6 +174,13 @@
             "text": "<p>When charging is complete, the soundwave will turn solid green.</p>"
           }
         },
+        "accordion_item_ynigGJ": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Pulse battery maintenance guide",
+            "answer": "<p>When the battery of your wearable is not in use, it will discharge at a low speed. If you do not use the battery for an extended period of time (e.g. 3 months or longer) there is a risk that it over-discharges. This can cause permanent damage to the electrodes and active materials of the battery. In the worst case this means that the battery (and your wearable) no longer work. This behavior is typical in all of today's lithium batteries.</p><p>The solution is simple. <strong>Charge and discharge the battery in your wearable at least every three months to ensure it remains in good condition</strong>. If you use your wearable regularly (e.g. at least once per week) you do not have to worry or take any special measures to maintain the battery's health.</p><p><strong>What happens if the battery in my wearable is permanently damaged?</strong></p><p>Unfortunately it's currently not possible to replace the battery in our wearables. This is not an intentional design choice, but because we had to use adhesives to increase the water resistance of our products. This means if a wearable is opened up, many of the mechanical components get damaged and can't be re-used. It's definitely a goal to make our batteries replaceable in the future, but with a small and tightly packed form factor like a smartwatch this is not a trivial challenge. </p><p>It's all the more important that you take good care of your wearable's battery. In case your wearable's battery is damaged, please contact our support and we'll try our best to help you: <a href=\"https://support.soundbrenner.com/hc/en-us/requests/new\" target=\"_blank\">contact support</a></p>"
+          }
+        },
         "divider_Jd6948": {
           "type": "divider",
           "settings": {}
@@ -556,6 +563,7 @@
         "text_8iMfyk",
         "heading_small_76mbcf",
         "text_Je89EH",
+        "accordion_item_ynigGJ",
         "divider_Jd6948",
         "subheading_bFbL7r",
         "text_B7JKP9",
