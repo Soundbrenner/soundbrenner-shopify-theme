@@ -18,14 +18,20 @@
       endif
       assign item_image = item.image | image_url: width: 256
       assign item_hover_image = blank
-      assign item_variant_hover_photo = item.variant.metafields.custom.sbv2_hover_photo.value | default: item.variant.metafields.custom.sbv2_hover_photo
-      if item_variant_hover_photo != blank
-        assign item_hover_image = item_variant_hover_photo | image_url: width: 256
+      capture item_variant_hover_image_url
+        render 'sb-hover-image-url', resource: item.variant, width: 256
+      endcapture
+      assign item_variant_hover_image_url = item_variant_hover_image_url | strip
+      if item_variant_hover_image_url != blank
+        assign item_hover_image = item_variant_hover_image_url
       endif
       if item_hover_image == blank
-        assign item_product_hover_photo = item.product.metafields.custom.sbv2_hover_photo.value | default: item.product.metafields.custom.sbv2_hover_photo
-        if item_product_hover_photo != blank
-          assign item_hover_image = item_product_hover_photo | image_url: width: 256
+        capture item_product_hover_image_url
+          render 'sb-hover-image-url', resource: item.product, width: 256
+        endcapture
+        assign item_product_hover_image_url = item_product_hover_image_url | strip
+        if item_product_hover_image_url != blank
+          assign item_hover_image = item_product_hover_image_url
         endif
       endif
       assign item_has_discount = false

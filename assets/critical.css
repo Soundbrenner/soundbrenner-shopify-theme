@@ -140,16 +140,12 @@ body {
   grid-column: 1 / -1;
 }
 
-/* Global section rhythm: Scaling-L (96 desktop via token) */
-.shopify-section + .shopify-section {
-  margin-top: var(--sb-space-96);
-}
-
 /*
-  Root-cause fix:
-  template sections are not always immediately adjacent (apps/scripts can sit between wrappers),
-  so adjacent-only spacing can be skipped. Apply rhythm across all later template sections.
+  Global section rhythm: Scaling-L (96 desktop via token).
+  Use general siblings so app/editor-injected nodes between wrappers cannot collapse spacing.
 */
+.shopify-section.shopify-section-group-header-group ~ .shopify-section[id*='template--'],
+.shopify-section:has(> .header) ~ .shopify-section[id*='template--'],
 .shopify-section[id*='template--'] ~ .shopify-section[id*='template--'] {
   margin-top: var(--sb-space-96) !important;
 }
@@ -325,6 +321,60 @@ body .shopify-policy__body .rte > * + * {
 .sb-product-thumbnail__media-wrap:hover,
 .sb-product-thumbnail__media-wrap:focus-within {
   transform: scale(1.015);
+}
+
+/* Shared thumbnail rating tooltip */
+.sb-product-thumbnail__stars[data-rating-tooltip] {
+  position: relative;
+}
+
+.sb-product-thumbnail__stars[data-rating-tooltip]::before,
+.sb-product-thumbnail__stars[data-rating-tooltip]::after {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  visibility: hidden;
+}
+
+.sb-product-thumbnail__stars[data-rating-tooltip]::before {
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid var(--sb-color-primary-500);
+  bottom: calc(100% + 3px);
+  content: '';
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+}
+
+.sb-product-thumbnail__stars[data-rating-tooltip]::after {
+  background: var(--sb-color-primary-500);
+  border-radius: 999px;
+  color: var(--sb-color-always-white);
+  content: attr(data-rating-tooltip);
+  font-family: var(--font-primary--family);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  left: 50%;
+  line-height: 1;
+  padding: 6px 10px;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  bottom: calc(100% + 7px);
+  z-index: 4;
+}
+
+.sb-product-thumbnail__stars[data-rating-tooltip]:hover::before,
+.sb-product-thumbnail__stars[data-rating-tooltip]:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (hover: none) {
+  .sb-product-thumbnail__stars[data-rating-tooltip]::before,
+  .sb-product-thumbnail__stars[data-rating-tooltip]::after {
+    display: none;
+  }
 }
 
 /* Shared thumbnail loading placeholder background */

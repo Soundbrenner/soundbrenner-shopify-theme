@@ -197,7 +197,7 @@
       "name": "Expert testimonials",
       "settings": {
         "use_product_metaobjects": false,
-        "title": "Expert testimonials"
+        "title": "Worn by the best"
       }
     },
     "hero_card_d8GepA": {
@@ -210,7 +210,7 @@
         "use_product_page_metaobjects": false,
         "background_image_desktop": "shopify://shop_images/Property_1_About_us.jpg",
         "background_image_mobile": "shopify://shop_images/Property_1_About_us_mobile.jpg",
-        "kicker": "Why Soundbrenner",
+        "kicker": "About Soundbrenner",
         "headline": "What makes us unique?",
         "subheadline": "",
         "show_button": true,
@@ -339,7 +339,7 @@
       "type": "quote-section",
       "name": "Quote section",
       "settings": {
-        "quote": "Great musicians aren't born. They're crafted.\n\nSuccess is simply the sum of every hour you spent in the practice room.\n\nAt Soundbrenner, we don't believe in shortcuts - only better tools for the journey to mastery."
+        "quote": "Great musicians aren't born. They're crafted. Success is simply the sum of every hour you spent in the practice room.\n\nAt Soundbrenner, we don't believe in shortcuts - only better tools for the journey to mastery."
       }
     },
     "hero_card_bottom_seasonal": {

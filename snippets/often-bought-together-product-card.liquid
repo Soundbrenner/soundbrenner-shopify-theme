@@ -5,6 +5,7 @@
               assign selected_variant = product_item.selected_or_first_available_variant
               assign product_price_text = ''
               assign product_compare_price_text = ''
+              assign product_item_hover_image = blank
               assign swatch_1 = blank
               assign swatch_2 = blank
               assign swatch_3 = blank
@@ -54,6 +55,24 @@
                 assign product_price_text = selected_variant.price | money
                 if selected_variant.compare_at_price > selected_variant.price
                   assign product_compare_price_text = selected_variant.compare_at_price | money
+                endif
+
+                capture product_item_variant_hover_image_url
+                  render 'sb-hover-image-url', resource: selected_variant, width: 584
+                endcapture
+                assign product_item_variant_hover_image_url = product_item_variant_hover_image_url | strip
+                if product_item_variant_hover_image_url != blank
+                  assign product_item_hover_image = product_item_variant_hover_image_url
+                endif
+              endif
+
+              if product_item_hover_image == blank
+                capture product_item_default_hover_image_url
+                  render 'sb-hover-image-url', resource: product_item, width: 584
+                endcapture
+                assign product_item_default_hover_image_url = product_item_default_hover_image_url | strip
+                if product_item_default_hover_image_url != blank
+                  assign product_item_hover_image = product_item_default_hover_image_url
                 endif
               endif
 
@@ -119,9 +138,12 @@
                             assign option_swatch_compare_price_text = blank
                           endif
 
-                          assign option_variant_hover_photo = product_variant.metafields.custom.sbv2_hover_photo.value | default: product_variant.metafields.custom.sbv2_hover_photo
-                          if option_variant_hover_photo != blank
-                            assign option_swatch_hover_image = option_variant_hover_photo | image_url: width: 584
+                          capture option_swatch_hover_image_url
+                            render 'sb-hover-image-url', resource: product_variant, width: 584
+                          endcapture
+                          assign option_swatch_hover_image_url = option_swatch_hover_image_url | strip
+                          if option_swatch_hover_image_url != blank
+                            assign option_swatch_hover_image = option_swatch_hover_image_url
                           endif
 
                           assign option_variant_gallery_images = product_variant.metafields.custom.images.value | default: product_variant.metafields.custom.images
@@ -185,9 +207,12 @@
                             assign variant_color_value = product_variant.option3
                         endcase
                         if variant_color_value == option_value.name
-                          assign option_variant_hover_photo = product_variant.metafields.custom.sbv2_hover_photo.value | default: product_variant.metafields.custom.sbv2_hover_photo
-                          if option_variant_hover_photo != blank
-                            assign option_swatch_hover_image = option_variant_hover_photo | image_url: width: 584
+                          capture option_swatch_hover_image_url
+                            render 'sb-hover-image-url', resource: product_variant, width: 584
+                          endcapture
+                          assign option_swatch_hover_image_url = option_swatch_hover_image_url | strip
+                          if option_swatch_hover_image_url != blank
+                            assign option_swatch_hover_image = option_swatch_hover_image_url
                             break
                           endif
                         endif
@@ -234,6 +259,10 @@
                   endfor
                 endif
               endfor
+
+              if product_item_hover_image == blank and swatch_1_hover_image != blank
+                assign product_item_hover_image = swatch_1_hover_image | strip
+              endif
             %}
 
             <article class="sb-often-bought-together__item">
@@ -272,6 +301,7 @@
                 swatch_2_compare_price_text: swatch_2_compare_price_text,
                 swatch_3_compare_price_text: swatch_3_compare_price_text,
                 swatch_4_compare_price_text: swatch_4_compare_price_text,
+                hover_image_url: product_item_hover_image,
                 selected_swatch: 1,
                 hide_reviews: product_hide_reviews,
                 show_add_to_cart: true,

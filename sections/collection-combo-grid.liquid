@@ -156,9 +156,12 @@
                         assign option_swatch_compare_price_text = blank
                       endif
 
-                      assign option_variant_hover_photo = product_variant.metafields.custom.sbv2_hover_photo.value | default: product_variant.metafields.custom.sbv2_hover_photo
-                      if option_variant_hover_photo != blank
-                        assign option_swatch_hover_image = option_variant_hover_photo | image_url: width: 584
+                      capture option_swatch_hover_image_url
+                        render 'sb-hover-image-url', resource: product_variant, width: 584
+                      endcapture
+                      assign option_swatch_hover_image_url = option_swatch_hover_image_url | strip
+                      if option_swatch_hover_image_url != blank
+                        assign option_swatch_hover_image = option_swatch_hover_image_url
                       endif
 
                       assign option_variant_gallery_images = product_variant.metafields.custom.images.value | default: product_variant.metafields.custom.images
@@ -222,9 +225,12 @@
                         assign variant_color_value = product_variant.option3
                     endcase
                     if variant_color_value == option_value.name
-                      assign option_variant_hover_photo = product_variant.metafields.custom.sbv2_hover_photo.value | default: product_variant.metafields.custom.sbv2_hover_photo
-                      if option_variant_hover_photo != blank
-                        assign option_swatch_hover_image = option_variant_hover_photo | image_url: width: 584
+                      capture option_swatch_hover_image_url
+                        render 'sb-hover-image-url', resource: product_variant, width: 584
+                      endcapture
+                      assign option_swatch_hover_image_url = option_swatch_hover_image_url | strip
+                      if option_swatch_hover_image_url != blank
+                        assign option_swatch_hover_image = option_swatch_hover_image_url
                         break
                       endif
                     endif
@@ -1193,6 +1199,16 @@
 
         if (window.SBProductThumbnail && typeof window.SBProductThumbnail.initThumbnailMediaScope === 'function') {
           window.SBProductThumbnail.initThumbnailMediaScope(root, { initSwatchInteractions: true });
+        } else if (!window.SBProductThumbnailLegacyFallbackEnabled) {
+          document.addEventListener(
+            'sb:product-thumbnail:ready',
+            () => {
+              if (window.SBProductThumbnail && typeof window.SBProductThumbnail.initThumbnailMediaScope === 'function') {
+                window.SBProductThumbnail.initThumbnailMediaScope(root, { initSwatchInteractions: true });
+              }
+            },
+            { once: true }
+          );
         } else {
           root.querySelectorAll('.sb-product-thumbnail__media-wrap').forEach((mediaWrap) => {
             ensureDefaultMediaData(mediaWrap);

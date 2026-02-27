@@ -1039,6 +1039,7 @@
     .sb-collection-overview__heading-row {
       align-items: flex-start;
       flex-direction: column;
+      gap: 16px;
     }
 
     .sb-collection-overview__actions {
@@ -1210,6 +1211,31 @@
         return mediaReadyPromise;
       };
 
+      const preloadHoverImage = (mediaWrap) => {
+        const hoverImage = String(mediaWrap.dataset.hoverImage || '').trim();
+        if (!hoverImage) return;
+        void ensureMediaReady({ type: 'image', src: hoverImage, poster: '' });
+      };
+
+      const ensureDefaultMediaData = (mediaWrap) => {
+        const sourceItems = getSourceItems(mediaWrap);
+        if (!mediaWrap.dataset.defaultImage) {
+          mediaWrap.dataset.defaultImage = (sourceItems[0] && sourceItems[0].src) || '';
+        }
+        if (!mediaWrap.dataset.primaryImage) {
+          mediaWrap.dataset.primaryImage = mediaWrap.dataset.defaultImage || '';
+        }
+        if (typeof mediaWrap.dataset.defaultHoverImage === 'undefined') {
+          mediaWrap.dataset.defaultHoverImage = mediaWrap.dataset.hoverImage || '';
+        }
+        if (typeof mediaWrap.dataset.hoverImage === 'undefined') {
+          mediaWrap.dataset.hoverImage = mediaWrap.dataset.defaultHoverImage || '';
+        }
+        if (typeof mediaWrap.dataset.isHovering === 'undefined') {
+          mediaWrap.dataset.isHovering = 'false';
+        }
+      };
+
       const setFirstSlideImage = (mediaWrap, nextSource) => {
         const nextSrc = String(nextSource || '').trim();
         if (!nextSrc) return;
@@ -1262,6 +1288,19 @@
         }
       };
 
+      const syncFirstSlideForState = (mediaWrap) => {
+        const currentIndex = Number.parseInt(mediaWrap.dataset.galleryIndex || '0', 10);
+        if (Number.isFinite(currentIndex) && currentIndex !== 0) return;
+
+        const hoverImage = String(mediaWrap.dataset.hoverImage || '').trim();
+        const primaryImage = String(mediaWrap.dataset.primaryImage || mediaWrap.dataset.defaultImage || '').trim();
+        const shouldUseHover = mediaWrap.dataset.isHovering === 'true' && hoverImage;
+        const nextSource = shouldUseHover ? hoverImage : primaryImage;
+        if (!nextSource) return;
+
+        setFirstSlideImage(mediaWrap, nextSource);
+      };
+
       const setGallerySources = (mediaWrap, sourceItems) => {
         let sourcesContainer = mediaWrap.querySelector('.sb-product-thumbnail__gallery-sources');
         if (!sourcesContainer) {
@@ -1291,9 +1330,37 @@
 
         if (window.SBProductThumbnail && typeof window.SBProductThumbnail.initThumbnailMediaScope === 'function') {
           window.SBProductThumbnail.initThumbnailMediaScope(root, { initSwatchInteractions: true });
+        } else if (!window.SBProductThumbnailLegacyFallbackEnabled) {
+          document.addEventListener(
+            'sb:product-thumbnail:ready',
+            () => {
+              if (window.SBProductThumbnail && typeof window.SBProductThumbnail.initThumbnailMediaScope === 'function') {
+                window.SBProductThumbnail.initThumbnailMediaScope(root, { initSwatchInteractions: true });
+              }
+            },
+            { once: true }
+          );
         } else {
           root.querySelectorAll('.sb-product-thumbnail__media-wrap').forEach((mediaWrap) => {
+            ensureDefaultMediaData(mediaWrap);
             renderMediaFromSources(mediaWrap, getSourceItems(mediaWrap));
+            syncFirstSlideForState(mediaWrap);
+            preloadHoverImage(mediaWrap);
+
+            mediaWrap.addEventListener('mouseenter', () => {
+              mediaWrap.dataset.isHovering = 'true';
+              preloadHoverImage(mediaWrap);
+              syncFirstSlideForState(mediaWrap);
+            });
+
+            mediaWrap.addEventListener('mouseleave', () => {
+              mediaWrap.dataset.isHovering = 'false';
+              syncFirstSlideForState(mediaWrap);
+            });
+
+            mediaWrap.addEventListener('focusin', () => {
+              preloadHoverImage(mediaWrap);
+            });
 
             if (mediaWrap.dataset.galleryNavBound !== 'true') {
               mediaWrap.dataset.galleryNavBound = 'true';
@@ -1305,6 +1372,7 @@
                   if (!Number.isFinite(delta) || delta === 0) return;
                   const currentIndex = Number.parseInt(mediaWrap.dataset.galleryIndex || '0', 10) || 0;
                   updateSlide(mediaWrap, currentIndex + delta);
+                  syncFirstSlideForState(mediaWrap);
                 });
               });
             }
@@ -1321,15 +1389,25 @@
               mediaWrap.dataset.swatchSwapToken = swatchSwapToken;
 
               const nextImage = (swatchButton.dataset.thumbnailImage || '').trim();
+              const nextHoverImage = (swatchButton.dataset.thumbnailHoverImage || '').trim();
               const nextGallery = (swatchButton.dataset.thumbnailGallery || '').trim();
+              if (nextImage) {
+                mediaWrap.dataset.primaryImage = nextImage;
+              }
+              mediaWrap.dataset.hoverImage = nextHoverImage || mediaWrap.dataset.defaultHoverImage || '';
+              preloadHoverImage(mediaWrap);
               const isPreviewSource =
                 sourceId === 'product-thumbnail-swatch-hover' || sourceId === 'product-thumbnail-swatch-focus';
 
               if (isPreviewSource) {
-                if (!nextImage) return;
-                await ensureMediaReady({ type: 'image', src: nextImage, poster: '' });
-                if (mediaWrap.dataset.swatchSwapToken !== swatchSwapToken) return;
-                setFirstSlideImage(mediaWrap, nextImage);
+                if (nextImage) {
+                  await ensureMediaReady({ type: 'image', src: nextImage, poster: '' });
+                  if (mediaWrap.dataset.swatchSwapToken !== swatchSwapToken) return;
+                  mediaWrap.dataset.galleryIndex = '0';
+                  setFirstSlideImage(mediaWrap, nextImage);
+                } else {
+                  syncFirstSlideForState(mediaWrap);
+                }
                 return;
               }
 
@@ -1347,6 +1425,7 @@
               if (mediaWrap.dataset.swatchSwapToken !== swatchSwapToken) return;
               setGallerySources(mediaWrap, nextSourceItems);
               renderMediaFromSources(mediaWrap, nextSourceItems);
+              syncFirstSlideForState(mediaWrap);
             };
 
             row.addEventListener(variantUpdateEvent, (event) => {

@@ -5249,6 +5249,7 @@
     width: auto;
   }
 
+  #shopify-section-{{ section.id }},
   .shopify-section:has(> .header) {
     min-height: calc(
       var(--sb-header-height, 60px)
@@ -5845,12 +5846,53 @@
     let topExitMode = lastY <= topThreshold;
 
     const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-    const headerHeight = () => header.getBoundingClientRect().height || 0;
     const headerSection = header.closest('.shopify-section');
+    const announcementElement = header.querySelector('.header__announcement');
+    const stickyTopNavigationSelector = '[data-sb-sticky-top-navigation]';
+    const hasStickyTopNavigation = () => Boolean(document.querySelector(stickyTopNavigationSelector));
+    let shouldHidePrimaryNavigationOnScroll = hasStickyTopNavigation();
+    let headerSectionMinHeightRaf = null;
+    const readHeaderSpacingVar = (propertyName, fallback = 0) => {
+      const parsed = Number.parseFloat(getComputedStyle(header).getPropertyValue(propertyName));
+      return Number.isFinite(parsed) ? parsed : fallback;
+    };
+    const minimumAnnouncementHeight = () => readHeaderSpacingVar('--sb-announcement-min-height', 0);
+    const announcementHeight = () => {
+      const measuredHeight = announcementElement ? announcementElement.getBoundingClientRect().height || 0 : 0;
+      return Math.max(measuredHeight, minimumAnnouncementHeight(), 0);
+    };
+    const minimumHeaderSpacing = () => {
+      const baseHeaderHeight = readHeaderSpacingVar('--sb-header-height', 60);
+      return baseHeaderHeight + announcementHeight();
+    };
+    const headerHeight = () => {
+      const measuredHeight = header.getBoundingClientRect().height || 0;
+      return Math.max(measuredHeight, minimumHeaderSpacing());
+    };
+    const headerHideOffsetLimit = () => {
+      if (shouldHidePrimaryNavigationOnScroll) return headerHeight();
+      return announcementHeight();
+    };
     const syncHeaderSectionMinHeight = () => {
       if (!headerSection) return;
-      headerSection.style.minHeight = `${headerHeight()}px`;
+      const nextMinHeight = headerHeight();
+      if (nextMinHeight <= 0) return;
+      const nextMinHeightValue = `${nextMinHeight}px`;
+      if (headerSection.style.minHeight !== nextMinHeightValue) {
+        headerSection.style.minHeight = nextMinHeightValue;
+      }
     };
+    const scheduleHeaderSectionMinHeightSync = () => {
+      if (headerSectionMinHeightRaf != null) {
+        window.cancelAnimationFrame(headerSectionMinHeightRaf);
+      }
+      headerSectionMinHeightRaf = window.requestAnimationFrame(() => {
+        headerSectionMinHeightRaf = null;
+        syncHeaderSectionMinHeight();
+      });
+    };
+    syncHeaderSectionMinHeight();
+    scheduleHeaderSectionMinHeightSync();
     const applyOffset = () => {
       header.style.transform = `translateY(${-hiddenOffset}px)`;
     };
@@ -5862,19 +5904,31 @@
     const restoreHeaderState = (state) => {
       if (!state || typeof state !== 'object') return;
       const nextOffset = Number.parseFloat(`${state.hiddenOffset}`);
-      hiddenOffset = clamp(Number.isFinite(nextOffset) ? nextOffset : 0, 0, headerHeight());
+      hiddenOffset = clamp(Number.isFinite(nextOffset) ? nextOffset : 0, 0, headerHideOffsetLimit());
       topExitMode = typeof state.topExitMode === 'boolean'
         ? state.topExitMode
-        : hiddenOffset < headerHeight();
+        : hiddenOffset < headerHideOffsetLimit();
       upwardTravel = 0;
       applyOffset();
       lastY = getWindowY();
+    };
+    const refreshHeaderScrollMode = ({ forceSync = false } = {}) => {
+      const nextShouldHidePrimaryNavigation = hasStickyTopNavigation();
+      shouldHidePrimaryNavigationOnScroll = nextShouldHidePrimaryNavigation;
+      hiddenOffset = clamp(hiddenOffset, 0, headerHideOffsetLimit());
+      topExitMode = hiddenOffset < headerHideOffsetLimit();
+      if (forceSync) {
+        sync(getWindowY(), { force: true });
+      } else {
+        applyOffset();
+      }
     };
 
     window.SBHeaderNav = {
       ...(window.SBHeaderNav || {}),
       captureState: captureHeaderState,
-      restoreState: restoreHeaderState
+      restoreState: restoreHeaderState,
+      refreshScrollMode: refreshHeaderScrollMode
     };
 
     let syncPrimaryBackdropOnScroll = () => {};
@@ -5887,10 +5941,19 @@
       let localizationDropdownOpen = false;
       let closeMenuTimer = null;
       let primarySwitchTimer = null;
+      let hoverOpenTimer = null;
+      let hoverOpenCandidateItem = null;
+      let hoverOpenPointerStartX = 0;
+      let hoverOpenPointerStartY = 0;
+      let lastMouseMoveAt = 0;
       let pointerX = 0;
       let pointerY = 0;
       let allowHoverPrimaryMenuOpen = false;
       const menuSafePadding = 8;
+      const primaryHoverOpenDelayMs = 72;
+      const primaryHoverSwitchDelayMs = 48;
+      const primaryHoverSettleDelayMs = 34;
+      const primaryHoverMoveThresholdPx = 10;
       const headerInner = header.querySelector('.header__inner');
       const headerMenu = header.querySelector('.header__menu');
       const dropdownMenuLinks = Array.from(dropdownMenuItems)
@@ -5906,6 +5969,13 @@
         if (!closeMenuTimer) return;
         window.clearTimeout(closeMenuTimer);
         closeMenuTimer = null;
+      };
+      const clearHoverOpenTimer = () => {
+        if (hoverOpenTimer) {
+          window.clearTimeout(hoverOpenTimer);
+        }
+        hoverOpenTimer = null;
+        hoverOpenCandidateItem = null;
       };
       const clearPrimarySwitchTimer = () => {
         if (!primarySwitchTimer) return;
@@ -6034,7 +6104,50 @@
       };
 
       const closeActiveDropdown = () => {
+        clearHoverOpenTimer();
         setActiveDropdownItem(null);
+      };
+
+      const pointerStillCrossingMenuItem = () => {
+        const moveAge = Date.now() - lastMouseMoveAt;
+        const pointerTravel = Math.hypot(
+          pointerX - hoverOpenPointerStartX,
+          pointerY - hoverOpenPointerStartY
+        );
+        return moveAge < primaryHoverSettleDelayMs && pointerTravel > primaryHoverMoveThresholdPx;
+      };
+
+      const runHoverOpenIntent = () => {
+        if (!hoverOpenCandidateItem) {
+          clearHoverOpenTimer();
+          return;
+        }
+
+        if (!hoverOpenCandidateItem.matches(':hover')) {
+          clearHoverOpenTimer();
+          return;
+        }
+
+        if (pointerStillCrossingMenuItem()) {
+          hoverOpenTimer = window.setTimeout(runHoverOpenIntent, primaryHoverSettleDelayMs);
+          return;
+        }
+
+        const targetItem = hoverOpenCandidateItem;
+        clearHoverOpenTimer();
+        clearCloseMenuTimer();
+        setActiveDropdownItem(targetItem);
+      };
+
+      const scheduleHoverOpenIntent = (menuItem, event) => {
+        if (!menuItem) return;
+        clearHoverOpenTimer();
+        clearCloseMenuTimer();
+        hoverOpenCandidateItem = menuItem;
+        hoverOpenPointerStartX = event ? event.clientX : pointerX;
+        hoverOpenPointerStartY = event ? event.clientY : pointerY;
+        const delay = activeDropdownItem ? primaryHoverSwitchDelayMs : primaryHoverOpenDelayMs;
+        hoverOpenTimer = window.setTimeout(runHoverOpenIntent, delay);
       };
 
       const getDropdownTrackBounds = () => {
@@ -6105,17 +6218,17 @@
         const menuLink = menuItem.querySelector('.header__menu-link');
         const primaryMenu = menuItem.querySelector('.header__primary-menu');
         if (menuLink) {
-          menuLink.addEventListener('mouseenter', () => {
+          menuLink.addEventListener('mouseenter', (event) => {
             triggerPrimaryMenuPreload();
             if (!allowHoverPrimaryMenuOpen) return;
-            clearCloseMenuTimer();
-            setActiveDropdownItem(menuItem);
+            scheduleHoverOpenIntent(menuItem, event);
           });
           menuLink.addEventListener('focusin', triggerPrimaryMenuPreload);
           menuLink.addEventListener('touchstart', triggerPrimaryMenuPreload, { passive: true });
         }
 
         menuItem.addEventListener('focusin', () => {
+          clearHoverOpenTimer();
           clearCloseMenuTimer();
           setActiveDropdownItem(menuItem);
         });
@@ -6131,6 +6244,7 @@
         if (primaryMenu) {
           primaryMenu.addEventListener('mouseenter', () => {
             if (!allowHoverPrimaryMenuOpen && !activeDropdownItem) return;
+            clearHoverOpenTimer();
             clearCloseMenuTimer();
             setActiveDropdownItem(menuItem);
           });
@@ -6145,6 +6259,7 @@
         const menuLink = menuItem.querySelector('.header__menu-link');
         if (!menuLink) return;
         menuLink.addEventListener('mouseenter', () => {
+          clearHoverOpenTimer();
           clearCloseMenuTimer();
           closeActiveDropdown();
         });
@@ -6155,6 +6270,7 @@
       });
 
       header.addEventListener('mouseleave', () => {
+        clearHoverOpenTimer();
         scheduleCloseActiveDropdown();
         allowHoverPrimaryMenuOpen = true;
       });
@@ -6182,6 +6298,7 @@
 
       document.addEventListener('pointerdown', (event) => {
         if (header.contains(event.target)) return;
+        clearHoverOpenTimer();
         clearCloseMenuTimer();
         closeActiveDropdown();
       });
@@ -6192,6 +6309,7 @@
           pointerX = event.clientX;
           pointerY = event.clientY;
           if (event.pointerType !== 'mouse') return;
+          lastMouseMoveAt = Date.now();
           if (allowHoverPrimaryMenuOpen) return;
           if (isPointerInPrimaryHoverZone()) return;
           allowHoverPrimaryMenuOpen = true;
@@ -6201,6 +6319,7 @@
 
       window.addEventListener('pageshow', () => {
         allowHoverPrimaryMenuOpen = false;
+        clearHoverOpenTimer();
         clearCloseMenuTimer();
         closeActiveDropdown();
       });
@@ -6208,6 +6327,7 @@
       window.addEventListener(
         'resize',
         () => {
+          clearHoverOpenTimer();
           clearCloseMenuTimer();
           closeActiveDropdown();
           syncPrimaryBackdropTop();
@@ -6223,7 +6343,7 @@
 
     const sync = (currentY, { force = false } = {}) => {
       const delta = currentY - lastY;
-      const maxOffset = headerHeight();
+      const maxOffset = headerHideOffsetLimit();
 
       if (force || currentY <= topThreshold) {
         hiddenOffset = 0;
@@ -6266,16 +6386,32 @@
     window.addEventListener(
       'resize',
       () => {
+        refreshHeaderScrollMode();
         sync(getWindowY(), { force: true });
-        syncHeaderSectionMinHeight();
+        scheduleHeaderSectionMinHeightSync();
       },
       { passive: true }
     );
     window.requestAnimationFrame(() => {
+      refreshHeaderScrollMode();
       sync(getWindowY(), { force: true });
-      syncHeaderSectionMinHeight();
+      scheduleHeaderSectionMinHeightSync();
     });
-    window.setTimeout(syncHeaderSectionMinHeight, 300);
+    window.setTimeout(scheduleHeaderSectionMinHeightSync, 300);
+    window.addEventListener('load', scheduleHeaderSectionMinHeightSync);
+
+    if (document.fonts && typeof document.fonts.ready === 'object' && typeof document.fonts.ready.then === 'function') {
+      document.fonts.ready.then(() => {
+        scheduleHeaderSectionMinHeightSync();
+      });
+    }
+
+    if (window.ResizeObserver) {
+      const headerHeightObserver = new ResizeObserver(() => {
+        scheduleHeaderSectionMinHeightSync();
+      });
+      headerHeightObserver.observe(header);
+    }
 
     document.addEventListener('keydown', (event) => {
       if (event.key !== 'Escape') return;
@@ -6287,12 +6423,20 @@
     document.addEventListener('sb:cart-drawer:state-change', () => {
       syncPageScrollLock();
     });
+    document.addEventListener('shopify:section:load', () => {
+      refreshHeaderScrollMode({ forceSync: true });
+      scheduleHeaderSectionMinHeightSync();
+    });
+    document.addEventListener('shopify:section:unload', () => {
+      refreshHeaderScrollMode({ forceSync: true });
+      scheduleHeaderSectionMinHeightSync();
+    });
   })();
 </script>
 
 {% schema %}
 {
-  "name": "t:general.header",
+  "name": "Primary navigation",
   "settings": [
     {
       "type": "link_list",
@@ -6510,7 +6654,7 @@
   "max_blocks": 32,
   "presets": [
     {
-      "name": "t:general.header",
+      "name": "Primary navigation",
       "blocks": [
         {
           "type": "primary_item_product",

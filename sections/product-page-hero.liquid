@@ -13,8 +13,6 @@
   assign hero_product_tagline_html = blank
   assign hero_selected_variant = blank
   assign hero_has_compare_price = false
-  assign hero_fallback_image_desktop = 'sbv2-product-hero-placeholder-desktop.jpg' | asset_url
-  assign hero_fallback_image_mobile = 'sbv2-product-hero-placeholder-mobile.jpg' | asset_url
 
   if request.page_type != 'product' or product == blank
     assign hide_section = true
@@ -105,15 +103,11 @@
       endif
     endif
 
-    if hero_image_desktop_url == blank
-      assign hero_image_desktop_url = hero_fallback_image_desktop
+    if hero_image_desktop_url == blank and hero_image_mobile_url != blank
+      assign hero_image_desktop_url = hero_image_mobile_url
     endif
-    if hero_image_mobile_url == blank
-      if hero_image_desktop_field != blank
-        assign hero_image_mobile_url = hero_image_desktop_url
-      else
-        assign hero_image_mobile_url = hero_fallback_image_mobile
-      endif
+    if hero_image_mobile_url == blank and hero_image_desktop_url != blank
+      assign hero_image_mobile_url = hero_image_desktop_url
     endif
 
     assign hero_product_settings_ref = product.metafields.custom.sbv2_product_settings.value | default: product.metafields.custom.sbv2_product_settings
@@ -173,14 +167,15 @@
               src="{{ hero_video_desktop_url }}"
             ></video>
           {% endif %}
-        {% else %}
+        {% elsif hero_image_desktop_url != blank %}
           <picture>
             <source media="(max-width: 749px)" srcset="{{ hero_image_mobile_url }}">
             <img
               class="sb-product-page-hero__media-image"
               src="{{ hero_image_desktop_url }}"
               alt="{{ hero_media_title | escape }}"
-              loading="lazy"
+              loading="eager"
+              fetchpriority="high"
               width="1240"
               height="698"
             >
@@ -193,11 +188,11 @@
       <h1 class="sb-product-page-hero__name font-body weight-semibold" data-sb-reveal-item>{{ product.title }}</h1>
 
       {% if hero_product_tagline_html != blank %}
-        <div class="sb-product-page-hero__tagline sb-product-page-hero__tagline--rich font-body weight-regular rte" data-sb-reveal-item>
+        <div class="sb-product-page-hero__tagline sb-product-page-hero__tagline--rich font-title weight-bold rte" data-sb-reveal-item>
           {{ hero_product_tagline_html }}
         </div>
       {% elsif hero_product_tagline != blank %}
-        <p class="sb-product-page-hero__tagline font-body weight-regular" data-sb-reveal-item>{{ hero_product_tagline }}</p>
+        <p class="sb-product-page-hero__tagline font-title weight-bold" data-sb-reveal-item>{{ hero_product_tagline }}</p>
       {% endif %}
 
       <div
@@ -221,19 +216,6 @@
         </p>
       </div>
 
-      {% if hero_has_video %}
-        <button
-          class="sb-product-page-hero__watch-button sb-button-radiant sb-button-radiant--large sb-button-radiant--trailing-icon font-caption weight-bold"
-          type="button"
-          data-product-hero-watch-button
-          data-sb-reveal-item
-        >
-          <span class="sb-button-radiant__label">Watch video</span>
-          <span class="sb-button-radiant__icon" aria-hidden="true">
-            {{ 'arrow-reduced-padding.svg' | inline_asset_content }}
-          </span>
-        </button>
-      {% endif %}
     </div>
   </section>
 
@@ -248,9 +230,6 @@
       const priceRoot = heroRoot.querySelector('[data-product-hero-price-root]');
       const comparePriceElement = heroRoot.querySelector('[data-product-hero-compare-price]');
       const currentPriceElement = heroRoot.querySelector('[data-product-hero-current-price]');
-      const watchButton = heroRoot.querySelector('[data-product-hero-watch-button]');
-      const inlineVideo = heroRoot.querySelector('[data-product-hero-video-player]');
-      const fallbackVideoUrl = heroRoot.dataset.heroVideoUrl || '';
       const currencyCode = priceRoot?.dataset.currency || 'USD';
       const productId = priceRoot?.dataset.productId || '';
 
@@ -293,26 +272,6 @@
 
         applyVariantPrice(variant);
       });
-
-      if (!watchButton) return;
-
-      watchButton.addEventListener('click', () => {
-        if (inlineVideo) {
-          inlineVideo.currentTime = 0;
-          inlineVideo.muted = false;
-          inlineVideo.controls = true;
-          const playPromise = inlineVideo.play();
-          if (playPromise && typeof playPromise.catch === 'function') {
-            playPromise.catch(() => {});
-          }
-          inlineVideo.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          return;
-        }
-
-        if (fallbackVideoUrl) {
-          window.open(fallbackVideoUrl, '_blank', 'noopener');
-        }
-      });
     })();
   </script>
 {% endif %}
@@ -331,9 +290,9 @@
 
   .sb-product-page-hero__media {
     aspect-ratio: 1240 / 698;
-    background: var(--sb-color-neutral-200);
-    border-radius: 24px;
-    box-shadow: 0 0 10px 0 var(--sb-color-always-black-12);
+    background: var(--sb-color-neutral-100);
+    border-radius: 0;
+    box-shadow: none;
     overflow: hidden;
     width: 100%;
   }
@@ -366,10 +325,15 @@
 
   .sb-product-page-hero__tagline {
     color: var(--sb-color-neutral-900);
+    font-family: var(--font-display--family);
     margin: 20px 0 0;
   }
 
   .sb-product-page-hero__tagline--rich > * {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
     margin: 0;
   }
 
@@ -399,12 +363,27 @@
     color: var(--sb-color-blue-500);
   }
 
-  .sb-product-page-hero__watch-button {
-    margin-top: 20px;
-  }
+  @media (min-width: 750px) {
+    .sb-product-page-hero {
+      position: relative;
+    }
 
-  .sb-product-page-hero__watch-button .sb-button-radiant__label {
-    color: var(--sb-color-always-white);
+    .sb-product-page-hero__media-wrap {
+      position: relative;
+      z-index: 1;
+    }
+
+    .sb-product-page-hero__content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      inset: 0;
+      margin-top: 0;
+      max-width: min(640px, 56%);
+      padding: var(--sb-space-64);
+      position: absolute;
+      z-index: 2;
+    }
   }
 
   @media (max-width: 749px) {
@@ -426,8 +405,6 @@
     }
 
     .sb-product-page-hero__media {
-      border-radius: 0;
-      box-shadow: none;
       width: 100%;
     }
 

@@ -429,12 +429,20 @@
 
 <section
   class="sb-product-main"
+  style="
+    --sb-supplementary-sticky-top-gap-desktop: {{ section.settings.supplementary_sticky_top_gap_desktop | default: 16 }}px;
+    --sb-supplementary-sticky-top-gap-mobile: {{ section.settings.supplementary_sticky_top_gap_mobile | default: 16 }}px;
+    --sb-supplementary-sticky-inline-margin-desktop: {{ section.settings.supplementary_sticky_inline_margin_desktop | default: 60 }}px;
+    --sb-supplementary-sticky-inline-margin-mobile: {{ section.settings.supplementary_sticky_inline_margin_mobile | default: 16 }}px;
+    --sb-supplementary-sticky-nav-padding-y-desktop: {{ section.settings.supplementary_sticky_nav_padding_y_desktop | default: 12 }}px;
+    --sb-supplementary-sticky-nav-padding-y-mobile: {{ section.settings.supplementary_sticky_nav_padding_y_mobile | default: 12 }}px;
+  "
   data-sb-reveal
   data-product-id="{{ product.id }}"
   data-product-title="{{ product.title | escape }}"
   data-selector-list-option-position="{{ selector_list_option_position }}"
 >
-  <div class="sb-product-main__sticky-bar-wrap">
+  <div class="sb-product-main__sticky-bar-wrap{% if product_has_page_header %} sb-product-main__sticky-bar-wrap--segmented-controls{% endif %}" data-sb-sticky-top-navigation>
     <div class="sb-product-main__sticky-bar{% unless product_has_page_header %} sb-product-main__sticky-bar--no-segmented{% endunless %}" data-sticky-buy-bar>
       <div class="sb-product-main__sticky-info">
         <div class="sb-product-main__sticky-image-wrap" aria-hidden="true">
@@ -1305,26 +1313,15 @@
                   {
                     {% for addon_variant in addon_product.variants %}
                       {% liquid
-                        assign addon_hover_image = blank
-                        assign addon_hover_variant_ref = addon_variant.metafields.custom.sbv2_hover_photo
-                        if addon_hover_variant_ref != blank
-                          assign addon_hover_image = addon_hover_variant_ref.value
-                          if addon_hover_image == blank
-                            assign addon_hover_image = addon_hover_variant_ref
-                          endif
-                        endif
-                        if addon_hover_image == blank
-                          assign addon_hover_product_ref = addon_product.metafields.custom.sbv2_hover_photo
-                          if addon_hover_product_ref != blank
-                            assign addon_hover_image = addon_hover_product_ref.value
-                            if addon_hover_image == blank
-                              assign addon_hover_image = addon_hover_product_ref
-                            endif
-                          endif
-                        endif
-                        assign addon_hover_image_url = blank
-                        if addon_hover_image != blank
-                          assign addon_hover_image_url = addon_hover_image | image_url: width: 384
+                        capture addon_hover_image_url
+                          render 'sb-hover-image-url', resource: addon_variant, width: 384
+                        endcapture
+                        assign addon_hover_image_url = addon_hover_image_url | strip
+                        if addon_hover_image_url == blank
+                          capture addon_hover_image_url
+                            render 'sb-hover-image-url', resource: addon_product, width: 384
+                          endcapture
+                          assign addon_hover_image_url = addon_hover_image_url | strip
                         endif
                       %}
                       "{{ addon_variant.id }}": {{ addon_hover_image_url | json }}{% unless forloop.last %},{% endunless %}
@@ -1777,14 +1774,114 @@
     display: none;
   }
 
-  @media (min-width: 750px) {
-    .sb-product-main__sticky-bar-wrap {
-      --sb-sticky-inline-margin: 60px;
+  @media (max-width: 749px) {
+    html.sb-product-mobile-segmented-active .header {
+      border-bottom: 0;
+    }
+
+    .sb-product-main__sticky-bar-wrap--segmented-controls {
+      --sb-supplementary-sticky-inline-margin: var(--sb-supplementary-sticky-inline-margin-mobile);
+      --sb-supplementary-sticky-top-gap: 0px;
       display: block;
       left: 0;
       position: fixed;
       right: 0;
-      top: calc(var(--sb-header-height, 5rem) + var(--sb-space-16));
+      top: calc(var(--sb-header-height, 60px) + var(--sb-announcement-min-height, 0px) + var(--sb-supplementary-sticky-top-gap));
+      width: 100%;
+      z-index: 40;
+    }
+
+    .sb-product-main__sticky-bar-wrap--segmented-controls .sb-product-main__sticky-bar {
+      align-items: stretch;
+      background: var(--sb-color-neutral-200);
+      border-bottom: 1px solid var(--sb-color-neutral-600);
+      border-radius: 0;
+      box-shadow: none;
+      box-sizing: border-box;
+      display: block;
+      padding: 0 var(--sb-supplementary-sticky-inline-margin) 8px;
+      width: 100%;
+    }
+
+    .sb-product-main__sticky-bar-wrap--segmented-controls .sb-product-main__sticky-info,
+    .sb-product-main__sticky-bar-wrap--segmented-controls .sb-product-main__sticky-add-button {
+      display: none;
+    }
+
+    .sb-product-main__sticky-bar-wrap--segmented-controls .sb-product-main__sticky-segmented-wrap {
+      display: block;
+      min-inline-size: 0;
+      width: 100%;
+    }
+
+    .sb-product-main__sticky-bar-wrap--segmented-controls .sb-product-main__sticky-segmented {
+      --sb-segment-gap: var(--sb-space-8);
+      align-items: stretch;
+      background: var(--sb-color-neutral-100);
+      border-radius: var(--sb-space-24);
+      display: flex;
+      gap: var(--sb-space-8);
+      height: var(--sb-space-36);
+      min-inline-size: 0;
+      max-width: none;
+      overflow: hidden;
+      padding: var(--sb-space-4);
+      position: relative;
+      width: 100%;
+    }
+
+    .sb-product-main__sticky-bar-wrap--segmented-controls .sb-product-main__sticky-segment-indicator {
+      background: var(--sb-color-neutral-600);
+      border-radius: var(--sb-space-24);
+      height: calc(100% - (var(--sb-space-4) * 2));
+      left: var(--sb-space-4);
+      pointer-events: none;
+      position: absolute;
+      top: var(--sb-space-4);
+      transition: left 420ms cubic-bezier(0.22, 1, 0.36, 1), width 420ms cubic-bezier(0.22, 1, 0.36, 1);
+      width: calc((100% - (var(--sb-space-4) * 2) - var(--sb-segment-gap)) / 2);
+      will-change: left, width;
+    }
+
+    .sb-product-main__sticky-bar-wrap--segmented-controls .sb-product-main__sticky-segment-pill {
+      align-items: center;
+      background: transparent;
+      border: 0;
+      border-radius: var(--sb-space-24);
+      color: var(--sb-color-neutral-900);
+      cursor: pointer;
+      display: flex;
+      flex: 1 1 50%;
+      justify-content: center;
+      min-height: 0;
+      overflow: hidden;
+      padding: 0 var(--sb-space-12);
+      position: relative;
+      text-align: center;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      z-index: 1;
+    }
+
+    .sb-product-main__sticky-bar-wrap--segmented-controls .sb-product-main__sticky-segment-pill:hover:not(.is-active),
+    .sb-product-main__sticky-bar-wrap--segmented-controls .sb-product-main__sticky-segment-pill:focus-visible:not(.is-active) {
+      background: var(--sb-color-neutral-700);
+    }
+
+    .sb-product-main__sticky-bar-wrap--segmented-controls .sb-product-main__sticky-segment-pill.is-active {
+      font-weight: 600;
+    }
+  }
+
+  @media (min-width: 750px) {
+    .sb-product-main__sticky-bar-wrap {
+      --sb-sticky-inline-margin: 60px;
+      --sb-supplementary-sticky-top-gap: var(--sb-supplementary-sticky-top-gap-desktop);
+      display: block;
+      left: 0;
+      position: fixed;
+      right: 0;
+      top: calc(var(--sb-header-height, 5rem) + var(--sb-supplementary-sticky-top-gap));
       width: 100%;
       z-index: 40;
     }
@@ -1865,7 +1962,7 @@
       align-items: center;
       display: flex;
       gap: var(--sb-space-8);
-      margin-top: var(--sb-space-4);
+      margin-top: 0;
     }
 
     .sb-product-main__sticky-stars {
@@ -3287,6 +3384,8 @@
         ? stickySegmentedControls.querySelector('.sb-product-main__sticky-segment-indicator')
         : null;
       const stickySegmentButtons = Array.from(root.querySelectorAll('[data-sticky-segment-option]'));
+      const mobileSegmentedMediaQuery = window.matchMedia('(max-width: 749px)');
+      const hasStickySegmentedControls = Boolean(stickySegmentedControls && stickySegmentButtons.length);
       const headerElement = document.querySelector('.header');
       const priceRow = root.querySelector('[data-product-price-row]');
       const comparePriceElement = root.querySelector('[data-product-compare-price]');
@@ -3366,6 +3465,11 @@
         if (!stickyReviewCountElement) return;
         const rawCount = Number.parseFloat(stickyReviewCountElement.dataset.stickyReviewCountValue || '0') || 0;
         stickyReviewCountElement.textContent = `${reviewCountFormatter.format(Math.round(rawCount))} reviews`;
+      };
+
+      const syncMobileSegmentedHeaderState = () => {
+        const shouldActivateMobileSegmentedHeader = hasStickySegmentedControls && mobileSegmentedMediaQuery.matches;
+        document.documentElement.classList.toggle('sb-product-mobile-segmented-active', shouldActivateMobileSegmentedHeader);
       };
 
       const syncVariantUrl = (variantId) => {
@@ -3779,10 +3883,16 @@
         stickyImage.style.backgroundSize = 'cover';
       };
 
+      const getStickyTopGap = () => {
+        if (!stickyBarWrap) return 16;
+        const spacingValue = window.getComputedStyle(stickyBarWrap).getPropertyValue('--sb-supplementary-sticky-top-gap');
+        const spacing = Number.parseFloat(spacingValue);
+        return Number.isFinite(spacing) ? spacing : 16;
+      };
+
       function syncStickyBarTop() {
         if (!stickyBarWrap || !headerElement) return;
-        const space16Value = window.getComputedStyle(document.documentElement).getPropertyValue('--sb-space-16');
-        const spacing = Number.parseFloat(space16Value) || 16;
+        const spacing = getStickyTopGap();
         const headerBottom = headerElement.getBoundingClientRect().bottom;
         const nextTop = Math.max(headerBottom + spacing, spacing);
         stickyBarWrap.style.top = `${nextTop}px`;
@@ -3804,9 +3914,8 @@
       function syncStickyBarMetrics({ immediateIndicator = true } = {}) {
         if (!stickyBarWrap) return;
         const stickyHeight = stickyBarWrap.getBoundingClientRect().height || 0;
-        const space16Value = window.getComputedStyle(document.documentElement).getPropertyValue('--sb-space-16');
         const space96Value = window.getComputedStyle(document.documentElement).getPropertyValue('--sb-space-96');
-        const stickyTopGap = Number.parseFloat(space16Value) || 16;
+        const stickyTopGap = getStickyTopGap();
         const headingOffset = Number.parseFloat(space96Value) || 96;
         const firstSectionOffset = stickyHeight + stickyTopGap;
         const pageStickyOffset = firstSectionOffset + headingOffset;
@@ -3832,8 +3941,7 @@
         const currentScrollTop = window.scrollY || window.pageYOffset || 0;
         const isScrollingDown = targetAbsoluteTop > currentScrollTop;
         const space96Value = window.getComputedStyle(document.documentElement).getPropertyValue('--sb-space-96');
-        const space16Value = window.getComputedStyle(document.documentElement).getPropertyValue('--sb-space-16');
-        const stickyTopGap = Number.parseFloat(space16Value) || 16;
+        const stickyTopGap = getStickyTopGap();
         const headingGap = Number.parseFloat(space96Value) || 96;
         const stickyHeight = stickyBarWrap?.getBoundingClientRect().height || 0;
         const expandedHeaderTop = headerElement
@@ -3898,6 +4006,7 @@
 
       syncStickyBarMetrics({ immediateIndicator: true });
       syncStickyBarTop();
+      syncMobileSegmentedHeaderState();
       window.setTimeout(() => syncStickyBarMetrics({ immediateIndicator: true }), 80);
       window.setTimeout(() => syncStickyBarMetrics({ immediateIndicator: true }), 300);
       window.setTimeout(syncStickyBarTop, 300);
@@ -3913,6 +4022,7 @@
       window.addEventListener('resize', () => {
         syncStickyBarMetrics({ immediateIndicator: true });
         syncStickyBarTop();
+        syncMobileSegmentedHeaderState();
       });
 
       const mainContent = document.querySelector('#MainContent');
@@ -4751,6 +4861,70 @@
 {
   "name": "t:general.product",
   "settings": [
+    {
+      "type": "header",
+      "content": "Supplementary sticky navigation"
+    },
+    {
+      "type": "range",
+      "id": "supplementary_sticky_top_gap_desktop",
+      "label": "Top gap desktop",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "supplementary_sticky_top_gap_mobile",
+      "label": "Top gap mobile",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "supplementary_sticky_inline_margin_desktop",
+      "label": "Inline margin desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "supplementary_sticky_inline_margin_mobile",
+      "label": "Inline margin mobile",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "supplementary_sticky_nav_padding_y_desktop",
+      "label": "Vertical padding desktop",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "supplementary_sticky_nav_padding_y_mobile",
+      "label": "Vertical padding mobile",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
     {
       "type": "select",
       "id": "add_to_cart_icon",

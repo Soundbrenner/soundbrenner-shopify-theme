@@ -1,0 +1,124 @@
+{%- liquid
+  assign sb_hover_resource = resource
+  assign sb_hover_width = width | default: 584 | plus: 0
+  if sb_hover_width <= 0
+    assign sb_hover_width = 584
+  endif
+
+  assign sb_hover_media = blank
+
+  if sb_hover_resource != blank
+    assign sb_hover_metafield = sb_hover_resource.metafields.custom.sbv2_hover_photo
+    if sb_hover_metafield == blank
+      assign sb_hover_metafield = sb_hover_resource.metafields.custom.hover_photo
+    endif
+    if sb_hover_metafield == blank
+      assign sb_hover_metafield = sb_hover_resource.metafields.custom.hover_image
+    endif
+    if sb_hover_metafield == blank
+      assign sb_hover_metafield = sb_hover_resource.metafields.custom.thumbnail_hover_photo
+    endif
+    if sb_hover_metafield == blank
+      assign sb_hover_metafield = sb_hover_resource.metafields.custom.thumbnail_hover_image
+    endif
+    if sb_hover_metafield != blank
+      assign sb_hover_value = sb_hover_metafield.value | default: sb_hover_metafield
+      assign sb_hover_media = sb_hover_value.image | default: sb_hover_value.hover_photo | default: sb_hover_value.hover_image | default: sb_hover_value.thumbnail_hover_photo | default: sb_hover_value.thumbnail_hover_image | default: sb_hover_value.product_thumbnail_hover_photo | default: sb_hover_value.product_thumbnail_hover_image | default: sb_hover_value.product_card_hover_photo | default: sb_hover_value.product_card_hover_image | default: sb_hover_value.media | default: sb_hover_value.file | default: sb_hover_value.photo | default: sb_hover_value
+    endif
+
+    if sb_hover_media == blank
+      assign sb_product_settings_ref = sb_hover_resource.metafields.custom.sbv2_product_settings.value | default: sb_hover_resource.metafields.custom.sbv2_product_settings.reference | default: sb_hover_resource.metafields.custom.sbv2_product_settings
+      if sb_product_settings_ref != blank
+        assign sb_hover_media = sb_product_settings_ref.hover_photo.value | default: sb_product_settings_ref.hover_photo
+        if sb_hover_media == blank
+          assign sb_hover_media = sb_product_settings_ref.hover_image.value | default: sb_product_settings_ref.hover_image
+        endif
+        if sb_hover_media == blank
+          assign sb_hover_media = sb_product_settings_ref.thumbnail_hover_photo.value | default: sb_product_settings_ref.thumbnail_hover_photo
+        endif
+        if sb_hover_media == blank
+          assign sb_hover_media = sb_product_settings_ref.product_thumbnail_hover_photo.value | default: sb_product_settings_ref.product_thumbnail_hover_photo
+        endif
+        if sb_hover_media == blank
+          assign sb_hover_media = sb_product_settings_ref.product_card_hover_photo.value | default: sb_product_settings_ref.product_card_hover_photo
+        endif
+        if sb_hover_media == blank
+          assign sb_hover_media = sb_product_settings_ref.thumbnail_hover_image.value | default: sb_product_settings_ref.thumbnail_hover_image
+        endif
+        if sb_hover_media == blank
+          assign sb_hover_media = sb_product_settings_ref.product_thumbnail_hover_image.value | default: sb_product_settings_ref.product_thumbnail_hover_image
+        endif
+        if sb_hover_media == blank
+          assign sb_hover_media = sb_product_settings_ref.product_card_hover_image.value | default: sb_product_settings_ref.product_card_hover_image
+        endif
+
+        if sb_hover_media != blank
+          assign sb_hover_media = sb_hover_media.image | default: sb_hover_media.hover_photo | default: sb_hover_media.hover_image | default: sb_hover_media.thumbnail_hover_photo | default: sb_hover_media.thumbnail_hover_image | default: sb_hover_media.product_thumbnail_hover_photo | default: sb_hover_media.product_thumbnail_hover_image | default: sb_hover_media.product_card_hover_photo | default: sb_hover_media.product_card_hover_image | default: sb_hover_media.media | default: sb_hover_media.file | default: sb_hover_media.photo | default: sb_hover_media
+        endif
+      endif
+    endif
+  endif
+
+  if sb_hover_media == blank and sb_hover_resource != blank and sb_hover_resource.product != blank
+    assign sb_hover_product_resource = sb_hover_resource.product
+
+    assign sb_hover_product_metafield = sb_hover_product_resource.metafields.custom.sbv2_hover_photo
+    if sb_hover_product_metafield == blank
+      assign sb_hover_product_metafield = sb_hover_product_resource.metafields.custom.hover_photo
+    endif
+    if sb_hover_product_metafield == blank
+      assign sb_hover_product_metafield = sb_hover_product_resource.metafields.custom.hover_image
+    endif
+    if sb_hover_product_metafield == blank
+      assign sb_hover_product_metafield = sb_hover_product_resource.metafields.custom.thumbnail_hover_photo
+    endif
+    if sb_hover_product_metafield == blank
+      assign sb_hover_product_metafield = sb_hover_product_resource.metafields.custom.thumbnail_hover_image
+    endif
+    if sb_hover_product_metafield != blank
+      assign sb_hover_product_value = sb_hover_product_metafield.value | default: sb_hover_product_metafield
+      assign sb_hover_media = sb_hover_product_value.image | default: sb_hover_product_value.hover_photo | default: sb_hover_product_value.hover_image | default: sb_hover_product_value.thumbnail_hover_photo | default: sb_hover_product_value.thumbnail_hover_image | default: sb_hover_product_value.product_thumbnail_hover_photo | default: sb_hover_product_value.product_thumbnail_hover_image | default: sb_hover_product_value.product_card_hover_photo | default: sb_hover_product_value.product_card_hover_image | default: sb_hover_product_value.media | default: sb_hover_product_value.file | default: sb_hover_product_value.photo | default: sb_hover_product_value
+    endif
+
+    if sb_hover_media == blank
+      assign sb_product_settings_ref = sb_hover_product_resource.metafields.custom.sbv2_product_settings.value | default: sb_hover_product_resource.metafields.custom.sbv2_product_settings.reference | default: sb_hover_product_resource.metafields.custom.sbv2_product_settings
+      if sb_product_settings_ref != blank
+        assign sb_hover_media = sb_product_settings_ref.hover_photo.value | default: sb_product_settings_ref.hover_photo
+        if sb_hover_media == blank
+          assign sb_hover_media = sb_product_settings_ref.hover_image.value | default: sb_product_settings_ref.hover_image
+        endif
+        if sb_hover_media == blank
+          assign sb_hover_media = sb_product_settings_ref.thumbnail_hover_photo.value | default: sb_product_settings_ref.thumbnail_hover_photo
+        endif
+        if sb_hover_media == blank
+          assign sb_hover_media = sb_product_settings_ref.product_thumbnail_hover_photo.value | default: sb_product_settings_ref.product_thumbnail_hover_photo
+        endif
+        if sb_hover_media == blank
+          assign sb_hover_media = sb_product_settings_ref.product_card_hover_photo.value | default: sb_product_settings_ref.product_card_hover_photo
+        endif
+        if sb_hover_media == blank
+          assign sb_hover_media = sb_product_settings_ref.thumbnail_hover_image.value | default: sb_product_settings_ref.thumbnail_hover_image
+        endif
+        if sb_hover_media == blank
+          assign sb_hover_media = sb_product_settings_ref.product_thumbnail_hover_image.value | default: sb_product_settings_ref.product_thumbnail_hover_image
+        endif
+        if sb_hover_media == blank
+          assign sb_hover_media = sb_product_settings_ref.product_card_hover_image.value | default: sb_product_settings_ref.product_card_hover_image
+        endif
+
+        if sb_hover_media != blank
+          assign sb_hover_media = sb_hover_media.image | default: sb_hover_media.hover_photo | default: sb_hover_media.hover_image | default: sb_hover_media.thumbnail_hover_photo | default: sb_hover_media.thumbnail_hover_image | default: sb_hover_media.product_thumbnail_hover_photo | default: sb_hover_media.product_thumbnail_hover_image | default: sb_hover_media.product_card_hover_photo | default: sb_hover_media.product_card_hover_image | default: sb_hover_media.media | default: sb_hover_media.file | default: sb_hover_media.photo | default: sb_hover_media
+        endif
+      endif
+    endif
+  endif
+
+  if sb_hover_media != blank
+    assign sb_hover_source_width = sb_hover_media.width | plus: 0
+    assign sb_hover_request_width = sb_hover_width
+    if sb_hover_source_width > 0 and sb_hover_request_width > sb_hover_source_width
+      assign sb_hover_request_width = sb_hover_source_width
+    endif
+    echo sb_hover_media | image_url: width: sb_hover_request_width
+  endif
+-%}

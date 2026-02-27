@@ -708,6 +708,37 @@
         if (Date.now() - startedAt > 1400) stopSubmitScrub();
       }, 40);
     };
+    const decodeScriptText = (value) =>
+      `${value || ''}`
+        .replace(/\\\//g, '/')
+        .replace(/\\u0026/g, '&')
+        .replace(/&amp;/g, '&');
+    const findDeferredKlaviyoScriptUrl = () => {
+      const klaviyoScriptPattern =
+        /https:\/\/static\.klaviyo\.com\/onsite\/js(?:\/[^"'`\s\/]+)?\/klaviyo\.js\?company_id=[^"'`\s]+/i;
+      const inlineScripts = document.querySelectorAll('script:not([src])');
+      for (const scriptNode of inlineScripts) {
+        const source = decodeScriptText(scriptNode.textContent);
+        if (!source.includes('static.klaviyo.com/onsite/js')) continue;
+        const match = source.match(klaviyoScriptPattern);
+        if (match && match[0]) return match[0];
+      }
+      return '';
+    };
+    const ensureKlaviyoOnsiteScript = () => {
+      const newsletterRoot = document.querySelector('.sb-footer__newsletter-klaviyo');
+      if (!newsletterRoot) return;
+      if (!newsletterRoot.querySelector("[class*='klaviyo-form-']")) return;
+      if (document.querySelector("script[src*='static.klaviyo.com/onsite/js'][src*='klaviyo.js']")) return;
+      const deferredScriptUrl = findDeferredKlaviyoScriptUrl();
+      if (!deferredScriptUrl) return;
+
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = deferredScriptUrl;
+      script.setAttribute('data-sb-klaviyo-bootstrap', 'true');
+      document.head.appendChild(script);
+    };
 
     const applyKlaviyoOverrides = () => {
       const root = document.querySelector('.sb-footer__newsletter-klaviyo');
@@ -897,14 +928,23 @@
       }
     };
 
-    const requestApply = () => window.requestAnimationFrame(applyKlaviyoOverrides);
+    let applyFrame = null;
+    const requestApply = () => {
+      if (applyFrame) return;
+      applyFrame = window.requestAnimationFrame(() => {
+        applyFrame = null;
+        applyKlaviyoOverrides();
+      });
+    };
+    ensureKlaviyoOnsiteScript();
+    const newsletterRoot = document.querySelector('.sb-footer__newsletter-klaviyo');
+    if (!newsletterRoot) return;
     const observer = new MutationObserver(requestApply);
-    observer.observe(document.body, { childList: true, subtree: true });
+    observer.observe(newsletterRoot, { childList: true, subtree: true });
     window.addEventListener('resize', requestApply, { passive: true });
     requestApply();
     window.setTimeout(requestApply, 300);
     window.setTimeout(requestApply, 1200);
-    window.setInterval(requestApply, 2000);
   })();
 </script>
 

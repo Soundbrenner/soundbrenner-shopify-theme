@@ -45,6 +45,14 @@
     endfor
   endcapture
   assign thumbnail_rating = rating | default: 0 | plus: 0
+  assign thumbnail_rating_tooltip = thumbnail_rating | round: 2 | append: ''
+  assign thumbnail_rating_tooltip_parts = thumbnail_rating_tooltip | split: '.'
+  assign thumbnail_rating_tooltip_decimal = thumbnail_rating_tooltip_parts[1] | default: ''
+  if thumbnail_rating_tooltip_decimal == blank
+    assign thumbnail_rating_tooltip = thumbnail_rating_tooltip | append: '.00'
+  elsif thumbnail_rating_tooltip_decimal.size == 1
+    assign thumbnail_rating_tooltip = thumbnail_rating_tooltip | append: '0'
+  endif
   assign thumbnail_hide_reviews = hide_reviews | default: false
   if thumbnail_hide_reviews == 'true' or thumbnail_hide_reviews == 1 or thumbnail_hide_reviews == '1'
     assign thumbnail_hide_reviews = true
@@ -68,7 +76,24 @@
   assign thumbnail_compare_info_text = compare_info_text
   assign thumbnail_gallery_images = ''
   assign thumbnail_gallery_count = 0
-  assign thumbnail_hover_image_url = blank
+  assign thumbnail_hover_image_url = hover_image_url | default: blank
+  if thumbnail_hover_image_url != blank
+    assign thumbnail_hover_image_url = thumbnail_hover_image_url | strip
+  endif
+
+  if thumbnail_hover_image_url == blank
+    case selected_swatch_value
+      when 1
+        assign thumbnail_hover_image_url = swatch_1_hover_image
+      when 2
+        assign thumbnail_hover_image_url = swatch_2_hover_image
+      when 3
+        assign thumbnail_hover_image_url = swatch_3_hover_image
+      when 4
+        assign thumbnail_hover_image_url = swatch_4_hover_image
+    endcase
+    assign thumbnail_hover_image_url = thumbnail_hover_image_url | strip
+  endif
 
   if product != blank
     assign selected_variant = product.selected_or_first_available_variant
@@ -81,9 +106,14 @@
       if selected_variant.featured_image != blank
         assign thumbnail_image = selected_variant.featured_image
       endif
-      assign variant_hover_photo = selected_variant.metafields.custom.sbv2_hover_photo.value | default: selected_variant.metafields.custom.sbv2_hover_photo
-      if variant_hover_photo != blank
-        assign thumbnail_hover_image_url = variant_hover_photo | image_url: width: 584
+      if thumbnail_hover_image_url == blank
+        capture thumbnail_variant_hover_image_url
+          render 'sb-hover-image-url', resource: selected_variant, width: 584
+        endcapture
+        assign thumbnail_variant_hover_image_url = thumbnail_variant_hover_image_url | strip
+        if thumbnail_variant_hover_image_url != blank
+          assign thumbnail_hover_image_url = thumbnail_variant_hover_image_url
+        endif
       endif
     endif
     if thumbnail_price == blank and selected_variant != blank
@@ -109,9 +139,12 @@
     endif
 
     if thumbnail_hover_image_url == blank
-      assign product_hover_photo = product.metafields.custom.sbv2_hover_photo.value | default: product.metafields.custom.sbv2_hover_photo
-      if product_hover_photo != blank
-        assign thumbnail_hover_image_url = product_hover_photo | image_url: width: 584
+      capture thumbnail_product_hover_image_url
+        render 'sb-hover-image-url', resource: product, width: 584
+      endcapture
+      assign thumbnail_product_hover_image_url = thumbnail_product_hover_image_url | strip
+      if thumbnail_product_hover_image_url != blank
+        assign thumbnail_hover_image_url = thumbnail_product_hover_image_url
       endif
     endif
 
@@ -340,6 +373,7 @@
         class="sb-product-thumbnail__stars"
         role="img"
         aria-label="{{ thumbnail_rating }} out of 5 stars"
+        data-rating-tooltip="{{ thumbnail_rating_tooltip }}"
         style="padding-bottom: var(--sb-space-4);"
       >
         {% for i in (1..5) %}

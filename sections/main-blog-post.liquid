@@ -219,12 +219,23 @@
   endif
 %}
 
-<section class="sb-blog-post">
+<section
+  class="sb-blog-post"
+  style="
+    --sb-supplementary-sticky-top-gap-desktop: {{ section.settings.supplementary_sticky_top_gap_desktop | default: 16 }}px;
+    --sb-supplementary-sticky-top-gap-mobile: {{ section.settings.supplementary_sticky_top_gap_mobile | default: 16 }}px;
+    --sb-supplementary-sticky-inline-margin-desktop: {{ section.settings.supplementary_sticky_inline_margin_desktop | default: 60 }}px;
+    --sb-supplementary-sticky-inline-margin-mobile: {{ section.settings.supplementary_sticky_inline_margin_mobile | default: 16 }}px;
+    --sb-supplementary-sticky-nav-padding-y-desktop: {{ section.settings.supplementary_sticky_nav_padding_y_desktop | default: 12 }}px;
+    --sb-supplementary-sticky-nav-padding-y-mobile: {{ section.settings.supplementary_sticky_nav_padding_y_mobile | default: 12 }}px;
+  "
+>
   <div class="sb-blog-post__inner">
     <div
       class="sb-blog-post__sticky-nav-wrap sb-blog-post__sticky-nav-wrap--desktop"
       aria-label="Sticky blog navigation"
       data-sb-blog-post-sticky-nav-wrap
+      data-sb-sticky-top-navigation
     >
       <div class="sb-blog-post__sticky-nav" data-sb-blog-post-sticky-nav>
         <div class="sb-blog-post__sticky-nav-left" aria-label="Blog category filters">
@@ -303,6 +314,7 @@
       class="sb-blog-post__sticky-nav-wrap sb-blog-post__sticky-nav-wrap--mobile"
       aria-label="Sticky blog navigation"
       data-sb-blog-post-sticky-nav-wrap
+      data-sb-sticky-top-navigation
     >
       <div class="sb-blog-post__sticky-nav sb-blog-post__sticky-nav--mobile" data-sb-blog-post-sticky-nav>
         <div class="sb-blog-post__sticky-dropdown" data-sb-blog-post-filter-dropdown>
@@ -566,14 +578,14 @@
 
   @media (min-width: 0px) {
     .sb-blog-post__sticky-nav-wrap--desktop {
-      --sb-sticky-inline-margin: 60px;
-      --sb-blog-post-sticky-top-gap: 16px;
+      --sb-supplementary-sticky-inline-margin: var(--sb-supplementary-sticky-inline-margin-desktop);
+      --sb-supplementary-sticky-top-gap: var(--sb-supplementary-sticky-top-gap-desktop);
       display: block;
       left: 0;
       pointer-events: none;
       position: fixed;
       right: 0;
-      top: var(--sb-blog-post-sticky-nav-top, calc(var(--sb-header-height, 60px) + var(--sb-announcement-min-height, 0px) + var(--sb-blog-post-sticky-top-gap)));
+      top: var(--sb-blog-post-sticky-nav-top, calc(var(--sb-header-height, 60px) + var(--sb-announcement-min-height, 0px) + var(--sb-supplementary-sticky-top-gap)));
       width: 100%;
       z-index: 40;
     }
@@ -584,8 +596,8 @@
   }
 
   .sb-blog-post__sticky-nav {
-    --sb-blog-post-sticky-nav-padding-y: 12px;
-    --sb-blog-post-filter-popout-offset: calc(16px + var(--sb-blog-post-sticky-nav-padding-y));
+    --sb-supplementary-sticky-nav-padding-y: var(--sb-supplementary-sticky-nav-padding-y-desktop);
+    --sb-blog-post-filter-popout-offset: calc(16px + var(--sb-supplementary-sticky-nav-padding-y));
     align-items: center;
     background: var(--sb-color-neutral-200);
     border-radius: 24px;
@@ -595,9 +607,9 @@
     grid-template-columns: minmax(0, 1fr) auto;
     margin-inline: auto;
     max-width: 1240px;
-    padding: var(--sb-blog-post-sticky-nav-padding-y) 24px;
+    padding: var(--sb-supplementary-sticky-nav-padding-y) 24px;
     pointer-events: auto;
-    width: min(1240px, calc(100vw - (var(--sb-sticky-inline-margin) * 2)));
+    width: min(1240px, calc(100vw - (var(--sb-supplementary-sticky-inline-margin) * 2)));
   }
 
   .sb-blog-post__sticky-nav-left {
@@ -1097,6 +1109,8 @@
 
   .sb-blog-post__read-next .sb-blog-overview-card__title a {
     color: inherit;
+    display: inline-block;
+    max-width: 100%;
     text-decoration: none;
   }
 
@@ -1235,21 +1249,21 @@
     }
 
     .sb-blog-post__sticky-nav-wrap--mobile {
-      --sb-sticky-inline-margin: 60px;
-      --sb-blog-post-sticky-top-gap: 16px;
+      --sb-supplementary-sticky-inline-margin: var(--sb-supplementary-sticky-inline-margin-desktop);
+      --sb-supplementary-sticky-top-gap: var(--sb-supplementary-sticky-top-gap-mobile);
       display: block !important;
       left: 0;
       pointer-events: none;
       position: fixed;
       right: 0;
-      top: var(--sb-blog-post-sticky-nav-top, calc(var(--sb-header-height, 60px) + var(--sb-announcement-min-height, 0px) + var(--sb-blog-post-sticky-top-gap)));
+      top: var(--sb-blog-post-sticky-nav-top, calc(var(--sb-header-height, 60px) + var(--sb-announcement-min-height, 0px) + var(--sb-supplementary-sticky-top-gap)));
       width: 100%;
       z-index: 110;
     }
 
     .sb-blog-post__sticky-nav--mobile {
-      --sb-blog-post-sticky-nav-padding-y: 12px;
-      --sb-blog-post-filter-popout-offset: calc(16px + var(--sb-blog-post-sticky-nav-padding-y));
+      --sb-supplementary-sticky-nav-padding-y: var(--sb-supplementary-sticky-nav-padding-y-mobile);
+      --sb-blog-post-filter-popout-offset: calc(16px + var(--sb-supplementary-sticky-nav-padding-y));
       align-items: center;
       background: var(--sb-color-neutral-200);
       border-radius: 24px;
@@ -1257,8 +1271,8 @@
       column-gap: 16px;
       grid-template-columns: minmax(0, 1fr) auto;
       justify-items: start;
-      padding: var(--sb-blog-post-sticky-nav-padding-y) 12px;
-      width: calc(100vw - (var(--sb-sticky-inline-margin) * 2));
+      padding: var(--sb-supplementary-sticky-nav-padding-y) 12px;
+      width: calc(100vw - (var(--sb-supplementary-sticky-inline-margin) * 2));
     }
 
     .sb-blog-post__sticky-nav--mobile .sb-blog-post__sticky-dropdown {
@@ -1491,8 +1505,7 @@
 
   @media (max-width: 749px) {
     .sb-blog-post__sticky-nav-wrap--mobile {
-      --sb-sticky-inline-margin: 16px;
-      --sb-blog-post-sticky-top-gap: 16px;
+      --sb-supplementary-sticky-inline-margin: var(--sb-supplementary-sticky-inline-margin-mobile);
     }
   }
 {% endstylesheet %}
@@ -1644,7 +1657,7 @@
       if (!stickyNavWraps.length) return;
       if (!headerElement) {
         stickyNavWraps.forEach((wrap) => {
-          const spacing = Number.parseFloat(getComputedStyle(wrap).getPropertyValue('--sb-blog-post-sticky-top-gap')) || 16;
+          const spacing = Number.parseFloat(getComputedStyle(wrap).getPropertyValue('--sb-supplementary-sticky-top-gap')) || 16;
           const fallbackTop = `${Math.round(spacing)}px`;
           if (wrap.style.top !== fallbackTop) {
             wrap.style.top = fallbackTop;
@@ -1657,7 +1670,7 @@
       const headerBorderBottom = Number.parseFloat(headerStyles.borderBottomWidth) || 0;
       const headerBottom = headerElement.getBoundingClientRect().bottom - headerBorderBottom;
       stickyNavWraps.forEach((wrap) => {
-        const spacing = Number.parseFloat(getComputedStyle(wrap).getPropertyValue('--sb-blog-post-sticky-top-gap')) || 16;
+        const spacing = Number.parseFloat(getComputedStyle(wrap).getPropertyValue('--sb-supplementary-sticky-top-gap')) || 16;
         const nextTop = Math.max(headerBottom + spacing, spacing);
         const nextTopValue = `${Math.floor(nextTop)}px`;
         if (wrap.style.top !== nextTopValue) {
@@ -1788,6 +1801,70 @@
 {
   "name": "Blog post",
   "settings": [
+    {
+      "type": "header",
+      "content": "Supplementary sticky navigation"
+    },
+    {
+      "type": "range",
+      "id": "supplementary_sticky_top_gap_desktop",
+      "label": "Top gap desktop",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "supplementary_sticky_top_gap_mobile",
+      "label": "Top gap mobile",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "supplementary_sticky_inline_margin_desktop",
+      "label": "Inline margin desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "supplementary_sticky_inline_margin_mobile",
+      "label": "Inline margin mobile",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "supplementary_sticky_nav_padding_y_desktop",
+      "label": "Vertical padding desktop",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "supplementary_sticky_nav_padding_y_mobile",
+      "label": "Vertical padding mobile",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
     {
       "type": "text",
       "id": "sidebar_promo_title",

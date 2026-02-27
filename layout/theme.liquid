@@ -31,6 +31,14 @@
   {% endif %}
 >
   <head>
+    {%- if settings.favicon != blank -%}
+      <link
+        rel="icon"
+        type="image/png"
+        href="{{ settings.favicon | image_url: width: 32, height: 32 }}"
+      >
+    {%- endif -%}
+
     <script>
       (() => {
         const root = document.documentElement;
@@ -71,6 +79,12 @@
     {% unless settings.type_display_font.system? %}
       {{ sb_display_font_bold | font_url | preload_tag: as: 'font', crossorigin: 'anonymous' }}
     {% endunless %}
+    {% # theme-check-disable RemoteAsset %}
+    <link rel="dns-prefetch" href="//static.klaviyo.com">
+    <link rel="preconnect" href="https://static.klaviyo.com" crossorigin>
+    <link rel="dns-prefetch" href="//a.klaviyo.com">
+    <link rel="preconnect" href="https://a.klaviyo.com" crossorigin>
+    {% # theme-check-enable RemoteAsset %}
 
     {% # Load and preload the critical CSS %}
     {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
@@ -1056,6 +1070,7 @@
           syncThumbnailDiscountPricingScope,
         };
 
+        document.dispatchEvent(new CustomEvent('sb:product-thumbnail:ready'));
         initThumbnailMediaScope(document, { initSwatchInteractions: true });
         document.addEventListener('shopify:section:load', (event) => {
           initThumbnailMediaScope(event.target, { initSwatchInteractions: true });

@@ -19,11 +19,345 @@
         "kicker": "",
         "headline": "",
         "subheadline": "",
-        "show_button": true,
-        "button_label": "Explore now",
+        "show_button": false,
+        "button_label": "",
         "button_size": "large",
         "icon_position": "none",
-        "button_link": "shopify://collections/all",
+        "button_link": "",
+        "show_app_download_qr": false,
+        "show_app_download_app_store": false,
+        "show_app_download_google_play": false,
+        "show_app_download_china": false
+      }
+    },
+    "collection_overview_home": {
+      "type": "collection-overview",
+      "blocks": {
+        "collection_item_in_ear_monitors": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "in-ear-monitors",
+            "collection_name_override": "",
+            "compare_link": "shopify://pages/compare-in-ear-monitors",
+            "product_1": "wave-pro-in-ear-monitors",
+            "product_2": "wave-in-ear-monitors",
+            "product_3": "wave-over-ear-cable-2-5m-8-2-ft-with-microphone",
+            "product_4": "wave-pro-hi-fi-usb-c-connector",
+            "product_5": "usb-c-to-3-5mm-audio-adapter",
+            "product_6": "wave-pro-hi-fi-over-ear-3-5mm-audio-cable-with-microphone-2-5m-8-2-ft"
+          }
+        },
+        "collection_item_wearables": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "wearables",
+            "collection_name_override": "",
+            "compare_link": "shopify://pages/compare-wearables",
+            "product_1": "pulse-vibrating-metronome",
+            "product_2": "core-2-practice-companion",
+            "product_3": "spark-practice-companion",
+            "product_4": "pulse-body-strap",
+            "product_5": "wearable-charging-cable",
+            "product_6": "core-leather-strap"
+          }
+        },
+        "collection_item_earplugs": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "minuendo-earplugs",
+            "collection_name_override": "Earplugs",
+            "compare_link": "",
+            "product_1": "minuendo-earplugs",
+            "product_2": "minuendo-ear-tips-11-pack",
+            "product_3": "minuendo-neck-strap",
+            "product_4": "",
+            "product_5": "",
+            "product_6": ""
+          }
+        },
+        "collection_item_more_products": {
+          "type": "collection_item",
+          "settings": {
+            "collection": "more-products",
+            "collection_name_override": "",
+            "compare_link": "",
+            "product_1": "genki-wave-midi-ring",
+            "product_2": "playtron-midi-instrument",
+            "product_3": "touchme-midi-instrument",
+            "product_4": "flow-microphone",
+            "product_5": "stomp-foot-pedal",
+            "product_6": "carrying-pouch"
+          }
+        }
+      },
+      "block_order": [
+        "collection_item_in_ear_monitors",
+        "collection_item_wearables",
+        "collection_item_earplugs",
+        "collection_item_more_products"
+      ],
+      "settings": {
+        "read_all_url": "shopify://pages/all-reviews"
+      }
+    },
+    "press_ticker_home": {
+      "type": "press-ticker",
+      "settings": {
+        "use_product_metaobject_color": false,
+        "background_color": "neutral-200",
+        "non_product_content_color": "neutral-800"
+      }
+    },
+    "hero_card_HFy7pm": {
+      "type": "hero-card",
+      "name": "Hero card",
+      "settings": {
+        "use_seasonal_hero_card": false,
+        "use_affiliate_metaobject": false,
+        "use_resource_title_description": false,
+        "use_product_page_metaobjects": false,
+        "background_image_desktop": "shopify://shop_images/Property_1_The_Metronome_1.jpg",
+        "background_image_mobile": "shopify://shop_images/Property_1_The_Metronome_1_mobile.jpg",
+        "kicker": "The Metronome app",
+        "headline": "Make music practice addictive.",
+        "subheadline": "",
+        "show_button": true,
+        "button_label": "Learn more",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": "shopify://pages/the-metronome-app",
+        "show_app_download_qr": false,
+        "show_app_download_app_store": true,
+        "show_app_download_google_play": true,
+        "show_app_download_china": false
+      }
+    },
+    "expert_testimonials_AkfimQ": {
+      "type": "expert-testimonials",
+      "blocks": {
+        "testimonial_mnhQrn": {
+          "type": "testimonial",
+          "settings": {
+            "testimonial": "wave-pro-1"
+          }
+        },
+        "testimonial_MFaHwH": {
+          "type": "testimonial",
+          "settings": {
+            "testimonial": "core-2-1"
+          }
+        },
+        "testimonial_kgt3wm": {
+          "type": "testimonial",
+          "settings": {
+            "testimonial": "wave-pro-2"
+          }
+        },
+        "testimonial_Qpeibk": {
+          "type": "testimonial",
+          "settings": {
+            "testimonial": "core-2-2"
+          }
+        },
+        "testimonial_MiW9Yf": {
+          "type": "testimonial",
+          "settings": {
+            "testimonial": "wave-pro-3"
+          }
+        },
+        "testimonial_rLdtPM": {
+          "type": "testimonial",
+          "settings": {
+            "testimonial": "core-2-3"
+          }
+        },
+        "testimonial_FjmUdF": {
+          "type": "testimonial",
+          "settings": {
+            "testimonial": "wave-pro-4"
+          }
+        },
+        "testimonial_hcKPfm": {
+          "type": "testimonial",
+          "settings": {
+            "testimonial": "core-2-4"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_mnhQrn",
+        "testimonial_MFaHwH",
+        "testimonial_kgt3wm",
+        "testimonial_Qpeibk",
+        "testimonial_MiW9Yf",
+        "testimonial_rLdtPM",
+        "testimonial_FjmUdF",
+        "testimonial_hcKPfm"
+      ],
+      "name": "Expert testimonials",
+      "settings": {
+        "use_product_metaobjects": false,
+        "title": "Worn by the best"
+      }
+    },
+    "hero_card_d8GepA": {
+      "type": "hero-card",
+      "name": "Hero card",
+      "settings": {
+        "use_seasonal_hero_card": false,
+        "use_affiliate_metaobject": false,
+        "use_resource_title_description": false,
+        "use_product_page_metaobjects": false,
+        "background_image_desktop": "shopify://shop_images/Property_1_About_us.jpg",
+        "background_image_mobile": "shopify://shop_images/Property_1_About_us_mobile.jpg",
+        "kicker": "About Soundbrenner",
+        "headline": "What makes us unique?",
+        "subheadline": "",
+        "show_button": true,
+        "button_label": "Learn more",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": "shopify://pages/about-us",
+        "show_app_download_qr": false,
+        "show_app_download_app_store": false,
+        "show_app_download_google_play": false,
+        "show_app_download_china": false
+      }
+    },
+    "highlights_shipping_returns": {
+      "type": "top-feature-highlights",
+      "blocks": {
+        "item_XhrLhe": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/Property_1_Local_shipping.svg",
+            "gradient_value": "linear-gradient(135deg, #FF0739 0%, #8E3BFF 100%)",
+            "title": "Worldwide shipping",
+            "body": "<p>Get your favorite products delivered to your doorstep.</p>"
+          }
+        },
+        "item_3b7Q9L": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/Property_1_Verified_user.svg",
+            "gradient_value": "linear-gradient(135deg, #E67702 0%, #FF4700 100%)",
+            "title": "1-year warranty",
+            "body": "<p>Guaranteed quality and lasting satisfaction with every purchase.</p>"
+          }
+        },
+        "item_i8WCRx": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/Property_1_Autorenew.svg",
+            "gradient_value": "linear-gradient(135deg, #0097FF 0%, #00FCA4 100%)",
+            "title": "30-day money-back guarantee",
+            "body": "<p>Enjoy risk-free shopping with straightforward returns.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_XhrLhe",
+        "item_3b7Q9L",
+        "item_i8WCRx"
+      ],
+      "name": "Top feature highlights",
+      "settings": {
+        "use_product_metaobjects": false,
+        "title": "Why shop on soundbrenner.com"
+      }
+    },
+    "accordion_shipping_returns": {
+      "type": "accordion",
+      "blocks": {
+        "accordion_item_3dBtKD": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Do you ship internationally?",
+            "answer": "<p>Absolutely! We're a global company and ship to almost every country in the world. To find out if we ship to you, simply initiate the checkout process and see if your country is available for selection.</p>"
+          }
+        },
+        "accordion_item_RhXpPr": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "What are the shipping costs and times?",
+            "answer": "<p>Simply initiate the checkout process and enter your address. Our system will tell you the shipping costs and give you an estimate for the duration.</p>"
+          }
+        },
+        "accordion_item_Xg9qb8": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Can I return Soundbrenner products if I change my mind?",
+            "answer": "<p>Yes! If you purchased an item from our web store but decide it's not for you, you can return it within 30 days of delivery for a refund. However, shipping fees will be deducted from your refund, even if your order qualified for free shipping. This helps balance the cost of returns, as there are additional expenses beyond shipping, such as restocking. For full details, check out our <a href=\"/policies/refund-policy\" title=\"Refund Policy\">refund policy</a>.</p>"
+          }
+        },
+        "accordion_item_cwxVmi": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Do you offer a product warranty?",
+            "answer": "<p>Yes, we offer a 1 year warranty on all of our products. If your item has a defect due to a mistake on our part, we will send you a replacement free of charge. For more information check our <a href=\"/pages/terms-of-warranty\" title=\"Terms of warranty\">terms of warranty</a>.</p>"
+          }
+        },
+        "accordion_item_xqk77R": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "When will I receive the tracking number?",
+            "answer": "<p>When your order is dispatched, you'll receive an email with tracking details.</p>"
+          }
+        },
+        "accordion_item_gNhhK8": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Do I have to pay additional taxes and duties?",
+            "answer": "<p>We try to avoid international shipments whenever possible and ship locally instead, so your government won't charge you additional taxes or duties. However, sometimes there is no way around international shipments. In many countries, we prepay all applicable taxes and duties and ship \"Delivered Duties Paid\" (DDP), so you won’t have to pay anything upon delivery. On our website, we clearly display whether taxes and duties are already included in the price or may be due upon delivery, based on the location you set up. For more information check our <a href=\"/policies/shipping-policy\" title=\"Shipping Policy\">shipping policy</a>.</p>"
+          }
+        },
+        "accordion_item_9h7JaD": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "How do I initiate a return?",
+            "answer": "<p><a href=\"/pages/contact-us\" title=\"Contact us\">Contact us</a> and our team will guide you through the next steps.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "accordion_item_3dBtKD",
+        "accordion_item_RhXpPr",
+        "accordion_item_Xg9qb8",
+        "accordion_item_cwxVmi",
+        "accordion_item_xqk77R",
+        "accordion_item_gNhhK8",
+        "accordion_item_9h7JaD"
+      ],
+      "name": "Accordion",
+      "settings": {
+        "use_custom_title": false,
+        "custom_title": "Frequently asked questions",
+        "show_subtitle": true
+      }
+    },
+    "quote_section_home": {
+      "type": "quote-section",
+      "name": "Quote section",
+      "settings": {
+        "quote": "Great musicians aren't born. They're crafted. Success is simply the sum of every hour you spent in the practice room.\n\nAt Soundbrenner, we don't believe in shortcuts - only better tools for the journey to mastery."
+      }
+    },
+    "hero_card_bottom_seasonal": {
+      "type": "hero-card",
+      "name": "Hero card",
+      "settings": {
+        "use_seasonal_hero_card": false,
+        "use_affiliate_metaobject": true,
+        "use_resource_title_description": false,
+        "use_product_page_metaobjects": false,
+        "kicker": "",
+        "headline": "",
+        "subheadline": "",
+        "show_button": false,
+        "button_label": "",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": "",
         "show_app_download_qr": false,
         "show_app_download_app_store": false,
         "show_app_download_google_play": false,
@@ -32,6 +366,15 @@
     }
   },
   "order": [
-    "main"
+    "main",
+    "collection_overview_home",
+    "press_ticker_home",
+    "hero_card_HFy7pm",
+    "expert_testimonials_AkfimQ",
+    "hero_card_d8GepA",
+    "highlights_shipping_returns",
+    "accordion_shipping_returns",
+    "quote_section_home",
+    "hero_card_bottom_seasonal"
   ]
 }
