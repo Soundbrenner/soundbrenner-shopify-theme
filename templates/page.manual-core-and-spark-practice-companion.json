@@ -187,12 +187,6 @@
             "link": "shopify://pages/the-metronome-app"
           }
         },
-        "heading_small_xffCmT": {
-          "type": "heading_small",
-          "settings": {
-            "heading": "INSERT APP LINKS + QR CODE + THE LINK IN THE BUTTON BELOW"
-          }
-        },
         "text_4MqtCq": {
           "type": "text",
           "settings": {
@@ -1035,7 +1029,6 @@
         "subheading_C8GVdi",
         "text_HPx7dM",
         "button_Q9xDn7",
-        "heading_small_xffCmT",
         "text_4MqtCq",
         "button_86rHwW",
         "divider_6c6AAp",
