@@ -227,6 +227,13 @@
             "link": ""
           }
         },
+        "accordion_item_P6NyaD": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Placeholder question",
+            "answer": "<p>Placeholder answer.</p>"
+          }
+        },
         "text_ecFNQA": {
           "type": "text",
           "settings": {
@@ -1102,6 +1109,7 @@
         "subheading_hhXcCi",
         "text_KYQ8qF",
         "button_kaepFn",
+        "accordion_item_P6NyaD",
         "text_ecFNQA",
         "divider_ExTXVE",
         "subheading_YbafmG",
