@@ -5520,7 +5520,63 @@
     const mobileMenuPreloadedSources = new Set();
     const primaryMenuPreloadedSources = new Set();
     const mobileMenuReviewStorageKey = 'sb-mobile-menu-review-index';
-    const mobileMenuReviews = JSON.parse({{ 'sb.header.mobile_menu_reviews_json' | t | json }});
+    const mobileMenuReviews = [
+      {
+        day: 8,
+        name: 'Wesley G.',
+        text: 'I have the in-ear monitors and the Pulse. They work exactly as promised. Shipping was good and without bad surprises. Thank you Soundbrenner!'
+      },
+      {
+        day: 4,
+        name: 'Rob M.',
+        text: "I had questions about my purchase, and Ethan has been super attentive offering excellent explanations and suggestions. Services matters as much as the product you buy, and I'm impressed."
+      },
+      {
+        day: 15,
+        name: 'Lee K.',
+        text: 'My initial order was delayed but the staff were super responsive to my emails and sorted it out without problem. Issues happen from time to time but I appreciate that they care about their customers and service.'
+      },
+      {
+        day: 2,
+        name: 'Samuel A.',
+        text: 'Amazing customer service, great and quick service overall. I am really happy I purchased this product and I will be looking forward to future purchases.'
+      },
+      {
+        day: 21,
+        name: 'Nate L.',
+        text: "Soundbrenner's customer service has been top notch. They helped me with a return for a bad adapter and made it right. Will gladly buy again from SB."
+      },
+      {
+        day: 9,
+        name: 'Christos T.',
+        text: 'Incredible customer service experience: prompt and deliberate responses, and understanding of my needs. I am very pleased with how they handled my return process.'
+      },
+      {
+        day: 12,
+        name: 'Paul S.',
+        text: 'Easy to shop for, shipping was fast, and the package presentation was much higher end than I expected.'
+      },
+      {
+        day: 27,
+        name: 'Mark C.',
+        text: "This company is a breath of fresh air to deal with! I did have a problem with part of my order but it was resolved so quickly it really wasn't a problem. I genuinely look forward to using this company again."
+      },
+      {
+        day: 18,
+        name: 'Curtis E.',
+        text: "One of the best customer support experiences I've ever had. I had one minor issue and they went above and beyond to correct it and emailed back within an hour. I don't see myself or my son buying from anyone else again."
+      },
+      {
+        day: 5,
+        name: 'Jerry W.',
+        text: 'Easy checkout and fast shipping. These folks know how to treat a customer with respect and appreciation.'
+      },
+      {
+        day: 24,
+        name: 'Cymil M.',
+        text: 'Shopping was seamless and easy. Customer service is very responsive and always presents options for whatever concern you may have. Five star.'
+      }
+    ];
     let pageScrollLockY = 0;
     let pageScrollLockMode = null;
     const isDesktopViewport = () => window.matchMedia('(min-width: 990px)').matches;
