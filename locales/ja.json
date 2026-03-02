@@ -177,7 +177,121 @@
       "download_ios_android": "iOSとAndroidでダウンロード",
       "metronome_app": "メトロノームアプリ",
       "ratings": "{{ count }}件の評価",
-      "region_and_language": "地域と言語"
+      "region_and_language": "地域と言語",
+      "mobile_review_date": "2026年1月8日",
+      "mobile_review_name": "ウェスリー・G",
+      "mobile_review_text": "インイヤーモニターとPulseを持っているよ。どちらも約束通りしっかり動作する。配送もスムーズで、嫌なサプライズはなかった。Soundbrenner、ありがとう！"
+    },
+    "hero_video": {
+      "play_title": "{{ title }} を再生",
+      "title": "ヒーロービデオ",
+      "title_index": "ヒーロービデオ {{ index }}",
+      "video_index": "ビデオ {{ index }}"
+    },
+    "large_feature": {
+      "image_alt": "大きな特集画像",
+      "kicker": "キッカー"
+    },
+    "manual": {
+      "chapter": "チャプター",
+      "chapters": "チャプター",
+      "close_chapters": "章を閉じる",
+      "product_manual": "製品マニュアル",
+      "sticky_navigation": "手動ナビゲーションを固定"
+    },
+    "media": {
+      "close_video": "ビデオを閉じる",
+      "play_video": "動画を再生",
+      "video_player": "ビデオプレーヤー",
+      "video_story_player": "ビデオストーリープレーヤー",
+      "vimeo_video": "Vimeo動画",
+      "vimeo_video_placeholder": "Vimeo動画プレースホルダー",
+      "pause_video": "動画を一時停止"
+    },
+    "press_ticker": {
+      "logos_aria_label": "掲載メディアのロゴ",
+      "title": "掲載実績"
+    },
+    "product": {
+      "add": "追加",
+      "add_to_cart": "カートに追加",
+      "added": "追加済み",
+      "all_taxes_duties_included": "すべての税金と関税が価格に含まれています",
+      "buy_now": "今すぐ購入",
+      "buy_with": "以下で購入",
+      "color_option": "カラー {{ index }}",
+      "color_selector": "カラーセレクター",
+      "description": "説明",
+      "free_shipping_over": "{{ threshold }}円以上で送料無料",
+      "go_to_reviews": "レビューを見る",
+      "in_the_box": "同梱物",
+      "learn_more": "詳しく見る",
+      "money_back_30_day": "30日間返金保証",
+      "next_image": "次の画像",
+      "page_mode": "ページモード",
+      "popular_add_ons": "人気のアドオン",
+      "previous_image": "前の画像",
+      "purchase_guarantees": "購入保証",
+      "reviews_count": "{{ count }}件のレビュー",
+      "save_percent": "{{ percent }}%オフ",
+      "shop_pay_installments_from": "Shop Pay 分割払いはここから",
+      "sold_out": "売り切れ",
+      "warranty_1_year": "1年間保証",
+      "badge_bestseller": "ベストセラー",
+      "badge_new": "新着",
+      "buy_multiple_save_extra": "まとめ買いでさらにお得",
+      "product_name": "製品名",
+      "variant": "バリエーション",
+      "week_fifth": "5番目",
+      "week_first": "最初",
+      "week_fourth": "4番目",
+      "week_of_month": "{{ month }}の{{ week }}週",
+      "week_second": "秒",
+      "week_third": "サード"
+    },
+    "rating": {
+      "out_of_five_stars": "5つ星中{{ rating }}"
+    },
+    "see_it_in_action": {
+      "media_alt": "実際のメディアを見る"
+    },
+    "shogun": {
+      "view_product_page": "商品ページを見る"
+    },
+    "social": {
+      "facebook": "フェイスブック",
+      "instagram": "インスタグラム",
+      "links": "ソーシャルリンク",
+      "tiktok": "TikTok",
+      "youtube": "YouTube"
+    },
+    "trustpilot": {
+      "logo_link": "Trustpilot ロゴ リンク",
+      "rating_out_of_five": "5点中{{ rating }}",
+      "read_reviews": "TrustpilotでSoundbrennerのレビューを読む",
+      "stars_link": "Trustpilotの評価リンク",
+      "metronome_rating_summary": "{{ rating }}の評価、{{ count }}件のレビュー",
+      "trustscore_summary": "Trustpilotでの{{ rating }}のTrustScore"
+    },
+    "value_breakdown": {
+      "free": "無料",
+      "total": "合計"
+    },
+    "data_sharing": {
+      "opt_out": "オプトアウト"
+    },
+    "feature_carousel": {
+      "media_alt": "メディアを表示",
+      "video_alt": "特長ビデオ"
+    },
+    "hero_card": {
+      "affiliate_headline": "{{ Affiliate name }}による特別オファー",
+      "placeholder_button": "プレースホルダー",
+      "product_mode_headline": "満足できなかった？返金します！",
+      "product_mode_subheadline": "30日間返金保証でリスクなしでお試しください。",
+      "subheadline_blocked": "{{ Shipping country }}への発送は行っていません。別の国を選んでください。",
+      "subheadline_free_shipping": "最大{{ Sitewide discount depth }}%オフ＆{{ Free shipping threshold }}以上のご注文で{{ Shipping country }}への送料無料。",
+      "subheadline_no_free_shipping": "{{ Shipping country }}で最大{{ Sitewide discount depth }}%オフ"
     }
   }
 }

@@ -239,7 +239,59 @@
       "warranty_1_year": "1年保修",
       "badge_bestseller": "畅销款",
       "badge_new": "新品",
-      "buy_multiple_save_extra": "多买多省"
+      "buy_multiple_save_extra": "多买多省",
+      "product_name": "产品名称",
+      "variant": "型号",
+      "week_fifth": "第五",
+      "week_first": "第一",
+      "week_fourth": "第四",
+      "week_of_month": "{{ month }}的第{{ week }}周",
+      "week_second": "第二",
+      "week_third": "第三"
+    },
+    "rating": {
+      "out_of_five_stars": "{{ rating }} 分（满分 5 分）"
+    },
+    "see_it_in_action": {
+      "media_alt": "观看演示媒体"
+    },
+    "shogun": {
+      "view_product_page": "查看产品页面"
+    },
+    "social": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "links": "社交链接",
+      "tiktok": "抖音",
+      "youtube": "YouTube"
+    },
+    "trustpilot": {
+      "logo_link": "Trustpilot 标志链接",
+      "rating_out_of_five": "{{ rating }} 分（满分 5 分）",
+      "read_reviews": "在 Trustpilot 上阅读 Soundbrenner 的评价",
+      "stars_link": "Trustpilot 评分链接",
+      "metronome_rating_summary": "{{ rating }} 评分，{{ count }} 条评价",
+      "trustscore_summary": "在 Trustpilot 上的 {{ rating }} 信任评分"
+    },
+    "value_breakdown": {
+      "free": "免费",
+      "total": "总计"
+    },
+    "data_sharing": {
+      "opt_out": "退出"
+    },
+    "feature_carousel": {
+      "media_alt": "特色媒体",
+      "video_alt": "功能视频"
+    },
+    "hero_card": {
+      "affiliate_headline": "特别优惠，由{{ Affiliate name }}为你带来",
+      "placeholder_button": "占位符",
+      "product_mode_headline": "不满意？全额退款！",
+      "product_mode_subheadline": "30天无忧试用，支持退款保证。",
+      "subheadline_blocked": "我们无法运送到{{ Shipping country }}。请选择其他国家。",
+      "subheadline_free_shipping": "全场最高可享{{ Sitewide discount depth }}%优惠，订单满{{ Free shipping threshold }}元，寄往{{ Shipping country }}可享免费送货。",
+      "subheadline_no_free_shipping": "在{{ Shipping country }}，最高可享{{ Sitewide discount depth }}%优惠。"
     }
   }
 }

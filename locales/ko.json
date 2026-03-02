@@ -1,0 +1,244 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "404": {
+    "not_found": "페이지를 찾을 수 없습니다.",
+    "back_to_shopping": "쇼핑으로 돌아가기"
+  },
+  "blog": {
+    "article_comments": "댓글",
+    "article_metadata_html": "{{ date }} 작성자: {{ author }}",
+    "comment_form_body": "댓글",
+    "comment_form_email": "이메일",
+    "comment_form_name": "이름",
+    "comment_form_submit": "게시",
+    "comment_form_title": "댓글 추가"
+  },
+  "cart": {
+    "checkout": "결제",
+    "title": "장바구니",
+    "update": "업데이트",
+    "remove": "제거",
+    "discount_code_error": "할인 코드를 장바구니에 적용할 수 없어",
+    "shipping_discount_error": "주소를 입력하면 결제 시 배송 할인 금액이 표시돼"
+  },
+  "customers": {
+    "login": {
+      "email": "이메일",
+      "password": "비밀번호",
+      "submit": "로그인",
+      "title": "로그인"
+    }
+  },
+  "collections": {
+    "title": "모음집"
+  },
+  "gift_card": {
+    "add_to_apple_wallet": "Apple 지갑에 추가",
+    "card": "상품권",
+    "expired": "이 상품권은 만료되었습니다",
+    "expires_on": "{{ expires_on }}에 만료됨",
+    "use_at_checkout": "이 상품권은 결제할 때 사용해 줘"
+  },
+  "password": {
+    "title": "이 상점은 비공개입니다",
+    "password": "비밀번호",
+    "enter": "입력"
+  },
+  "search": {
+    "title": "검색",
+    "placeholder": "기사, 페이지 또는 상품 검색",
+    "submit": "검색",
+    "no_results_html": "{{ terms }}에 대한 결과가 없습니다",
+    "results_for_html": "{{ count }}개의 결과가 {{ terms }}에 대해 발견되었습니다"
+  },
+  "sb": {
+    "accordion": {
+      "contact_prompt_html": "답을 찾을 수 없다면, <a href=\"{{ url }}\">문의해 주세요</a>!",
+      "frequently_asked_questions": "자주 묻는 질문"
+    },
+    "app": {
+      "app_store": "앱 스토어",
+      "download_app_store": "App Store에서 다운로드",
+      "download_china": "중국에서 다운로드",
+      "download_google_play": "Google Play에서 다운로드",
+      "google_play": "구글 플레이"
+    },
+    "blog": {
+      "about_soundbrenner": "Soundbrenner 소개",
+      "all": "전체",
+      "archive": "아카이브",
+      "blog": "블로그",
+      "by_instrument": "악기별",
+      "by_product": "제품별로",
+      "by_team_soundbrenner": "사운드브레너 팀 드림",
+      "categories": "카테고리",
+      "category_filters": "블로그 카테고리 필터",
+      "close_categories": "카테고리 닫기",
+      "comment_pagination": "댓글 페이지네이션",
+      "company_news": "회사 소식",
+      "explore_shop": "샵 둘러보기",
+      "featured_articles": "추천 아티클",
+      "gift_guides": "선물 가이드",
+      "latest": "최신",
+      "min_read": "{{ minutes }}분 읽기",
+      "most_popular": "가장 인기 있는",
+      "music_insights": "뮤직 인사이트",
+      "next_page": "다음 페이지",
+      "pagination": "페이지네이션",
+      "previous_page": "이전 페이지",
+      "product_tips": "제품 팁",
+      "read_this_next": "다음 글도 읽어봐",
+      "sidebar_content": "사이드바 내용",
+      "sidebar_promo": "사이드바 프로모션",
+      "sticky_navigation": "고정 블로그 내비게이션"
+    },
+    "cart": {
+      "accepted_payment_methods": "사용 가능한 결제 수단",
+      "apply": "적용하기",
+      "clear_cart": "장바구니 비우기",
+      "decrease_quantity": "수량 줄이기",
+      "discount": "할인",
+      "discount_code": "할인 코드",
+      "discount_with_percent": "{{ code }} ({{ percent }}% 할인)",
+      "empty_message": "장바구니가 비어 있어. 멋지게 디자인된 음악 장비로 채워보자.",
+      "free_shipping": "무료 배송",
+      "free_shipping_remaining_html": "👉 <strong>{{ amount }}</strong>만 더 구매하면 <strong>무료 배송</strong>이야.",
+      "free_shipping_unlocked_html": "🥳 <strong>무료 배송</strong>이 열렸어.",
+      "included_in_price": "가격에 포함됨",
+      "increase_quantity": "수량 늘리기",
+      "quantity": "수량",
+      "remove_discount_code": "{{ code }} 제거",
+      "remove_item": "항목 제거",
+      "secure_checkout": "안전한 결제",
+      "shipping_days_delivery_in": "{{ min }}-{{ max }}일 내에 {{ country }}로 배송",
+      "shipping_not_shipping_to": "{{ country }}(으)로는 배송하지 않습니다",
+      "shipping_ships_to": "{{ country }}로 배송됩니다",
+      "shipping_ships_worldwide": "전 세계 배송",
+      "shop_all_products": "모든 제품 보기",
+      "subtotal": "소계",
+      "taxes_and_duties": "세금 및 관세",
+      "taxes_may_be_due_on_delivery": "배송 시 결제될 수 있습니다",
+      "total": "총합",
+      "your_country": "내 나라"
+    },
+    "collection_overview": {
+      "collection_name": "컬렉션 이름",
+      "compare": "비교하기",
+      "explore_collection": "컬렉션 둘러보기",
+      "product_placeholder": "제품",
+      "rating_summary": "{{ count }}개 리뷰 중 {{ rating }}점",
+      "read_all": "모두 읽기",
+      "view_all": "모두 보기"
+    },
+    "common": {
+      "back": "뒤로",
+      "cart_drawer": "장바구니 드로어",
+      "close_cart": "장바구니 닫기",
+      "close_menu": "메뉴 닫기",
+      "continue": "계속하기",
+      "days": "일",
+      "download": "다운로드",
+      "hours": "시간",
+      "language": "언어",
+      "menu": "메뉴",
+      "mins": "분",
+      "next": "다음",
+      "no_results_found": "검색 결과가 없습니다",
+      "previous": "이전",
+      "primary": "기본",
+      "primary_navigation": "주요 메뉴",
+      "region_selector": "지역 선택기",
+      "search": "검색",
+      "secs": "초",
+      "verified_buyer": "인증된 구매자"
+    },
+    "contact": {
+      "email": "이메일",
+      "full_name": "이름 전체",
+      "send": "보내기",
+      "success_message": "문의해 주셔서 감사합니다. 최대한 빨리 답변드릴게요."
+    },
+    "footer": {
+      "company": "회사",
+      "partner_with_us": "함께 파트너가 되어봐",
+      "resources": "리소스"
+    },
+    "header": {
+      "accessories": "액세서리",
+      "download_ios_android": "iOS와 Android용 다운로드",
+      "metronome_app": "메트로놈 앱",
+      "ratings": "{{ count }}개 평가",
+      "region_and_language": "지역 및 언어",
+      "mobile_review_date": "2026년 1월 8일",
+      "mobile_review_name": "웨슬리 G.",
+      "mobile_review_text": "나는 인이어 모니터와 Pulse를 가지고 있어. 둘 다 약속한 대로 완벽하게 작동해. 배송도 좋았고, 불쾌한 일도 없었어. 고마워, Soundbrenner!"
+    },
+    "hero_video": {
+      "play_title": "{{ title }} 재생",
+      "title": "히어로 영상",
+      "title_index": "히어로 비디오 {{ index }}",
+      "video_index": "비디오 {{ index }}"
+    },
+    "large_feature": {
+      "image_alt": "대형 대표 이미지",
+      "kicker": "키커"
+    },
+    "manual": {
+      "chapter": "챕터",
+      "chapters": "챕터",
+      "close_chapters": "챕터 닫기",
+      "product_manual": "제품 설명서",
+      "sticky_navigation": "고정 수동 내비게이션"
+    },
+    "media": {
+      "close_video": "영상 닫기",
+      "play_video": "영상 재생",
+      "video_player": "비디오 플레이어",
+      "video_story_player": "비디오 스토리 플레이어",
+      "vimeo_video": "Vimeo 비디오",
+      "vimeo_video_placeholder": "Vimeo 비디오 플레이스홀더",
+      "pause_video": "영상 일시정지"
+    },
+    "press_ticker": {
+      "logos_aria_label": "로고에 소개된 곳",
+      "title": "소개된 매체"
+    },
+    "product": {
+      "add": "추가하기",
+      "add_to_cart": "장바구니에 담기",
+      "added": "추가됨",
+      "all_taxes_duties_included": "모든 세금과 관세가 가격에 포함되어 있어",
+      "buy_now": "지금 구매하기",
+      "buy_with": "다음으로 구매하기",
+      "color_option": "색상 {{ index }}",
+      "color_selector": "색상 선택기",
+      "description": "설명",
+      "free_shipping_over": "{{ threshold }} 이상 구매 시 무료 배송",
+      "go_to_reviews": "리뷰 보기",
+      "in_the_box": "구성품",
+      "learn_more": "자세히 알아보기",
+      "money_back_30_day": "30일 환불 보장",
+      "next_image": "다음 이미지",
+      "page_mode": "페이지 모드",
+      "popular_add_ons": "인기 추가 구성품",
+      "previous_image": "이전 이미지",
+      "purchase_guarantees": "구매 보장",
+      "reviews_count": "{{ count }}개 리뷰",
+      "save_percent": "{{ percent }}% 절약",
+      "shop_pay_installments_from": "Shop Pay 할부 시작 가격",
+      "sold_out": "품절",
+      "warranty_1_year": "1년 보증",
+      "badge_bestseller": "베스트셀러",
+      "badge_new": "신제품",
+      "buy_multiple_save_extra": "여러 개 구매하고 추가 할인 받기"
+    }
+  }
+}
