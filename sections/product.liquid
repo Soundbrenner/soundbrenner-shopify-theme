@@ -1244,6 +1244,10 @@
             </div>
           {% endif %}
 
+          {% capture product_dynamic_checkout_markup %}
+            {{ form | payment_button }}
+          {% endcapture %}
+
           <div class="sb-product-main__checkout-buttons">
             <button
               class="sb-product-main__add-button sb-button-radiant sb-button-radiant--large sb-button-radiant--leading-icon font-caption weight-bold"
@@ -1276,17 +1280,17 @@
               </span>
             </button>
 
-            <button
-              class="sb-product-main__shop-pay-button sb-button-radiant sb-button-radiant--large sb-button-radiant--shop-pay sb-button-radiant--trailing-icon font-caption weight-bold"
-              type="button"
-              data-shop-pay-button
-              aria-label="Buy with Shop Pay"
-            >
-              <span class="sb-button-radiant__label">Buy with</span>
-              <span class="sb-button-radiant__icon" aria-hidden="true">
-                {{ 'logo-shop-pay.svg' | inline_asset_content }}
-              </span>
-            </button>
+            {% if product_dynamic_checkout_markup != blank %}
+              <div
+                class="sb-product-main__dynamic-checkout"
+                data-product-dynamic-checkout
+                {% unless current_variant.available %}
+                  hidden
+                {% endunless %}
+              >
+                {{ product_dynamic_checkout_markup }}
+              </div>
+            {% endif %}
           </div>
 
           {% unless product_hide_purchase_guarantees %}
@@ -1761,10 +1765,6 @@
                 {% endif %}
             {% endcase %}
           {% endfor %}
-
-          <div class="sb-product-main__dynamic-checkout">
-            {{ form | payment_button }}
-          </div>
         {% endform %}
       </div>
     </div>
@@ -2991,27 +2991,6 @@
     width: 100%;
   }
 
-  .sb-product-main__shop-pay-button {
-    width: 100%;
-  }
-
-  .sb-product-main__shop-pay-button.sb-button-radiant--trailing-icon {
-    gap: var(--sb-space-4) !important;
-  }
-
-  .sb-product-main__shop-pay-button .sb-button-radiant__icon {
-    flex: 0 0 auto;
-    height: var(--sb-space-16);
-    padding-top: 2px;
-    width: auto;
-  }
-
-  .sb-product-main__shop-pay-button .sb-button-radiant__icon svg {
-    height: var(--sb-space-16);
-    width: auto;
-    max-width: none;
-  }
-
   .sb-product-main__purchase-guarantees {
     background: var(--sb-color-neutral-200);
     border-radius: 24px;
@@ -3689,11 +3668,14 @@
   }
 
   .sb-product-main__dynamic-checkout {
-    display: none !important;
     width: 100%;
   }
 
-  .sb-product-main__dynamic-checkout :where(.shopify-payment-button, .shopify-payment-button__button) {
+  .sb-product-main__dynamic-checkout[hidden] {
+    display: none;
+  }
+
+  .sb-product-main__dynamic-checkout :where(shopify-accelerated-checkout, .shopify-payment-button, .shopify-payment-button__button) {
     width: 100%;
   }
 
@@ -3873,8 +3855,7 @@
       const currentPriceElement = root.querySelector('[data-product-current-price]');
       const savingsBadgeElement = root.querySelector('[data-product-savings-badge]');
       const monthlyPriceElement = root.querySelector('[data-product-monthly-price]');
-      const shopPayButton = root.querySelector('[data-shop-pay-button]');
-      const dynamicCheckoutButton = root.querySelector('.shopify-payment-button__button');
+      const dynamicCheckoutContainer = root.querySelector('[data-product-dynamic-checkout]');
       const productTitle = root.dataset.productTitle || '';
       const productId = root.dataset.productId || '';
       const selectedById = variants.find((variant) => `${variant.id}` === `${variantSelect.value}`);
@@ -3884,16 +3865,6 @@
       }
       let currentVariantId = selectedById ? `${selectedById.id}` : `${variantSelect.value}`;
       let hasVariantInitialized = false;
-
-      if (shopPayButton) {
-        if (!dynamicCheckoutButton) {
-          shopPayButton.hidden = true;
-        } else {
-          shopPayButton.addEventListener('click', () => {
-            dynamicCheckoutButton.click();
-          });
-        }
-      }
 
       if (stickyAddButton && addButton) {
         stickyAddButton.addEventListener('click', () => {
@@ -5230,6 +5201,10 @@
           const nextLabel = purchaseData.available ? 'Add to cart' : 'Sold out';
           if (addButtonLabel) addButtonLabel.textContent = nextLabel;
           addButton.setAttribute('aria-label', nextLabel);
+        }
+
+        if (dynamicCheckoutContainer) {
+          dynamicCheckoutContainer.hidden = !purchaseData.available;
         }
 
         if (stickyCurrentPriceElement) {
