@@ -612,6 +612,16 @@
     opacity: 0;
   }
 
+  .sb-see-action-carousel__media.is-preview-playing .sb-see-action-carousel__media-trigger {
+    inset: 0;
+    position: absolute;
+    z-index: 4;
+  }
+
+  .sb-see-action-carousel__media.is-preview-playing .sb-see-action-carousel__media-trigger > img {
+    opacity: 0;
+  }
+
   .sb-see-action-carousel__body {
     align-items: center;
     background: var(--sb-color-neutral-200);
@@ -707,20 +717,22 @@
 <script>
   (() => {
     const initializedSections = new WeakSet();
+    const sectionStateMap = new WeakMap();
+    const initializedRoots = new Set();
     const EMPTY_IFRAME_SRC = 'about:blank';
     const EMPTY_VIDEO_SRC = '';
     const playVideoLabel = {{ 'sb.media.play_video' | t | json }};
     const pauseVideoLabel = {{ 'sb.media.pause_video' | t | json }};
+    const MIN_PREVIEW_INTERSECTION_RATIO = 0.35;
+    const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const shouldRespectSaveData = navigator.connection && navigator.connection.saveData;
 
-      const stopMedia = (media) => {
-        if (!(media instanceof HTMLElement)) return;
-        media.classList.remove('is-playing');
+    const shouldAutoplayPreview = () => !document.hidden && !prefersReducedMotion && !shouldRespectSaveData;
 
-        const trigger = media.querySelector('[data-see-action-video-trigger]');
-        if (trigger instanceof HTMLElement) {
-          trigger.setAttribute('aria-pressed', 'false');
-          trigger.setAttribute('aria-label', playVideoLabel);
-        }
+    const stopMedia = (media) => {
+      if (!(media instanceof HTMLElement)) return;
+      media.classList.remove('is-playing');
+      media.classList.remove('is-preview-playing');
 
       const videoPlayer = media.querySelector('[data-see-action-inline-video]');
       if (videoPlayer instanceof HTMLVideoElement) {
@@ -735,19 +747,108 @@
         iframePlayer.hidden = true;
         iframePlayer.setAttribute('src', EMPTY_IFRAME_SRC);
       }
+
+      const trigger = media.querySelector('[data-see-action-video-trigger]');
+      if (trigger instanceof HTMLElement) {
+        trigger.setAttribute('aria-pressed', 'false');
+        trigger.setAttribute('aria-label', playVideoLabel);
+      }
     };
 
     const stopAllMedia = (root, exceptMedia) => {
-      const mediaElements = root.querySelectorAll('[data-see-action-media].is-playing');
+      const mediaElements = root.querySelectorAll('[data-see-action-media].is-playing, [data-see-action-media].is-preview-playing');
       mediaElements.forEach((media) => {
         if (media === exceptMedia) return;
         stopMedia(media);
       });
     };
 
+    const getPreviewCandidate = (root) => {
+      const firstTrigger = root.querySelector('[data-see-action-video-trigger]');
+      if (!(firstTrigger instanceof HTMLElement)) return null;
+
+      const previewVideoUrl = (firstTrigger.getAttribute('data-see-action-video-url') || '').trim();
+      const previewEmbedUrl = (firstTrigger.getAttribute('data-see-action-video-embed-url') || '').trim();
+      if (!previewVideoUrl || previewEmbedUrl) return null;
+
+      const media = firstTrigger.closest('[data-see-action-media]');
+      if (!(media instanceof HTMLElement)) return null;
+
+      const videoPlayer = media.querySelector('[data-see-action-inline-video]');
+      if (!(videoPlayer instanceof HTMLVideoElement)) return null;
+
+      return { media, videoPlayer, previewVideoUrl };
+    };
+
+    const stopPreviewForRoot = (root) => {
+      const state = sectionStateMap.get(root);
+      if (!state || !(state.previewMedia instanceof HTMLElement)) return;
+      stopMedia(state.previewMedia);
+      state.previewMedia = null;
+    };
+
+    const startPreviewForRoot = (root) => {
+      const state = sectionStateMap.get(root);
+      if (!state || state.hasUserInteracted || !state.inView || !shouldAutoplayPreview()) return;
+
+      const currentlyPlaying = root.querySelector('[data-see-action-media].is-playing');
+      if (currentlyPlaying) return;
+
+      const candidate = getPreviewCandidate(root);
+      if (!candidate) return;
+      const { media, videoPlayer, previewVideoUrl } = candidate;
+
+      if (state.previewMedia && state.previewMedia !== media) {
+        stopMedia(state.previewMedia);
+      }
+
+      const iframePlayer = media.querySelector('[data-see-action-inline-iframe]');
+      if (iframePlayer instanceof HTMLIFrameElement) {
+        iframePlayer.hidden = true;
+        iframePlayer.setAttribute('src', EMPTY_IFRAME_SRC);
+      }
+
+      media.classList.remove('is-playing');
+      media.classList.add('is-preview-playing');
+
+      if (videoPlayer.getAttribute('src') !== previewVideoUrl) {
+        videoPlayer.setAttribute('src', previewVideoUrl || EMPTY_VIDEO_SRC);
+        videoPlayer.load();
+      }
+
+      videoPlayer.defaultMuted = true;
+      videoPlayer.muted = true;
+      videoPlayer.loop = true;
+      videoPlayer.controls = false;
+      videoPlayer.removeAttribute('controls');
+      videoPlayer.playsInline = true;
+      videoPlayer.hidden = false;
+
+      const trigger = media.querySelector('[data-see-action-video-trigger]');
+      if (trigger instanceof HTMLElement) {
+        trigger.setAttribute('aria-pressed', 'false');
+        trigger.setAttribute('aria-label', playVideoLabel);
+      }
+
+      const playPromise = videoPlayer.play();
+      if (playPromise && typeof playPromise.catch === 'function') {
+        playPromise.catch(() => {});
+      }
+
+      state.previewMedia = media;
+    };
+
     const initSection = (root) => {
       if (!root || initializedSections.has(root)) return;
       initializedSections.add(root);
+      initializedRoots.add(root);
+
+      sectionStateMap.set(root, {
+        hasUserInteracted: false,
+        inView: false,
+        previewMedia: null,
+        observer: null,
+      });
 
       const triggers = Array.from(root.querySelectorAll('[data-see-action-video-trigger]'));
       if (!triggers.length) return;
@@ -769,8 +870,18 @@
           const embedUrl = (trigger.getAttribute('data-see-action-video-embed-url') || '').trim();
           if (!videoUrl && !embedUrl) return;
 
+          const state = sectionStateMap.get(root);
+          if (state) {
+            state.hasUserInteracted = true;
+            if (state.previewMedia && state.previewMedia !== media) {
+              stopMedia(state.previewMedia);
+              state.previewMedia = null;
+            }
+          }
+
           stopAllMedia(root, media);
           media.classList.add('is-playing');
+          media.classList.remove('is-preview-playing');
           trigger.setAttribute('aria-pressed', 'true');
           trigger.setAttribute('aria-label', pauseVideoLabel);
 
@@ -799,6 +910,7 @@
               videoPlayer.setAttribute('src', videoUrl || EMPTY_VIDEO_SRC);
               videoPlayer.load();
             }
+            videoPlayer.currentTime = 0;
             videoPlayer.defaultMuted = false;
             videoPlayer.muted = false;
             videoPlayer.loop = false;
@@ -824,13 +936,52 @@
           }
         });
       });
+
+      const state = sectionStateMap.get(root);
+      if (state) {
+        state.observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.target !== root) return;
+
+              const nextInView = entry.isIntersecting && entry.intersectionRatio >= MIN_PREVIEW_INTERSECTION_RATIO;
+              state.inView = nextInView;
+
+              if (!nextInView) {
+                stopPreviewForRoot(root);
+                return;
+              }
+
+              startPreviewForRoot(root);
+            });
+          },
+          {
+            threshold: [0, MIN_PREVIEW_INTERSECTION_RATIO, 1],
+          }
+        );
+        state.observer.observe(root);
+      }
     };
 
     const initAll = (scope = document) => {
       scope.querySelectorAll('[data-see-action-carousel]').forEach((root) => initSection(root));
     };
 
+    const onVisibilityChange = () => {
+      initializedRoots.forEach((root) => {
+        if (!(root instanceof HTMLElement) || !root.isConnected) return;
+
+        if (document.hidden || !shouldAutoplayPreview()) {
+          stopPreviewForRoot(root);
+          return;
+        }
+
+        startPreviewForRoot(root);
+      });
+    };
+
     initAll(document);
+    document.addEventListener('visibilitychange', onVisibilityChange);
     document.addEventListener('shopify:section:load', (event) => {
       if (!event.target) return;
       initAll(event.target);
@@ -838,8 +989,17 @@
 
     document.addEventListener('shopify:section:unload', (event) => {
       if (!event.target) return;
-      event.target.querySelectorAll('[data-see-action-media].is-playing').forEach((media) => {
+      event.target.querySelectorAll('[data-see-action-media].is-playing, [data-see-action-media].is-preview-playing').forEach((media) => {
         stopMedia(media);
+      });
+
+      event.target.querySelectorAll('[data-see-action-carousel]').forEach((root) => {
+        const state = sectionStateMap.get(root);
+        if (state && state.observer) {
+          state.observer.disconnect();
+          state.observer = null;
+        }
+        initializedRoots.delete(root);
       });
     });
   })();
