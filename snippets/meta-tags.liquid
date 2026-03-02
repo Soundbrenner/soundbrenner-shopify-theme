@@ -3,7 +3,17 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
 {%- liquid
-  assign og_title = page_title | default: shop.name
+  assign resolved_page_title = page_title | default: shop.name
+  assign seasonal_sale_name = settings.seasonal_sale_name | strip
+  if request.page_type == 'product' and seasonal_sale_name != blank
+    assign resolved_page_title_downcase = resolved_page_title | downcase
+    assign seasonal_sale_name_downcase = seasonal_sale_name | downcase
+    unless resolved_page_title_downcase contains seasonal_sale_name_downcase
+      assign resolved_page_title = resolved_page_title | append: ' - ' | append: seasonal_sale_name
+    endunless
+  endif
+
+  assign og_title = resolved_page_title
   assign og_url = canonical_url | default: request.origin
   assign og_type = 'website'
   assign og_description = page_description | default: shop.description | default: shop.name
@@ -125,10 +135,10 @@
         {%- endif -%}
       {%- endfor -%}
     {%- endif -%}
-    {{ page_title }}
+    {{ resolved_page_title }}
     {%- if page_title_tag_labels != blank %} ({{ page_title_tag_labels }}){% endif -%}
     {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-    {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    {%- unless resolved_page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
   {%- endif -%}
 </title>
 
