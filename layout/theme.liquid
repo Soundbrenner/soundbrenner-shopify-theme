@@ -90,6 +90,148 @@
       })();
     </script>
 
+    <script>
+      (() => {
+        const existingStorefrontPricing = window.SBStorefrontPricing;
+        if (
+          existingStorefrontPricing
+          && typeof existingStorefrontPricing.formatMoney === 'function'
+          && typeof existingStorefrontPricing.getDiscountRate === 'function'
+          && typeof existingStorefrontPricing.parseCents === 'function'
+          && typeof existingStorefrontPricing.resolvePrice === 'function'
+        ) {
+          return;
+        }
+
+        const parseCents = (value) => {
+          const nextValue = Number.parseInt(`${value ?? ''}`.trim(), 10);
+          return Number.isFinite(nextValue) ? nextValue : null;
+        };
+
+        const clampDiscountRate = (value) => {
+          if (!Number.isFinite(value)) return 0;
+          return Math.min(1, Math.max(0, value));
+        };
+
+        const globalDiscountRate = clampDiscountRate(
+          Number({{ settings.storefront_default_order_discount_depth | default: 15 | json }}) / 100
+        );
+
+        const productOverrideEntries = [
+          {
+            productId: {{ all_products[settings.storefront_price_override_product_id_1].id | default: '' | json }},
+            discountPercent: Number({{ settings.storefront_price_override_discount_depth_1 | default: 0 | json }}),
+          },
+          {
+            productId: {{ all_products[settings.storefront_price_override_product_id_2].id | default: '' | json }},
+            discountPercent: Number({{ settings.storefront_price_override_discount_depth_2 | default: 0 | json }}),
+          },
+        ];
+
+        const productOverrideRateById = new Map();
+        productOverrideEntries.forEach((entry) => {
+          const productId = `${entry?.productId || ''}`.trim();
+          const rate = clampDiscountRate(Number(entry?.discountPercent || 0) / 100);
+          if (!productId || productId === '0' || rate <= 0) return;
+          productOverrideRateById.set(productId, rate);
+        });
+
+        const getDiscountRate = (productId) => {
+          const normalizedProductId = `${productId || ''}`.trim();
+          const productRate = normalizedProductId
+            ? Number(productOverrideRateById.get(normalizedProductId) || 0)
+            : 0;
+
+          if (globalDiscountRate > 0 && productRate > 0) {
+            return clampDiscountRate(1 - ((1 - globalDiscountRate) * (1 - productRate)));
+          }
+
+          return clampDiscountRate(Math.max(globalDiscountRate, productRate));
+        };
+
+        const fallbackCurrency = {{ cart.currency.iso_code | default: shop.currency | json }};
+        const formatterCache = new Map();
+
+        const resolveCurrency = (preferredCurrency = '') => {
+          const normalizedPreferredCurrency = `${preferredCurrency || ''}`.trim().toUpperCase();
+          if (normalizedPreferredCurrency) return normalizedPreferredCurrency;
+          const activeCurrency = `${window.Shopify?.currency?.active || fallbackCurrency || 'USD'}`.trim().toUpperCase();
+          return activeCurrency || 'USD';
+        };
+
+        const getMoneyFormatter = (currencyCode) => {
+          const cacheKey = `${currencyCode}`.trim().toUpperCase() || 'USD';
+          if (formatterCache.has(cacheKey)) return formatterCache.get(cacheKey);
+          const formatter = new Intl.NumberFormat(document.documentElement.lang || undefined, {
+            style: 'currency',
+            currency: cacheKey,
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+          });
+          formatterCache.set(cacheKey, formatter);
+          return formatter;
+        };
+
+        const formatMoney = (cents, currencyOverride = '') => {
+          const normalizedCents = Number.isFinite(Number(cents)) ? Math.round(Number(cents)) : 0;
+          const currencyCode = resolveCurrency(currencyOverride);
+          const formatter = getMoneyFormatter(currencyCode);
+          return formatter.format(normalizedCents / 100);
+        };
+
+        const resolvePrice = ({
+          productId = '',
+          priceCents = null,
+          comparePriceCents = null,
+        } = {}) => {
+          const normalizedPriceCents = parseCents(priceCents);
+          if (!Number.isFinite(normalizedPriceCents) || normalizedPriceCents <= 0) {
+            return {
+              currentPriceCents: null,
+              comparePriceCents: null,
+              hasComparePrice: false,
+              discountRate: 0,
+            };
+          }
+
+          const discountRate = getDiscountRate(productId);
+          if (discountRate > 0) {
+            const discountedPriceCents = Math.max(0, Math.round(normalizedPriceCents * (1 - discountRate)));
+            return {
+              currentPriceCents: discountedPriceCents,
+              comparePriceCents: normalizedPriceCents,
+              hasComparePrice: normalizedPriceCents > discountedPriceCents,
+              discountRate,
+            };
+          }
+
+          const normalizedComparePriceCents = parseCents(comparePriceCents);
+          if (Number.isFinite(normalizedComparePriceCents) && normalizedComparePriceCents > normalizedPriceCents) {
+            return {
+              currentPriceCents: normalizedPriceCents,
+              comparePriceCents: normalizedComparePriceCents,
+              hasComparePrice: true,
+              discountRate: 0,
+            };
+          }
+
+          return {
+            currentPriceCents: normalizedPriceCents,
+            comparePriceCents: null,
+            hasComparePrice: false,
+            discountRate: 0,
+          };
+        };
+
+        window.SBStorefrontPricing = {
+          formatMoney,
+          getDiscountRate,
+          parseCents,
+          resolvePrice,
+        };
+      })();
+    </script>
+
     {{ content_for_header }}
   </head>
 
