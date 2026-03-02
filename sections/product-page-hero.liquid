@@ -13,6 +13,10 @@
   assign hero_video_mobile_embed_youtube_id = blank
   assign hero_use_iframe_video = false
   assign hero_mobile_use_iframe_video = false
+  assign hero_media_desktop_field = blank
+  assign hero_media_mobile_field = blank
+  assign hero_image_desktop_field = blank
+  assign hero_image_mobile_field = blank
   assign hero_media_desktop_width = 1240
   assign hero_media_desktop_height = 600
   assign hero_media_mobile_width = 402
@@ -42,7 +46,45 @@
 
     assign hero_media_title = hero_header.title.value | default: hero_header.title | default: product.title
 
-    assign hero_video_desktop_field = hero_header.video_url.value | default: hero_header.video_url | default: hero_header.video_desktop.value | default: hero_header.video_desktop | default: hero_header.video_file.value | default: hero_header.video_file
+    assign hero_media_desktop_field = hero_header.media.value | default: hero_header.media | default: hero_header.media_desktop.value | default: hero_header.media_desktop
+    assign hero_media_mobile_field = hero_header.media_mobile.value | default: hero_header.media_mobile
+
+    assign hero_media_desktop_type = hero_media_desktop_field.media_type | append: ''
+    assign hero_media_mobile_type = hero_media_mobile_field.media_type | append: ''
+
+    assign hero_video_desktop_field = blank
+    assign hero_video_mobile_field = blank
+
+    if hero_media_desktop_field != blank
+      if hero_media_desktop_type contains 'video'
+        assign hero_video_desktop_field = hero_media_desktop_field
+      elsif hero_media_desktop_type == 'image'
+        assign hero_image_desktop_field = hero_media_desktop_field
+      endif
+    endif
+
+    if hero_media_mobile_field != blank
+      if hero_media_mobile_type contains 'video'
+        assign hero_video_mobile_field = hero_media_mobile_field
+      elsif hero_media_mobile_type == 'image'
+        assign hero_image_mobile_field = hero_media_mobile_field
+      endif
+    endif
+
+    if hero_video_desktop_field == blank and hero_image_desktop_field == blank
+      assign hero_video_desktop_field = hero_header.video_url.value | default: hero_header.video_url | default: hero_header.video_desktop.value | default: hero_header.video_desktop | default: hero_header.video_file.value | default: hero_header.video_file
+      if hero_video_desktop_field == blank
+        assign hero_image_desktop_field = hero_header.image_url.value | default: hero_header.image_url | default: hero_header.image_desktop.value | default: hero_header.image_desktop | default: hero_header.background_image_desktop.value | default: hero_header.background_image_desktop
+      endif
+    endif
+
+    if hero_video_mobile_field == blank and hero_image_mobile_field == blank
+      assign hero_video_mobile_field = hero_header.video_url_mobile.value | default: hero_header.video_url_mobile | default: hero_header.video_mobile.value | default: hero_header.video_mobile | default: hero_header.mobile_video.value | default: hero_header.mobile_video | default: hero_header.video_file_mobile.value | default: hero_header.video_file_mobile
+      if hero_video_mobile_field == blank
+        assign hero_image_mobile_field = hero_header.image_url_mobile.value | default: hero_header.image_url_mobile | default: hero_header.image_mobile.value | default: hero_header.image_mobile | default: hero_header.background_image_mobile.value | default: hero_header.background_image_mobile
+      endif
+    endif
+
     if hero_video_desktop_field != blank
       if hero_video_desktop_field.sources != blank
         for hero_video_source in hero_video_desktop_field.sources
@@ -66,7 +108,6 @@
       endif
     endif
 
-    assign hero_video_mobile_field = hero_header.video_url_mobile.value | default: hero_header.video_url_mobile | default: hero_header.video_mobile.value | default: hero_header.video_mobile | default: hero_header.mobile_video.value | default: hero_header.mobile_video | default: hero_header.video_file_mobile.value | default: hero_header.video_file_mobile
     if hero_video_mobile_field != blank
       if hero_video_mobile_field.sources != blank
         for hero_video_mobile_source in hero_video_mobile_field.sources
@@ -178,7 +219,6 @@
     endif
 
     if hero_has_video == false
-      assign hero_image_desktop_field = hero_header.image_url.value | default: hero_header.image_url | default: hero_header.image_desktop.value | default: hero_header.image_desktop | default: hero_header.background_image_desktop.value | default: hero_header.background_image_desktop
       if hero_image_desktop_field != blank
         assign hero_image_desktop_direct_url = hero_image_desktop_field.url | default: hero_image_desktop_field.src
         if hero_image_desktop_field.width != blank
@@ -191,7 +231,6 @@
         endif
       endif
 
-      assign hero_image_mobile_field = hero_header.image_url_mobile.value | default: hero_header.image_url_mobile | default: hero_header.image_mobile.value | default: hero_header.image_mobile | default: hero_header.background_image_mobile.value | default: hero_header.background_image_mobile
       if hero_image_mobile_field != blank
         assign hero_image_mobile_direct_url = hero_image_mobile_field.url | default: hero_image_mobile_field.src
         if hero_image_mobile_field.width != blank
