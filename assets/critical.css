@@ -306,11 +306,17 @@ body {
 }
 
 /* Native Shopify policy pages and default page content */
-body .shopify-policy__container,
-body .sb-page-content {
+body .shopify-policy__container {
   box-sizing: border-box !important;
   max-width: calc(var(--page-width) + (var(--page-margin) * 2)) !important;
   padding-inline: var(--page-margin) !important;
+  width: 100% !important;
+}
+
+body .sb-page-content {
+  box-sizing: border-box !important;
+  max-width: var(--page-width) !important;
+  padding-inline: 0 !important;
   width: 100% !important;
 }
 
