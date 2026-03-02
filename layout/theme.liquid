@@ -126,6 +126,14 @@
             productId: {{ all_products[settings.storefront_price_override_product_id_2].id | default: '' | json }},
             discountPercent: Number({{ settings.storefront_price_override_discount_depth_2 | default: 0 | json }}),
           },
+          {
+            productId: {{ all_products[settings.storefront_price_override_product_id_3].id | default: '' | json }},
+            discountPercent: Number({{ settings.storefront_price_override_discount_depth_3 | default: 0 | json }}),
+          },
+          {
+            productId: {{ all_products[settings.storefront_price_override_product_id_4].id | default: '' | json }},
+            discountPercent: Number({{ settings.storefront_price_override_discount_depth_4 | default: 0 | json }}),
+          },
         ];
 
         const productOverrideRateById = new Map();
@@ -276,6 +284,14 @@
           {
             productId: {{ all_products[settings.storefront_price_override_product_id_2].id | default: '' | json }},
             discountPercent: Number({{ settings.storefront_price_override_discount_depth_2 | default: 0 | json }}),
+          },
+          {
+            productId: {{ all_products[settings.storefront_price_override_product_id_3].id | default: '' | json }},
+            discountPercent: Number({{ settings.storefront_price_override_discount_depth_3 | default: 0 | json }}),
+          },
+          {
+            productId: {{ all_products[settings.storefront_price_override_product_id_4].id | default: '' | json }},
+            discountPercent: Number({{ settings.storefront_price_override_discount_depth_4 | default: 0 | json }}),
           },
         ];
 
