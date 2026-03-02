@@ -4168,37 +4168,32 @@
         return Number.isFinite(value) ? value : 96;
       };
 
-      const getSegmentManagedSections = (productSection) => {
+      const productSection = root.closest('.shopify-section[id*="template--"]');
+
+      const getSegmentManagedSections = (currentProductSection) => {
         const mainContent = document.querySelector('#MainContent');
         const mainSections = Array.from(
           (mainContent || document).querySelectorAll('.shopify-section[id*="template--"]')
         );
-        if (productSection && mainSections.includes(productSection)) return mainSections;
+        if (currentProductSection && mainSections.includes(currentProductSection)) return mainSections;
         return Array.from(document.querySelectorAll('.shopify-section[id*="template--"]'));
       };
 
       const ensureProductSectionStartsFirst = () => {
         if (hasStickySegmentedControls) return;
-        const mainContent = document.querySelector('#MainContent');
-        const productSection = root.closest('.shopify-section[id*="template--"]');
-        if (!(mainContent instanceof HTMLElement) || !(productSection instanceof HTMLElement)) return;
+        if (!(productSection instanceof HTMLElement)) return;
+        const sectionParent = productSection.parentElement;
+        if (!(sectionParent instanceof HTMLElement)) return;
 
-        const orderedSections = Array.from(mainContent.children).filter((node) => (
+        const orderedSections = Array.from(sectionParent.children).filter((node) => (
           node instanceof HTMLElement &&
           node.classList.contains('shopify-section') &&
           node.id.includes('template--')
         ));
-        const productSectionIndex = orderedSections.indexOf(productSection);
-        if (productSectionIndex <= 0) return;
-
-        const sectionsBeforeProduct = orderedSections.slice(0, productSectionIndex);
-        if (!sectionsBeforeProduct.length) return;
-
-        const insertionPoint = productSection.nextSibling;
-        sectionsBeforeProduct.forEach((section) => {
-          if (!(section instanceof HTMLElement) || section === productSection) return;
-          mainContent.insertBefore(section, insertionPoint);
-        });
+        if (!orderedSections.length) return;
+        const firstTemplateSection = orderedSections[0];
+        if (!(firstTemplateSection instanceof HTMLElement) || firstTemplateSection === productSection) return;
+        sectionParent.insertBefore(productSection, firstTemplateSection);
       };
 
       const applyPageSegmentVisibility = (segmentValue) => {
@@ -4308,6 +4303,8 @@
 
       syncStickyReviewCount();
       ensureProductSectionStartsFirst();
+      window.requestAnimationFrame(ensureProductSectionStartsFirst);
+      window.setTimeout(ensureProductSectionStartsFirst, 80);
       if (stickySegmentedControls && stickySegmentButtons.length) {
         const segmentFromUrl = normalizeSegment(new URL(window.location.href).searchParams.get('p') || '');
         applyStickySegment(segmentFromUrl, { immediateIndicator: true });
@@ -4362,6 +4359,18 @@
           const nextSegment = normalizeSegment(new URL(window.location.href).searchParams.get('p') || '');
           applyStickySegment(nextSegment, { restoreScroll: true });
         });
+      }
+
+      if (!hasStickySegmentedControls && productSection instanceof HTMLElement) {
+        const productSectionParent = productSection.parentElement;
+        if (productSectionParent instanceof HTMLElement) {
+          const productOrderObserver = new MutationObserver(() => {
+            ensureProductSectionStartsFirst();
+          });
+          productOrderObserver.observe(productSectionParent, {
+            childList: true,
+          });
+        }
       }
 
       const dispatchVariantSelectedEvent = (variant, sourceId = 'product-main') => {
