@@ -7,7 +7,6 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
-
 {
   "404": {
     "title": "404",
@@ -60,5 +59,187 @@
     "submit": "搜索",
     "no_results_html": "未找到与{{ terms }}相关的结果",
     "results_for_html": "为{{ terms }}找到{{ count }}个结果"
+  },
+  "sb": {
+    "accordion": {
+      "contact_prompt_html": "如果你找不到答案，<a href=\"{{ url }}\">联系我们</a>！",
+      "frequently_asked_questions": "常见问题"
+    },
+    "app": {
+      "app_store": "App Store",
+      "download_app_store": "在 App Store 下载",
+      "download_china": "中国大陆下载",
+      "download_google_play": "在 Google Play 下载",
+      "google_play": "Google Play"
+    },
+    "blog": {
+      "about_soundbrenner": "关于 Soundbrenner",
+      "all": "全部",
+      "archive": "归档",
+      "blog": "博客",
+      "by_instrument": "按乐器",
+      "by_product": "按产品",
+      "by_team_soundbrenner": "来自 Soundbrenner 团队",
+      "categories": "分类",
+      "category_filters": "博客分类筛选",
+      "close_categories": "关闭分类",
+      "comment_pagination": "评论分页",
+      "company_news": "公司新闻",
+      "explore_shop": "逛逛我们的商店",
+      "featured_articles": "精选文章",
+      "gift_guides": "礼物指南",
+      "latest": "最新",
+      "min_read": "阅读需约 {{ minutes }} 分钟",
+      "most_popular": "最受欢迎",
+      "music_insights": "音乐洞察",
+      "next_page": "下一页",
+      "pagination": "分页",
+      "previous_page": "上一页",
+      "product_tips": "产品提示",
+      "read_this_next": "继续阅读",
+      "sidebar_content": "侧边栏内容",
+      "sidebar_promo": "侧边栏推广",
+      "sticky_navigation": "博客导航栏固定"
+    },
+    "cart": {
+      "accepted_payment_methods": "可接受的付款方式",
+      "apply": "申请",
+      "clear_cart": "清空购物车",
+      "decrease_quantity": "减少数量",
+      "discount": "折扣",
+      "discount_code": "优惠码",
+      "discount_with_percent": "{{ code }}（{{ percent }}% 折扣）",
+      "empty_message": "你的购物车是空的。来选购一些设计精美的音乐装备吧。",
+      "free_shipping": "免运费",
+      "free_shipping_remaining_html": "👉 你只需再购物<strong>{{ amount }}</strong>即可享受<strong>免运费</strong>。",
+      "free_shipping_unlocked_html": "🥳 你已解锁<strong>免运费</strong>。",
+      "included_in_price": "已包含在价格中",
+      "increase_quantity": "增加数量",
+      "quantity": "数量",
+      "remove_discount_code": "移除{{ code }}",
+      "remove_item": "移除商品",
+      "secure_checkout": "安全结账",
+      "shipping_days_delivery_in": "{{ min }}-{{ max }}天内送达{{ country }}",
+      "shipping_not_shipping_to": "我们暂时无法运送到{{ country }}",
+      "shipping_ships_to": "可配送至{{ country }}",
+      "shipping_ships_worldwide": "全球发货",
+      "shop_all_products": "选购全部产品",
+      "subtotal": "小计",
+      "taxes_and_duties": "税费",
+      "taxes_may_be_due_on_delivery": "可能在送货时付款",
+      "total": "总计",
+      "your_country": "你的国家"
+    },
+    "collection_overview": {
+      "collection_name": "系列名称",
+      "compare": "对比",
+      "explore_collection": "探索系列",
+      "product_placeholder": "产品",
+      "rating_summary": "{{ rating }}（共 {{ count }} 条评价）",
+      "read_all": "阅读全部",
+      "view_all": "查看全部"
+    },
+    "common": {
+      "back": "返回",
+      "cart_drawer": "购物车抽屉",
+      "close_cart": "关闭购物车",
+      "close_menu": "关闭菜单",
+      "continue": "继续",
+      "days": "天",
+      "download": "下载",
+      "hours": "小时",
+      "language": "语言",
+      "menu": "菜单",
+      "mins": "分钟",
+      "next": "下一步",
+      "no_results_found": "未找到结果",
+      "previous": "上一步",
+      "primary": "主要",
+      "primary_navigation": "主导航",
+      "region_selector": "地区选择器",
+      "search": "搜索",
+      "secs": "秒",
+      "verified_buyer": "已验证买家"
+    },
+    "contact": {
+      "email": "电子邮件",
+      "full_name": "全名",
+      "send": "发送",
+      "success_message": "感谢你联系我们。我们会尽快回复。"
+    },
+    "footer": {
+      "company": "公司",
+      "partner_with_us": "与我们合作",
+      "resources": "资源"
+    },
+    "header": {
+      "accessories": "配件",
+      "download_ios_android": "下载 iOS 和 Android 版本",
+      "metronome_app": "节拍器 App",
+      "ratings": "{{ count }} 条评价",
+      "region_and_language": "地区和语言",
+      "mobile_review_date": "2026年1月8日",
+      "mobile_review_name": "Wesley G.",
+      "mobile_review_text": "我有入耳式监听耳机和Pulse。它们的表现完全如承诺的一样。物流很顺利，没有任何意外。谢谢你，Soundbrenner！"
+    },
+    "hero_video": {
+      "play_title": "播放 {{ title }}",
+      "title": "主视觉视频",
+      "title_index": "主视觉视频 {{ index }}",
+      "video_index": "视频 {{ index }}"
+    },
+    "large_feature": {
+      "image_alt": "大幅特色图片",
+      "kicker": "Kicker"
+    },
+    "manual": {
+      "chapter": "章节",
+      "chapters": "章节",
+      "close_chapters": "关闭章节",
+      "product_manual": "产品手册",
+      "sticky_navigation": "固定手动导航"
+    },
+    "media": {
+      "close_video": "关闭视频",
+      "play_video": "播放视频",
+      "video_player": "视频播放器",
+      "video_story_player": "视频故事播放器",
+      "vimeo_video": "Vimeo 视频",
+      "vimeo_video_placeholder": "Vimeo 视频占位符",
+      "pause_video": "暂停视频"
+    },
+    "press_ticker": {
+      "logos_aria_label": "出现在以下媒体标志",
+      "title": "媒体报道"
+    },
+    "product": {
+      "add": "添加",
+      "add_to_cart": "加入购物车",
+      "added": "已添加",
+      "all_taxes_duties_included": "所有税费已包含在价格中",
+      "buy_now": "立即购买",
+      "buy_with": "使用以下方式购买",
+      "color_option": "颜色 {{ index }}",
+      "color_selector": "颜色选择器",
+      "description": "描述",
+      "free_shipping_over": "满 {{ threshold }} 元免运费",
+      "go_to_reviews": "查看评价",
+      "in_the_box": "包装内含",
+      "learn_more": "了解更多",
+      "money_back_30_day": "30天退款保证",
+      "next_image": "下一张图片",
+      "page_mode": "页面模式",
+      "popular_add_ons": "热门配件",
+      "previous_image": "上一张图片",
+      "purchase_guarantees": "购买保障",
+      "reviews_count": "{{ count }} 条评价",
+      "save_percent": "立省{{ percent }}%",
+      "shop_pay_installments_from": "Shop Pay 分期付款起",
+      "sold_out": "已售罄",
+      "warranty_1_year": "1年保修",
+      "badge_bestseller": "畅销款",
+      "badge_new": "新品",
+      "buy_multiple_save_extra": "多买多省"
+    }
   }
 }

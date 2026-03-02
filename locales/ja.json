@@ -7,7 +7,6 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
-
 {
   "404": {
     "title": "404",
@@ -60,5 +59,125 @@
     "submit": "検索",
     "no_results_html": "{{ terms }}に該当する結果は見つかりませんでした",
     "results_for_html": "{{ count }}件の検索結果が{{ terms }}に見つかりました"
+  },
+  "sb": {
+    "accordion": {
+      "contact_prompt_html": "答えが見つからない場合は、<a href=\"{{ url }}\">お問い合わせください</a>！",
+      "frequently_asked_questions": "よくある質問"
+    },
+    "app": {
+      "app_store": "App Store",
+      "download_app_store": "App Storeでダウンロード",
+      "download_china": "中国でダウンロード",
+      "download_google_play": "Google Play でダウンロード",
+      "google_play": "Google Play"
+    },
+    "blog": {
+      "about_soundbrenner": "Soundbrennerについて",
+      "all": "すべて",
+      "archive": "アーカイブ",
+      "blog": "ブログ",
+      "by_instrument": "楽器別",
+      "by_product": "製品別",
+      "by_team_soundbrenner": "Soundbrennerチームより",
+      "categories": "カテゴリ",
+      "category_filters": "ブログカテゴリーフィルター",
+      "close_categories": "カテゴリを閉じる",
+      "comment_pagination": "コメントのページネーション",
+      "company_news": "会社ニュース",
+      "explore_shop": "ショップを見る",
+      "featured_articles": "注目の記事",
+      "gift_guides": "ギフトガイド",
+      "latest": "最新",
+      "min_read": "{{ minutes }}分で読める",
+      "most_popular": "人気ランキング",
+      "music_insights": "ミュージックインサイト",
+      "next_page": "次のページ",
+      "pagination": "ページネーション",
+      "previous_page": "前のページ",
+      "product_tips": "製品のヒント",
+      "read_this_next": "次はこちらをご覧ください",
+      "sidebar_content": "サイドバーの内容",
+      "sidebar_promo": "サイドバーのプロモ",
+      "sticky_navigation": "固定ブログナビゲーション"
+    },
+    "cart": {
+      "accepted_payment_methods": "ご利用可能なお支払い方法",
+      "apply": "適用",
+      "clear_cart": "カートを空にする",
+      "decrease_quantity": "数量を減らす",
+      "discount": "割引",
+      "discount_code": "割引コード",
+      "discount_with_percent": "{{ code }}（{{ percent }}％オフ）",
+      "empty_message": "カートは空です。美しくデザインされた音楽ギアを入れてみよう。",
+      "free_shipping": "送料無料",
+      "free_shipping_remaining_html": "👉 あと<strong>{{ amount }}</strong>で<strong>送料無料</strong>になります。",
+      "free_shipping_unlocked_html": "🥳 <strong>送料無料</strong>を獲得したよ。",
+      "included_in_price": "価格に含まれています",
+      "increase_quantity": "数量を増やす",
+      "quantity": "数量",
+      "remove_discount_code": "{{ code }}を削除",
+      "remove_item": "アイテムを削除",
+      "secure_checkout": "安全なチェックアウト",
+      "shipping_days_delivery_in": "{{ min }}〜{{ max }}日で{{ country }}にお届け",
+      "shipping_not_shipping_to": "{{ country }}への発送は行っていません",
+      "shipping_ships_to": "{{ country }} への配送",
+      "shipping_ships_worldwide": "世界中へ発送",
+      "shop_all_products": "すべての商品を見る",
+      "subtotal": "小計",
+      "taxes_and_duties": "税金と関税",
+      "taxes_may_be_due_on_delivery": "配達時に支払いが必要な場合があります",
+      "total": "合計",
+      "your_country": "あなたの国"
+    },
+    "collection_overview": {
+      "collection_name": "コレクション名",
+      "compare": "比較する",
+      "explore_collection": "コレクションを見る",
+      "product_placeholder": "製品",
+      "rating_summary": "{{ rating }}／{{ count }}件のレビュー",
+      "read_all": "すべて読む",
+      "view_all": "すべて見る"
+    },
+    "common": {
+      "back": "戻る",
+      "cart_drawer": "カートドロワー",
+      "close_cart": "カートを閉じる",
+      "close_menu": "メニューを閉じる",
+      "continue": "続ける",
+      "days": "日間",
+      "download": "ダウンロード",
+      "hours": "時間",
+      "language": "言語",
+      "menu": "メニュー",
+      "mins": "分",
+      "next": "次へ",
+      "no_results_found": "結果が見つかりません",
+      "previous": "前へ",
+      "primary": "プライマリ",
+      "primary_navigation": "メインナビゲーション",
+      "region_selector": "地域セレクター",
+      "search": "検索",
+      "secs": "秒",
+      "verified_buyer": "認証済み購入者"
+    },
+    "contact": {
+      "email": "メール",
+      "full_name": "氏名",
+      "send": "送信",
+      "success_message": "お問い合わせいただきありがとうございます。できるだけ早くご連絡いたします。"
+    },
+    "footer": {
+      "company": "会社",
+      "partner_with_us": "パートナーになろう",
+      "resources": "リソース"
+    },
+    "header": {
+      "accessories": "アクセサリー",
+      "download_ios_android": "iOSとAndroidでダウンロード",
+      "metronome_app": "メトロノームアプリ",
+      "ratings": "{{ count }}件の評価",
+      "region_and_language": "地域と言語"
+    }
   }
 }
