@@ -1279,16 +1279,15 @@
 
             {% if product_dynamic_checkout_markup != blank %}
               <div class="sb-product-main__shop-pay-proxy{% unless current_variant.available %} is-unavailable{% endunless %}" data-shop-pay-proxy>
-                <button
-                  type="button"
+                <div
                   class="sb-product-main__shop-pay-button sb-button-radiant sb-button-radiant--large sb-button-radiant--shop-pay sb-button-radiant--trailing-icon font-caption weight-bold"
-                  aria-label="Buy with Shop Pay"
+                  aria-hidden="true"
                 >
                   <span class="sb-button-radiant__label">Buy with</span>
                   <span class="sb-button-radiant__icon" aria-hidden="true">
                     {{ 'logo-shop-pay.svg' | inline_asset_content }}
                   </span>
-                </button>
+                </div>
                 <div
                   class="sb-product-main__dynamic-checkout sb-product-main__dynamic-checkout--proxy"
                   data-product-dynamic-checkout
@@ -3011,6 +3010,7 @@
   }
 
   .sb-product-main__shop-pay-button {
+    pointer-events: none;
     width: 100%;
   }
 
@@ -3713,12 +3713,18 @@
 
   .sb-product-main__dynamic-checkout--proxy {
     border-radius: 500px;
+    cursor: pointer;
     inset: 0;
     margin: 0;
     position: absolute;
     overflow: hidden;
-    pointer-events: none;
+    pointer-events: auto;
     z-index: 2;
+  }
+
+  .sb-product-main__dynamic-checkout--proxy > * {
+    height: 100% !important;
+    width: 100% !important;
   }
 
   .sb-product-main__dynamic-checkout[hidden] {
@@ -3732,7 +3738,12 @@
   .sb-product-main__dynamic-checkout--proxy :where(shopify-accelerated-checkout, .shopify-payment-button) {
     display: block;
     height: 100%;
+    min-height: 100%;
     width: 100%;
+  }
+
+  .sb-product-main__dynamic-checkout--proxy :where(shopify-accelerated-checkout, .shopify-payment-button, .shopify-payment-button__button, button) {
+    cursor: pointer !important;
   }
 
   .sb-product-main__dynamic-checkout--proxy :where(shopify-accelerated-checkout) {
@@ -3747,6 +3758,18 @@
 
   .sb-product-main__dynamic-checkout--proxy :where(.shopify-payment-button__more-options) {
     display: none !important;
+  }
+
+  .sb-product-main__shop-pay-proxy:hover .sb-product-main__shop-pay-button,
+  .sb-product-main__shop-pay-proxy:focus-within .sb-product-main__shop-pay-button {
+    box-shadow:
+      0 -18px 30px 0 var(--sb-color-shop-pay-500-25),
+      0 -6px 14px 0 var(--sb-color-shop-pay-500-25),
+      0 -10px 20px 0 var(--sb-color-shop-pay-500-25),
+      0 0 0 1px var(--sb-color-shop-pay-700) inset,
+      0 -20px 20px 0 var(--sb-color-always-white-50) inset,
+      0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
+    transform: translateY(var(--sb-button-hover-lift, -2px));
   }
 
   @media (min-width: 750px) {
@@ -3926,7 +3949,6 @@
       const savingsBadgeElement = root.querySelector('[data-product-savings-badge]');
       const monthlyPriceElement = root.querySelector('[data-product-monthly-price]');
       const shopPayProxy = root.querySelector('[data-shop-pay-proxy]');
-      const shopPayProxyButton = root.querySelector('.sb-product-main__shop-pay-button');
       const dynamicCheckoutContainer = root.querySelector('[data-product-dynamic-checkout]');
       const productTitle = root.dataset.productTitle || '';
       const productId = root.dataset.productId || '';
@@ -3946,25 +3968,6 @@
           || dynamicCheckoutContainer.querySelector('.shopify-payment-button')
           || dynamicCheckoutContainer.querySelector('button')
         );
-      };
-
-      const getDynamicCheckoutButtonTarget = () => {
-        if (!dynamicCheckoutContainer) return null;
-        return (
-          dynamicCheckoutContainer.querySelector('.shopify-payment-button__button--branded')
-          || dynamicCheckoutContainer.querySelector('.shopify-payment-button__button')
-          || dynamicCheckoutContainer.querySelector('shopify-accelerated-checkout')
-          || dynamicCheckoutContainer.querySelector('.shopify-payment-button button')
-          || dynamicCheckoutContainer.querySelector('button')
-        );
-      };
-
-      const triggerDynamicCheckout = () => {
-        const checkoutButtonTarget = getDynamicCheckoutButtonTarget();
-        if (!(checkoutButtonTarget instanceof HTMLElement)) return;
-        if (checkoutButtonTarget.hasAttribute('disabled')) return;
-        if (checkoutButtonTarget.getAttribute('aria-disabled') === 'true') return;
-        checkoutButtonTarget.click();
       };
 
       const syncShopPayButtonState = () => {
@@ -3989,14 +3992,6 @@
       }
 
       syncShopPayButtonState();
-
-      if (shopPayProxyButton) {
-        shopPayProxyButton.addEventListener('click', (event) => {
-          event.preventDefault();
-          if (shopPayProxy && shopPayProxy.classList.contains('is-unavailable')) return;
-          triggerDynamicCheckout();
-        });
-      }
 
       if (stickyAddButton && addButton) {
         stickyAddButton.addEventListener('click', () => {
