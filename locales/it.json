@@ -117,7 +117,129 @@
       "increase_quantity": "Aumenta quantità",
       "quantity": "Quantità",
       "remove_discount_code": "Rimuovi {{ code }}",
-      "remove_item": "Rimuovi articolo"
+      "remove_item": "Rimuovi articolo",
+      "secure_checkout": "Pagamento sicuro",
+      "shipping_days_delivery_in": "Consegna in {{ country }} in {{ min }}-{{ max }} giorni",
+      "shipping_not_shipping_to": "Non spediamo in {{ country }}",
+      "shipping_ships_to": "Spedisce in {{ country }}",
+      "shipping_ships_worldwide": "Spedizione in tutto il mondo",
+      "shop_all_products": "Scopri tutti i prodotti",
+      "subtotal": "Subtotale",
+      "taxes_and_duties": "Tasse e dazi",
+      "taxes_may_be_due_on_delivery": "Potrebbe essere dovuto alla consegna",
+      "total": "Totale",
+      "your_country": "il tuo paese"
+    },
+    "collection_overview": {
+      "collection_name": "Nome raccolta",
+      "compare": "Confronta",
+      "explore_collection": "Esplora la collezione",
+      "product_placeholder": "Prodotto",
+      "rating_summary": "{{ rating }} su {{ count }} recensioni",
+      "read_all": "Leggi tutto",
+      "view_all": "Vedi tutto"
+    },
+    "common": {
+      "back": "Indietro",
+      "cart_drawer": "Carrello",
+      "close_cart": "Chiudi carrello",
+      "close_menu": "Chiudi menu",
+      "continue": "Continua",
+      "days": "giorni",
+      "download": "Scarica",
+      "hours": "ore",
+      "language": "Lingua",
+      "menu": "Menu",
+      "mins": "min",
+      "next": "Avanti",
+      "no_results_found": "Nessun risultato trovato",
+      "previous": "Precedente",
+      "primary": "Primario",
+      "primary_navigation": "Navigazione principale",
+      "region_selector": "Selettore regione",
+      "search": "Cerca",
+      "secs": "sec",
+      "verified_buyer": "Acquirente verificato"
+    },
+    "contact": {
+      "email": "Email",
+      "full_name": "Nome completo",
+      "send": "Invia",
+      "success_message": "Grazie per averci contattato. Ti risponderemo il prima possibile."
+    },
+    "footer": {
+      "company": "Azienda",
+      "partner_with_us": "Collabora con noi",
+      "resources": "Risorse"
+    },
+    "header": {
+      "accessories": "Accessori",
+      "download_ios_android": "Scarica per iOS e Android",
+      "metronome_app": "L’app Metronome",
+      "ratings": "{{ count }} valutazioni",
+      "region_and_language": "Regione e lingua",
+      "mobile_review_date": "8 gen 2026",
+      "mobile_review_name": "Wesley G.",
+      "mobile_review_text": "Ho gli in-ear monitor e il Pulse. Funzionano esattamente come promesso. La spedizione è stata buona e senza brutte sorprese. Grazie Soundbrenner!"
+    },
+    "hero_video": {
+      "play_title": "Riproduci {{ title }}",
+      "title": "Video principale",
+      "title_index": "Video principale {{ index }}",
+      "video_index": "Video {{ index }}"
+    },
+    "large_feature": {
+      "image_alt": "Immagine principale grande",
+      "kicker": "Kicker"
+    },
+    "manual": {
+      "chapter": "Capitolo",
+      "chapters": "Capitoli",
+      "close_chapters": "Chiudi capitoli",
+      "product_manual": "Manuale del prodotto",
+      "sticky_navigation": "Navigazione manuale fissa"
+    },
+    "media": {
+      "close_video": "Chiudi video",
+      "play_video": "Guarda il video",
+      "video_player": "Lettore video",
+      "video_story_player": "Lettore di storie video",
+      "vimeo_video": "Video Vimeo",
+      "vimeo_video_placeholder": "Segnaposto video Vimeo",
+      "pause_video": "Metti in pausa il video"
+    },
+    "press_ticker": {
+      "logos_aria_label": "Come visto nei loghi",
+      "title": "Come visto su"
+    },
+    "product": {
+      "add": "Aggiungi",
+      "add_to_cart": "Aggiungi al carrello",
+      "added": "Aggiunto",
+      "all_taxes_duties_included": "Tasse e dazi inclusi nel prezzo",
+      "buy_now": "Acquista ora",
+      "buy_with": "Acquista con",
+      "color_option": "Colore {{ index }}",
+      "color_selector": "Selettore colore",
+      "description": "Descrizione",
+      "free_shipping_over": "Spedizione gratuita per ordini superiori a {{ threshold }}",
+      "go_to_reviews": "Vai alle recensioni",
+      "in_the_box": "Nella confezione",
+      "learn_more": "Scopri di più",
+      "money_back_30_day": "Garanzia di rimborso entro 30 giorni",
+      "next_image": "Immagine successiva",
+      "page_mode": "Modalità pagina",
+      "popular_add_ons": "Componenti aggiuntivi popolari",
+      "previous_image": "Immagine precedente",
+      "purchase_guarantees": "Garanzie di acquisto",
+      "reviews_count": "{{ count }} recensioni",
+      "save_percent": "Risparmia {{ percent }}%",
+      "shop_pay_installments_from": "Rateizza con Shop Pay a partire da",
+      "sold_out": "Esaurito",
+      "warranty_1_year": "Garanzia di 1 anno",
+      "badge_bestseller": "I più venduti",
+      "badge_new": "Novità",
+      "buy_multiple_save_extra": "Acquista più pezzi e risparmia di più"
     }
   }
 }
