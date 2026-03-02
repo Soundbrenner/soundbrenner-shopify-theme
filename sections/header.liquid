@@ -6127,7 +6127,7 @@
     const topThreshold = 8;
     const upwardRevealThreshold = 20;
     const scrollDeltaDeadzone = 1;
-    const inputIntentWindowMs = 500;
+    const inputIntentWindowMs = 1400;
     let upwardTravel = 0;
     let hiddenOffset = 0;
     let topExitMode = lastY <= topThreshold;
@@ -6694,13 +6694,6 @@
         }
         applyOffset();
       } else if (delta < 0) {
-        if (!shouldHidePrimaryNavigationOnScroll) {
-          upwardTravel = 0;
-          hiddenOffset = maxOffset;
-          applyOffset();
-          lastY = normalizedY;
-          return;
-        }
         if (!hasRecentUpwardIntent()) {
           upwardTravel = 0;
           hiddenOffset = maxOffset;
