@@ -4075,7 +4075,7 @@
         currentPriceElement?.textContent ||
         ''
       ).trim();
-      const shouldAppendCurrencyCode = new RegExp(`\\b${currencyCode}\\b`, 'i').test(initialPriceSample);
+      const shouldAppendCurrencyCode = currencyCode !== 'USD' && new RegExp(`\\b${currencyCode}\\b`, 'i').test(initialPriceSample);
 
       const syncStickyReviewCount = () => {
         [stickyReviewCountElement, stickyBottomReviewCountElement].forEach((element) => {
