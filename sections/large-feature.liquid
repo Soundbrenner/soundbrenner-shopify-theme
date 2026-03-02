@@ -28,11 +28,8 @@
         endif
         assign feature_subtitle_check = feature_entry.subtitle.value | default: feature_entry.subtitle | append: '' | strip
         assign feature_media_check = feature_entry.media.value | default: feature_entry.media
-        assign feature_image_check = feature_entry.image.value | default: feature_entry.image
-        assign feature_video_check_field = feature_entry.video_url.value | default: feature_entry.video_url
-        assign feature_video_check = feature_video_check_field.url | default: feature_video_check_field.src | default: feature_video_check_field | append: '' | strip
 
-        if feature_title_check != blank or feature_subtitle_check != blank or feature_media_check != blank or feature_image_check != blank or feature_video_check != blank
+        if feature_title_check != blank or feature_subtitle_check != blank or feature_media_check != blank
           assign meta_has_items = true
           break
         endif
@@ -68,75 +65,21 @@
             endif
 
             assign feature_media = feature_entry.media.value | default: feature_entry.media
-            assign feature_image = feature_entry.image.value | default: feature_entry.image
-            assign feature_video_field = feature_entry.video_url.value | default: feature_entry.video_url
+            assign feature_image = blank
             assign feature_video_media = blank
 
-            if feature_media != blank and feature_media.media_type == 'video'
-              assign feature_video_media = feature_media
-            endif
-            if feature_image == blank and feature_media != blank and feature_media.media_type == 'image'
-              assign feature_image = feature_media
+            assign feature_media_type = feature_media.media_type | append: ''
+            if feature_media != blank
+              if feature_media_type contains 'video'
+                assign feature_video_media = feature_media
+              elsif feature_media_type == 'image'
+                assign feature_image = feature_media
+              endif
             endif
 
             assign feature_image_request_width = 1240
             if feature_image != blank and feature_image.width != blank
               assign feature_image_request_width = feature_image.width | at_most: 1240
-            endif
-
-            if feature_video_media == blank and feature_video_field != blank and feature_video_field.media_type == 'video'
-              assign feature_video_media = feature_video_field
-            endif
-
-            assign feature_video_url = blank
-            if feature_video_media == blank and feature_video_field != blank
-              if feature_video_field.sources != blank
-                for feature_video_source in feature_video_field.sources
-                  assign feature_video_source_url = feature_video_source.url | default: feature_video_source.src
-                  assign feature_video_source_format = feature_video_source.format | downcase
-                  assign feature_video_source_mime = feature_video_source.mime_type | downcase
-
-                  if feature_video_source_url != blank
-                    if feature_video_source_format contains 'mp4' or feature_video_source_mime contains 'mp4'
-                      assign feature_video_url = feature_video_source_url
-                      break
-                    endif
-                    if feature_video_url == blank
-                      assign feature_video_url = feature_video_source_url
-                    endif
-                  endif
-                endfor
-              endif
-              if feature_video_url == blank
-                assign feature_video_url = feature_video_field.url | default: feature_video_field.src | default: feature_video_field
-              endif
-            endif
-            assign feature_video_url = feature_video_url | append: '' | strip
-
-            assign feature_video_embed_url = blank
-            assign feature_video_use_iframe = false
-            if feature_video_url != blank
-              assign feature_video_url_downcase = feature_video_url | downcase
-
-              if feature_video_url_downcase contains 'youtube.com/watch'
-                assign feature_youtube_id = feature_video_url | split: 'v=' | last | split: '&' | first
-                if feature_youtube_id != blank
-                  assign feature_video_embed_url = 'https://www.youtube.com/embed/' | append: feature_youtube_id | append: '?autoplay=1&mute=1&loop=1&playlist=' | append: feature_youtube_id | append: '&playsinline=1&controls=0&rel=0'
-                  assign feature_video_use_iframe = true
-                endif
-              elsif feature_video_url_downcase contains 'youtu.be/'
-                assign feature_youtube_id = feature_video_url | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first
-                if feature_youtube_id != blank
-                  assign feature_video_embed_url = 'https://www.youtube.com/embed/' | append: feature_youtube_id | append: '?autoplay=1&mute=1&loop=1&playlist=' | append: feature_youtube_id | append: '&playsinline=1&controls=0&rel=0'
-                  assign feature_video_use_iframe = true
-                endif
-              elsif feature_video_url_downcase contains 'vimeo.com/'
-                assign feature_vimeo_id = feature_video_url | split: 'vimeo.com/' | last | split: '?' | first | split: '&' | first | split: '/' | first
-                if feature_vimeo_id != blank
-                  assign feature_video_embed_url = 'https://player.vimeo.com/video/' | append: feature_vimeo_id | append: '?autoplay=1&muted=1&loop=1&background=1'
-                  assign feature_video_use_iframe = true
-                endif
-              endif
             endif
 
             assign feature_title_primary = feature_entry.title_part_one.value | default: feature_entry.title_part_one | append: '' | strip
@@ -190,7 +133,7 @@
             assign feature_media_alt = feature_image.alt | default: feature_title_primary | default: large_feature_media_alt_fallback
           %}
 
-          {% if feature_title_primary == blank and feature_title_accent == blank and feature_subtitle == blank and feature_image == blank and feature_video_media == blank and feature_video_url == blank %}
+          {% if feature_title_primary == blank and feature_title_accent == blank and feature_subtitle == blank and feature_image == blank and feature_video_media == blank %}
             {% continue %}
           {% endif %}
 
@@ -209,30 +152,6 @@
                     image_size: '1240x',
                     preload: 'metadata'
                 }}
-              {% elsif feature_video_url != blank %}
-                {% if feature_video_use_iframe and feature_video_embed_url != blank %}
-                  <iframe
-                    class="sb-large-feature__media-video-iframe"
-                    src="{{ feature_video_embed_url | escape }}"
-                    title="{{ feature_media_alt | escape }}"
-                    loading="lazy"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen
-                  ></iframe>
-                {% else %}
-                  <video
-                    class="sb-large-feature__media-video"
-                    autoplay
-                    loop
-                    muted
-                    playsinline
-                    preload="metadata"
-                    {% if feature_image != blank %}
-                      poster="{{ feature_image | image_url: width: feature_image_request_width }}"
-                    {% endif %}
-                    src="{{ feature_video_url | escape }}"
-                  ></video>
-                {% endif %}
               {% elsif feature_image != blank %}
                 {{
                   feature_image
