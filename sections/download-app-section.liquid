@@ -1,0 +1,95 @@
+{% liquid
+  assign download_app_title = section.settings.title | strip
+  assign download_app_app_store_link = 'https://apps.apple.com/us/app/the-metronome-by-soundbrenner/id1048954353'
+  assign download_app_google_play_link = 'https://play.google.com/store/apps/details?id=com.soundbrenner.pulse'
+  assign download_app_china_link = 'https://files.soundbrenner.com/downloads/TheMetronome.apk'
+%}
+
+<section id="sb-download-app-section" class="sb-download-app-section" data-sb-reveal>
+  <div class="sb-content-width">
+    <div class="sb-download-app-section__inner">
+      {% if download_app_title != blank %}
+        <h2 class="sb-download-app-section__title font-title weight-bold" data-sb-reveal-item>{{ download_app_title }}</h2>
+      {% endif %}
+
+      <div class="sb-download-app-section__buttons" data-sb-reveal-item>
+        <a
+          class="sb-button-radiant sb-button-radiant--large sb-download-app-section__button"
+          href="{{ download_app_app_store_link }}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span class="sb-button-radiant__label">Download on App Store</span>
+        </a>
+
+        <a
+          class="sb-button-radiant sb-button-radiant--large sb-download-app-section__button"
+          href="{{ download_app_google_play_link }}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span class="sb-button-radiant__label">Download on Google Play</span>
+        </a>
+
+        <a
+          class="sb-button-radiant sb-button-radiant--large sb-download-app-section__button"
+          href="{{ download_app_china_link }}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span class="sb-button-radiant__label">Download in China</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .sb-download-app-section__inner {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sb-download-app-section {
+    scroll-margin-top: var(--sb-sticky-scroll-target-offset, var(--sb-space-96));
+  }
+
+  .sb-download-app-section__title {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+    text-align: center;
+  }
+
+  .sb-download-app-section__buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 48px;
+    width: min(100%, 400px);
+  }
+
+  .sb-download-app-section__button {
+    justify-content: center;
+    width: 100%;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Download app section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Try it for free now"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Download app section"
+    }
+  ]
+}
+{% endschema %}

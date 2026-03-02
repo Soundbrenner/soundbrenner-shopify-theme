@@ -94,14 +94,6 @@
             "link": ""
           }
         },
-        "tile_2": {
-          "type": "tile",
-          "settings": {
-            "image": "shopify://shop_images/Property_1_Start_a_return.jpg",
-            "label": "Start a return",
-            "link": ""
-          }
-        },
         "tile_3": {
           "type": "tile",
           "settings": {
@@ -113,7 +105,6 @@
       },
       "block_order": [
         "tile_1",
-        "tile_2",
         "tile_3"
       ],
       "settings": {

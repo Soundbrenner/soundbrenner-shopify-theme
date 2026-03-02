@@ -1,5 +1,3 @@
-{% assign resource_tile_fallback_image = 'placeholder-resource-tile.jpg' | asset_url %}
-
 <div class="sb-resource-tile" data-sb-reveal>
   {% if section.settings.title != blank %}
     <h2 class="sb-resource-tile__title font-title weight-bold">{{ section.settings.title }}</h2>
@@ -13,22 +11,27 @@
         {% assign tile_href = '#' %}
       {% endif %}
 
-      {% if block.settings.image != blank %}
-        {% assign tile_image = block.settings.image | image_url: width: 680 %}
-      {% else %}
-        {% assign tile_image = resource_tile_fallback_image %}
-      {% endif %}
-
       <article class="sb-resource-tile__item" data-sb-reveal-item {{ block.shopify_attributes }}>
         <a class="sb-resource-tile__link" href="{{ tile_href }}">
           <div class="sb-resource-tile__media">
-            <img
-              src="{{ tile_image }}"
-              alt="{{ block.settings.label | escape }}"
-              loading="lazy"
-              width="340"
-              height="260"
-            >
+            {% if block.settings.image != blank %}
+              {% assign tile_image_request_width = block.settings.image.width | at_most: 680 %}
+              <img
+                src="{{ block.settings.image | image_url: width: tile_image_request_width }}"
+                alt="{{ block.settings.image.alt | default: block.settings.label | escape }}"
+                loading="lazy"
+                width="340"
+                height="260"
+              >
+            {% else %}
+              <img
+                src="{{ 'placeholder-resource-tile.jpg' | asset_url }}"
+                alt="{{ block.settings.label | escape }}"
+                loading="lazy"
+                width="340"
+                height="260"
+              >
+            {% endif %}
           </div>
 
           <div class="sb-resource-tile__text-wrap">
@@ -70,7 +73,7 @@
 
   .sb-resource-tile__link:hover,
   .sb-resource-tile__link:focus-visible {
-    transform: translateY(-1px) scale(1.015);
+    transform: translateY(-1px) scale(var(--sb-hover-scale-factor, 1.015));
   }
 
   .sb-resource-tile__media {

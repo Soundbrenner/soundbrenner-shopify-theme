@@ -1,0 +1,33 @@
+{
+  "waitUntil": "domcontentloaded",
+  "pages": [
+    {
+      "name": "home-desktop",
+      "path": "/",
+      "viewport": { "width": 1512, "height": 982 },
+      "fullPage": false,
+      "waitAfterGotoMs": 600
+    },
+    {
+      "name": "home-mobile",
+      "path": "/",
+      "viewport": { "width": 390, "height": 844 },
+      "fullPage": false,
+      "waitAfterGotoMs": 600
+    },
+    {
+      "name": "product-desktop",
+      "path": "/products/wave-pro-in-ear-monitors",
+      "viewport": { "width": 1512, "height": 982 },
+      "fullPage": false,
+      "waitAfterGotoMs": 600
+    },
+    {
+      "name": "manual-mobile",
+      "path": "/pages/manual-pulse-vibrating-metronome?view=manual-pulse-vibrating-metronome",
+      "viewport": { "width": 390, "height": 844 },
+      "fullPage": false,
+      "waitAfterGotoMs": 600
+    }
+  ]
+}

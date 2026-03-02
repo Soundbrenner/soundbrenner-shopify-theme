@@ -9,6 +9,7 @@
  */
 {
   "404": {
+    "title": "404",
     "not_found": "Página no encontrada.",
     "back_to_shopping": "Volver a la tienda"
   },

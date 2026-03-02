@@ -299,9 +299,10 @@
         </button>
       </form>
     {% else %}
+      {% assign checkout_url = routes.root_url | append: 'checkout' %}
       <a
         class="{{ checkout_button_class }} sb-button-radiant sb-button-radiant--large sb-button-radiant--leading-icon font-caption weight-bold sb-cart-summary__checkout-button"
-        href="/checkout"
+        href="{{ checkout_url }}"
         data-cart-checkout-button
       >
         <span class="sb-button-radiant__icon" aria-hidden="true">

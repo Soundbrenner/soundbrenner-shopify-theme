@@ -11,6 +11,8 @@ const FIELD_COUNT =
 const KLAVIYO_REVISION = process.env.KLAVIYO_REVISION || "2026-01-15";
 const KLAVIYO_CLIENT_GROUP_BY = process.env.KLAVIYO_CLIENT_GROUP_BY || "company_id";
 const KLAVIYO_CLIENT_TIMEFRAME = process.env.KLAVIYO_CLIENT_TIMEFRAME || "all_time";
+const KLAVIYO_AGGREGATE_SCOPE =
+  (process.env.KLAVIYO_AGGREGATE_SCOPE || "published_only").trim().toLowerCase();
 
 const requiredEnv = [
   "SHOPIFY_SHOP_DOMAIN",
@@ -35,6 +37,8 @@ const config = {
   shopifyClientSecret: process.env.SHOPIFY_CLIENT_SECRET.trim(),
   klaviyoApiKey: process.env.KLAVIYO_PRIVATE_API_KEY.trim(),
   klaviyoCompanyId: (process.env.KLAVIYO_COMPANY_ID || "").trim(),
+  klaviyoAggregateScope: KLAVIYO_AGGREGATE_SCOPE,
+  allowKlaviyoComputeFallback: process.env.KLAVIYO_ALLOW_COMPUTE_FALLBACK === "true",
   intervalMs: Number.parseInt(process.env.INTERVAL_MS || `${DEFAULT_INTERVAL_MS}`, 10),
   dryRun: process.env.DRY_RUN === "true",
   once: process.argv.includes("--once") || process.env.RUN_ONCE === "true",
@@ -44,6 +48,15 @@ if (!Number.isFinite(config.intervalMs) || config.intervalMs < 10_000) {
   console.error("INTERVAL_MS must be a number >= 10000.");
   process.exit(1);
 }
+
+if (!["published_only", "all_statuses"].includes(config.klaviyoAggregateScope)) {
+  console.error(
+    "KLAVIYO_AGGREGATE_SCOPE must be one of: published_only, all_statuses."
+  );
+  process.exit(1);
+}
+
+let cachedKlaviyoCompanyId = config.klaviyoCompanyId || "";
 
 function log(message, extra = "") {
   const now = new Date().toISOString();
@@ -229,7 +242,7 @@ function findNumericByKeyDeep(input, targetKeys) {
 }
 
 async function getKlaviyoCompanyId() {
-  if (config.klaviyoCompanyId) return config.klaviyoCompanyId;
+  if (cachedKlaviyoCompanyId) return cachedKlaviyoCompanyId;
 
   const data = await fetchJson("https://a.klaviyo.com/api/accounts", {
     headers: {
@@ -240,16 +253,17 @@ async function getKlaviyoCompanyId() {
   });
 
   const first = data?.data?.[0];
-  const companyId = first?.id || first?.attributes?.public_api_key;
+  const companyId = first?.attributes?.public_api_key || first?.id;
   if (!companyId) {
     throw new Error("Unable to resolve Klaviyo company_id from /api/accounts");
   }
 
+  cachedKlaviyoCompanyId = companyId;
   return companyId;
 }
 
 async function tryKlaviyoClientAggregate(companyId) {
-  const url = new URL("https://a.klaviyo.com/client/review-values-reports/");
+  const url = new URL("https://fast.a.klaviyo.com/client/review-values-reports/");
   url.searchParams.set("company_id", companyId);
   url.searchParams.set("group_by", KLAVIYO_CLIENT_GROUP_BY);
   url.searchParams.set("timeframe", KLAVIYO_CLIENT_TIMEFRAME);
@@ -257,7 +271,6 @@ async function tryKlaviyoClientAggregate(companyId) {
 
   const data = await fetchJson(url.toString(), {
     headers: {
-      Authorization: `Klaviyo-API-Key ${config.klaviyoApiKey}`,
       accept: "application/vnd.api+json",
       revision: KLAVIYO_REVISION,
     },
@@ -291,7 +304,8 @@ async function tryKlaviyoClientAggregate(companyId) {
 }
 
 async function computeFromKlaviyoPublishedReviews() {
-  let nextUrl = "https://a.klaviyo.com/api/reviews?page[size]=100&filter=equals(status,%22published%22)";
+  let nextUrl =
+    "https://a.klaviyo.com/api/reviews?page[size]=100&filter=equals(status,%22published%22)&fields[review]=rating";
   let totalReviews = 0;
   let ratingSum = 0;
   let pages = 0;
@@ -324,18 +338,34 @@ async function computeFromKlaviyoPublishedReviews() {
 
   const averageRating = totalReviews > 0 ? ratingSum / totalReviews : 0;
   return {
-    source: "klaviyo_reviews_api_fallback",
+    source: "klaviyo_reviews_api_published_only",
     averageRating,
     totalReviews,
   };
 }
 
 async function getReviewAggregates() {
+  if (config.klaviyoAggregateScope === "published_only") {
+    return await computeFromKlaviyoPublishedReviews();
+  }
+
   const companyId = await getKlaviyoCompanyId();
 
   try {
     return await tryKlaviyoClientAggregate(companyId);
   } catch (error) {
+    if (!config.allowKlaviyoComputeFallback) {
+      const status = Number(error?.status || 0);
+      const detail =
+        error?.data?.errors?.[0]?.detail ||
+        error?.data?.errors?.[0]?.title ||
+        error?.message ||
+        "unknown error";
+      throw new Error(
+        `Klaviyo client aggregate failed (status=${status || "n/a"} detail=${detail}). Set KLAVIYO_ALLOW_COMPUTE_FALLBACK=true to enable heavy /api/reviews compute fallback.`
+      );
+    }
+
     const status = Number(error?.status || 0);
     const detail =
       error?.data?.errors?.[0]?.detail ||
@@ -398,6 +428,10 @@ async function updateMetaobjectFields(accessToken, metaobjectId, ratingValue, co
 
 async function runSync() {
   log("Sync started");
+  log(
+    "Mode:",
+    `scope=${config.klaviyoAggregateScope} fallback_compute=${config.allowKlaviyoComputeFallback ? "on" : "off"}`
+  );
 
   const aggregate = await getReviewAggregates();
   const ratingValue = normalizeRating(aggregate.averageRating);

@@ -1,3 +1,4 @@
+{% # theme-check-disable UnusedAssign %}
 {% liquid
   assign primary_navigation = linklists['main-menu']
   assign cart_placeholder_image = 'icon-square-placeholder.svg' | asset_url
@@ -8,7 +9,6 @@
   assign cart_free_shipping_available = false
   assign cart_free_shipping_threshold_cents = 0
   assign cart_shipping_is_blocked = false
-  assign cart_shipping_taxes_included = false
   assign cart_shipping_advertised_min_time = blank
   assign cart_shipping_advertised_max_time = blank
   assign cart_shipping_text = 'Ships worldwide'
@@ -24,7 +24,6 @@
       assign cart_shipping_is_blocked = true
     endif
     if cart_entry_taxes_included == 'true' or cart_entry_taxes_included == '1' or cart_entry_taxes_included == 'yes'
-      assign cart_shipping_taxes_included = true
       assign cart_taxes_text = 'Included in price'
     endif
     if cart_shipping_is_blocked == false
@@ -48,6 +47,7 @@
     assign cart_shipping_text = 'Ships to ' | append: cart_shipping_country_name
   endif
 %}
+{% # theme-check-enable UnusedAssign %}
 <script src="{{ 'cart-system.js' | asset_url }}" defer></script>
 
 <section class="sb-cart-page-section">
@@ -308,7 +308,7 @@
   @media (hover: hover) and (pointer: fine) {
     .sb-cart-page__empty-collection-media:hover,
     .sb-cart-page__empty-collection-media:focus-visible {
-      transform: scale(1.015);
+      transform: scale(var(--sb-hover-scale-factor, 1.015));
     }
   }
 

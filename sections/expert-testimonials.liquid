@@ -61,33 +61,24 @@
               assign expert_title = expert_entry.title.value | default: expert_entry.title
               assign expert_quote = expert_entry.quote.value | default: expert_entry.quote
 
-              assign expert_image_url = ''
-              if expert_image != blank
-                assign expert_image_request_width = 849
-                if expert_image.width != blank
-                  assign expert_image_request_width = expert_image.width | at_most: 849
-                endif
-                assign expert_image_url = expert_image | image_url: width: expert_image_request_width
-                assign expert_image_url_prefix = expert_image_url | slice: 0, 7
-                assign expert_image_url_prefix_slash = expert_image_url | slice: 0, 8
-                if expert_image_url_prefix == 'files/'
-                  assign expert_image_url = '/cdn/shop/' | append: expert_image_url
-                elsif expert_image_url_prefix_slash == '/files/'
-                  assign expert_image_url = '/cdn/shop' | append: expert_image_url
-                endif
+              assign expert_image_request_width = 849
+              if expert_image != blank and expert_image.width != blank
+                assign expert_image_request_width = expert_image.width | at_most: 849
               endif
             %}
 
             <article class="sb-expert-testimonials-carousel__item" data-sb-carousel-item data-sb-reveal-item>
               <div class="sb-expert-testimonials-carousel__media">
-                {% if expert_image_url != blank %}
-                  <img
-                    src="{{ expert_image_url }}"
-                    alt="{{ expert_name | default: expert_title | default: expert_quote | escape }}"
-                    loading="lazy"
-                    width="283"
-                    height="283"
-                  >
+                {% if expert_image != blank %}
+                  {{
+                    expert_image
+                    | image_url: width: expert_image_request_width
+                    | image_tag:
+                      alt: expert_name | default: expert_title | default: expert_quote,
+                      loading: 'lazy',
+                      width: 283,
+                      height: 283
+                  }}
                 {% else %}
                   <div class="sb-expert-testimonials-carousel__media-placeholder" aria-hidden="true"></div>
                 {% endif %}
@@ -119,33 +110,24 @@
               assign expert_title = expert_entry.title.value | default: expert_entry.title
               assign expert_quote = expert_entry.quote.value | default: expert_entry.quote
 
-              assign expert_image_url = ''
-              if expert_image != blank
-                assign expert_image_request_width = 849
-                if expert_image.width != blank
-                  assign expert_image_request_width = expert_image.width | at_most: 849
-                endif
-                assign expert_image_url = expert_image | image_url: width: expert_image_request_width
-                assign expert_image_url_prefix = expert_image_url | slice: 0, 7
-                assign expert_image_url_prefix_slash = expert_image_url | slice: 0, 8
-                if expert_image_url_prefix == 'files/'
-                  assign expert_image_url = '/cdn/shop/' | append: expert_image_url
-                elsif expert_image_url_prefix_slash == '/files/'
-                  assign expert_image_url = '/cdn/shop' | append: expert_image_url
-                endif
+              assign expert_image_request_width = 849
+              if expert_image != blank and expert_image.width != blank
+                assign expert_image_request_width = expert_image.width | at_most: 849
               endif
             %}
 
             <article class="sb-expert-testimonials-carousel__item" data-sb-carousel-item data-sb-reveal-item {{ block.shopify_attributes }}>
               <div class="sb-expert-testimonials-carousel__media">
-                {% if expert_image_url != blank %}
-                  <img
-                    src="{{ expert_image_url }}"
-                    alt="{{ expert_name | default: expert_title | default: expert_quote | escape }}"
-                    loading="lazy"
-                    width="283"
-                    height="283"
-                  >
+                {% if expert_image != blank %}
+                  {{
+                    expert_image
+                    | image_url: width: expert_image_request_width
+                    | image_tag:
+                      alt: expert_name | default: expert_title | default: expert_quote,
+                      loading: 'lazy',
+                      width: 283,
+                      height: 283
+                  }}
                 {% else %}
                   <div class="sb-expert-testimonials-carousel__media-placeholder" aria-hidden="true"></div>
                 {% endif %}

@@ -35,6 +35,8 @@
     class="sb-manual-chapters__sticky-nav-wrap sb-manual-chapters__sticky-nav-wrap--mobile"
     aria-label="Sticky manual navigation"
     data-sb-reveal
+    data-sb-sticky-top-navigation
+    data-sb-sticky-active="true"
   >
     <div class="sb-manual-chapters__sticky-nav sb-manual-chapters__sticky-nav--mobile" data-sb-reveal-item>
       <div class="sb-manual-chapters__sticky-dropdown" data-manual-chapter-dropdown>
@@ -114,7 +116,7 @@
       {% elsif block.type == 'text' %}
         <div class="sb-manual-chapters__body font-body weight-regular rte" data-sb-reveal {{ block.shopify_attributes }}>
           <div data-sb-reveal-item>
-            {{ block.settings.text }}
+            {% render 'localized-richtext-links', content: block.settings.text %}
           </div>
         </div>
       {% elsif block.type == 'subheading' %}
@@ -193,7 +195,7 @@
             </span>
           </button>
           <div class="sb-manual-chapters__accordion-answer font-body weight-regular rte" data-manual-accordion-answer data-sb-reveal-item>
-            {{ block.settings.answer }}
+            {% render 'localized-richtext-links', content: block.settings.answer %}
           </div>
           <hr class="sb-manual-chapters__accordion-divider" data-sb-reveal-item>
         </article>
@@ -209,14 +211,18 @@
 {% stylesheet %}
   .sb-manual-chapters {
     --sb-supplementary-sticky-top-gap-mobile: 16px;
+    --sb-supplementary-sticky-inline-margin-tablet: 60px;
     --sb-supplementary-sticky-inline-margin-mobile: 16px;
     --sb-supplementary-sticky-nav-padding-y-mobile: 12px;
     --sb-manual-sidebar-sticky-top-gap: 36px;
-    --sb-manual-scroll-target-offset: 96px;
+    --sb-manual-scroll-target-offset: var(
+      --sb-sticky-scroll-target-offset,
+      calc(var(--sb-sticky-top-stack-bottom, 0px) + var(--sb-space-96))
+    );
+    --sb-manual-first-offset-extra: 0px;
     --sb-manual-mobile-sticky-nav-control-height: 36px;
     --sb-menu-unroll-duration: 420ms;
     --sb-menu-unroll-ease: cubic-bezier(0.22, 1, 0.36, 1);
-    --sb-manual-mobile-sticky-nav-offset: 32px;
     display: grid;
     gap: var(--sb-space-48);
     grid-template-columns: 280px minmax(0, 1fr);
@@ -225,7 +231,7 @@
   .sb-manual-chapters__sidebar {
     align-self: start;
     position: sticky;
-    top: var(--sb-manual-sidebar-sticky-top, var(--sb-space-96));
+    top: max(var(--sb-space-96), calc(var(--sb-sticky-top-stack-bottom, 0px) + var(--sb-manual-sidebar-sticky-top-gap)));
     width: 280px;
   }
 
@@ -474,12 +480,12 @@
     touch-action: none;
   }
 
-  @media (max-width: 989px) {
+  @media (max-width: 1239px) {
     .sb-manual-chapters {
       display: flex;
       flex-direction: column;
       gap: var(--sb-space-24);
-      padding-top: var(--sb-manual-mobile-sticky-nav-offset);
+      padding-top: 0;
     }
 
     .sb-manual-chapters__sidebar {
@@ -490,10 +496,11 @@
       display: flex;
       flex-direction: column;
       gap: var(--sb-space-24);
+      padding-top: var(--sb-manual-first-offset-extra);
     }
 
     .sb-manual-chapters__sticky-nav-wrap--mobile {
-      --sb-supplementary-sticky-inline-margin: var(--sb-supplementary-sticky-inline-margin-mobile);
+      --sb-supplementary-sticky-inline-margin: var(--sb-supplementary-sticky-inline-margin-tablet);
       --sb-supplementary-sticky-top-gap: var(--sb-supplementary-sticky-top-gap-mobile);
       display: block;
       left: 0;
@@ -775,6 +782,12 @@
       pointer-events: auto;
     }
   }
+
+  @media (max-width: 749px) {
+    .sb-manual-chapters__sticky-nav-wrap--mobile {
+      --sb-supplementary-sticky-inline-margin: var(--sb-supplementary-sticky-inline-margin-mobile);
+    }
+  }
 {% endstylesheet %}
 
 <script>
@@ -793,24 +806,36 @@
     const currentChapterLabels = Array.from(root.querySelectorAll('[data-manual-current-chapter-label]'));
     const headerElement = document.querySelector('.header');
     if (!links.length || !chapters.length) return;
+    let activeFirstTemplateSection = null;
 
-    const isMobileViewport = () => window.matchMedia('(max-width: 989px)').matches;
-    const getActiveStickyNavWrap = () => stickyNavWraps.find((wrap) => wrap.getClientRects().length > 0) || null;
+    const isMobileViewport = () => window.matchMedia('(max-width: 1239px)').matches;
     const syncStickyTopNavigationMarker = () => {
       const shouldMarkStickyNavigation = isMobileViewport();
+      let markersChanged = false;
       stickyNavWraps.forEach((wrap) => {
-        if (shouldMarkStickyNavigation) {
-          if (!wrap.hasAttribute('data-sb-sticky-top-navigation')) {
-            wrap.setAttribute('data-sb-sticky-top-navigation', '');
-          }
-          return;
+        if (!wrap.hasAttribute('data-sb-sticky-top-navigation')) {
+          wrap.setAttribute('data-sb-sticky-top-navigation', '');
+          markersChanged = true;
         }
-        if (wrap.hasAttribute('data-sb-sticky-top-navigation')) {
-          wrap.removeAttribute('data-sb-sticky-top-navigation');
+        const nextActiveState = shouldMarkStickyNavigation ? 'true' : 'false';
+        if (wrap.getAttribute('data-sb-sticky-active') !== nextActiveState) {
+          wrap.setAttribute('data-sb-sticky-active', nextActiveState);
+          markersChanged = true;
         }
       });
+      const nextScrollModeState = shouldMarkStickyNavigation ? 'true' : 'false';
+      if (root.getAttribute('data-sb-hide-primary-nav-on-scroll') !== nextScrollModeState) {
+        root.setAttribute('data-sb-hide-primary-nav-on-scroll', nextScrollModeState);
+        markersChanged = true;
+      }
+      if (window.SBStickyStack && typeof window.SBStickyStack.requestSync === 'function') {
+        window.SBStickyStack.requestSync();
+      }
       if (window.SBHeaderNav && typeof window.SBHeaderNav.refreshScrollMode === 'function') {
-        window.SBHeaderNav.refreshScrollMode({ forceSync: true });
+        window.SBHeaderNav.refreshScrollMode();
+      }
+      if (markersChanged) {
+        requestLayoutSync({ force: true });
       }
     };
 
@@ -839,155 +864,217 @@
       });
     };
 
-    const syncStickyNavTop = () => {
-      if (!stickyNavWraps.length) return;
-
-      stickyNavWraps.forEach((wrap) => {
-        const spacing = Number.parseFloat(getComputedStyle(wrap).getPropertyValue('--sb-supplementary-sticky-top-gap')) || 16;
-        if (!headerElement) {
-          const fallbackTop = `${Math.round(spacing)}px`;
-          if (wrap.style.top !== fallbackTop) {
-            wrap.style.top = fallbackTop;
-          }
-          return;
-        }
-
-        const headerStyles = getComputedStyle(headerElement);
-        const headerBorderBottom = Number.parseFloat(headerStyles.borderBottomWidth) || 0;
-        const headerBottom = headerElement.getBoundingClientRect().bottom - headerBorderBottom;
-        const nextTop = Math.max(headerBottom + spacing, spacing);
-        const nextTopValue = `${Math.floor(nextTop)}px`;
-        if (wrap.style.top !== nextTopValue) {
-          wrap.style.top = nextTopValue;
-        }
+    const parseSpaceVar = (name, fallback) => {
+      const rawValue = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+      const parsed = Number.parseFloat(rawValue);
+      return Number.isFinite(parsed) ? parsed : fallback;
+    };
+    const parsePxValue = (value, fallback = 0) => {
+      const parsed = Number.parseFloat(`${value || ''}`.trim());
+      return Number.isFinite(parsed) ? parsed : fallback;
+    };
+    const isVisibleElement = (element) => {
+      if (!(element instanceof Element)) return false;
+      if (element.hidden) return false;
+      if (!element.getClientRects().length) return false;
+      const styles = window.getComputedStyle(element);
+      return styles.display !== 'none' && styles.visibility !== 'hidden';
+    };
+    const isActiveTopAccessoryWrap = (wrap) => {
+      if (!(wrap instanceof Element)) return false;
+      const explicitState = `${wrap.getAttribute('data-sb-sticky-active') || ''}`.trim().toLowerCase();
+      if (explicitState === 'false' || explicitState === '0' || explicitState === 'no') return false;
+      return isVisibleElement(wrap);
+    };
+    const getActiveTopAccessoryWraps = () => stickyNavWraps.filter((wrap) => isActiveTopAccessoryWrap(wrap));
+    const getTopAccessoryGap = (wrap) => {
+      const explicit = parsePxValue(wrap.getAttribute('data-sb-sticky-gap'), Number.NaN);
+      if (Number.isFinite(explicit)) return explicit;
+      const styles = window.getComputedStyle(wrap);
+      const gap = parsePxValue(styles.getPropertyValue('--sb-supplementary-sticky-top-gap'), Number.NaN);
+      if (Number.isFinite(gap)) return gap;
+      return 0;
+    };
+    const getTopAccessoryControlHeight = (wrap) => {
+      const control = wrap.querySelector('.sb-manual-chapters__sticky-nav--mobile');
+      if (control instanceof Element && isVisibleElement(control)) {
+        return Math.max(control.getBoundingClientRect().height || 0, 0);
+      }
+      return Math.max(wrap.getBoundingClientRect().height || 0, 0);
+    };
+    const getTopAccessoryCurrentBottom = () => {
+      let maxBottom = 0;
+      getActiveTopAccessoryWraps().forEach((wrap) => {
+        const rect = wrap.getBoundingClientRect();
+        if (!Number.isFinite(rect.bottom) || rect.height <= 0) return;
+        maxBottom = Math.max(maxBottom, rect.bottom);
       });
+      return Math.max(maxBottom, 0);
+    };
+    const getCurrentHeaderBottomFromDom = () => {
+      if (!(headerElement instanceof Element) || !isVisibleElement(headerElement)) return 0;
+      const styles = window.getComputedStyle(headerElement);
+      const borderBottom = parsePxValue(styles.borderBottomWidth, 0);
+      return Math.max((headerElement.getBoundingClientRect().bottom || 0) - borderBottom, 0);
+    };
+    const getAnnouncementHeight = () => {
+      if (!(headerElement instanceof Element) || !isVisibleElement(headerElement)) return 0;
+      const announcement = headerElement.querySelector('.header__announcement');
+      const minAnnouncementHeight = parseSpaceVar('--sb-announcement-min-height', 0);
+      if (!(announcement instanceof Element) || !isVisibleElement(announcement)) {
+        return Math.max(minAnnouncementHeight, 0);
+      }
+      return Math.max(announcement.getBoundingClientRect().height || 0, minAnnouncementHeight, 0);
+    };
+    const getCurrentTopStackBottomFromDom = () => {
+      let topStackBottom = Math.max(getCurrentHeaderBottomFromDom(), 0);
+      getActiveTopAccessoryWraps().forEach((wrap) => {
+        const control = wrap.querySelector('.sb-manual-chapters__sticky-nav--mobile');
+        const measuredElement = (control instanceof Element && isVisibleElement(control)) ? control : wrap;
+        const rect = measuredElement.getBoundingClientRect();
+        if (!Number.isFinite(rect.bottom) || rect.height <= 0) return;
+        topStackBottom = Math.max(topStackBottom, rect.bottom);
+      });
+      return Math.max(topStackBottom, 0);
     };
 
-    const syncSidebarStickyTop = () => {
-      if (!sidebar || window.getComputedStyle(sidebar).display === 'none') return;
-      const defaultTop = 96;
-      const spacing = Number.parseFloat(getComputedStyle(root).getPropertyValue('--sb-manual-sidebar-sticky-top-gap')) || 16;
-      if (!headerElement) {
-        const fallbackTopValue = `${defaultTop}px`;
-        if (sidebar.style.getPropertyValue('--sb-manual-sidebar-sticky-top') !== fallbackTopValue) {
-          sidebar.style.setProperty('--sb-manual-sidebar-sticky-top', fallbackTopValue);
+    const getHeadingOffset = () => parseSpaceVar('--sb-space-96', 96);
+
+    const getTopStackBottom = () => {
+      if (window.SBStickyStack && typeof window.SBStickyStack.getState === 'function') {
+        const stickyState = window.SBStickyStack.getState();
+        if (Number.isFinite(stickyState?.topStackBottom)) {
+          return Math.max(stickyState.topStackBottom, 0);
         }
-        return;
       }
-
-      const headerStyles = getComputedStyle(headerElement);
-      const headerBorderBottom = Number.parseFloat(headerStyles.borderBottomWidth) || 0;
-      const headerBottom = headerElement.getBoundingClientRect().bottom - headerBorderBottom;
-      const nextTop = Math.max(defaultTop, Math.floor(headerBottom + spacing));
-      const nextTopValue = `${nextTop}px`;
-      if (sidebar.style.getPropertyValue('--sb-manual-sidebar-sticky-top') !== nextTopValue) {
-        sidebar.style.setProperty('--sb-manual-sidebar-sticky-top', nextTopValue);
+      return parseSpaceVar('--sb-sticky-top-stack-bottom', 0);
+    };
+    const getHeaderExpandedHeight = () => {
+      if (!(headerElement instanceof Element) || !isVisibleElement(headerElement)) {
+        return 0;
+      }
+      return Math.max(headerElement.getBoundingClientRect().height || 0, 0);
+    };
+    const getProjectedTopStackBottomForDirection = (direction = 'down') => {
+      const activeWraps = getActiveTopAccessoryWraps();
+      const hasActiveTopAccessory = activeWraps.length > 0;
+      const headerExpandedHeight = getHeaderExpandedHeight();
+      let projectedHeaderBottom = headerExpandedHeight;
+      if (direction === 'down') {
+        projectedHeaderBottom = hasActiveTopAccessory
+          ? 0
+          : Math.max(headerExpandedHeight - getAnnouncementHeight(), 0);
+      }
+      let projectedBottom = Math.max(projectedHeaderBottom, 0);
+      activeWraps.forEach((wrap) => {
+        const accessoryBottom = projectedHeaderBottom + getTopAccessoryGap(wrap) + getTopAccessoryControlHeight(wrap);
+        projectedBottom = Math.max(projectedBottom, accessoryBottom);
+      });
+      return Math.max(projectedBottom, 0);
+    };
+    const syncManualScrollTargetOffsetVar = () => {
+      const headingOffset = getHeadingOffset();
+      const currentTopBottom = Math.max(getTopStackBottom(), getTopAccessoryCurrentBottom(), getCurrentTopStackBottomFromDom());
+      const nextOffset = Math.max(Math.round(currentTopBottom + headingOffset), headingOffset);
+      const nextOffsetValue = `${nextOffset}px`;
+      if (root.style.getPropertyValue('--sb-manual-scroll-target-offset') !== nextOffsetValue) {
+        root.style.setProperty('--sb-manual-scroll-target-offset', nextOffsetValue);
       }
     };
 
-    const syncStickyNavOffset = () => {
-      if (!isMobileViewport()) {
-        const currentOffset = root.style.getPropertyValue('--sb-manual-mobile-sticky-nav-offset');
-        if (currentOffset !== '0px') {
-          root.style.setProperty('--sb-manual-mobile-sticky-nav-offset', '0px');
-        }
-        return;
+    const setFirstTemplateSection = (section) => {
+      if (activeFirstTemplateSection && activeFirstTemplateSection !== section) {
+        activeFirstTemplateSection.removeAttribute('data-sb-manual-first-section');
+        activeFirstTemplateSection.style.removeProperty('--sb-manual-first-offset-extra');
       }
-
-      const nextOffsetValue = '32px';
-      const currentOffsetValue = root.style.getPropertyValue('--sb-manual-mobile-sticky-nav-offset');
-      if (currentOffsetValue !== nextOffsetValue) {
-        root.style.setProperty('--sb-manual-mobile-sticky-nav-offset', nextOffsetValue);
+      activeFirstTemplateSection = section || null;
+      if (activeFirstTemplateSection) {
+        activeFirstTemplateSection.setAttribute('data-sb-manual-first-section', 'true');
       }
     };
 
-    const captureHeaderNavState = () => {
-      if (window.SBHeaderNav && typeof window.SBHeaderNav.captureState === 'function') {
-        return window.SBHeaderNav.captureState();
-      }
-      if (!headerElement) return null;
-      return {
-        transform: headerElement.style.transform || '',
-      };
+    const clearFirstTemplateSectionOffset = () => {
+      if (!activeFirstTemplateSection) return;
+      activeFirstTemplateSection.removeAttribute('data-sb-manual-first-section');
+      activeFirstTemplateSection.style.removeProperty('--sb-manual-first-offset-extra');
+      activeFirstTemplateSection = null;
     };
 
-    const restoreHeaderNavState = (state) => {
-      if (!state) return;
-      if (
-        window.SBHeaderNav &&
-        typeof window.SBHeaderNav.restoreState === 'function' &&
-        Object.prototype.hasOwnProperty.call(state, 'hiddenOffset')
-      ) {
-        window.SBHeaderNav.restoreState(state);
-        return;
-      }
-      if (!headerElement || typeof state.transform !== 'string') return;
-      headerElement.style.transform = state.transform;
-    };
-    const setHeaderScrollSyncLocked = (locked) => {
-      if (!window.SBHeaderNav || typeof window.SBHeaderNav.setScrollSyncLocked !== 'function') return;
-      window.SBHeaderNav.setScrollSyncLocked(locked);
+    const getFirstTemplateSection = () => {
+      const scopedRoot = document.querySelector('#MainContent') || document;
+      const sections = Array.from(scopedRoot.querySelectorAll('.shopify-section[id*="template--"]'));
+      return sections.find((section) => section instanceof HTMLElement && section.offsetHeight > 0) || null;
     };
 
     let layoutTicking = false;
-    const requestLayoutSync = () => {
+    let pendingForcedLayoutSync = false;
+    const requestLayoutSync = ({ force = false } = {}) => {
+      if (force) pendingForcedLayoutSync = true;
       if (layoutTicking) return;
       layoutTicking = true;
       window.requestAnimationFrame(() => {
-        syncStickyNavTop();
-        syncSidebarStickyTop();
-        syncStickyNavOffset();
-        syncScrollTargetOffset();
+        const shouldForce = pendingForcedLayoutSync;
+        pendingForcedLayoutSync = false;
+        syncManualScrollTargetOffsetVar();
+        syncFirstContentOffset({ force: shouldForce });
         layoutTicking = false;
       });
     };
 
+    const syncFirstContentOffset = ({ force = false } = {}) => {
+      const shouldApplyOffset = isMobileViewport();
+      if (!shouldApplyOffset) {
+        clearFirstTemplateSectionOffset();
+        return;
+      }
+
+      const currentScrollTop = window.scrollY || window.pageYOffset || 0;
+      if (!force && currentScrollTop > 4) {
+        return;
+      }
+
+      const firstTemplateSection = getFirstTemplateSection();
+      setFirstTemplateSection(firstTemplateSection);
+      if (!activeFirstTemplateSection) return;
+
+      const sectionTop = activeFirstTemplateSection.getBoundingClientRect().top + currentScrollTop;
+      const topStackBottom = Math.max(getTopStackBottom(), getTopAccessoryCurrentBottom(), getCurrentTopStackBottomFromDom());
+      const nextOffset = Math.max(Math.round(topStackBottom + getHeadingOffset() - sectionTop), 0);
+      const nextOffsetValue = `${nextOffset}px`;
+      if (activeFirstTemplateSection.style.getPropertyValue('--sb-manual-first-offset-extra') !== nextOffsetValue) {
+        activeFirstTemplateSection.style.setProperty('--sb-manual-first-offset-extra', nextOffsetValue);
+      }
+    };
+
     const getStickyOffset = () => {
+      const headingOffset = getHeadingOffset();
+      const topStackBottom = Math.max(getTopStackBottom(), getTopAccessoryCurrentBottom(), getCurrentTopStackBottomFromDom());
       if (isMobileViewport()) {
-        const activeWrap = getActiveStickyNavWrap();
-        if (!activeWrap) return 96;
-        const wrapTop = Number.parseFloat(getComputedStyle(activeWrap).top) || 0;
-        const nav = activeWrap.querySelector('.sb-manual-chapters__sticky-nav');
-        const navHeight = nav ? nav.getBoundingClientRect().height : 0;
-        return Math.max(wrapTop + navHeight + 8, 72);
+        return Math.max(topStackBottom + 8, 72);
       }
 
-      if (!sidebar || window.getComputedStyle(sidebar).display === 'none') return 96;
-      const parsed = Number.parseFloat(window.getComputedStyle(sidebar).top);
-      return Number.isFinite(parsed) ? parsed + 8 : 96;
+      if (!sidebar || window.getComputedStyle(sidebar).display === 'none') {
+        return Math.max(topStackBottom + 8, headingOffset);
+      }
+
+      const sidebarTop = Number.parseFloat(window.getComputedStyle(sidebar).top);
+      if (Number.isFinite(sidebarTop)) return Math.max(sidebarTop + 8, headingOffset);
+      return Math.max(topStackBottom + 8, headingOffset);
     };
 
-    const getScrollTargetOffset = () => {
-      if (isMobileViewport()) {
-        const activeWrap = getActiveStickyNavWrap();
-        if (activeWrap) {
-          const wrapTop = Number.parseFloat(getComputedStyle(activeWrap).top) || 0;
-          const nav = activeWrap.querySelector('.sb-manual-chapters__sticky-nav');
-          const navHeight = nav ? nav.getBoundingClientRect().height : 0;
-          return Math.max(Math.round(wrapTop + navHeight), 96);
-        }
-      } else if (sidebar && window.getComputedStyle(sidebar).display !== 'none') {
-        const sidebarTop = Number.parseFloat(window.getComputedStyle(sidebar).top);
-        if (Number.isFinite(sidebarTop)) {
-          return Math.max(Math.round(sidebarTop), 96);
-        }
+    const getScrollTargetOffset = (targetElement = null, { directionOverride = null, preferCurrentState = false } = {}) => {
+      const headingOffset = getHeadingOffset();
+      const pageY = window.scrollY || window.pageYOffset || 0;
+      const targetPageY = targetElement instanceof Element
+        ? targetElement.getBoundingClientRect().top + pageY
+        : pageY;
+      const direction = directionOverride || (targetPageY > pageY ? 'down' : 'up');
+      if (preferCurrentState) {
+        const currentTopStackBottom = Math.max(getTopStackBottom(), getTopAccessoryCurrentBottom(), getCurrentTopStackBottomFromDom());
+        return Math.max(Math.round(currentTopStackBottom + headingOffset), headingOffset);
       }
-
-      if (headerElement) {
-        const headerStyles = getComputedStyle(headerElement);
-        const headerBorderBottom = Number.parseFloat(headerStyles.borderBottomWidth) || 0;
-        const headerBottom = headerElement.getBoundingClientRect().bottom - headerBorderBottom;
-        return Math.max(Math.round(headerBottom + 36), 96);
-      }
-
-      return 96;
-    };
-
-    const syncScrollTargetOffset = () => {
-      const nextOffsetValue = `${getScrollTargetOffset()}px`;
-      if (root.style.getPropertyValue('--sb-manual-scroll-target-offset') !== nextOffsetValue) {
-        root.style.setProperty('--sb-manual-scroll-target-offset', nextOffsetValue);
-      }
+      const projectedTopStackBottom = getProjectedTopStackBottomForDirection(direction);
+      return Math.max(Math.round(projectedTopStackBottom + headingOffset), headingOffset);
     };
 
     const setActive = (id) => {
@@ -998,7 +1085,13 @@
     };
 
     const getActiveChapterId = () => {
-      const triggerLine = getStickyOffset();
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+      const stickyTriggerLine = getStickyOffset();
+      const activationOffset = getScrollTargetOffset(null, { preferCurrentState: true });
+      const triggerLine = Math.min(
+        Math.max(Math.round(activationOffset + 1), Math.round(stickyTriggerLine + 1), 1),
+        Math.max(viewportHeight - 1, 1)
+      );
       const pageY = window.scrollY || window.pageYOffset || 0;
       const triggerPageY = pageY + triggerLine;
       let current = chapterData[0].id;
@@ -1031,35 +1124,28 @@
       const chapter = findChapterById(nextId);
       if (!chapter) return;
 
-      const previousHeaderState = captureHeaderNavState();
-      setHeaderScrollSyncLocked(true);
-      try {
-        syncStickyNavTop();
-        syncSidebarStickyTop();
-        syncStickyNavOffset();
-        syncScrollTargetOffset();
-        const pageY = window.scrollY || window.pageYOffset || 0;
-        const scrollTargetOffset = getScrollTargetOffset();
-        const targetTop = chapter.heading.getBoundingClientRect().top + pageY - scrollTargetOffset;
-        const nextScrollTop = Math.max(Math.round(targetTop), 0);
-
-        if (updateHash) {
-          const nextHash = `#${nextId}`;
-          if (window.location.hash !== nextHash) {
-            window.history.pushState({}, '', `${window.location.pathname}${window.location.search}${nextHash}`);
-          }
-        }
-
-        window.scrollTo({
-          top: nextScrollTop,
-          behavior: 'auto',
-        });
-      } finally {
-        restoreHeaderNavState(previousHeaderState);
-        setHeaderScrollSyncLocked(false);
+      if (window.SBStickyStack && typeof window.SBStickyStack.requestSync === 'function') {
+        window.SBStickyStack.requestSync();
       }
 
-      requestLayoutSync();
+      if (updateHash) {
+        const nextHash = `#${nextId}`;
+        if (window.location.hash !== nextHash) {
+          window.history.pushState({}, '', `${window.location.pathname}${window.location.search}${nextHash}`);
+        }
+      }
+
+      if (window.SBStickyStack && typeof window.SBStickyStack.scrollToElement === 'function') {
+        window.SBStickyStack.scrollToElement(chapter.heading, { behavior: 'smooth' });
+      } else {
+        const currentY = window.scrollY || window.pageYOffset || 0;
+        const targetTop = chapter.heading.getBoundingClientRect().top + currentY - getScrollTargetOffset(chapter.heading);
+        window.scrollTo({
+          top: Math.max(Math.round(targetTop), 0),
+          behavior: 'smooth',
+        });
+      }
+
       requestSync();
       setActive(nextId);
     };
@@ -1241,9 +1327,6 @@
     window.addEventListener(
       'scroll',
       () => {
-        syncStickyNavTop();
-        syncSidebarStickyTop();
-        syncScrollTargetOffset();
         requestSync();
       },
       { passive: true }
@@ -1253,21 +1336,37 @@
       () => {
         closeAllChapterDropdowns();
         syncStickyTopNavigationMarker();
-        requestLayoutSync();
+        requestLayoutSync({ force: true });
         requestSync();
       },
       { passive: true }
     );
-    window.addEventListener('hashchange', requestSync);
-    window.addEventListener('load', requestLayoutSync);
+    window.addEventListener('hashchange', () => {
+      requestLayoutSync({ force: true });
+      requestSync();
+    });
+    window.addEventListener('load', () => {
+      requestLayoutSync({ force: true });
+      requestSync();
+    });
+    document.addEventListener('sb:cart-drawer:state-change', () => {
+      requestLayoutSync({ force: true });
+      requestSync();
+    });
+    document.addEventListener('sb:sticky-stack:change', () => {
+      requestLayoutSync();
+      requestSync();
+    });
 
     if (document.fonts && typeof document.fonts.ready === 'object') {
-      document.fonts.ready.then(requestLayoutSync).catch(() => {});
+      document.fonts.ready.then(() => {
+        requestLayoutSync({ force: true });
+      }).catch(() => {});
     }
 
     if (window.ResizeObserver) {
       const observer = new ResizeObserver(() => {
-        requestLayoutSync();
+        requestLayoutSync({ force: true });
         requestSync();
       });
       if (headerElement) observer.observe(headerElement);
@@ -1280,11 +1379,11 @@
         requestLayoutSync();
         requestSync();
       });
-      headerObserver.observe(headerElement, { attributes: true, attributeFilter: ['class', 'style'] });
+      headerObserver.observe(headerElement, { attributes: true, attributeFilter: ['class'] });
     }
 
     syncStickyTopNavigationMarker();
-    requestLayoutSync();
+    requestLayoutSync({ force: true });
     syncActive();
     window.setTimeout(syncActive, 120);
     window.setTimeout(syncActive, 360);

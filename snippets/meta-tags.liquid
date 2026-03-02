@@ -107,8 +107,26 @@
   {%- elsif request.page_type == '404' -%}
     404 &ndash; {{ shop.name }}
   {%- else -%}
+    {%- assign page_title_tag_labels = '' -%}
+    {%- if current_tags -%}
+      {%- for tag in current_tags -%}
+        {%- assign normalized_tag = tag | downcase -%}
+        {%- assign cleaned_tag = tag | strip -%}
+        {%- if normalized_tag contains 'by_product' -%}
+          {%- assign cleaned_tag = cleaned_tag | remove_first: 'By_product: ' | remove_first: 'by_product: ' | remove_first: 'By_product - ' | remove_first: 'by_product - ' | remove_first: 'By_product-' | remove_first: 'by_product-' | remove_first: 'By_product ' | remove_first: 'by_product ' | remove_first: 'By_product' | remove_first: 'by_product' | strip -%}
+        {%- elsif normalized_tag contains 'by_instrument' -%}
+          {%- assign cleaned_tag = cleaned_tag | remove_first: 'By_instrument: ' | remove_first: 'by_instrument: ' | remove_first: 'By_instrument - ' | remove_first: 'by_instrument - ' | remove_first: 'By_instrument-' | remove_first: 'by_instrument-' | remove_first: 'By_instrument ' | remove_first: 'by_instrument ' | remove_first: 'By_instrument' | remove_first: 'by_instrument' | strip -%}
+        {%- endif -%}
+        {%- if cleaned_tag != blank -%}
+          {%- if page_title_tag_labels != blank -%}
+            {%- assign page_title_tag_labels = page_title_tag_labels | append: ', ' -%}
+          {%- endif -%}
+          {%- assign page_title_tag_labels = page_title_tag_labels | append: cleaned_tag -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
     {{ page_title }}
-    {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+    {%- if page_title_tag_labels != blank %} ({{ page_title_tag_labels }}){% endif -%}
     {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
     {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
   {%- endif -%}

@@ -30,9 +30,11 @@
         const contentWidth = () => Math.max(1, Math.min(pageWidth(), window.innerWidth - (pageMargin() * 2)));
         const nativeExtraScroll = () => Math.max(0, viewport.clientWidth - contentWidth());
         const applyNativeExtraScroll = () => {
-          track.style.paddingRight = `${nativeExtraScroll()}px`;
+          const shouldCompensate = desiredMaxScroll() > 1;
+          const endOffset = shouldCompensate ? nativeExtraScroll() : 0;
+          track.style.setProperty('--sb-carousel-native-end-offset', `${endOffset}px`);
+          track.style.paddingRight = '';
         };
-
         const items = () => track.querySelectorAll('[data-sb-carousel-item]');
         const itemsSpan = () => {
           const list = items();

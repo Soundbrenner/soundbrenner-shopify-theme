@@ -28,6 +28,7 @@
   assign shipping_country_token = '{{ Shipping country }}'
   assign free_shipping_threshold_token = '{{ Free shipping threshold }}'
   assign affiliate_name_token = '{{ Affiliate name }}'
+  assign affiliate_discount_cookie_duration_hours = 336
   assign sitewide_seasonal_discount_depth = settings.sitewide_seasonal_discount_depth | default: 48 | strip
   assign sitewide_affiliate_discount_depth = settings.sitewide_affiliate_discount_depth | default: 20 | strip
   assign affiliate_announcement_gradient_value = 'linear-gradient(90deg, #67E8F9 0%, #1E293B 33%, #1E293B 66%, #67E8F9 100%)'
@@ -67,7 +68,6 @@
   assign seasonal_shipping_is_blocked = false
   assign seasonal_shipping_has_free_shipping = false
   assign seasonal_free_shipping_threshold_display = ''
-  assign seasonal_shipping_taxes_included = false
   assign seasonal_shipping_advertised_min_time = blank
   assign seasonal_shipping_advertised_max_time = blank
   assign cart_summary_shipping_text = 'Ships worldwide'
@@ -87,7 +87,6 @@
       assign seasonal_shipping_has_free_shipping = true
     endif
     if seasonal_entry_taxes_included == 'true' or seasonal_entry_taxes_included == '1' or seasonal_entry_taxes_included == 'yes'
-      assign seasonal_shipping_taxes_included = true
       assign cart_summary_taxes_text = 'Included in price'
     endif
     if seasonal_entry_threshold != blank
@@ -148,6 +147,17 @@
   assign announcement_text = announcement_text | replace: shipping_country_token, seasonal_shipping_country_name
   assign announcement_text = announcement_text | replace: free_shipping_threshold_token, seasonal_free_shipping_threshold_display
   assign announcement_text = announcement_text | replace: affiliate_name_token, resolved_sale_name
+  if seasonal_shipping_is_blocked
+    assign affiliate_announcement_text_template = announcement_text_blocked
+  elsif seasonal_shipping_has_free_shipping
+    assign affiliate_announcement_text_template = announcement_text_free_shipping
+  else
+    assign affiliate_announcement_text_template = announcement_text_no_free_shipping
+  endif
+  assign affiliate_announcement_text_template = affiliate_announcement_text_template | replace: sale_name_token, affiliate_name_token
+  assign affiliate_announcement_text_template = affiliate_announcement_text_template | replace: sitewide_discount_depth_token, sitewide_affiliate_discount_depth
+  assign affiliate_announcement_text_template = affiliate_announcement_text_template | replace: shipping_country_token, seasonal_shipping_country_name
+  assign affiliate_announcement_text_template = affiliate_announcement_text_template | replace: free_shipping_threshold_token, seasonal_free_shipping_threshold_display
   assign show_announcement = false
   if announcement_text != blank
     assign show_announcement = true
@@ -213,6 +223,7 @@
   assign metronome_rating_display = metronome_rating_raw | strip
   assign metronome_count_display = metronome_count_raw | strip
   assign cart_placeholder_image = 'icon-square-placeholder.svg' | asset_url
+  assign affiliate_announcement_emoji_asset_url = 'emoji-sale-affiliate.png' | asset_url
 
   case announcement_gradient
     when 'linear-gradient(90deg, #E9CC92 0%, #92734F 33%, #92734F 66%, #E9CC92 100%)'
@@ -241,7 +252,6 @@
       assign announcement_emoji_asset = 'emoji-sale-affiliate.png'
   endcase
 %}
-
 {% if show_country or show_language %}
   <script src="{{ 'localization.js' | asset_url }}" defer></script>
 {% endif %}
@@ -282,6 +292,13 @@
 
 <header
   class="header full-width{% if show_announcement %} has-announcement{% endif %}"
+  data-affiliate-announcement-template="{{ affiliate_announcement_text_template | escape }}"
+  data-affiliate-announcement-gradient="{{ affiliate_announcement_gradient_value | escape }}"
+  data-affiliate-announcement-emoji="{{ affiliate_announcement_emoji_asset_url | escape }}"
+  data-affiliate-name-token="{{ affiliate_name_token | escape }}"
+  data-affiliate-discount-code="{{ header_affiliate_discount_code | escape }}"
+  data-affiliate-name="{{ header_affiliate_name | escape }}"
+  data-affiliate-cookie-duration-hours="{{ affiliate_discount_cookie_duration_hours }}"
   {% if show_announcement %}
     style="--sb-announcement-background: {{ announcement_gradient }};"
   {% endif %}
@@ -506,6 +523,7 @@
                             </span>
                           {% endif %}
 
+                          {% # theme-check-disable RemoteAsset %}
                           {% if card_image_url != blank %}
                             <img
                               class="header__primary-card-image"
@@ -529,6 +547,7 @@
                               height="502"
                             >
                           {% endif %}
+                          {% # theme-check-enable RemoteAsset %}
                         </a>
 
                         <p class="header__primary-card-title font-body weight-bold">
@@ -926,6 +945,7 @@
                         {% unless drawer_hide_primary_tile %}
                           <a class="menu-drawer__submenu-card{% if drawer_is_app %} menu-drawer__submenu-card--app{% endif %}{% if drawer_badge_label != blank %} menu-drawer__submenu-card--has-badge menu-drawer__submenu-card--{{ drawer_badge_type }}{% endif %}" href="{{ drawer_card_link }}">
                             <span class="menu-drawer__submenu-media" aria-hidden="true">
+                              {% # theme-check-disable RemoteAsset %}
                               {% if drawer_card_image_url != blank %}
                                 <img
                                   class="menu-drawer__submenu-image"
@@ -947,6 +967,7 @@
                                   height="502"
                                 >
                               {% endif %}
+                              {% # theme-check-enable RemoteAsset %}
                             </span>
                             <span class="menu-drawer__submenu-copy">
                               <span class="menu-drawer__submenu-title font-body weight-bold">{{ drawer_card_title | escape }}</span>
@@ -1044,6 +1065,7 @@
                           %}
                           <a class="menu-drawer__submenu-card menu-drawer__submenu-card--related{% if drawer_related_badge_label != blank %} menu-drawer__submenu-card--has-badge menu-drawer__submenu-card--{{ drawer_related_badge_type }}{% endif %}" href="{{ drawer_related_product.url }}">
                             <span class="menu-drawer__submenu-media" aria-hidden="true">
+                              {% # theme-check-disable RemoteAsset %}
                               {% if drawer_related_image_url != blank %}
                                 <img
                                   class="menu-drawer__submenu-image"
@@ -1065,6 +1087,7 @@
                                   height="502"
                                 >
                               {% endif %}
+                              {% # theme-check-enable RemoteAsset %}
                             </span>
                             <span class="menu-drawer__submenu-copy">
                               <span class="menu-drawer__submenu-title font-body weight-bold">{{ drawer_related_product.title | escape }}</span>
@@ -1327,15 +1350,11 @@
             <span class="header__cart-drawer-close-icon" aria-hidden="true">{{ 'icon-cancel.svg' | inline_asset_content }}</span>
           </button>
         </div>
-        {% assign cart_drawer_free_shipping_available = false %}
-        {% if seasonal_shipping_has_free_shipping and seasonal_shipping_is_blocked == false %}
-          {% assign cart_drawer_free_shipping_available = true %}
-        {% endif %}
         <p class="header__cart-drawer-empty-message font-body weight-regular" data-cart-empty-message {% unless cart.empty? %}hidden{% endunless %}>
           Your cart is empty. Let's fill it with beautifully designed music gear.
         </p>
         {% render 'sb-cart-free-shipping-progress',
-          available: cart_drawer_free_shipping_available,
+          available: seasonal_shipping_has_free_shipping and seasonal_shipping_is_blocked == false,
           threshold_cents: seasonal_entry_threshold_cents,
           subtotal_cents: cart.total_price,
           currency: cart.currency.iso_code,
@@ -1516,6 +1535,10 @@
   }
 
   .header__announcement-countdown[hidden] {
+    display: none;
+  }
+
+  .header.is-affiliate-announcement-active .header__announcement-countdown {
     display: none;
   }
 
@@ -1764,7 +1787,7 @@
 
   .header__primary-card-media:hover,
   .header__primary-card-media:focus-visible {
-    transform: scale(1.015);
+    transform: scale(var(--sb-hover-scale-factor, 1.015));
   }
 
   .header__primary-card-badge {
@@ -2786,9 +2809,12 @@
     display: block;
   }
 
-  html.sb-scroll-locked,
-  body.sb-scroll-locked {
+  html.sb-scroll-locked {
     overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  body.sb-scroll-locked {
     overscroll-behavior: none;
   }
 
@@ -3676,7 +3702,7 @@
   .menu-drawer__submenu-card:hover,
   .menu-drawer__submenu-card:focus-visible {
     color: var(--sb-color-neutral-900);
-    transform: scale(1.015);
+    transform: scale(var(--sb-hover-scale-factor, 1.015));
   }
 
   .menu-drawer__submenu-media {
@@ -3851,7 +3877,7 @@
   .menu-drawer__submenu-secondary:hover,
   .menu-drawer__submenu-secondary:focus-visible {
     color: var(--sb-color-neutral-900);
-    transform: scale(1.015);
+    transform: scale(var(--sb-hover-scale-factor, 1.015));
   }
 
   .menu-drawer__submenu-store {
@@ -4445,7 +4471,7 @@
   @media (hover: hover) and (pointer: fine) {
     .sb-cart-line__media:hover,
     .sb-cart-line__media:focus-visible {
-      transform: scale(1.015);
+      transform: scale(var(--sb-hover-scale-factor, 1.015));
     }
 
     .sb-cart-line__media--has-hover:hover .sb-cart-line__image--primary,
@@ -4756,7 +4782,7 @@
 
   .header__cart-empty-collection-media:hover,
   .header__cart-empty-collection-media:focus-visible {
-    transform: scale(1.015);
+    transform: scale(var(--sb-hover-scale-factor, 1.015));
   }
 
   .header__cart-empty-collection-title {
@@ -5249,7 +5275,6 @@
     width: auto;
   }
 
-  #shopify-section-{{ section.id }},
   .shopify-section:has(> .header) {
     min-height: calc(
       var(--sb-header-height, 60px)
@@ -5264,6 +5289,185 @@
     const header = document.querySelector('.header');
     if (!header || header.dataset.headerInit === 'true') return;
     header.dataset.headerInit = 'true';
+
+    const affiliateAnnouncementCookieName = 'sb_affiliate_announcement_state';
+    const affiliatePageDiscountCode = `${header.dataset.affiliateDiscountCode || ''}`.trim();
+    const affiliatePageName = `${header.dataset.affiliateName || ''}`.trim();
+    const affiliateNameToken = `${header.dataset.affiliateNameToken || ''}`;
+    const affiliateAnnouncementTemplate = `${header.dataset.affiliateAnnouncementTemplate || ''}`;
+    const affiliateAnnouncementGradient = `${header.dataset.affiliateAnnouncementGradient || ''}`;
+    const affiliateAnnouncementEmoji = `${header.dataset.affiliateAnnouncementEmoji || ''}`;
+    const affiliateDurationHoursRaw = Number.parseInt(`${header.dataset.affiliateCookieDurationHours || ''}`, 10);
+    const affiliateAnnouncementDurationHours = Number.isFinite(affiliateDurationHoursRaw) && affiliateDurationHoursRaw > 0
+      ? affiliateDurationHoursRaw
+      : 336;
+    const affiliateAnnouncementDurationMs = affiliateAnnouncementDurationHours * 60 * 60 * 1000;
+    const announcementTextElement = header.querySelector('.header__announcement-text');
+    const announcementTextDefault = announcementTextElement ? announcementTextElement.textContent || '' : '';
+    const announcementBackgroundDefault = header.style.getPropertyValue('--sb-announcement-background');
+    const announcementEmojiImages = Array.from(header.querySelectorAll('.header__announcement-emoji img'));
+    const announcementEmojiDefaults = announcementEmojiImages.map((imageNode) => imageNode.getAttribute('src') || '');
+    let affiliateAnnouncementActive = false;
+    let affiliateAnnouncementSignature = '';
+
+    const parseJson = (value) => {
+      try {
+        return JSON.parse(value);
+      } catch (_) {
+        return null;
+      }
+    };
+
+    const readCookie = (name) => {
+      const cookieSource = `${document.cookie || ''}`;
+      if (!cookieSource) return '';
+      const cookieParts = cookieSource.split(';');
+      for (const cookiePart of cookieParts) {
+        const trimmedPart = cookiePart.trim();
+        if (!trimmedPart.startsWith(`${name}=`)) continue;
+        return trimmedPart.slice(name.length + 1);
+      }
+      return '';
+    };
+
+    const clearAffiliateAnnouncementState = () => {
+      document.cookie = `${affiliateAnnouncementCookieName}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax`;
+    };
+
+    const getAffiliateAnnouncementState = () => {
+      const rawCookieValue = readCookie(affiliateAnnouncementCookieName);
+      if (!rawCookieValue) return null;
+
+      const decodedCookieValue = (() => {
+        try {
+          return decodeURIComponent(rawCookieValue);
+        } catch (_) {
+          return rawCookieValue;
+        }
+      })();
+      const parsedState = parseJson(decodedCookieValue);
+      if (!parsedState || typeof parsedState !== 'object') return null;
+
+      const discountCode = `${parsedState.discountCode || ''}`.trim();
+      const affiliateName = `${parsedState.affiliateName || discountCode}`.trim();
+      const expiresAt = Number.parseInt(`${parsedState.expiresAt || ''}`, 10);
+      if (!discountCode || !affiliateName || !Number.isFinite(expiresAt) || expiresAt <= Date.now()) return null;
+
+      return {
+        discountCode,
+        affiliateName,
+        expiresAt
+      };
+    };
+
+    const writeAffiliateAnnouncementState = (state) => {
+      if (!state || typeof state !== 'object') {
+        clearAffiliateAnnouncementState();
+        return null;
+      }
+
+      const nextState = {
+        discountCode: `${state.discountCode || ''}`.trim(),
+        affiliateName: `${state.affiliateName || state.discountCode || ''}`.trim(),
+        expiresAt: Number.parseInt(`${state.expiresAt || ''}`, 10)
+      };
+      if (!nextState.discountCode || !nextState.affiliateName || !Number.isFinite(nextState.expiresAt) || nextState.expiresAt <= Date.now()) {
+        clearAffiliateAnnouncementState();
+        return null;
+      }
+
+      const maxAgeSeconds = Math.max(1, Math.floor((nextState.expiresAt - Date.now()) / 1000));
+      const serializedState = encodeURIComponent(JSON.stringify(nextState));
+      document.cookie = `${affiliateAnnouncementCookieName}=${serializedState}; path=/; max-age=${maxAgeSeconds}; SameSite=Lax`;
+      return nextState;
+    };
+
+    const replaceToken = (input, token, replacement) => {
+      const source = `${input || ''}`;
+      const target = `${token || ''}`;
+      if (!target) return source;
+      return source.split(target).join(`${replacement || ''}`);
+    };
+
+    const setAnnouncementText = (text) => {
+      if (!announcementTextElement) return;
+      const normalizedText = `${text || ''}`;
+      const lines = normalizedText.split('\n');
+      announcementTextElement.textContent = '';
+      lines.forEach((line, index) => {
+        if (index > 0) announcementTextElement.appendChild(document.createElement('br'));
+        announcementTextElement.appendChild(document.createTextNode(line));
+      });
+    };
+
+    const getAffiliateAnnouncementText = (state) => {
+      if (!state) return announcementTextDefault;
+      const sourceText = affiliateAnnouncementTemplate.trim();
+      if (!sourceText) return announcementTextDefault;
+      const announcementText = replaceToken(sourceText, affiliateNameToken, state.affiliateName);
+      return announcementText.trim() || announcementTextDefault;
+    };
+
+    const applyAffiliateAnnouncement = (state) => {
+      const isActive = Boolean(state && announcementTextElement);
+      const nextSignature = isActive ? `${state.discountCode}:${state.affiliateName}` : '';
+      if (affiliateAnnouncementActive === isActive && affiliateAnnouncementSignature === nextSignature) return;
+
+      affiliateAnnouncementActive = isActive;
+      affiliateAnnouncementSignature = nextSignature;
+
+      if (isActive) {
+        if (affiliateAnnouncementGradient) {
+          header.style.setProperty('--sb-announcement-background', affiliateAnnouncementGradient);
+        }
+        announcementEmojiImages.forEach((imageNode) => {
+          if (!affiliateAnnouncementEmoji) return;
+          imageNode.setAttribute('src', affiliateAnnouncementEmoji);
+        });
+        setAnnouncementText(getAffiliateAnnouncementText(state));
+        header.classList.add('is-affiliate-announcement-active');
+        return;
+      }
+
+      header.classList.remove('is-affiliate-announcement-active');
+      if (announcementBackgroundDefault) {
+        header.style.setProperty('--sb-announcement-background', announcementBackgroundDefault);
+      } else {
+        header.style.removeProperty('--sb-announcement-background');
+      }
+      announcementEmojiImages.forEach((imageNode, index) => {
+        const defaultSource = announcementEmojiDefaults[index] || '';
+        if (!defaultSource) return;
+        imageNode.setAttribute('src', defaultSource);
+      });
+      setAnnouncementText(announcementTextDefault);
+    };
+
+    const syncAffiliateAnnouncementState = () => {
+      const state = getAffiliateAnnouncementState();
+      if (!state) {
+        clearAffiliateAnnouncementState();
+        applyAffiliateAnnouncement(null);
+        return null;
+      }
+
+      applyAffiliateAnnouncement(state);
+      return state;
+    };
+
+    if (affiliatePageDiscountCode) {
+      writeAffiliateAnnouncementState({
+        discountCode: affiliatePageDiscountCode,
+        affiliateName: affiliatePageName || affiliatePageDiscountCode,
+        expiresAt: Date.now() + affiliateAnnouncementDurationMs
+      });
+    }
+
+    syncAffiliateAnnouncementState();
+
+    window.setInterval(() => {
+      syncAffiliateAnnouncementState();
+    }, 1000);
 
     const mobileMenuDrawer = document.querySelector('[data-mobile-menu-drawer]');
     const mobileMenuToggle = header.querySelector('[data-mobile-menu-toggle]');
@@ -5686,8 +5890,9 @@
       document.body.classList.add('is-mobile-menu-open');
       syncPageScrollLock();
     };
-    const closeMobileMenu = ({ immediate = false } = {}) => {
+    const closeMobileMenu = ({ immediate = false, preserveHeaderState = false } = {}) => {
       if (!mobileMenuDrawer || !mobileMenuToggle) return;
+      const wasMobileMenuOpen = isMobileMenuOpen();
       clearMobileMenuCloseTimer();
       mobileMenuDrawer.classList.remove('menu-open');
       mobileMenuToggle.setAttribute('aria-expanded', 'false');
@@ -5695,9 +5900,13 @@
         closeAllMobileAccordions();
         document.body.classList.remove('is-mobile-menu-open');
         syncPageScrollLock();
-        // Keep the primary navigation visible after closing mobile menu.
-        if (typeof sync === 'function') {
-          sync(getWindowY(), { force: true });
+        if (typeof sync === 'function' && wasMobileMenuOpen) {
+          if (preserveHeaderState) {
+            sync(getWindowY());
+          } else {
+            // Keep the primary navigation visible after explicit menu close.
+            sync(getWindowY(), { force: true });
+          }
           syncPrimaryBackdropOnScroll();
         }
       };
@@ -5735,7 +5944,7 @@
         'resize',
         () => {
           if (isDesktopViewport()) {
-            closeMobileMenu({ immediate: true });
+            closeMobileMenu({ immediate: true, preserveHeaderState: true });
             schedulePrimaryMenuPreload();
             return;
           }
@@ -5881,7 +6090,6 @@
     const getWindowY = () => window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
     let lastY = getWindowY();
     const topThreshold = 8;
-    const revealAfterUpDistance = 18;
     let upwardTravel = 0;
     let hiddenOffset = 0;
     let topExitMode = lastY <= topThreshold;
@@ -5890,9 +6098,14 @@
     const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
     const headerSection = header.closest('.shopify-section');
     const announcementElement = header.querySelector('.header__announcement');
-    const stickyTopNavigationSelector = '[data-sb-sticky-top-navigation]';
-    const hasStickyTopNavigation = () => Boolean(document.querySelector(stickyTopNavigationSelector));
-    let shouldHidePrimaryNavigationOnScroll = hasStickyTopNavigation();
+    const hasActiveTopAccessory = () => {
+      if (window.SBStickyStack && typeof window.SBStickyStack.hasActiveTopAccessory === 'function') {
+        return window.SBStickyStack.hasActiveTopAccessory();
+      }
+
+      return Boolean(document.querySelector('[data-sb-sticky-top-navigation]:not([data-sb-sticky-active="false"])'));
+    };
+    let shouldHidePrimaryNavigationOnScroll = hasActiveTopAccessory();
     let headerSectionMinHeightRaf = null;
     const readHeaderSpacingVar = (propertyName, fallback = 0) => {
       const parsed = Number.parseFloat(getComputedStyle(header).getPropertyValue(propertyName));
@@ -5955,7 +6168,7 @@
       lastY = getWindowY();
     };
     const refreshHeaderScrollMode = ({ forceSync = false } = {}) => {
-      const nextShouldHidePrimaryNavigation = hasStickyTopNavigation();
+      const nextShouldHidePrimaryNavigation = hasActiveTopAccessory();
       shouldHidePrimaryNavigationOnScroll = nextShouldHidePrimaryNavigation;
       hiddenOffset = clamp(hiddenOffset, 0, headerHideOffsetLimit());
       topExitMode = hiddenOffset < headerHideOffsetLimit();
@@ -6391,6 +6604,13 @@
     schedulePrimaryMenuPreload();
 
     const sync = (currentY, { force = false } = {}) => {
+      const nextShouldHidePrimaryNavigation = hasActiveTopAccessory();
+      if (nextShouldHidePrimaryNavigation !== shouldHidePrimaryNavigationOnScroll) {
+        shouldHidePrimaryNavigationOnScroll = nextShouldHidePrimaryNavigation;
+        hiddenOffset = clamp(hiddenOffset, 0, headerHideOffsetLimit());
+        topExitMode = hiddenOffset < headerHideOffsetLimit();
+      }
+
       const delta = currentY - lastY;
       const maxOffset = headerHideOffsetLimit();
 
@@ -6415,12 +6635,9 @@
         }
         applyOffset();
       } else if (delta < 0) {
-        upwardTravel += Math.abs(delta);
-        if (upwardTravel >= revealAfterUpDistance) {
-          hiddenOffset = 0;
-          upwardTravel = 0;
-          applyOffset();
-        }
+        hiddenOffset = 0;
+        upwardTravel = 0;
+        applyOffset();
       }
 
       lastY = currentY;
@@ -6487,6 +6704,10 @@
       scheduleHeaderSectionMinHeightSync();
     });
     document.addEventListener('shopify:section:unload', () => {
+      refreshHeaderScrollMode({ forceSync: true });
+      scheduleHeaderSectionMinHeightSync();
+    });
+    document.addEventListener('sb:sticky-stack:change', () => {
       refreshHeaderScrollMode({ forceSync: true });
       scheduleHeaderSectionMinHeightSync();
     });

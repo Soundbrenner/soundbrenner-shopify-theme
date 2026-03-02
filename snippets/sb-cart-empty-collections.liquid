@@ -47,6 +47,7 @@
                   height="220"
                 >
               {% else %}
+                {% # theme-check-disable RemoteAsset %}
                 <img
                   class="{{ sb_cart_image_class }}"
                   src="{{ sb_cart_placeholder_image }}"
@@ -55,6 +56,7 @@
                   width="220"
                   height="220"
                 >
+                {% # theme-check-enable RemoteAsset %}
               {% endif %}
             </a>
             <a class="{{ sb_cart_title_class }} {{ sb_cart_title_font_class }}" href="{{ collection_link.url }}">

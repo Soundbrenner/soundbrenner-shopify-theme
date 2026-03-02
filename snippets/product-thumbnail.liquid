@@ -22,7 +22,11 @@
   assign thumbnail_url_parts = thumbnail_url | split: '?'
   assign thumbnail_url = thumbnail_url_parts | first
 
-  assign thumbnail_reviews_count_number = reviews_count_number | default: 0 | plus: 0 | round: 0
+  assign thumbnail_reviews_count_number = reviews_count_number | default: blank
+  if thumbnail_reviews_count_number == blank and product != blank
+    assign thumbnail_reviews_count_number = product.metafields.reviews.rating_count.value | default: 0
+  endif
+  assign thumbnail_reviews_count_number = thumbnail_reviews_count_number | plus: 0 | round: 0
   if thumbnail_reviews_count_number < 0
     assign thumbnail_reviews_count_number = 0
   endif
@@ -44,7 +48,12 @@
       endif
     endfor
   endcapture
-  assign thumbnail_rating = rating | default: 0 | plus: 0
+  assign thumbnail_rating = rating | default: blank
+  if thumbnail_rating == blank and product != blank and product.metafields.reviews.rating.value != blank
+    assign thumbnail_rating_value = product.metafields.reviews.rating.value
+    assign thumbnail_rating = thumbnail_rating_value.rating | default: thumbnail_rating_value
+  endif
+  assign thumbnail_rating = thumbnail_rating | default: 0 | plus: 0
   assign thumbnail_rating_tooltip = thumbnail_rating | round: 2 | append: ''
   assign thumbnail_rating_tooltip_parts = thumbnail_rating_tooltip | split: '.'
   assign thumbnail_rating_tooltip_decimal = thumbnail_rating_tooltip_parts[1] | default: ''
@@ -53,13 +62,231 @@
   elsif thumbnail_rating_tooltip_decimal.size == 1
     assign thumbnail_rating_tooltip = thumbnail_rating_tooltip | append: '0'
   endif
-  assign thumbnail_hide_reviews = hide_reviews | default: false
+  assign thumbnail_hide_reviews = hide_reviews
+  if thumbnail_hide_reviews == blank and product != blank
+    assign thumbnail_product_settings_ref = product.metafields.custom.sbv2_product_settings.value | default: product.metafields.custom.sbv2_product_settings
+    if thumbnail_product_settings_ref != blank
+      assign thumbnail_hide_reviews_value = thumbnail_product_settings_ref.hide_reviews.value | default: thumbnail_product_settings_ref.hide_reviews
+      if thumbnail_hide_reviews_value == true or thumbnail_hide_reviews_value == 'true' or thumbnail_hide_reviews_value == 1 or thumbnail_hide_reviews_value == '1'
+        assign thumbnail_hide_reviews = true
+      endif
+    endif
+  endif
+  if thumbnail_hide_reviews == blank
+    assign thumbnail_hide_reviews = false
+  endif
   if thumbnail_hide_reviews == 'true' or thumbnail_hide_reviews == 1 or thumbnail_hide_reviews == '1'
     assign thumbnail_hide_reviews = true
   endif
+
+  assign thumbnail_show_add_to_cart = show_add_to_cart
+  if thumbnail_show_add_to_cart == blank
+    assign thumbnail_show_add_to_cart = true
+  endif
+  if thumbnail_show_add_to_cart == 'false' or thumbnail_show_add_to_cart == 0 or thumbnail_show_add_to_cart == '0'
+    assign thumbnail_show_add_to_cart = false
+  endif
+
+  assign thumbnail_show_compare_add_to_cart_large = show_compare_add_to_cart_large
+  if thumbnail_show_compare_add_to_cart_large == blank
+    assign thumbnail_show_compare_add_to_cart_large = false
+  endif
+  if thumbnail_show_compare_add_to_cart_large == 'true' or thumbnail_show_compare_add_to_cart_large == 1 or thumbnail_show_compare_add_to_cart_large == '1'
+    assign thumbnail_show_compare_add_to_cart_large = true
+  endif
   assign selected_swatch_value = selected_swatch | default: 1 | plus: 0
+  assign swatch_payload_entry_delimiter = '^^^sb-entry^^^'
+  assign swatch_payload_field_delimiter = '^^^sb-field^^^'
+  assign swatches_payload_value = swatches_payload | default: blank | strip
+  if swatches_payload_value == blank and product != blank
+    for option in product.options_with_values
+      assign option_name_downcase = option.name | downcase
+      if option_name_downcase contains 'color' or option_name_downcase contains 'colour'
+        for option_value in option.values
+          assign option_swatch_color = option_value.swatch.color | default: option_value.name
+          assign option_swatch_image = blank
+          assign option_swatch_hover_image = blank
+          assign option_swatch_gallery = blank
+          assign option_swatch_variant_id = blank
+          assign option_swatch_price_text = blank
+          assign option_swatch_compare_price_text = blank
+          assign option_swatch_price_cents = blank
+          assign option_swatch_compare_price_cents = blank
+
+          if option_value.swatch.image != blank
+            assign option_swatch_image = option_value.swatch.image | image_url: width: 584
+          endif
+
+          for product_variant in product.variants
+            assign variant_color_value = blank
+            case option.position
+              when 1
+                assign variant_color_value = product_variant.option1
+              when 2
+                assign variant_color_value = product_variant.option2
+              when 3
+                assign variant_color_value = product_variant.option3
+            endcase
+
+            if variant_color_value == option_value.name
+              assign option_swatch_variant_id = product_variant.id
+              assign option_swatch_price_text = product_variant.price | money
+              assign option_swatch_price_cents = product_variant.price | plus: 0
+              if product_variant.compare_at_price > product_variant.price
+                assign option_swatch_compare_price_text = product_variant.compare_at_price | money
+                assign option_swatch_compare_price_cents = product_variant.compare_at_price | plus: 0
+              endif
+              break
+            endif
+          endfor
+
+          if option_swatch_image == blank
+            for product_variant in product.variants
+              assign variant_color_value = blank
+              case option.position
+                when 1
+                  assign variant_color_value = product_variant.option1
+                when 2
+                  assign variant_color_value = product_variant.option2
+                when 3
+                  assign variant_color_value = product_variant.option3
+              endcase
+
+              if variant_color_value == option_value.name and product_variant.featured_image != blank
+                assign option_swatch_image = product_variant.featured_image | image_url: width: 584
+                assign option_swatch_gallery = 'image::' | append: option_swatch_image
+                assign option_swatch_variant_id = product_variant.id
+                assign option_swatch_price_text = product_variant.price | money
+                assign option_swatch_price_cents = product_variant.price | plus: 0
+                if product_variant.compare_at_price > product_variant.price
+                  assign option_swatch_compare_price_text = product_variant.compare_at_price | money
+                  assign option_swatch_compare_price_cents = product_variant.compare_at_price | plus: 0
+                endif
+
+                capture option_swatch_hover_image_url
+                  render 'sb-hover-image-url', resource: product_variant, width: 584
+                endcapture
+                assign option_swatch_hover_image_url = option_swatch_hover_image_url | strip
+                if option_swatch_hover_image_url != blank
+                  assign option_swatch_hover_image = option_swatch_hover_image_url
+                endif
+
+                assign option_variant_gallery_images = product_variant.metafields.custom.images.value | default: product_variant.metafields.custom.images
+                if option_variant_gallery_images != blank
+                  for option_variant_gallery_image in option_variant_gallery_images
+                    assign option_variant_gallery_media = option_variant_gallery_image.value | default: option_variant_gallery_image
+                    assign option_variant_gallery_type = option_variant_gallery_media.media_type | default: 'image'
+                    assign option_variant_gallery_image_url = blank
+                    assign option_variant_gallery_video_url = blank
+                    assign option_variant_gallery_poster_url = blank
+
+                    if option_variant_gallery_type == 'video'
+                      if option_variant_gallery_media.sources != blank
+                        for option_variant_video_source in option_variant_gallery_media.sources
+                          assign option_variant_gallery_video_url = option_variant_video_source.url | default: option_variant_video_source.src
+                          if option_variant_gallery_video_url != blank
+                            break
+                          endif
+                        endfor
+                      endif
+                      if option_variant_gallery_media.preview_image != blank
+                        assign option_variant_gallery_poster_url = option_variant_gallery_media.preview_image | image_url: width: 584
+                      endif
+                    else
+                      if option_variant_gallery_media.preview_image != blank
+                        assign option_variant_gallery_image_url = option_variant_gallery_media.preview_image | image_url: width: 584
+                      elsif option_variant_gallery_media != blank
+                        assign option_variant_gallery_image_url = option_variant_gallery_media | image_url: width: 584
+                      endif
+                    endif
+
+                    assign option_variant_gallery_token = blank
+                    if option_variant_gallery_video_url != blank
+                      assign option_variant_gallery_token = 'video::' | append: option_variant_gallery_video_url
+                      if option_variant_gallery_poster_url != blank
+                        assign option_variant_gallery_token = option_variant_gallery_token | append: '::' | append: option_variant_gallery_poster_url
+                      endif
+                    elsif option_variant_gallery_image_url != blank and option_variant_gallery_image_url != option_swatch_image
+                      assign option_variant_gallery_token = 'image::' | append: option_variant_gallery_image_url
+                    endif
+
+                    if option_variant_gallery_token != blank
+                      assign option_swatch_gallery = option_swatch_gallery | append: '||' | append: option_variant_gallery_token
+                    endif
+                  endfor
+                endif
+                break
+              endif
+            endfor
+          endif
+
+          if option_swatch_hover_image == blank
+            for product_variant in product.variants
+              assign variant_color_value = blank
+              case option.position
+                when 1
+                  assign variant_color_value = product_variant.option1
+                when 2
+                  assign variant_color_value = product_variant.option2
+                when 3
+                  assign variant_color_value = product_variant.option3
+              endcase
+              if variant_color_value == option_value.name
+                capture option_swatch_hover_image_url
+                  render 'sb-hover-image-url', resource: product_variant, width: 584
+                endcapture
+                assign option_swatch_hover_image_url = option_swatch_hover_image_url | strip
+                if option_swatch_hover_image_url != blank
+                  assign option_swatch_hover_image = option_swatch_hover_image_url
+                  break
+                endif
+              endif
+            endfor
+          endif
+
+          if option_swatch_color != blank
+            capture swatch_payload_entry
+              echo option_swatch_color
+              echo swatch_payload_field_delimiter
+              echo option_swatch_image
+              echo swatch_payload_field_delimiter
+              echo option_swatch_hover_image
+              echo swatch_payload_field_delimiter
+              echo option_swatch_gallery
+              echo swatch_payload_field_delimiter
+              echo option_swatch_variant_id
+              echo swatch_payload_field_delimiter
+              echo option_swatch_price_text
+              echo swatch_payload_field_delimiter
+              echo option_swatch_compare_price_text
+              echo swatch_payload_field_delimiter
+              echo option_swatch_price_cents
+              echo swatch_payload_field_delimiter
+              echo option_swatch_compare_price_cents
+            endcapture
+
+            if swatches_payload_value != blank
+              assign swatches_payload_value = swatches_payload_value | append: swatch_payload_entry_delimiter
+            endif
+            assign swatches_payload_value = swatches_payload_value | append: swatch_payload_entry
+          endif
+        endfor
+      endif
+    endfor
+  endif
+  assign swatch_payload_entries = blank
+  assign swatch_payload_count = 0
+  if swatches_payload_value != blank
+    assign swatch_payload_entries = swatches_payload_value | split: swatch_payload_entry_delimiter
+    for swatch_payload_entry in swatch_payload_entries
+      assign swatch_payload_entry_clean = swatch_payload_entry | strip
+      if swatch_payload_entry_clean != blank
+        assign swatch_payload_count = swatch_payload_count | plus: 1
+      endif
+    endfor
+  endif
   assign thumbnail_has_swatches_input = false
-  if swatch_1 != blank or swatch_2 != blank or swatch_3 != blank or swatch_4 != blank
+  if swatch_payload_count > 0
     assign thumbnail_has_swatches_input = true
   endif
 
@@ -71,8 +298,6 @@
   assign thumbnail_badge_type = blank
   assign thumbnail_variant_id = blank
   assign thumbnail_star_icon_url = 'icon-review-star.svg' | asset_url
-  assign thumbnail_add_to_cart_icon_url = 'icon-add-to-cart.svg' | asset_url
-  assign thumbnail_check_icon_url = 'icon-check.svg' | asset_url
   assign thumbnail_compare_info_text = compare_info_text
   assign thumbnail_gallery_images = ''
   assign thumbnail_gallery_count = 0
@@ -82,16 +307,25 @@
   endif
 
   if thumbnail_hover_image_url == blank
-    case selected_swatch_value
-      when 1
-        assign thumbnail_hover_image_url = swatch_1_hover_image
-      when 2
-        assign thumbnail_hover_image_url = swatch_2_hover_image
-      when 3
-        assign thumbnail_hover_image_url = swatch_3_hover_image
-      when 4
-        assign thumbnail_hover_image_url = swatch_4_hover_image
-    endcase
+    assign selected_payload_index = selected_swatch_value
+    if selected_payload_index < 1
+      assign selected_payload_index = 1
+    endif
+    if selected_payload_index > swatch_payload_count
+      assign selected_payload_index = 1
+    endif
+    assign payload_index = 0
+    for swatch_payload_entry in swatch_payload_entries
+      assign swatch_payload_entry_clean = swatch_payload_entry | strip
+      if swatch_payload_entry_clean != blank
+        assign payload_index = payload_index | plus: 1
+        if payload_index == selected_payload_index
+          assign swatch_payload_fields = swatch_payload_entry_clean | split: swatch_payload_field_delimiter
+          assign thumbnail_hover_image_url = swatch_payload_fields[2] | default: blank | strip
+          break
+        endif
+      endif
+    endfor
     assign thumbnail_hover_image_url = thumbnail_hover_image_url | strip
   endif
 
@@ -318,7 +552,7 @@
         {% endfor %}
       </div>
     {% endif %}
-    {% if thumbnail_gallery_count > 1 or swatch_1 != blank or swatch_2 != blank or swatch_3 != blank or swatch_4 != blank %}
+    {% if thumbnail_gallery_count > 1 or thumbnail_has_swatches_input %}
       <button
         type="button"
         class="sb-product-thumbnail__gallery-nav sb-product-thumbnail__gallery-nav--left"
@@ -340,7 +574,7 @@
         </span>
       </button>
     {% endif %}
-    {% if show_add_to_cart and thumbnail_variant_id != blank %}
+    {% if thumbnail_show_add_to_cart and thumbnail_variant_id != blank %}
       <button
         type="button"
         class="sb-product-thumbnail__add-to-cart font-caption weight-bold"
@@ -352,9 +586,9 @@
       >
         <img
           class="sb-product-thumbnail__add-to-cart-icon-image"
-          src="{{ thumbnail_add_to_cart_icon_url }}"
-          data-add-icon="{{ thumbnail_add_to_cart_icon_url }}"
-          data-check-icon="{{ thumbnail_check_icon_url }}"
+          src="{{ 'icon-add-to-cart.svg' | asset_url }}"
+          data-add-icon="{{ 'icon-add-to-cart.svg' | asset_url }}"
+          data-check-icon="{{ 'icon-check.svg' | asset_url }}"
           alt=""
           aria-hidden="true"
           width="16"
@@ -408,146 +642,79 @@
   </div>
 
   {% assign has_swatches = false %}
-  {% if swatch_1 != blank or swatch_2 != blank or swatch_3 != blank or swatch_4 != blank %}
+  {% if swatch_payload_count > 0 %}
     {% assign has_swatches = true %}
   {% endif %}
 
-  {% assign swatch_1_variant_id_resolved = swatch_1_variant_id | default: thumbnail_variant_id %}
-  {% assign swatch_2_variant_id_resolved = swatch_2_variant_id | default: thumbnail_variant_id %}
-  {% assign swatch_3_variant_id_resolved = swatch_3_variant_id | default: thumbnail_variant_id %}
-  {% assign swatch_4_variant_id_resolved = swatch_4_variant_id | default: thumbnail_variant_id %}
-  {% assign swatch_1_price_cents = blank %}
-  {% assign swatch_2_price_cents = blank %}
-  {% assign swatch_3_price_cents = blank %}
-  {% assign swatch_4_price_cents = blank %}
-  {% assign swatch_1_compare_price_cents = blank %}
-  {% assign swatch_2_compare_price_cents = blank %}
-  {% assign swatch_3_compare_price_cents = blank %}
-  {% assign swatch_4_compare_price_cents = blank %}
-  {% if product != blank and has_swatches %}
-    {% for swatch_variant in product.variants %}
-      {% if swatch_1_variant_id_resolved != blank and swatch_variant.id == swatch_1_variant_id_resolved %}
-        {% assign swatch_1_price_cents = swatch_variant.price | plus: 0 %}
-        {% if swatch_variant.compare_at_price > swatch_variant.price %}
-          {% assign swatch_1_compare_price_cents = swatch_variant.compare_at_price | plus: 0 %}
-        {% endif %}
-      {% endif %}
-      {% if swatch_2_variant_id_resolved != blank and swatch_variant.id == swatch_2_variant_id_resolved %}
-        {% assign swatch_2_price_cents = swatch_variant.price | plus: 0 %}
-        {% if swatch_variant.compare_at_price > swatch_variant.price %}
-          {% assign swatch_2_compare_price_cents = swatch_variant.compare_at_price | plus: 0 %}
-        {% endif %}
-      {% endif %}
-      {% if swatch_3_variant_id_resolved != blank and swatch_variant.id == swatch_3_variant_id_resolved %}
-        {% assign swatch_3_price_cents = swatch_variant.price | plus: 0 %}
-        {% if swatch_variant.compare_at_price > swatch_variant.price %}
-          {% assign swatch_3_compare_price_cents = swatch_variant.compare_at_price | plus: 0 %}
-        {% endif %}
-      {% endif %}
-      {% if swatch_4_variant_id_resolved != blank and swatch_variant.id == swatch_4_variant_id_resolved %}
-        {% assign swatch_4_price_cents = swatch_variant.price | plus: 0 %}
-        {% if swatch_variant.compare_at_price > swatch_variant.price %}
-          {% assign swatch_4_compare_price_cents = swatch_variant.compare_at_price | plus: 0 %}
-        {% endif %}
-      {% endif %}
-    {% endfor %}
-  {% endif %}
-
-  <div class="sb-product-thumbnail__swatches{% unless has_swatches %} is-empty{% endunless %}" aria-label="Color selector">
+  <div
+    class="sb-product-thumbnail__swatches{% unless has_swatches %} is-empty{% endunless %}"
+    aria-label="Color selector"
+  >
     {% if has_swatches %}
-      {% if swatch_1 != blank %}
-      <button
-        type="button"
-        class="sb-product-thumbnail__swatch{% if selected_swatch_value == 1 %} is-selected{% endif %}"
-        style="--sb-swatch-color: {{ swatch_1 }};"
-        data-thumbnail-image="{{ swatch_1_image }}"
-        data-thumbnail-hover-image="{{ swatch_1_hover_image }}"
-        data-thumbnail-gallery="{{ swatch_1_gallery }}"
-        data-thumbnail-variant-id="{{ swatch_1_variant_id_resolved }}"
-        data-thumbnail-price="{{ swatch_1_price_text | default: thumbnail_price }}"
-        data-thumbnail-compare-price="{{ swatch_1_compare_price_text }}"
-        {% if swatch_1_price_cents != blank %}data-thumbnail-price-cents="{{ swatch_1_price_cents }}"{% endif %}
-        {% if swatch_1_compare_price_cents != blank %}data-thumbnail-compare-price-cents="{{ swatch_1_compare_price_cents }}"{% endif %}
-        aria-label="Color 1"
-      >
-        <span class="sb-product-thumbnail__swatch-fill" aria-hidden="true"></span>
-      </button>
-      {% endif %}
-      {% if swatch_2 != blank %}
-      <button
-        type="button"
-        class="sb-product-thumbnail__swatch{% if selected_swatch_value == 2 %} is-selected{% endif %}"
-        style="--sb-swatch-color: {{ swatch_2 }};"
-        data-thumbnail-image="{{ swatch_2_image }}"
-        data-thumbnail-hover-image="{{ swatch_2_hover_image }}"
-        data-thumbnail-gallery="{{ swatch_2_gallery }}"
-        data-thumbnail-variant-id="{{ swatch_2_variant_id_resolved }}"
-        data-thumbnail-price="{{ swatch_2_price_text | default: thumbnail_price }}"
-        data-thumbnail-compare-price="{{ swatch_2_compare_price_text }}"
-        {% if swatch_2_price_cents != blank %}data-thumbnail-price-cents="{{ swatch_2_price_cents }}"{% endif %}
-        {% if swatch_2_compare_price_cents != blank %}data-thumbnail-compare-price-cents="{{ swatch_2_compare_price_cents }}"{% endif %}
-        aria-label="Color 2"
-      >
-        <span class="sb-product-thumbnail__swatch-fill" aria-hidden="true"></span>
-      </button>
-      {% endif %}
-      {% if swatch_3 != blank %}
-      <button
-        type="button"
-        class="sb-product-thumbnail__swatch{% if selected_swatch_value == 3 %} is-selected{% endif %}"
-        style="--sb-swatch-color: {{ swatch_3 }};"
-        data-thumbnail-image="{{ swatch_3_image }}"
-        data-thumbnail-hover-image="{{ swatch_3_hover_image }}"
-        data-thumbnail-gallery="{{ swatch_3_gallery }}"
-        data-thumbnail-variant-id="{{ swatch_3_variant_id_resolved }}"
-        data-thumbnail-price="{{ swatch_3_price_text | default: thumbnail_price }}"
-        data-thumbnail-compare-price="{{ swatch_3_compare_price_text }}"
-        {% if swatch_3_price_cents != blank %}data-thumbnail-price-cents="{{ swatch_3_price_cents }}"{% endif %}
-        {% if swatch_3_compare_price_cents != blank %}data-thumbnail-compare-price-cents="{{ swatch_3_compare_price_cents }}"{% endif %}
-        aria-label="Color 3"
-      >
-        <span class="sb-product-thumbnail__swatch-fill" aria-hidden="true"></span>
-      </button>
-      {% endif %}
-      {% if swatch_4 != blank %}
-      <button
-        type="button"
-        class="sb-product-thumbnail__swatch{% if selected_swatch_value == 4 %} is-selected{% endif %}"
-        style="--sb-swatch-color: {{ swatch_4 }};"
-        data-thumbnail-image="{{ swatch_4_image }}"
-        data-thumbnail-hover-image="{{ swatch_4_hover_image }}"
-        data-thumbnail-gallery="{{ swatch_4_gallery }}"
-        data-thumbnail-variant-id="{{ swatch_4_variant_id_resolved }}"
-        data-thumbnail-price="{{ swatch_4_price_text | default: thumbnail_price }}"
-        data-thumbnail-compare-price="{{ swatch_4_compare_price_text }}"
-        {% if swatch_4_price_cents != blank %}data-thumbnail-price-cents="{{ swatch_4_price_cents }}"{% endif %}
-        {% if swatch_4_compare_price_cents != blank %}data-thumbnail-compare-price-cents="{{ swatch_4_compare_price_cents }}"{% endif %}
-        aria-label="Color 4"
-      >
-        <span class="sb-product-thumbnail__swatch-fill" aria-hidden="true"></span>
-      </button>
-      {% endif %}
+      {% assign swatch_button_index = 0 %}
+      {% for swatch_payload_entry in swatch_payload_entries %}
+        {% assign swatch_payload_entry_clean = swatch_payload_entry | strip %}
+        {% if swatch_payload_entry_clean != blank %}
+          {% assign swatch_payload_fields = swatch_payload_entry_clean | split: swatch_payload_field_delimiter %}
+          {% assign swatch_color = swatch_payload_fields[0] | default: blank | strip %}
+          {% if swatch_color != blank %}
+            {% assign swatch_button_index = swatch_button_index | plus: 1 %}
+            {% assign swatch_image = swatch_payload_fields[1] | default: blank %}
+            {% assign swatch_hover_image = swatch_payload_fields[2] | default: blank %}
+            {% assign swatch_gallery = swatch_payload_fields[3] | default: blank %}
+            {% assign swatch_variant_id_resolved = swatch_payload_fields[4] | default: blank | strip %}
+            {% if swatch_variant_id_resolved == blank %}
+              {% assign swatch_variant_id_resolved = thumbnail_variant_id %}
+            {% endif %}
+            {% assign swatch_price_text = swatch_payload_fields[5] | default: blank %}
+            {% assign swatch_compare_price_text = swatch_payload_fields[6] | default: blank %}
+            {% assign swatch_price_cents = swatch_payload_fields[7] | default: blank | strip %}
+            {% assign swatch_compare_price_cents = swatch_payload_fields[8] | default: blank | strip %}
+            <button
+              type="button"
+              class="sb-product-thumbnail__swatch{% if selected_swatch_value == swatch_button_index %} is-selected{% endif %}"
+              style="--sb-swatch-color: {{ swatch_color }};"
+              data-thumbnail-image="{{ swatch_image }}"
+              data-thumbnail-hover-image="{{ swatch_hover_image }}"
+              data-thumbnail-gallery="{{ swatch_gallery }}"
+              data-thumbnail-variant-id="{{ swatch_variant_id_resolved }}"
+              data-thumbnail-price="{{ swatch_price_text | default: thumbnail_price }}"
+              data-thumbnail-compare-price="{{ swatch_compare_price_text }}"
+              {% if swatch_price_cents != blank %}data-thumbnail-price-cents="{{ swatch_price_cents }}"{% endif %}
+              {% if swatch_compare_price_cents != blank %}data-thumbnail-compare-price-cents="{{ swatch_compare_price_cents }}"{% endif %}
+              aria-label="Color {{ swatch_button_index }}"
+            >
+              <span class="sb-product-thumbnail__swatch-fill" aria-hidden="true"></span>
+            </button>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
     {% endif %}
   </div>
 
-  {% if show_compare_add_to_cart_large and thumbnail_variant_id != blank %}
+  {% if thumbnail_show_compare_add_to_cart_large and thumbnail_variant_id != blank %}
     <button
       type="button"
-      class="sb-button-radiant sb-button-radiant--large sb-button-radiant--trailing-icon sb-product-thumbnail__add-to-cart-large"
+      class="sb-button-radiant sb-button-radiant--large sb-button-radiant--leading-icon sb-product-thumbnail__add-to-cart-large"
       data-add-to-cart
       data-variant-id="{{ thumbnail_variant_id }}"
       data-label-default="Add to cart"
       data-label-added="Added"
       aria-label="Add to cart"
     >
-      <span class="sb-button-radiant__label" data-add-to-cart-label>Add to cart</span>
       <span class="sb-button-radiant__icon" aria-hidden="true">
-        {{ 'arrow-reduced-padding.svg' | inline_asset_content }}
+        <img
+          src="{{ 'icon-add-to-cart.svg' | asset_url }}"
+          alt=""
+          width="16"
+          height="16"
+        >
       </span>
+      <span class="sb-button-radiant__label" data-add-to-cart-label>Add to cart</span>
     </button>
   {% endif %}
 
-  {% if thumbnail_compare_info_text != blank %}
+  {% if thumbnail_show_compare_add_to_cart_large and thumbnail_compare_info_text != blank %}
     <div class="sb-product-thumbnail__meta-rows" data-compare-meta-rows>
       {% assign compare_info_rows = thumbnail_compare_info_text | newline_to_br | split: '<br />' %}
       {% for compare_info_row in compare_info_rows %}

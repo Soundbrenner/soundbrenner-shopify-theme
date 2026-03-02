@@ -26,9 +26,6 @@
   assign product_in_the_box_items = blank
   assign product_addon_products = blank
   assign selected_multipack_variant_id = blank
-  assign selected_multipack_variant_available = false
-  assign selected_multipack_variant_price = blank
-  assign selected_multipack_variant_compare_at_price = blank
   assign product_page_header_ref = product.metafields.custom.sbv2_product_page_header
   assign product_page_header = product_page_header_ref.value | default: product_page_header_ref.reference.value | default: product_page_header_ref.reference | default: product_page_header_ref
   assign product_has_page_header = false
@@ -191,6 +188,30 @@
   endif
 
   assign current_variant = product.selected_or_first_available_variant
+  assign product_media_caption_items = product.metafields.custom.sbv2_media_gallery_captions.value | default: product.metafields.custom.sbv2_media_gallery_captions
+  if current_variant != blank
+    assign current_variant_media_caption_items = current_variant.metafields.custom.sbv2_media_gallery_captions.value | default: current_variant.metafields.custom.sbv2_media_gallery_captions
+    if current_variant_media_caption_items != blank
+      assign product_media_caption_items = current_variant_media_caption_items
+    endif
+  endif
+  assign product_media_caption_pairs = blank
+  if product_media_caption_items != blank
+    for product_media_caption_item in product_media_caption_items
+      assign product_media_caption_entry = product_media_caption_item.value | default: product_media_caption_item.reference.value | default: product_media_caption_item.reference | default: product_media_caption_item
+      if product_media_caption_entry == blank
+        continue
+      endif
+      assign product_media_caption_position = product_media_caption_entry.position.value | default: product_media_caption_entry.position | plus: 0
+      assign product_media_caption_text = product_media_caption_entry.caption.value | default: product_media_caption_entry.caption | strip
+      if product_media_caption_position > 0 and product_media_caption_text != blank
+        if product_media_caption_pairs != blank
+          assign product_media_caption_pairs = product_media_caption_pairs | append: '||'
+        endif
+        assign product_media_caption_pairs = product_media_caption_pairs | append: product_media_caption_position | append: '::' | append: product_media_caption_text
+      endif
+    endfor
+  endif
   if product.has_only_default_variant == false
     assign current_variant_in_the_box_ref = current_variant.metafields.custom.sbv2_what_s_in_the_box
     if current_variant_in_the_box_ref != blank
@@ -312,9 +333,6 @@
     assign selector_list_mode = 'multipack'
     assign selector_list_heading = 'Buy multiple and save extra'
     assign selected_multipack_variant_id = current_variant.id
-    assign selected_multipack_variant_available = current_variant.available
-    assign selected_multipack_variant_price = current_variant.price
-    assign selected_multipack_variant_compare_at_price = current_variant.compare_at_price
     for multipack_item in product_multipack_items
       assign multipack_entry = multipack_item.value | default: multipack_item.reference.value | default: multipack_item.reference | default: multipack_item
       assign multipack_product = multipack_entry.product.value | default: multipack_entry.product
@@ -327,9 +345,6 @@
       endif
       if multipack_product.id == product.id
         assign selected_multipack_variant_id = multipack_variant.id
-        assign selected_multipack_variant_available = multipack_variant.available
-        assign selected_multipack_variant_price = multipack_variant.price
-        assign selected_multipack_variant_compare_at_price = multipack_variant.compare_at_price
       endif
     endfor
   endif
@@ -436,7 +451,7 @@
 %}
 
 <section
-  class="sb-product-main"
+  class="sb-product-main{% unless product_has_page_header %} sb-product-main--no-page-header{% endunless %}"
   style="
     --sb-supplementary-sticky-top-gap-desktop: {{ section.settings.supplementary_sticky_top_gap_desktop | default: 16 }}px;
     --sb-supplementary-sticky-top-gap-mobile: {{ section.settings.supplementary_sticky_top_gap_mobile | default: 16 }}px;
@@ -450,20 +465,26 @@
   data-product-title="{{ product.title | escape }}"
   data-selector-list-option-position="{{ selector_list_option_position }}"
 >
-  <div class="sb-product-main__sticky-bar-wrap{% if product_has_page_header %} sb-product-main__sticky-bar-wrap--segmented-controls{% else %} sb-product-main__sticky-bar-wrap--hidden{% endif %}" data-sb-sticky-top-navigation>
+  <div
+    class="sb-product-main__sticky-bar-wrap{% if product_has_page_header %} sb-product-main__sticky-bar-wrap--segmented-controls{% else %} sb-product-main__sticky-bar-wrap--hidden{% endif %}"
+    data-sb-sticky-top-navigation
+    data-sb-sticky-active="{% if product_has_page_header %}true{% else %}false{% endif %}"
+  >
     <div class="sb-product-main__sticky-bar{% unless product_has_page_header %} sb-product-main__sticky-bar--no-segmented{% endunless %}" data-sticky-buy-bar>
       <div class="sb-product-main__sticky-info">
         <div class="sb-product-main__sticky-image-wrap" aria-hidden="true">
           {% if sticky_media_image_url != blank %}
+            {% # theme-check-disable RemoteAsset %}
             <img
               class="sb-product-main__sticky-image"
               data-sticky-image
               src="{{ sticky_media_image_url }}"
               alt="{{ product.title | escape }}"
-              loading="lazy"
+              loading="eager"
               width="48"
               height="48"
             >
+            {% # theme-check-enable RemoteAsset %}
           {% else %}
             <div class="sb-product-main__sticky-image sb-product-main__sticky-image--placeholder" data-sticky-image></div>
           {% endif %}
@@ -518,7 +539,7 @@
                 data-sticky-review-count
                 data-sticky-review-count-value="{{ product_reviews_count | plus: 0 | round }}"
               >
-                {{ product_reviews_count | plus: 0 | round | number_with_delimiter }} reviews
+                {{ product_reviews_count | plus: 0 | round }} reviews
               </a>
             </div>
           {% endunless %}
@@ -587,6 +608,121 @@
     </div>
   </div>
 
+  <div
+    class="sb-product-main__sticky-bottom-bar-wrap sb-product-main__sticky-bottom-bar-wrap--hidden"
+    data-sticky-bottom-wrap
+    data-sb-sticky-bottom-navigation
+    data-sb-sticky-active="false"
+  >
+    <div class="sb-product-main__sticky-bottom-bar">
+      <div class="sb-product-main__sticky-bottom-info">
+        <div class="sb-product-main__sticky-bottom-image-wrap" aria-hidden="true">
+          {% if sticky_media_image_url != blank %}
+            {% # theme-check-disable RemoteAsset %}
+            <img
+              class="sb-product-main__sticky-bottom-image"
+              data-sticky-bottom-image
+              src="{{ sticky_media_image_url }}"
+              alt="{{ product.title | escape }}"
+              loading="eager"
+              width="40"
+              height="40"
+            >
+            {% # theme-check-enable RemoteAsset %}
+          {% else %}
+            <div class="sb-product-main__sticky-bottom-image sb-product-main__sticky-bottom-image--placeholder" data-sticky-bottom-image></div>
+          {% endif %}
+        </div>
+
+        <div class="sb-product-main__sticky-bottom-meta{% if product_hide_reviews %} sb-product-main__sticky-bottom-meta--no-reviews{% endif %}">
+          <div class="sb-product-main__sticky-bottom-price-stack">
+            <span
+              class="sb-product-main__sticky-bottom-compare-price font-caption weight-regular"
+              data-sticky-bottom-compare-price
+              {% unless sticky_has_compare_price %}
+                hidden
+              {% endunless %}
+            >
+              {{ current_variant.compare_at_price | money }}
+            </span>
+            <span class="sb-product-main__sticky-bottom-current-price font-caption weight-regular" data-sticky-bottom-current-price>
+              {{ current_variant.price | money }}
+            </span>
+          </div>
+
+          {% unless product_hide_reviews %}
+            <div class="sb-product-main__sticky-bottom-reviews">
+              <a
+                class="sb-product-main__sticky-bottom-stars sb-product-thumbnail__stars"
+                href="#klaviyo-product-reviews-wrapper"
+                data-sticky-reviews-link
+                data-rating-tooltip="{{ product_rating_tooltip }}"
+                aria-label="Go to reviews"
+              >
+                {% assign sticky_star_icon_url = 'icon-review-star.svg' | asset_url %}
+                {% for i in (1..5) %}
+                  {% assign step = i | minus: 1 %}
+                  {% assign fill_ratio = product_rating | minus: step %}
+                  {% if fill_ratio >= 1 %}
+                    {% assign fill_percent = 100 %}
+                  {% elsif fill_ratio <= 0 %}
+                    {% assign fill_percent = 0 %}
+                  {% else %}
+                    {% assign fill_percent = fill_ratio | times: 100 | round %}
+                  {% endif %}
+                  <span
+                    class="sb-product-main__sticky-bottom-star"
+                    style="--sb-star-fill: {{ fill_percent }}%; --sb-star-icon-url: url('{{ sticky_star_icon_url }}');"
+                  ></span>
+                {% endfor %}
+              </a>
+              <a
+                class="sb-product-main__sticky-bottom-review-count font-caption weight-regular"
+                href="#klaviyo-product-reviews-wrapper"
+                data-sticky-reviews-link
+                data-sticky-bottom-review-count
+                data-sticky-review-count-value="{{ product_reviews_count | plus: 0 | round }}"
+              >
+                {{ product_reviews_count | plus: 0 | round }} reviews
+              </a>
+            </div>
+          {% endunless %}
+        </div>
+      </div>
+
+      <button
+        class="sb-product-main__sticky-bottom-add-button sb-button-radiant sb-button-radiant--medium sb-button-radiant--leading-icon font-caption weight-bold"
+        type="button"
+        data-sticky-bottom-add-button
+        {% unless current_variant.available %}
+          disabled
+        {% endunless %}
+        aria-label="{% if current_variant.available %}Add to cart{% else %}Sold out{% endif %}"
+      >
+        <span class="sb-button-radiant__icon sb-product-main__sticky-bottom-add-button-icon" aria-hidden="true">
+          {% if add_to_cart_icon_type == 'arrow' %}
+            {{ 'icon-arrow-large-40.svg' | inline_asset_content }}
+          {% else %}
+            <img
+              class="sb-product-main__add-button-icon-image"
+              src="{{ 'icon-add-to-cart.svg' | asset_url }}"
+              alt=""
+              width="16"
+              height="16"
+            >
+          {% endif %}
+        </span>
+        <span class="sb-button-radiant__label" data-sticky-bottom-add-button-label>
+          {% if current_variant.available %}
+            Add
+          {% else %}
+            Sold out
+          {% endif %}
+        </span>
+      </button>
+    </div>
+  </div>
+
   <div class="sb-product-main__layout">
     <div class="sb-product-main__media-column">
       {% for block in section.blocks %}
@@ -597,13 +733,32 @@
               {% for media_token in initial_media_tokens %}
                 {% assign media_token_clean = media_token | strip %}
                 {% if media_token_clean != blank %}
-                  {% assign media_token_parts = media_token_clean | split: '::' %}
-                  {% assign media_token_type = media_token_parts[0] %}
-                  {% assign media_token_source = media_token_parts[1] %}
-                  {% assign media_token_poster = media_token_parts[2] %}
-                  <div class="sb-product-main__media-item{% if media_token_type == 'video' %} sb-product-main__media-item--video{% endif %}" data-sb-reveal-item>
-                    {% if media_token_type == 'video' %}
-                      {% if media_token_poster != blank %}
+                {% assign media_token_parts = media_token_clean | split: '::' %}
+                {% assign media_token_type = media_token_parts[0] %}
+                {% assign media_token_source = media_token_parts[1] %}
+                {% assign media_token_poster = media_token_parts[2] %}
+                {% assign media_item_position = forloop.index %}
+                {% assign media_caption_text = blank %}
+                {% if product_media_caption_pairs != blank %}
+                  {% assign media_caption_lookup_pairs = product_media_caption_pairs | split: '||' %}
+                  {% for media_caption_lookup_pair in media_caption_lookup_pairs %}
+                    {% assign media_caption_lookup_parts = media_caption_lookup_pair | split: '::' %}
+                    {% assign media_caption_lookup_position_raw = media_caption_lookup_parts | first %}
+                    {% assign media_caption_lookup_position = media_caption_lookup_position_raw | plus: 0 %}
+                    {% if media_caption_lookup_position == media_item_position %}
+                      {% assign media_caption_prefix = media_caption_lookup_position_raw | append: '::' %}
+                      {% assign media_caption_text = media_caption_lookup_pair | remove_first: media_caption_prefix %}
+                      {% break %}
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+                <div class="sb-product-main__media-item{% if media_token_type == 'video' %} sb-product-main__media-item--video{% endif %}" data-sb-reveal-item>
+                  {% if media_caption_text != blank %}
+                    <span class="sb-product-main__media-caption font-caption weight-semibold">{{ media_caption_text | escape }}</span>
+                  {% endif %}
+                  {% if media_token_type == 'video' %}
+                    {% # theme-check-disable RemoteAsset %}
+                    {% if media_token_poster != blank %}
                         <img
                           class="sb-product-main__media-video-poster"
                           data-gallery-video-poster
@@ -628,7 +783,9 @@
                         {% endif %}
                         src="{{ media_token_source }}"
                       ></video>
+                      {% # theme-check-enable RemoteAsset %}
                     {% else %}
+                      {% # theme-check-disable RemoteAsset %}
                       <img
                         class="sb-product-main__media-asset"
                         src="{{ media_token_source }}"
@@ -637,13 +794,32 @@
                         width="720"
                         height="720"
                       >
+                      {% # theme-check-enable RemoteAsset %}
                     {% endif %}
                   </div>
                 {% endif %}
               {% endfor %}
             {% else %}
               {% for media in product.media %}
+                {% assign media_item_position = forloop.index %}
+                {% assign media_caption_text = blank %}
+                {% if product_media_caption_pairs != blank %}
+                  {% assign media_caption_lookup_pairs = product_media_caption_pairs | split: '||' %}
+                  {% for media_caption_lookup_pair in media_caption_lookup_pairs %}
+                    {% assign media_caption_lookup_parts = media_caption_lookup_pair | split: '::' %}
+                    {% assign media_caption_lookup_position_raw = media_caption_lookup_parts | first %}
+                    {% assign media_caption_lookup_position = media_caption_lookup_position_raw | plus: 0 %}
+                    {% if media_caption_lookup_position == media_item_position %}
+                      {% assign media_caption_prefix = media_caption_lookup_position_raw | append: '::' %}
+                      {% assign media_caption_text = media_caption_lookup_pair | remove_first: media_caption_prefix %}
+                      {% break %}
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
                 <div class="sb-product-main__media-item{% if media.media_type == 'video' %} sb-product-main__media-item--video{% endif %}" data-sb-reveal-item>
+                  {% if media_caption_text != blank %}
+                    <span class="sb-product-main__media-caption font-caption weight-semibold">{{ media_caption_text | escape }}</span>
+                  {% endif %}
                   {% case media.media_type %}
                     {% when 'image' %}
                       {{
@@ -658,6 +834,7 @@
                       {% assign media_video_poster = blank %}
                       {% if media.preview_image != blank %}
                         {% assign media_video_poster = media.preview_image | image_url: width: 1440 %}
+                        {% # theme-check-disable RemoteAsset %}
                         <img
                           class="sb-product-main__media-video-poster"
                           data-gallery-video-poster
@@ -668,6 +845,7 @@
                           height="1440"
                           sizes="(min-width: 990px) 720px, 100vw"
                         >
+                        {% # theme-check-enable RemoteAsset %}
                       {% endif %}
                       {{
                         media
@@ -1298,11 +1476,6 @@
                 <script type="application/json" data-addon-variants-json>
                   {{ addon_product.variants | json }}
                 </script>
-                {% if addon_product.options_with_values != blank %}
-                  {% assign addon_option_count = addon_product.options_with_values.size %}
-                {% else %}
-                  {% assign addon_option_count = 0 %}
-                {% endif %}
                 <script type="application/json" data-addon-media-map-json>
                   {
                     {% for addon_variant in addon_product.variants %}
@@ -1411,7 +1584,7 @@
                             if story_video_url == blank
                               assign story_video_url = story_video.url | default: story_video
                             endif
-                            assign story_poster = story_entry.video_poster.value | default: story_entry.video_poster
+                            assign story_poster = story_entry.video_thumbnail.value | default: story_entry.video_thumbnail | default: story_entry.video_poster.value | default: story_entry.video_poster | default: story_entry.thumbnail.value | default: story_entry.thumbnail
                             if story_video_url == blank or story_poster == blank
                               continue
                             endif
@@ -1425,6 +1598,7 @@
                             aria-label="Play video"
                           >
                             <span class="sb-product-main__video-story-inner">
+                              {% # theme-check-disable RemoteAsset %}
                               <img
                                 class="sb-product-main__video-story-poster"
                                 src="{{ story_poster_url }}"
@@ -1433,6 +1607,7 @@
                                 width="94"
                                 height="94"
                               >
+                              {% # theme-check-enable RemoteAsset %}
                             </span>
                           </button>
                         {% endfor %}
@@ -1525,6 +1700,7 @@
                         %}
                         <article class="sb-product-main__in-the-box-item">
                           {% if in_the_box_media_url != blank %}
+                            {% # theme-check-disable RemoteAsset %}
                             <img
                               class="sb-product-main__in-the-box-image"
                               src="{{ in_the_box_media_url }}"
@@ -1533,6 +1709,7 @@
                               width="160"
                               height="160"
                             >
+                            {% # theme-check-enable RemoteAsset %}
                           {% else %}
                             <div class="sb-product-main__in-the-box-image" aria-hidden="true"></div>
                           {% endif %}
@@ -1595,6 +1772,32 @@
 
   <script type="application/json" data-product-variants-json>
     {{ product.variants | json }}
+  </script>
+  <script type="application/json" data-product-variant-sticky-image-json>
+    {
+      {% liquid
+        assign product_sticky_fallback_media = product.featured_image
+        if product_sticky_fallback_media == blank
+          for product_media_item in product.media
+            if product_media_item.media_type == 'image'
+              assign product_sticky_fallback_media = product_media_item
+              break
+            endif
+          endfor
+        endif
+      %}
+      {% for variant in product.variants %}
+        {% liquid
+          assign variant_sticky_media = variant.featured_image | default: product_sticky_fallback_media
+          assign variant_sticky_url = blank
+          if variant_sticky_media != blank
+            assign variant_sticky_width = variant_sticky_media.width | default: 192 | at_most: 192
+            assign variant_sticky_url = variant_sticky_media | image_url: width: variant_sticky_width
+          endif
+        %}
+        "{{ variant.id }}": {{ variant_sticky_url | json }}{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    }
   </script>
   {% if use_variant_media_gallery %}
     <script type="application/json" data-product-variant-media-json>
@@ -1664,6 +1867,38 @@
           %}
           {% assign variant_media_array = variant_media_tokens | split: '||' %}
           "{{ variant.id }}": {{ variant_media_array | json }}{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      }
+    </script>
+    <script type="application/json" data-product-variant-media-captions-json>
+      {
+        {% for variant in product.variants %}
+          {% liquid
+            assign variant_media_caption_items = variant.metafields.custom.sbv2_media_gallery_captions.value | default: variant.metafields.custom.sbv2_media_gallery_captions
+            if variant_media_caption_items == blank
+              assign variant_media_caption_items = product.metafields.custom.sbv2_media_gallery_captions.value | default: product.metafields.custom.sbv2_media_gallery_captions
+            endif
+            assign variant_caption_rendered = false
+          %}
+          "{{ variant.id }}": {
+            {% if variant_media_caption_items != blank %}
+              {% for variant_media_caption_item in variant_media_caption_items %}
+                {% liquid
+                  assign variant_media_caption_entry = variant_media_caption_item.value | default: variant_media_caption_item.reference.value | default: variant_media_caption_item.reference | default: variant_media_caption_item
+                  if variant_media_caption_entry == blank
+                    continue
+                  endif
+                  assign variant_media_caption_position = variant_media_caption_entry.position.value | default: variant_media_caption_entry.position | plus: 0
+                  assign variant_media_caption_text = variant_media_caption_entry.caption.value | default: variant_media_caption_entry.caption | strip
+                %}
+                {% if variant_media_caption_position > 0 and variant_media_caption_text != blank %}
+                  {% if variant_caption_rendered %},{% endif %}
+                  "{{ variant_media_caption_position }}": {{ variant_media_caption_text | json }}
+                  {% assign variant_caption_rendered = true %}
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+          }{% unless forloop.last %},{% endunless %}
         {% endfor %}
       }
     </script>
@@ -1758,8 +1993,6 @@
 
 {% stylesheet %}
   .sb-product-main {
-    --sb-product-sticky-bar-height: 0px;
-    --sb-product-sticky-offset: 0px;
     --sb-product-gallery-mobile-size: calc((var(--sb-space-128) * 2) + var(--sb-space-4));
     width: 100%;
   }
@@ -1780,6 +2013,10 @@
   }
 
   .sb-product-main__sticky-bar-wrap {
+    display: none;
+  }
+
+  .sb-product-main__sticky-bottom-bar-wrap {
     display: none;
   }
 
@@ -1880,6 +2117,160 @@
     .sb-product-main__sticky-bar-wrap--segmented-controls .sb-product-main__sticky-segment-pill.is-active {
       font-weight: 600;
     }
+
+    .sb-product-main__sticky-bottom-bar-wrap {
+      bottom: 12px;
+      display: block;
+      left: var(--page-margin);
+      position: fixed;
+      right: var(--page-margin);
+      z-index: 45;
+    }
+
+    .sb-product-main__sticky-bottom-bar-wrap--hidden {
+      display: none;
+    }
+
+    .sb-product-main__sticky-bottom-bar {
+      align-items: center;
+      background: var(--sb-color-neutral-200);
+      border-radius: 999px;
+      box-shadow: inset 0 0 0 1px var(--sb-color-neutral-600);
+      display: flex;
+      gap: 12px;
+      padding: 16px 16px 16px 20px;
+      width: 100%;
+    }
+
+    .sb-product-main__sticky-bottom-info {
+      align-items: center;
+      display: flex;
+      flex: 1 1 auto;
+      gap: 8px;
+      min-inline-size: 0;
+    }
+
+    .sb-product-main__sticky-bottom-image-wrap {
+      border-radius: 6px;
+      flex: 0 0 auto;
+      height: 40px;
+      overflow: hidden;
+      width: 40px;
+    }
+
+    .sb-product-main__sticky-bottom-image {
+      display: block;
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .sb-product-main__sticky-bottom-image--placeholder {
+      background: var(--sb-color-neutral-300);
+    }
+
+    .sb-product-main__sticky-bottom-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-inline-size: 0;
+    }
+
+    .sb-product-main__sticky-bottom-meta--no-reviews {
+      align-items: center;
+      display: flex;
+      gap: 0;
+      justify-content: center;
+      min-height: 40px;
+    }
+
+    .sb-product-main__sticky-bottom-price-stack {
+      align-items: center;
+      display: flex;
+      gap: 8px;
+      min-inline-size: 0;
+    }
+
+    .sb-product-main__sticky-bottom-compare-price {
+      color: var(--sb-color-neutral-800);
+      text-decoration: line-through;
+      white-space: nowrap;
+    }
+
+    .sb-product-main__sticky-bottom-current-price {
+      color: var(--sb-color-blue-500);
+      white-space: nowrap;
+    }
+
+    .sb-product-main__sticky-bottom-reviews {
+      align-items: center;
+      display: flex;
+      gap: 6px;
+      margin-top: 0;
+    }
+
+    .sb-product-main__sticky-bottom-stars {
+      display: inline-flex;
+      gap: 2px;
+      text-decoration: none;
+    }
+
+    .sb-product-main__sticky-bottom-star {
+      display: inline-block;
+      height: 12px;
+      position: relative;
+      width: 12px;
+    }
+
+    .sb-product-main__sticky-bottom-star::before,
+    .sb-product-main__sticky-bottom-star::after {
+      content: '';
+      display: block;
+      height: 100%;
+      left: 0;
+      mask: center / contain no-repeat var(--sb-star-icon-url);
+      position: absolute;
+      top: 0;
+      width: 100%;
+      -webkit-mask: center / contain no-repeat var(--sb-star-icon-url);
+    }
+
+    .sb-product-main__sticky-bottom-star::before {
+      background: var(--sb-color-reviews-50);
+    }
+
+    .sb-product-main__sticky-bottom-star::after {
+      background: var(--sb-color-reviews);
+      clip-path: inset(0 calc(100% - var(--sb-star-fill)) 0 0);
+      -webkit-clip-path: inset(0 calc(100% - var(--sb-star-fill)) 0 0);
+    }
+
+    .sb-product-main__sticky-bottom-review-count {
+      color: var(--sb-color-neutral-900);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .sb-product-main__sticky-bottom-stars:hover,
+    .sb-product-main__sticky-bottom-stars:focus-visible {
+      cursor: pointer;
+    }
+
+    .sb-product-main__sticky-bottom-stars:hover .sb-product-main__sticky-bottom-star,
+    .sb-product-main__sticky-bottom-stars:focus-visible .sb-product-main__sticky-bottom-star {
+      opacity: 0.75;
+    }
+
+    .sb-product-main__sticky-bottom-review-count:hover,
+    .sb-product-main__sticky-bottom-review-count:focus-visible {
+      color: var(--sb-color-primary-500);
+      cursor: pointer;
+    }
+
+    .sb-product-main__sticky-bottom-add-button {
+      flex: 0 0 auto;
+      margin-left: auto;
+    }
   }
 
   @media (min-width: 750px) {
@@ -1893,6 +2284,10 @@
       top: calc(var(--sb-header-height, 5rem) + var(--sb-supplementary-sticky-top-gap));
       width: 100%;
       z-index: 40;
+    }
+
+    .sb-product-main__sticky-bottom-bar-wrap {
+      display: none !important;
     }
 
     .sb-product-main__sticky-bar-wrap--hidden {
@@ -1955,6 +2350,7 @@
       align-items: center;
       display: flex;
       gap: 0;
+      justify-content: center;
       min-height: 48px;
     }
 
@@ -2161,6 +2557,12 @@
     width: 100%;
   }
 
+  @media (min-width: 750px) and (max-width: 989px) {
+    .sb-product-main__media-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
   .sb-product-main__media-item {
     background: var(--sb-color-neutral-200);
     border-radius: 24px;
@@ -2169,6 +2571,23 @@
     overflow: hidden;
     position: relative;
     width: 100%;
+  }
+
+  .sb-product-main__media-caption {
+    background: var(--sb-color-red-500);
+    border-radius: 12px;
+    color: var(--sb-color-always-white);
+    bottom: 16px;
+    left: 50%;
+    max-width: calc(100% - 32px);
+    padding: 8px 12px;
+    pointer-events: none;
+    position: absolute;
+    text-align: center;
+    top: auto;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    z-index: 3;
   }
 
   .sb-product-main__media-asset {
@@ -2374,9 +2793,9 @@
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    gap: var(--sb-space-8);
+    gap: 6px;
     margin: 0;
-    padding-block: var(--sb-space-20);
+    padding-block: 16px;
     padding-inline: var(--sb-space-20);
     text-align: left;
     width: 100%;
@@ -3312,6 +3731,8 @@
       -ms-overflow-style: none;
       overflow-x: auto;
       overflow-y: hidden;
+      margin-block: -10px;
+      padding-block: 10px;
       padding-inline: var(--page-margin);
       scroll-behavior: auto;
       scroll-snap-type: none;
@@ -3351,7 +3772,9 @@
 
       const variantSelect = root.querySelector('[data-product-variant-id]');
       const variantsJsonElement = root.querySelector('[data-product-variants-json]');
+      const variantStickyImagesElement = root.querySelector('[data-product-variant-sticky-image-json]');
       const variantMediaElement = root.querySelector('[data-product-variant-media-json]');
+      const variantMediaCaptionsElement = root.querySelector('[data-product-variant-media-captions-json]');
       const variantInTheBoxElement = root.querySelector('[data-product-variant-in-the-box-json]');
       const mediaGrid = root.querySelector('[data-product-media-grid]');
       const inTheBoxContainer = root.querySelector('[data-in-the-box]');
@@ -3388,6 +3811,23 @@
           variantMediaMap = null;
         }
       }
+      let variantMediaCaptionsMap = null;
+      if (variantMediaCaptionsElement) {
+        try {
+          variantMediaCaptionsMap = JSON.parse(variantMediaCaptionsElement.textContent || '{}');
+        } catch (error) {
+          variantMediaCaptionsMap = null;
+        }
+      }
+
+      let variantStickyImageMap = null;
+      if (variantStickyImagesElement) {
+        try {
+          variantStickyImageMap = JSON.parse(variantStickyImagesElement.textContent || '{}');
+        } catch (error) {
+          variantStickyImageMap = null;
+        }
+      }
 
       let variantInTheBoxMap = null;
       if (variantInTheBoxElement) {
@@ -3403,11 +3843,20 @@
       const stickyBarWrap = root.querySelector('.sb-product-main__sticky-bar-wrap');
       const stickyBar = root.querySelector('[data-sticky-buy-bar]');
       const stickyImage = root.querySelector('[data-sticky-image]');
+      const stickyBottomWrap = root.querySelector('[data-sticky-bottom-wrap]');
+      const stickyBottomImage = root.querySelector('[data-sticky-bottom-image]');
       const stickyComparePriceElement = root.querySelector('[data-sticky-compare-price]');
       const stickyCurrentPriceElement = root.querySelector('[data-sticky-current-price]');
       const stickyAddButton = root.querySelector('[data-sticky-add-button]');
       const stickyAddButtonLabel = stickyAddButton ? stickyAddButton.querySelector('[data-sticky-add-button-label]') : null;
       const stickyReviewCountElement = root.querySelector('[data-sticky-review-count]');
+      const stickyBottomComparePriceElement = root.querySelector('[data-sticky-bottom-compare-price]');
+      const stickyBottomCurrentPriceElement = root.querySelector('[data-sticky-bottom-current-price]');
+      const stickyBottomAddButton = root.querySelector('[data-sticky-bottom-add-button]');
+      const stickyBottomAddButtonLabel = stickyBottomAddButton
+        ? stickyBottomAddButton.querySelector('[data-sticky-bottom-add-button-label]')
+        : null;
+      const stickyBottomReviewCountElement = root.querySelector('[data-sticky-bottom-review-count]');
       const stickySegmentedControls = root.querySelector('[data-sticky-segmented-controls]');
       const stickySegmentIndicator = stickySegmentedControls
         ? stickySegmentedControls.querySelector('.sb-product-main__sticky-segment-indicator')
@@ -3417,6 +3866,7 @@
       const hasStickySegmentedControls = Boolean(stickySegmentedControls && stickySegmentButtons.length);
       const shouldDeferStickyBarUntilPastAddButton = !hasStickySegmentedControls;
       let isDeferredStickyBarVisible = !shouldDeferStickyBarUntilPastAddButton;
+      let isBottomStickyBarVisible = false;
       const headerElement = document.querySelector('.header');
       const priceRow = root.querySelector('[data-product-price-row]');
       const comparePriceElement = root.querySelector('[data-product-compare-price]');
@@ -3450,6 +3900,16 @@
           if (addButton.disabled) return;
           if (window.SBCart && typeof window.SBCart.setNextAddSourceElement === 'function') {
             window.SBCart.setNextAddSourceElement(stickyAddButton);
+          }
+          addButton.click();
+        });
+      }
+
+      if (stickyBottomAddButton && addButton) {
+        stickyBottomAddButton.addEventListener('click', () => {
+          if (addButton.disabled) return;
+          if (window.SBCart && typeof window.SBCart.setNextAddSourceElement === 'function') {
+            window.SBCart.setNextAddSourceElement(stickyBottomAddButton);
           }
           addButton.click();
         });
@@ -3493,9 +3953,11 @@
       const shouldAppendCurrencyCode = new RegExp(`\\b${currencyCode}\\b`, 'i').test(initialPriceSample);
 
       const syncStickyReviewCount = () => {
-        if (!stickyReviewCountElement) return;
-        const rawCount = Number.parseFloat(stickyReviewCountElement.dataset.stickyReviewCountValue || '0') || 0;
-        stickyReviewCountElement.textContent = `${reviewCountFormatter.format(Math.round(rawCount))} reviews`;
+        [stickyReviewCountElement, stickyBottomReviewCountElement].forEach((element) => {
+          if (!element) return;
+          const rawCount = Number.parseFloat(element.dataset.stickyReviewCountValue || '0') || 0;
+          element.textContent = `${reviewCountFormatter.format(Math.round(rawCount))} reviews`;
+        });
       };
 
       const syncMobileSegmentedHeaderState = () => {
@@ -3593,6 +4055,11 @@
         // Segmented width is fully handled by CSS breakpoints.
       };
 
+      const getHeadingOffset = () => {
+        const value = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sb-space-96'));
+        return Number.isFinite(value) ? value : 96;
+      };
+
       const getSegmentManagedSections = (productSection) => {
         const mainContent = document.querySelector('#MainContent');
         const mainSections = Array.from(
@@ -3600,6 +4067,30 @@
         );
         if (productSection && mainSections.includes(productSection)) return mainSections;
         return Array.from(document.querySelectorAll('.shopify-section[id*="template--"]'));
+      };
+
+      const ensureProductSectionStartsFirst = () => {
+        if (hasStickySegmentedControls) return;
+        const mainContent = document.querySelector('#MainContent');
+        const productSection = root.closest('.shopify-section[id*="template--"]');
+        if (!(mainContent instanceof HTMLElement) || !(productSection instanceof HTMLElement)) return;
+
+        const orderedSections = Array.from(mainContent.children).filter((node) => (
+          node instanceof HTMLElement &&
+          node.classList.contains('shopify-section') &&
+          node.id.includes('template--')
+        ));
+        const productSectionIndex = orderedSections.indexOf(productSection);
+        if (productSectionIndex <= 0) return;
+
+        const sectionsBeforeProduct = orderedSections.slice(0, productSectionIndex);
+        if (!sectionsBeforeProduct.length) return;
+
+        const insertionPoint = productSection.nextSibling;
+        sectionsBeforeProduct.forEach((section) => {
+          if (!(section instanceof HTMLElement) || section === productSection) return;
+          mainContent.insertBefore(section, insertionPoint);
+        });
       };
 
       const applyPageSegmentVisibility = (segmentValue) => {
@@ -3666,6 +4157,7 @@
         try {
           syncStickyBarMetrics({ immediateIndicator });
           syncStickyBarTop();
+          syncBottomStickyBarVisibility();
         } catch (error) {
           // Keep segmented controls usable even if sticky metrics fail.
         }
@@ -3707,6 +4199,7 @@
       };
 
       syncStickyReviewCount();
+      ensureProductSectionStartsFirst();
       if (stickySegmentedControls && stickySegmentButtons.length) {
         const segmentFromUrl = normalizeSegment(new URL(window.location.href).searchParams.get('p') || '');
         applyStickySegment(segmentFromUrl, { immediateIndicator: true });
@@ -3720,6 +4213,7 @@
             applyPageSegmentVisibility(activeSegment);
             syncStickyBarMetrics({ immediateIndicator: true });
             syncStickyBarTop();
+            syncBottomStickyBarVisibility();
           });
         };
 
@@ -3847,6 +4341,9 @@
       const getStickyImageFromVariant = (variant) => {
         if (!variant) return '';
 
+        const stickyImageSource = String(variantStickyImageMap?.[`${variant.id}`] || '').trim();
+        if (stickyImageSource) return stickyImageSource;
+
         const featuredImageSource = variant?.featured_image?.src || variant?.featured_image?.url || '';
         if (featuredImageSource) return featuredImageSource;
 
@@ -3865,17 +4362,81 @@
         return '';
       };
 
+      const stickyImagePreloadCache = new Set();
+      const preloadStickyImageSource = (source) => {
+        const normalizedSource = String(source || '').trim();
+        if (!normalizedSource || stickyImagePreloadCache.has(normalizedSource)) return;
+        stickyImagePreloadCache.add(normalizedSource);
+        const image = new Image();
+        image.decoding = 'async';
+        image.src = normalizedSource;
+      };
+
+      const preloadStickyImageSources = () => {
+        variants.forEach((variant) => {
+          preloadStickyImageSource(getStickyImageFromVariant(variant));
+        });
+      };
+
       const applyStickyImage = (variant) => {
-        if (!stickyImage) return;
         const nextSource = getStickyImageFromVariant(variant);
         if (!nextSource) return;
-        if (stickyImage.tagName === 'IMG') {
-          if (stickyImage.src !== nextSource) stickyImage.src = nextSource;
-          return;
+        preloadStickyImageSource(nextSource);
+        [stickyImage, stickyBottomImage].forEach((imageElement) => {
+          if (!imageElement) return;
+          if (imageElement.tagName === 'IMG') {
+            if (imageElement.src !== nextSource) imageElement.src = nextSource;
+            return;
+          }
+          imageElement.style.backgroundImage = `url("${nextSource}")`;
+          imageElement.style.backgroundPosition = 'center';
+          imageElement.style.backgroundSize = 'cover';
+        });
+      };
+
+      if (stickyImage && stickyImage.tagName === 'IMG') {
+        preloadStickyImageSource(stickyImage.currentSrc || stickyImage.getAttribute('src') || '');
+      }
+      if (stickyBottomImage && stickyBottomImage.tagName === 'IMG') {
+        preloadStickyImageSource(stickyBottomImage.currentSrc || stickyBottomImage.getAttribute('src') || '');
+      }
+      if (typeof window.requestIdleCallback === 'function') {
+        window.requestIdleCallback(preloadStickyImageSources, { timeout: 500 });
+      } else {
+        window.setTimeout(preloadStickyImageSources, 0);
+      }
+
+      const parseRootPx = (name, fallback = 0) => {
+        const raw = window.getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+        const parsed = Number.parseFloat(raw);
+        return Number.isFinite(parsed) ? parsed : fallback;
+      };
+
+      const getStickyStackState = () => {
+        if (window.SBStickyStack && typeof window.SBStickyStack.getState === 'function') {
+          const stickyState = window.SBStickyStack.getState();
+          if (stickyState && typeof stickyState === 'object') return stickyState;
         }
-        stickyImage.style.backgroundImage = `url("${nextSource}")`;
-        stickyImage.style.backgroundPosition = 'center';
-        stickyImage.style.backgroundSize = 'cover';
+        return {
+          headerBottom: parseRootPx('--sb-sticky-header-bottom', 0),
+          topStackBottom: parseRootPx('--sb-sticky-top-stack-bottom', 0),
+          bottomStackHeight: parseRootPx('--sb-sticky-bottom-stack-height', 0),
+          scrollTargetOffset: parseRootPx('--sb-sticky-scroll-target-offset', getHeadingOffset())
+        };
+      };
+
+      const requestStickyStackSync = () => {
+        if (window.SBStickyStack && typeof window.SBStickyStack.requestSync === 'function') {
+          window.SBStickyStack.requestSync();
+        }
+      };
+
+      const setStickyAccessoryActiveState = (element, active) => {
+        if (!element) return false;
+        const nextValue = active ? 'true' : 'false';
+        if (element.getAttribute('data-sb-sticky-active') === nextValue) return false;
+        element.setAttribute('data-sb-sticky-active', nextValue);
+        return true;
       };
 
       const getResolvedStickyTopGap = () => {
@@ -3885,18 +4446,41 @@
         return Number.isFinite(spacing) ? spacing : 16;
       };
 
-      const getStickyTopGap = () => {
-        if (shouldDeferStickyBarUntilPastAddButton && !isDeferredStickyBarVisible) return 0;
-        return getResolvedStickyTopGap();
+      const getAccessoryActivationLine = () => {
+        const spacing = getResolvedStickyTopGap();
+        const stickyState = getStickyStackState();
+        return Math.max(stickyState.headerBottom + spacing, spacing);
       };
 
-      const getStickyBarTopPosition = () => {
-        const spacing = getStickyTopGap();
-        if (!headerElement) return spacing;
-        const headerStyles = window.getComputedStyle(headerElement);
-        const headerBorderBottom = Number.parseFloat(headerStyles.borderBottomWidth) || 0;
-        const headerBottom = headerElement.getBoundingClientRect().bottom - headerBorderBottom;
-        return Math.max(headerBottom + spacing, spacing);
+      const getBottomStickyTriggerTop = () => {
+        const stickyState = getStickyStackState();
+        return Math.max(stickyState.topStackBottom, stickyState.headerBottom, 0);
+      };
+
+      const isPastAddButtonForBottomSticky = () => {
+        if (!addButton) return true;
+        return addButton.getBoundingClientRect().bottom <= getBottomStickyTriggerTop();
+      };
+
+      const shouldShowBottomStickyBar = () => {
+        if (!stickyBottomWrap || !mobileSegmentedMediaQuery.matches) return false;
+        if (hasStickySegmentedControls) {
+          const activeSegment = normalizeSegment(root.dataset.pageSegment || 'learn-more');
+          if (activeSegment === 'learn-more') return true;
+          return isPastAddButtonForBottomSticky();
+        }
+        return isPastAddButtonForBottomSticky();
+      };
+
+      const syncBottomStickyBarVisibility = () => {
+        if (!stickyBottomWrap) return false;
+        const nextVisible = shouldShowBottomStickyBar();
+        if (nextVisible === isBottomStickyBarVisible) return false;
+        isBottomStickyBarVisible = nextVisible;
+        stickyBottomWrap.classList.toggle('sb-product-main__sticky-bottom-bar-wrap--hidden', !nextVisible);
+        setStickyAccessoryActiveState(stickyBottomWrap, nextVisible);
+        requestStickyStackSync();
+        return true;
       };
 
       const shouldShowDeferredStickyBar = () => {
@@ -3904,15 +4488,24 @@
         if (!shouldDeferStickyBarUntilPastAddButton) return true;
         if (!addButton) return true;
         const addButtonRect = addButton.getBoundingClientRect();
-        return addButtonRect.bottom <= getStickyBarTopPosition();
+        return addButtonRect.bottom <= getAccessoryActivationLine();
       };
 
       const syncDeferredStickyBarVisibility = () => {
-        if (!stickyBarWrap || !shouldDeferStickyBarUntilPastAddButton) return false;
+        if (!stickyBarWrap) return false;
+        if (!shouldDeferStickyBarUntilPastAddButton) {
+          const alwaysActive = !stickyBarWrap.classList.contains('sb-product-main__sticky-bar-wrap--hidden');
+          if (setStickyAccessoryActiveState(stickyBarWrap, alwaysActive)) {
+            requestStickyStackSync();
+          }
+          return false;
+        }
         const nextVisible = shouldShowDeferredStickyBar();
         if (nextVisible === isDeferredStickyBarVisible) return false;
         isDeferredStickyBarVisible = nextVisible;
         stickyBarWrap.classList.toggle('sb-product-main__sticky-bar-wrap--hidden', !nextVisible);
+        setStickyAccessoryActiveState(stickyBarWrap, nextVisible);
+        requestStickyStackSync();
         return true;
       };
 
@@ -3926,12 +4519,7 @@
       };
 
       function syncStickyBarTop() {
-        if (!stickyBarWrap) return;
-        const nextTop = getStickyBarTopPosition();
-        const nextTopValue = `${Math.floor(nextTop)}px`;
-        if (stickyBarWrap.style.top !== nextTopValue) {
-          stickyBarWrap.style.top = nextTopValue;
-        }
+        requestStickyStackSync();
       }
 
       const getFirstVisibleTemplateSection = () => {
@@ -3948,41 +4536,57 @@
       };
 
       function syncStickyBarMetrics({ immediateIndicator = true } = {}) {
-        if (!stickyBarWrap) return;
-        const stickyHeight = stickyBarWrap.getBoundingClientRect().height || 0;
-        const stickyTopGap = getStickyTopGap();
-        const headingOffset = 96;
-        const firstSectionOffset = hasStickySegmentedControls ? (stickyHeight + stickyTopGap) : 0;
-        const pageStickyOffset = firstSectionOffset + headingOffset;
-        root.style.setProperty('--sb-product-sticky-bar-height', `${stickyHeight}px`);
-        root.style.setProperty('--sb-product-sticky-offset', `${firstSectionOffset}px`);
-        document.documentElement.style.setProperty('--sb-page-sticky-offset', `${pageStickyOffset}px`);
         syncStickySegmentWidth();
         syncStickySegmentIndicator(root.dataset.pageSegment || 'learn-more', { immediate: immediateIndicator });
+        requestStickyStackSync();
 
         const templateSections = Array.from(document.querySelectorAll('.shopify-section[id*="template--"]'));
+        if (!hasStickySegmentedControls) {
+          templateSections.forEach((section) => {
+            if (section.style.paddingTop) section.style.paddingTop = '';
+          });
+          return;
+        }
+
         const firstTemplateSection = getFirstVisibleTemplateSection();
-        templateSections.forEach((section) => {
-          if (firstTemplateSection && section === firstTemplateSection) {
-            section.style.paddingTop = `${firstSectionOffset}px`;
-          } else if (section.style.paddingTop) {
-            section.style.paddingTop = '';
-          }
-        });
         if (!firstTemplateSection) return;
+
+        const stickyState = getStickyStackState();
+        const headingOffset = getHeadingOffset();
+        const currentScrollTop = window.scrollY || window.pageYOffset || 0;
+        const firstTemplateSectionTop = firstTemplateSection.getBoundingClientRect().top + currentScrollTop;
+        const topAccessoryIsActive = Boolean(stickyBarWrap)
+          && stickyBarWrap.getAttribute('data-sb-sticky-active') !== 'false'
+          && !stickyBarWrap.classList.contains('sb-product-main__sticky-bar-wrap--hidden');
+        const firstTemplateSectionPadding = topAccessoryIsActive
+          ? Math.max(Math.round(stickyState.topStackBottom + headingOffset - firstTemplateSectionTop), 0)
+          : 0;
+        const currentInlinePadding = Number.parseFloat(firstTemplateSection.style.paddingTop || '0') || 0;
+        const resolvedFirstTemplateSectionPadding = (
+          hasStickySegmentedControls && currentScrollTop > 4
+            ? Math.max(firstTemplateSectionPadding, currentInlinePadding)
+            : firstTemplateSectionPadding
+        );
+
+        templateSections.forEach((section) => {
+          if (section === firstTemplateSection && resolvedFirstTemplateSectionPadding > 0) {
+            const nextPaddingValue = `${resolvedFirstTemplateSectionPadding}px`;
+            if (section.style.paddingTop !== nextPaddingValue) {
+              section.style.paddingTop = nextPaddingValue;
+            }
+            return;
+          }
+          if (section.style.paddingTop) section.style.paddingTop = '';
+        });
       }
 
-      const getReviewsScrollOffset = (targetAbsoluteTop) => {
-        const currentScrollTop = window.scrollY || window.pageYOffset || 0;
-        const isScrollingDown = targetAbsoluteTop > currentScrollTop;
-        const stickyTopGap = getStickyTopGap();
-        const headingGap = 96;
-        const stickyHeight = stickyBarWrap?.getBoundingClientRect().height || 0;
-        const expandedHeaderTop = headerElement
-          ? Math.max((headerElement.getBoundingClientRect().height || 0) + stickyTopGap, stickyTopGap)
-          : stickyTopGap;
-        const stickyTop = isScrollingDown ? stickyTopGap : expandedHeaderTop;
-        return stickyTop + stickyHeight + headingGap;
+      const getScrollTargetOffset = () => {
+        const stickyState = getStickyStackState();
+        const headingOffset = getHeadingOffset();
+        if (Number.isFinite(stickyState.scrollTargetOffset) && stickyState.scrollTargetOffset > 0) {
+          return stickyState.scrollTargetOffset;
+        }
+        return Math.max(Math.round(stickyState.topStackBottom + headingOffset), headingOffset);
       };
 
       const scrollToReviewsHeading = ({ ensureBuyNow = false } = {}) => {
@@ -3999,13 +4603,13 @@
 
           syncStickyBarTop();
           syncStickyBarMetrics();
+          if (window.SBStickyStack && typeof window.SBStickyStack.scrollToElement === 'function') {
+            window.SBStickyStack.scrollToElement(target, { behavior: 'smooth' });
+            return;
+          }
           const targetAbsoluteTop = target.getBoundingClientRect().top + window.scrollY;
-          const targetTop = targetAbsoluteTop - getReviewsScrollOffset(targetAbsoluteTop);
-
-          window.scrollTo({
-            top: Math.max(targetTop, 0),
-            behavior: 'smooth',
-          });
+          const targetTop = targetAbsoluteTop - getScrollTargetOffset();
+          window.scrollTo({ top: Math.max(targetTop, 0), behavior: 'smooth' });
         };
 
         if (hasSegmentedControls && ensureBuyNow) {
@@ -4041,17 +4645,20 @@
       syncDeferredStickyBarVisibility();
       syncStickyBarMetrics({ immediateIndicator: true });
       syncStickyBarTop();
+      syncBottomStickyBarVisibility();
       scheduleStickyBarTopSync();
       syncMobileSegmentedHeaderState();
       window.setTimeout(() => {
         syncDeferredStickyBarVisibility();
         syncStickyBarMetrics({ immediateIndicator: true });
+        syncBottomStickyBarVisibility();
         scheduleStickyBarTopSync();
       }, 80);
       window.setTimeout(() => {
         syncDeferredStickyBarVisibility();
         syncStickyBarMetrics({ immediateIndicator: true });
         syncStickyBarTop();
+        syncBottomStickyBarVisibility();
         scheduleStickyBarTopSync();
       }, 300);
 
@@ -4064,6 +4671,7 @@
           if (stickyVisibilityChanged) {
             syncStickyBarMetrics({ immediateIndicator: true });
           }
+          syncBottomStickyBarVisibility();
           scheduleStickyBarTopSync();
         },
         { passive: true }
@@ -4072,6 +4680,7 @@
         syncDeferredStickyBarVisibility();
         syncStickyBarMetrics({ immediateIndicator: true });
         syncStickyBarTop();
+        syncBottomStickyBarVisibility();
         scheduleStickyBarTopSync();
         syncMobileSegmentedHeaderState();
       });
@@ -4082,6 +4691,7 @@
           syncDeferredStickyBarVisibility();
           syncStickyBarMetrics({ immediateIndicator: true });
           syncStickyBarTop();
+          syncBottomStickyBarVisibility();
         });
         sectionObserver.observe(mainContent, {
           childList: true,
@@ -4090,8 +4700,17 @@
       }
 
       document.addEventListener('sb:cart-drawer:state-change', () => {
+        syncStickyBarMetrics({ immediateIndicator: true });
         syncStickyBarTop();
+        syncBottomStickyBarVisibility();
         scheduleStickyBarTopSync();
+      });
+      document.addEventListener('sb:sticky-stack:change', () => {
+        syncDeferredStickyBarVisibility();
+        if (!hasStickySegmentedControls) {
+          syncStickyBarMetrics({ immediateIndicator: true });
+        }
+        syncBottomStickyBarVisibility();
       });
 
       const initGalleryVideos = () => {
@@ -4125,7 +4744,14 @@
         });
       };
 
-      const renderMediaGallery = (tokens) => {
+      const getMediaCaptionByPosition = (captionsByPosition, position) => {
+        if (!captionsByPosition || typeof captionsByPosition !== 'object') return '';
+        const rawCaption = captionsByPosition[`${position}`];
+        if (typeof rawCaption !== 'string') return '';
+        return rawCaption.trim();
+      };
+
+      const renderMediaGallery = (tokens, captionsByPosition = null) => {
         if (!mediaGrid || !Array.isArray(tokens)) return;
         const normalizedTokens = tokens
           .map((token) => (typeof token === 'string' ? token.trim() : ''))
@@ -4133,22 +4759,26 @@
         if (!normalizedTokens.length) return;
 
         const nextMarkup = normalizedTokens
-          .map((token) => {
+          .map((token, index) => {
             const parts = token.split('::');
             const type = parts[0] || '';
             const source = parts[1] || '';
             const poster = parts[2] || '';
             if (!source) return '';
+            const captionText = getMediaCaptionByPosition(captionsByPosition, index + 1);
+            const captionMarkup = captionText
+              ? `<span class=\"sb-product-main__media-caption font-caption weight-semibold\">${escapeHtml(captionText)}</span>`
+              : '';
 
             if (type === 'video') {
               const posterMarkup = poster
                 ? `<img class=\"sb-product-main__media-video-poster\" data-gallery-video-poster src=\"${escapeHtml(poster)}\" alt=\"${escapeHtml(productTitle)}\" loading=\"lazy\" width=\"720\" height=\"720\">`
                 : '';
               const posterAttribute = poster ? ` poster=\"${escapeHtml(poster)}\"` : '';
-              return `<div class=\"sb-product-main__media-item sb-product-main__media-item--video\" data-sb-reveal-item>${posterMarkup}<video class=\"sb-product-main__media-asset sb-product-main__media-asset--video\" data-gallery-video style=\"background: var(--sb-color-neutral-200);\" autoplay loop muted playsinline preload=\"metadata\"${posterAttribute} src=\"${escapeHtml(source)}\"></video></div>`;
+              return `<div class=\"sb-product-main__media-item sb-product-main__media-item--video\" data-sb-reveal-item>${captionMarkup}${posterMarkup}<video class=\"sb-product-main__media-asset sb-product-main__media-asset--video\" data-gallery-video style=\"background: var(--sb-color-neutral-200);\" autoplay loop muted playsinline preload=\"metadata\"${posterAttribute} src=\"${escapeHtml(source)}\"></video></div>`;
             }
 
-            return `<div class=\"sb-product-main__media-item\" data-sb-reveal-item><img class=\"sb-product-main__media-asset\" src=\"${escapeHtml(source)}\" alt=\"${escapeHtml(productTitle)}\" loading=\"lazy\" width=\"720\" height=\"720\"></div>`;
+            return `<div class=\"sb-product-main__media-item\" data-sb-reveal-item>${captionMarkup}<img class=\"sb-product-main__media-asset\" src=\"${escapeHtml(source)}\" alt=\"${escapeHtml(productTitle)}\" loading=\"lazy\" width=\"720\" height=\"720\"></div>`;
           })
           .join('');
 
@@ -4162,7 +4792,8 @@
         if (!variantMediaMap || !variantId) return;
         const tokens = variantMediaMap[`${variantId}`];
         if (tokens) {
-          renderMediaGallery(tokens);
+          const captionsByPosition = variantMediaCaptionsMap?.[`${variantId}`] || null;
+          renderMediaGallery(tokens, captionsByPosition);
         }
       };
 
@@ -4604,6 +5235,9 @@
         if (stickyCurrentPriceElement) {
           stickyCurrentPriceElement.textContent = formatMoney(purchaseData.price);
         }
+        if (stickyBottomCurrentPriceElement) {
+          stickyBottomCurrentPriceElement.textContent = formatMoney(purchaseData.price);
+        }
         if (stickyComparePriceElement) {
           if (hasComparePrice) {
             stickyComparePriceElement.textContent = formatMoney(purchaseData.compare_at_price);
@@ -4612,11 +5246,25 @@
             stickyComparePriceElement.hidden = true;
           }
         }
+        if (stickyBottomComparePriceElement) {
+          if (hasComparePrice) {
+            stickyBottomComparePriceElement.textContent = formatMoney(purchaseData.compare_at_price);
+            stickyBottomComparePriceElement.hidden = false;
+          } else {
+            stickyBottomComparePriceElement.hidden = true;
+          }
+        }
         if (stickyAddButton) {
           stickyAddButton.disabled = !purchaseData.available;
           const nextLabel = purchaseData.available ? 'Add to cart' : 'Sold out';
           if (stickyAddButtonLabel) stickyAddButtonLabel.textContent = nextLabel;
           stickyAddButton.setAttribute('aria-label', nextLabel);
+        }
+        if (stickyBottomAddButton) {
+          stickyBottomAddButton.disabled = !purchaseData.available;
+          const nextLabel = purchaseData.available ? 'Add' : 'Sold out';
+          if (stickyBottomAddButtonLabel) stickyBottomAddButtonLabel.textContent = nextLabel;
+          stickyBottomAddButton.setAttribute('aria-label', purchaseData.available ? 'Add to cart' : 'Sold out');
         }
 
         const stickyVariant = variants.find((variant) => `${variant.id}` === `${purchaseData.id}`);

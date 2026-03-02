@@ -31,7 +31,18 @@
   }
 
   .sb-data-sharing-opt-out #pc--opt-out-form-container {
+    position: relative;
     width: 100%;
+  }
+
+  .sb-data-sharing-opt-out #hcaptcha {
+    position: absolute !important;
+    inline-size: 0 !important;
+    block-size: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none;
   }
 
   .sb-data-sharing-opt-out #pc--opt-out-form,
@@ -39,7 +50,8 @@
     align-items: flex-start;
     display: flex;
     flex-direction: column;
-    gap: var(--sb-space-20);
+    gap: 20px;
+    max-width: 400px;
     text-align: left;
     width: 100%;
   }
@@ -54,23 +66,57 @@
   .sb-data-sharing-opt-out .pc--show-email-field label {
     align-items: center;
     color: var(--sb-color-neutral-900);
-    display: inline-flex;
+    display: flex;
     font-family: var(--font-primary--family);
     font-size: var(--font-size-body);
     font-weight: 400;
-    gap: 10px;
+    gap: 12px;
+    margin: 0;
+    line-height: 1.3;
+    cursor: text;
+    -webkit-user-select: text;
+    user-select: text;
+  }
+
+  .sb-data-sharing-opt-out .sb-data-sharing-opt-out__checkbox-label-text {
+    display: block;
+    line-height: 1.3;
+    min-width: 0;
   }
 
   .sb-data-sharing-opt-out .pc--show-email-field {
     margin-top: var(--sb-space-24);
-    margin-bottom: 0;
+    margin-bottom: 4px;
   }
 
   .sb-data-sharing-opt-out #pc--show-email-field {
-    accent-color: var(--sb-color-primary-500);
-    block-size: var(--sb-space-20);
-    inline-size: var(--sb-space-20);
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    background-image: none;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    border: 0;
+    border-radius: 0;
+    box-sizing: border-box;
+    display: block;
+    block-size: 20px;
+    inline-size: 20px;
     margin: 0;
+    padding: 0;
+    cursor: pointer;
+    flex: 0 0 auto;
+  }
+
+  .sb-data-sharing-opt-out #pc--show-email-field:checked {
+    background-image: none;
+    background-color: transparent;
+  }
+
+  .sb-data-sharing-opt-out #pc--show-email-field:focus-visible {
+    outline: 2px solid var(--sb-color-primary-500);
+    outline-offset: 2px;
   }
 
   .sb-data-sharing-opt-out #pc--opt-out-form-field-email label {
@@ -89,8 +135,9 @@
     font-weight: 400 !important;
     height: var(--sb-space-48);
     line-height: var(--sb-space-48);
+    max-width: 400px;
     padding-inline: var(--sb-space-20);
-    width: 100%;
+    width: min(100%, 400px);
     -webkit-appearance: none !important;
     appearance: none !important;
   }
@@ -118,6 +165,26 @@
       text-align: left;
     }
 
+    .sb-data-sharing-opt-out .pc--show-email-field {
+      width: 100%;
+    }
+
+    .sb-data-sharing-opt-out .pc--show-email-field label {
+      align-items: start;
+      column-gap: 12px;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      justify-content: flex-start;
+      max-width: 100%;
+      white-space: normal;
+      width: 100%;
+    }
+
+    .sb-data-sharing-opt-out .pc--show-email-field #pc--show-email-field {
+      align-self: center;
+      margin-top: 0;
+    }
+
     .sb-data-sharing-opt-out #pc--opt-out-button.sb-button-radiant {
       align-self: flex-start !important;
       margin-left: 0 !important;
@@ -141,8 +208,22 @@
     font-family: var(--font-primary--family) !important;
     font-size: var(--font-size-body) !important;
     font-weight: 700 !important;
-    gap: var(--sb-space-12);
+    gap: 12px !important;
     justify-content: flex-start;
+    margin-top: 0 !important;
+    text-align: left !important;
+  }
+
+  .sb-data-sharing-opt-out #pc--opt-out-error.pc--opt-out-form-message {
+    align-items: center;
+    color: var(--sb-color-red-500) !important;
+    display: inline-flex !important;
+    font-family: var(--font-primary--family) !important;
+    font-size: var(--font-size-body) !important;
+    font-weight: 700 !important;
+    gap: 12px !important;
+    justify-content: flex-start;
+    line-height: 1.3 !important;
     margin-top: 0 !important;
     text-align: left !important;
   }
@@ -157,24 +238,57 @@
     width: 0 !important;
   }
 
+  .sb-data-sharing-opt-out #pc--opt-out-error .icon-error {
+    display: none !important;
+    margin: 0 !important;
+    width: 0 !important;
+  }
+
   .sb-data-sharing-opt-out__success-icon {
     color: var(--sb-color-primary-500);
     display: inline-flex;
     flex: 0 0 auto;
-    height: var(--sb-space-20);
-    min-width: var(--sb-space-20);
-    width: var(--sb-space-20);
+    height: 20px;
+    min-width: 20px;
+    width: 20px;
+    line-height: 0;
+    order: -1;
   }
 
   .sb-data-sharing-opt-out__success-icon svg {
     display: block;
     height: 100%;
+    margin-right: 0 !important;
     width: 100%;
   }
 
   .sb-data-sharing-opt-out__success-icon svg path:not([fill='none']),
   .sb-data-sharing-opt-out__success-icon svg circle:not([fill='none']),
   .sb-data-sharing-opt-out__success-icon svg rect:not([fill='none']) {
+    fill: currentColor;
+  }
+
+  .sb-data-sharing-opt-out__error-icon {
+    color: var(--sb-color-red-500);
+    display: inline-flex;
+    flex: 0 0 auto;
+    height: 20px;
+    min-width: 20px;
+    width: 20px;
+    line-height: 0;
+    order: -1;
+  }
+
+  .sb-data-sharing-opt-out__error-icon svg {
+    display: block;
+    height: 100%;
+    margin-right: 0 !important;
+    width: 100%;
+  }
+
+  .sb-data-sharing-opt-out__error-icon svg path:not([fill='none']),
+  .sb-data-sharing-opt-out__error-icon svg circle:not([fill='none']),
+  .sb-data-sharing-opt-out__error-icon svg rect:not([fill='none']) {
     fill: currentColor;
   }
 {% endstylesheet %}
@@ -185,26 +299,85 @@
     if (!root) return;
     const arrowSvg = {{ 'arrow-reduced-padding.svg' | inline_asset_content | json }};
     const checkSvg = {{ 'icon-check.svg' | inline_asset_content | json }};
+    const errorSvg = {{ 'icon-error.svg' | inline_asset_content | json }};
+    const checkboxOffSvg = {{ 'icon-data-sharing-opt-out-checkbox-off.svg' | inline_asset_content | json }};
+    const checkboxOnSvg = {{ 'icon-data-sharing-opt-out-checkbox-on.svg' | inline_asset_content | json }};
+    const checkboxFillColor = window.getComputedStyle(document.documentElement)
+      .getPropertyValue('--sb-color-primary-500')
+      .trim() || 'white';
+    const checkboxOffSvgTinted = checkboxOffSvg.replaceAll('fill="white"', `fill="${checkboxFillColor}"`);
+    const checkboxOnSvgTinted = checkboxOnSvg.replaceAll('fill="white"', `fill="${checkboxFillColor}"`);
+    const toInlineSvgDataUrl = (svgContent) => `url("data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgContent)}")`;
+    const checkboxOffBackground = toInlineSvgDataUrl(checkboxOffSvgTinted);
+    const checkboxOnBackground = toInlineSvgDataUrl(checkboxOnSvgTinted);
+    const applyCheckboxVisualState = (checkboxNode) => {
+      if (!checkboxNode) return;
+      if (checkboxNode.checked) {
+        checkboxNode.style.backgroundImage = `${checkboxOnBackground}, linear-gradient(var(--sb-color-always-white), var(--sb-color-always-white))`;
+        checkboxNode.style.backgroundSize = '20px 20px, 16px 16px';
+        checkboxNode.style.backgroundPosition = 'center center, center center';
+        checkboxNode.style.backgroundRepeat = 'no-repeat, no-repeat';
+      } else {
+        checkboxNode.style.backgroundImage = checkboxOffBackground;
+        checkboxNode.style.backgroundSize = '20px 20px';
+        checkboxNode.style.backgroundPosition = 'center center';
+        checkboxNode.style.backgroundRepeat = 'no-repeat';
+      }
+      checkboxNode.style.backgroundColor = 'transparent';
+    };
+    let applyScheduled = false;
+    const isNarrowViewport = () => window.matchMedia('(max-width: 989px)').matches;
+    const setImportantStyle = (node, property, value) => {
+      if (!node) return;
+      node.style.setProperty(property, value, 'important');
+    };
+    const clearInlineStyle = (node, property) => {
+      if (!node) return;
+      node.style.removeProperty(property);
+    };
 
     const applyOptOutOverrides = () => {
+      applyScheduled = false;
       const button = root.querySelector('#pc--opt-out-button');
       const emailInput = root.querySelector('#pc--opt-out-email_input');
       const primarySuccessMessage = root.querySelector('#pc--opt-out-message.pc--opt-out-form-message--success');
       const secondarySuccessMessage = root.querySelector('#pc--opt-out-success.pc--opt-out-form-message--success');
-      if (primarySuccessMessage && secondarySuccessMessage) {
+      const errorMessage = root.querySelector('#pc--opt-out-error.pc--opt-out-form-message');
+      if (primarySuccessMessage && secondarySuccessMessage && secondarySuccessMessage.style.display !== 'none') {
         secondarySuccessMessage.style.display = 'none';
       }
 
-      root.querySelectorAll('.sb-data-sharing-opt-out__success-icon').forEach((iconNode) => iconNode.remove());
-      const activeSuccessMessage = [primarySuccessMessage, secondarySuccessMessage]
-        .find((node) => node && window.getComputedStyle(node).display !== 'none');
-      if (activeSuccessMessage) {
-        activeSuccessMessage.querySelectorAll('.icon-success').forEach((node) => node.remove());
-        const iconNode = document.createElement('span');
-        iconNode.className = 'sb-data-sharing-opt-out__success-icon';
-        iconNode.setAttribute('aria-hidden', 'true');
-        iconNode.innerHTML = checkSvg;
-        activeSuccessMessage.prepend(iconNode);
+      [primarySuccessMessage, secondarySuccessMessage].forEach((messageNode) => {
+        if (!messageNode) return;
+        const isVisible = window.getComputedStyle(messageNode).display !== 'none';
+        if (isVisible) {
+          messageNode.querySelectorAll('.icon-success').forEach((node) => node.remove());
+          if (!messageNode.querySelector('.sb-data-sharing-opt-out__success-icon')) {
+            const iconNode = document.createElement('span');
+            iconNode.className = 'sb-data-sharing-opt-out__success-icon';
+            iconNode.setAttribute('aria-hidden', 'true');
+            iconNode.innerHTML = checkSvg;
+            messageNode.append(iconNode);
+          }
+        } else {
+          messageNode.querySelectorAll('.sb-data-sharing-opt-out__success-icon').forEach((node) => node.remove());
+        }
+      });
+
+      if (errorMessage) {
+        const isErrorVisible = window.getComputedStyle(errorMessage).display !== 'none';
+        if (isErrorVisible) {
+          errorMessage.querySelectorAll('.icon-error').forEach((node) => node.remove());
+          if (!errorMessage.querySelector('.sb-data-sharing-opt-out__error-icon')) {
+            const errorIconNode = document.createElement('span');
+            errorIconNode.className = 'sb-data-sharing-opt-out__error-icon';
+            errorIconNode.setAttribute('aria-hidden', 'true');
+            errorIconNode.innerHTML = errorSvg;
+            errorMessage.prepend(errorIconNode);
+          }
+        } else {
+          errorMessage.querySelectorAll('.sb-data-sharing-opt-out__error-icon').forEach((node) => node.remove());
+        }
       }
 
       if (!button) return;
@@ -215,6 +388,82 @@
         if (!emailInput.getAttribute('placeholder')) {
           emailInput.setAttribute('placeholder', 'Email');
         }
+      }
+
+      const accountOptOutCheckbox = root.querySelector('#pc--show-email-field');
+      const accountOptOutLabel = accountOptOutCheckbox ? accountOptOutCheckbox.closest('label') : null;
+      let accountOptOutLabelText = null;
+      if (accountOptOutCheckbox) {
+        applyCheckboxVisualState(accountOptOutCheckbox);
+      }
+      if (accountOptOutCheckbox && accountOptOutLabel) {
+        accountOptOutLabelText = accountOptOutLabel.querySelector('.sb-data-sharing-opt-out__checkbox-label-text');
+        if (!accountOptOutLabelText) {
+          const extractedText = Array.from(accountOptOutLabel.childNodes)
+            .filter((node) => node !== accountOptOutCheckbox)
+            .map((node) => node.textContent || '')
+            .join(' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+          Array.from(accountOptOutLabel.childNodes).forEach((node) => {
+            if (node !== accountOptOutCheckbox) node.remove();
+          });
+          accountOptOutLabelText = document.createElement('span');
+          accountOptOutLabelText.className = 'sb-data-sharing-opt-out__checkbox-label-text';
+          accountOptOutLabelText.textContent = extractedText;
+          accountOptOutLabel.append(accountOptOutLabelText);
+        }
+
+        if (isNarrowViewport()) {
+          setImportantStyle(accountOptOutLabel, 'display', 'grid');
+          setImportantStyle(accountOptOutLabel, 'grid-template-columns', '20px minmax(0, 1fr)');
+          setImportantStyle(accountOptOutLabel, 'column-gap', '12px');
+          setImportantStyle(accountOptOutLabel, 'align-items', 'start');
+          setImportantStyle(accountOptOutLabel, 'justify-content', 'flex-start');
+          setImportantStyle(accountOptOutLabel, 'width', '100%');
+          setImportantStyle(accountOptOutLabel, 'max-width', '100%');
+
+          setImportantStyle(accountOptOutCheckbox, 'grid-column', '1');
+          setImportantStyle(accountOptOutCheckbox, 'grid-row', '1');
+          setImportantStyle(accountOptOutCheckbox, 'align-self', 'center');
+          setImportantStyle(accountOptOutCheckbox, 'margin-top', '0');
+
+          setImportantStyle(accountOptOutLabelText, 'grid-column', '2');
+          setImportantStyle(accountOptOutLabelText, 'grid-row', '1');
+          setImportantStyle(accountOptOutLabelText, 'display', 'block');
+          setImportantStyle(accountOptOutLabelText, 'line-height', '1.3');
+          setImportantStyle(accountOptOutLabelText, 'min-width', '0');
+        } else {
+          [
+            'display',
+            'grid-template-columns',
+            'column-gap',
+            'align-items',
+            'justify-content',
+            'width',
+            'max-width'
+          ].forEach((prop) => clearInlineStyle(accountOptOutLabel, prop));
+          ['grid-column', 'grid-row', 'align-self', 'margin-top'].forEach((prop) => clearInlineStyle(accountOptOutCheckbox, prop));
+          if (accountOptOutLabelText) {
+            ['grid-column', 'grid-row', 'display', 'line-height', 'min-width'].forEach((prop) =>
+              clearInlineStyle(accountOptOutLabelText, prop)
+            );
+          }
+        }
+      }
+      if (accountOptOutCheckbox && accountOptOutLabel && !accountOptOutLabel.dataset.sbCheckboxClickGuardBound) {
+        accountOptOutLabel.dataset.sbCheckboxClickGuardBound = 'true';
+        accountOptOutLabel.addEventListener('click', (event) => {
+          if (event.target !== accountOptOutCheckbox) {
+            event.preventDefault();
+          }
+        });
+      }
+      if (accountOptOutCheckbox && !accountOptOutCheckbox.dataset.sbCheckboxIconBound) {
+        accountOptOutCheckbox.dataset.sbCheckboxIconBound = 'true';
+        accountOptOutCheckbox.addEventListener('change', () => {
+          applyCheckboxVisualState(accountOptOutCheckbox);
+        });
       }
 
       const hasLabel = button.querySelector('.sb-button-radiant__label');
@@ -235,12 +484,28 @@
       }
     };
 
-    const observer = new MutationObserver(applyOptOutOverrides);
-    observer.observe(root, { childList: true, subtree: true });
+    const scheduleApply = () => {
+      if (applyScheduled) return;
+      applyScheduled = true;
+      if (typeof window.requestAnimationFrame === 'function') {
+        window.requestAnimationFrame(applyOptOutOverrides);
+      } else {
+        window.setTimeout(applyOptOutOverrides, 16);
+      }
+    };
+
+    const observer = new MutationObserver(scheduleApply);
+    observer.observe(root, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['class', 'style']
+    });
 
     applyOptOutOverrides();
-    window.setTimeout(applyOptOutOverrides, 300);
-    window.setTimeout(applyOptOutOverrides, 1200);
+    window.addEventListener('resize', scheduleApply, { passive: true });
+    window.setTimeout(scheduleApply, 300);
+    window.setTimeout(scheduleApply, 1200);
   })();
 </script>
 

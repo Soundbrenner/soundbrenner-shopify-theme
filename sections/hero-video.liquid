@@ -1,25 +1,344 @@
-{% assign hero_video_video = section.settings.youtube_url %}
+{% liquid
+  assign hero_video_hide_section = false
+  assign hero_video_source_mode = 'metafield'
+  assign hero_video_items = blank
+  assign hero_video_count = 0
+  assign hero_video_fallback_youtube_id = blank
+  assign hero_video_anchor_id = 'sb-hero-video-' | append: section.id
 
-<section class="sb-hero-video" data-sb-reveal>
-  <div class="sb-hero-video__inner">
-    <div class="sb-hero-video__frame-wrap" data-sb-reveal-item>
-      {% if hero_video_video != blank and hero_video_video.type == 'youtube' %}
-        <iframe
-          class="sb-hero-video__frame"
-          src="https://www.youtube.com/embed/{{ hero_video_video.id }}"
-          title="Hero video"
-          loading="lazy"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen
-        ></iframe>
-      {% else %}
-        <div class="sb-hero-video__placeholder font-body weight-regular">
-          Add a YouTube video URL in the section settings.
+  if request.page_type == 'product' and product != blank
+    assign hero_video_anchor_id = 'sb-hero-video-product-' | append: product.id
+  endif
+
+  if request.page_type == 'product' and product != blank
+    assign hero_video_root_ref = product.metafields.custom.sbv2_hero_videos
+    assign hero_video_root = hero_video_root_ref.value | default: hero_video_root_ref.reference.value | default: hero_video_root_ref.reference | default: hero_video_root_ref
+    if hero_video_root != blank
+      assign hero_video_items = hero_video_root.videos.value | default: hero_video_root.videos.references | default: hero_video_root.videos
+    endif
+  endif
+
+  if hero_video_items != blank
+    for hero_video_item in hero_video_items limit: 4
+      assign hero_video_entry = hero_video_item.value | default: hero_video_item.reference.value | default: hero_video_item.reference | default: hero_video_item
+      assign hero_video_youtube_id = hero_video_entry.youtube_id.value | default: hero_video_entry.youtube_id | append: '' | strip
+
+      if hero_video_youtube_id contains 'youtube.com/watch'
+        assign hero_video_youtube_id = hero_video_youtube_id | split: 'v=' | last | split: '&' | first
+      elsif hero_video_youtube_id contains 'youtu.be/'
+        assign hero_video_youtube_id = hero_video_youtube_id | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first
+      endif
+      assign hero_video_youtube_id = hero_video_youtube_id | split: '?' | first | split: '&' | first | split: '/' | last
+
+      if hero_video_youtube_id != blank
+        assign hero_video_count = hero_video_count | plus: 1
+      endif
+    endfor
+  endif
+
+  if hero_video_count == 0 and request.page_type != 'product'
+    assign hero_video_source_mode = 'setting'
+    assign hero_video_fallback = section.settings.youtube_url
+    if hero_video_fallback != blank and hero_video_fallback.type == 'youtube'
+      assign hero_video_fallback_youtube_id = hero_video_fallback.id | append: '' | strip
+      if hero_video_fallback_youtube_id != blank
+        assign hero_video_count = 1
+      endif
+    endif
+  endif
+
+  if hero_video_count == 0
+    assign hero_video_hide_section = true
+  endif
+%}
+
+{% if hero_video_hide_section %}
+  <script>
+    (() => {
+      const sectionWrapper = document.currentScript && document.currentScript.closest('.shopify-section');
+      if (sectionWrapper) {
+        sectionWrapper.style.setProperty('display', 'none', 'important');
+      }
+    })();
+  </script>
+{% else %}
+  {% # theme-check-disable RemoteAsset %}
+  <style>
+    .sb-hero-video__frame-wrap {
+      aspect-ratio: 16 / 9;
+      background: var(--sb-color-neutral-200);
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+    }
+
+    .sb-hero-video__frame-poster {
+      display: block;
+      height: 100%;
+      inset: 0;
+      position: absolute;
+      width: 100%;
+      z-index: 2;
+    }
+
+    .sb-hero-video__frame-poster-image,
+    .sb-hero-video__frame {
+      border: 0;
+      display: block;
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .sb-hero-video__thumb-frame {
+      aspect-ratio: 16 / 9;
+      background: var(--sb-color-neutral-200);
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .sb-hero-video__thumb-image {
+      display: block;
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
+    }
+  </style>
+  <section
+    id="{{ hero_video_anchor_id }}"
+    class="sb-hero-video"
+    data-sb-reveal
+    data-hero-video-anchor
+    {% if request.page_type == 'product' and product != blank %}
+      data-product-id="{{ product.id }}"
+    {% endif %}
+  >
+    <div class="sb-hero-video__inner">
+      {% if hero_video_source_mode == 'setting' and hero_video_fallback_youtube_id != blank %}
+        <div class="sb-hero-video__single" data-sb-reveal-item>
+          <div class="sb-hero-video__frame-wrap">
+            <span class="sb-hero-video__frame-poster" aria-hidden="true">
+              <img
+                class="sb-hero-video__frame-poster-image"
+                src="https://i.ytimg.com/vi/{{ hero_video_fallback_youtube_id }}/hqdefault.jpg"
+                alt=""
+                loading="lazy"
+                width="1280"
+                height="720"
+              >
+            </span>
+            <iframe
+              class="sb-hero-video__frame"
+              src="about:blank"
+              data-embed-src="https://www.youtube.com/embed/{{ hero_video_fallback_youtube_id }}?rel=0"
+              data-embed-provider="youtube"
+              title="Hero video"
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+            ></iframe>
+          </div>
         </div>
+      {% elsif hero_video_count == 1 %}
+        <div class="sb-hero-video__single" data-sb-reveal-item>
+          {% for hero_video_item in hero_video_items limit: 4 %}
+            {% liquid
+              assign hero_video_entry = hero_video_item.value | default: hero_video_item.reference.value | default: hero_video_item.reference | default: hero_video_item
+              assign hero_video_youtube_id = hero_video_entry.youtube_id.value | default: hero_video_entry.youtube_id | append: '' | strip
+
+              if hero_video_youtube_id contains 'youtube.com/watch'
+                assign hero_video_youtube_id = hero_video_youtube_id | split: 'v=' | last | split: '&' | first
+              elsif hero_video_youtube_id contains 'youtu.be/'
+                assign hero_video_youtube_id = hero_video_youtube_id | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first
+              endif
+              assign hero_video_youtube_id = hero_video_youtube_id | split: '?' | first | split: '&' | first | split: '/' | last
+
+              if hero_video_youtube_id == blank
+                continue
+              endif
+            %}
+            <div class="sb-hero-video__frame-wrap">
+              <span class="sb-hero-video__frame-poster" aria-hidden="true">
+                <img
+                  class="sb-hero-video__frame-poster-image"
+                  src="https://i.ytimg.com/vi/{{ hero_video_youtube_id }}/hqdefault.jpg"
+                  alt=""
+                  loading="lazy"
+                  width="1280"
+                  height="720"
+                >
+              </span>
+              <iframe
+                class="sb-hero-video__frame"
+                src="about:blank"
+                data-embed-src="https://www.youtube.com/embed/{{ hero_video_youtube_id }}?rel=0"
+                data-embed-provider="youtube"
+                title="Hero video"
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+              ></iframe>
+            </div>
+            {% break %}
+          {% endfor %}
+        </div>
+      {% elsif hero_video_count == 2 %}
+        <div class="sb-hero-video__double">
+          {% assign hero_video_valid_index = 0 %}
+          {% for hero_video_item in hero_video_items limit: 4 %}
+            {% liquid
+              assign hero_video_entry = hero_video_item.value | default: hero_video_item.reference.value | default: hero_video_item.reference | default: hero_video_item
+              assign hero_video_youtube_id = hero_video_entry.youtube_id.value | default: hero_video_entry.youtube_id | append: '' | strip
+
+              if hero_video_youtube_id contains 'youtube.com/watch'
+                assign hero_video_youtube_id = hero_video_youtube_id | split: 'v=' | last | split: '&' | first
+              elsif hero_video_youtube_id contains 'youtu.be/'
+                assign hero_video_youtube_id = hero_video_youtube_id | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first
+              endif
+              assign hero_video_youtube_id = hero_video_youtube_id | split: '?' | first | split: '&' | first | split: '/' | last
+
+              if hero_video_youtube_id == blank
+                continue
+              endif
+
+              assign hero_video_valid_index = hero_video_valid_index | plus: 1
+              if hero_video_valid_index > 2
+                break
+              endif
+            %}
+            <div class="sb-hero-video__double-item" data-sb-reveal-item>
+              <div class="sb-hero-video__frame-wrap">
+                <span class="sb-hero-video__frame-poster" aria-hidden="true">
+                  <img
+                    class="sb-hero-video__frame-poster-image"
+                    src="https://i.ytimg.com/vi/{{ hero_video_youtube_id }}/hqdefault.jpg"
+                    alt=""
+                    loading="lazy"
+                    width="1280"
+                    height="720"
+                  >
+                </span>
+                <iframe
+                  class="sb-hero-video__frame"
+                  src="about:blank"
+                  data-embed-src="https://www.youtube.com/embed/{{ hero_video_youtube_id }}?rel=0"
+                  data-embed-provider="youtube"
+                  title="Hero video {{ hero_video_valid_index }}"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                ></iframe>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        {% assign hero_video_featured_id = blank %}
+        {% for hero_video_item in hero_video_items limit: 4 %}
+          {% liquid
+            assign hero_video_entry = hero_video_item.value | default: hero_video_item.reference.value | default: hero_video_item.reference | default: hero_video_item
+            assign hero_video_youtube_id = hero_video_entry.youtube_id.value | default: hero_video_entry.youtube_id | append: '' | strip
+
+            if hero_video_youtube_id contains 'youtube.com/watch'
+              assign hero_video_youtube_id = hero_video_youtube_id | split: 'v=' | last | split: '&' | first
+            elsif hero_video_youtube_id contains 'youtu.be/'
+              assign hero_video_youtube_id = hero_video_youtube_id | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first
+            endif
+            assign hero_video_youtube_id = hero_video_youtube_id | split: '?' | first | split: '&' | first | split: '/' | last
+
+            if hero_video_youtube_id == blank
+              continue
+            endif
+
+            assign hero_video_featured_id = hero_video_youtube_id
+          %}
+          {% break %}
+        {% endfor %}
+
+        {% if hero_video_featured_id != blank %}
+          <div class="sb-hero-video__featured-wrap" data-hero-video-gallery data-sb-reveal-item>
+            <div class="sb-hero-video__frame-wrap sb-hero-video__frame-wrap--featured">
+              <span class="sb-hero-video__frame-poster" aria-hidden="true">
+                <img
+                  class="sb-hero-video__frame-poster-image"
+                  src="https://i.ytimg.com/vi/{{ hero_video_featured_id }}/hqdefault.jpg"
+                  alt=""
+                  loading="lazy"
+                  width="1280"
+                  height="720"
+                >
+              </span>
+              <iframe
+                class="sb-hero-video__frame"
+                data-hero-video-featured-frame
+                src="about:blank"
+                data-embed-src="https://www.youtube.com/embed/{{ hero_video_featured_id }}?rel=0"
+                data-embed-provider="youtube"
+                title="Hero video"
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+              ></iframe>
+            </div>
+
+            <div class="sb-hero-video__thumb-grid">
+              {% assign hero_video_valid_index = 0 %}
+              {% for hero_video_item in hero_video_items limit: 4 %}
+                {% liquid
+                  assign hero_video_entry = hero_video_item.value | default: hero_video_item.reference.value | default: hero_video_item.reference | default: hero_video_item
+                  assign hero_video_youtube_id = hero_video_entry.youtube_id.value | default: hero_video_entry.youtube_id | append: '' | strip
+                  assign hero_video_title = hero_video_entry.video_title.value | default: hero_video_entry.video_title | append: '' | strip
+
+                  if hero_video_youtube_id contains 'youtube.com/watch'
+                    assign hero_video_youtube_id = hero_video_youtube_id | split: 'v=' | last | split: '&' | first
+                  elsif hero_video_youtube_id contains 'youtu.be/'
+                    assign hero_video_youtube_id = hero_video_youtube_id | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first
+                  endif
+                  assign hero_video_youtube_id = hero_video_youtube_id | split: '?' | first | split: '&' | first | split: '/' | last
+
+                  if hero_video_youtube_id == blank
+                    continue
+                  endif
+
+                  assign hero_video_valid_index = hero_video_valid_index | plus: 1
+
+                  if hero_video_title == blank
+                    assign hero_video_title = 'Video ' | append: hero_video_valid_index
+                  endif
+                %}
+                <button
+                  type="button"
+                  class="sb-hero-video__thumb{% if hero_video_youtube_id == hero_video_featured_id %} is-active{% endif %}"
+                  data-hero-video-thumb
+                  data-hero-video-id="{{ hero_video_youtube_id | escape }}"
+                  data-hero-video-title="{{ hero_video_title | escape }}"
+                  aria-label="Play {{ hero_video_title | escape }}"
+                >
+                  <span class="sb-hero-video__thumb-frame">
+                    <img
+                      class="sb-hero-video__thumb-image"
+                      src="https://i.ytimg.com/vi/{{ hero_video_youtube_id }}/maxresdefault.jpg"
+                      data-hero-video-thumb-image
+                      data-fallback-primary="https://i.ytimg.com/vi/{{ hero_video_youtube_id }}/hq720.jpg"
+                      data-fallback-secondary="https://i.ytimg.com/vi/{{ hero_video_youtube_id }}/mqdefault.jpg"
+                      data-fallback-tertiary="https://i.ytimg.com/vi/{{ hero_video_youtube_id }}/hqdefault.jpg"
+                      alt="{{ hero_video_title | escape }}"
+                      loading="lazy"
+                      width="1280"
+                      height="720"
+                    >
+                  </span>
+                  <span class="sb-hero-video__thumb-title font-body weight-semibold">{{ hero_video_title }}</span>
+                </button>
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
       {% endif %}
     </div>
-  </div>
-</section>
+  </section>
+  {% # theme-check-enable RemoteAsset %}
+{% endif %}
 
 {% stylesheet %}
   .sb-hero-video {
@@ -27,15 +346,49 @@
   }
 
   .sb-hero-video__inner {
+    width: 100%;
+  }
+
+  .sb-hero-video__single,
+  .sb-hero-video__featured-wrap {
     margin-inline: auto;
     max-width: 800px;
     width: 100%;
   }
 
+  .sb-hero-video__double {
+    display: grid;
+    gap: 36px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .sb-hero-video__double-item {
+    width: 100%;
+  }
+
   .sb-hero-video__frame-wrap {
     aspect-ratio: 16 / 9;
+    background: var(--sb-color-neutral-200);
     border-radius: 24px;
     overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+
+  .sb-hero-video__frame-poster {
+    display: block;
+    height: 100%;
+    inset: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 2;
+  }
+
+  .sb-hero-video__frame-poster-image {
+    display: block;
+    height: 100%;
+    object-fit: cover;
     width: 100%;
   }
 
@@ -43,21 +396,261 @@
     border: 0;
     display: block;
     height: 100%;
+    position: relative;
+    width: 100%;
+    z-index: 1;
+  }
+
+  .sb-hero-video__frame-wrap.is-embed-ready .sb-hero-video__frame-poster {
+    display: none;
+  }
+
+  .sb-hero-video__thumb-grid {
+    align-items: flex-start;
+    column-gap: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 24px;
+    row-gap: 24px;
     width: 100%;
   }
 
-  .sb-hero-video__placeholder {
-    align-items: center;
-    background: var(--sb-color-neutral-200);
-    color: var(--sb-color-neutral-900);
+  .sb-hero-video__thumb {
+    background: none;
+    border: 0;
+    cursor: pointer;
     display: flex;
-    height: 100%;
-    justify-content: center;
-    padding: var(--sb-space-24);
+    flex: 0 1 calc((100% - (24px * 3)) / 4);
+    flex-direction: column;
+    justify-content: flex-start;
+    max-width: calc((100% - (24px * 3)) / 4);
+    margin: 0;
+    padding: 0;
     text-align: center;
+    width: calc((100% - (24px * 3)) / 4);
+  }
+
+  .sb-hero-video__thumb-frame {
+    aspect-ratio: 16 / 9;
+    background: var(--sb-color-neutral-200);
+    border-radius: 16px;
+    display: block;
+    overflow: hidden;
     width: 100%;
   }
+
+  .sb-hero-video__thumb-image {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .sb-hero-video__thumb-title {
+    color: var(--sb-color-neutral-900);
+    display: block;
+    margin-top: 12px;
+    text-align: center;
+  }
+
+  .sb-hero-video__thumb:hover .sb-hero-video__thumb-image,
+  .sb-hero-video__thumb:hover .sb-hero-video__thumb-title {
+    opacity: 0.75;
+  }
+
+  .sb-hero-video__thumb.is-active .sb-hero-video__thumb-frame {
+    box-shadow: 0 0 0 2px var(--sb-color-primary-500);
+  }
+
+  .sb-hero-video__thumb:focus-visible {
+    outline: 2px solid var(--sb-color-blue-500);
+    outline-offset: 4px;
+    border-radius: 20px;
+  }
+
+  @media (max-width: 989px) {
+    .sb-hero-video__thumb {
+      flex-basis: calc((100% - 24px) / 2);
+      max-width: calc((100% - 24px) / 2);
+      width: calc((100% - 24px) / 2);
+    }
+  }
+
+  @media (max-width: 749px) {
+    .sb-hero-video__double {
+      gap: 30px;
+      grid-template-columns: 1fr;
+    }
+
+    .sb-hero-video__thumb-grid {
+      column-gap: 20px;
+      margin-top: 20px;
+      row-gap: 20px;
+    }
+
+    .sb-hero-video__thumb {
+      flex-basis: calc((100% - 20px) / 2);
+      max-width: calc((100% - 20px) / 2);
+      width: calc((100% - 20px) / 2);
+    }
+  }
 {% endstylesheet %}
+
+{% javascript %}
+  (() => {
+    const connectedHosts = new Set();
+
+    const ensurePreconnect = (href, withCrossOrigin = false) => {
+      if (!href || connectedHosts.has(href)) return;
+      connectedHosts.add(href);
+      const link = document.createElement('link');
+      link.rel = 'preconnect';
+      link.href = href;
+      if (withCrossOrigin) {
+        link.crossOrigin = 'anonymous';
+      }
+      document.head.appendChild(link);
+    };
+
+    const preconnectEmbedProvider = (provider) => {
+      if (provider === 'youtube') {
+        ensurePreconnect('https://www.youtube.com');
+        ensurePreconnect('https://i.ytimg.com', true);
+      }
+    };
+
+    const markEmbedReady = (frame) => {
+      const frameWrap = frame && frame.closest ? frame.closest('.sb-hero-video__frame-wrap') : null;
+      if (frameWrap) {
+        frameWrap.classList.add('is-embed-ready');
+      }
+    };
+
+    const hydrateEmbedFrame = (frame, sourceOverride = '') => {
+      if (!(frame instanceof HTMLIFrameElement)) return;
+      const frameSource = sourceOverride || (frame.dataset.embedSrc || '').trim();
+      if (!frameSource) return;
+
+      preconnectEmbedProvider((frame.dataset.embedProvider || '').trim());
+      if (frame.getAttribute('src') !== frameSource) {
+        frame.setAttribute('src', frameSource);
+      }
+    };
+
+    const initializeHeroVideoEmbeds = (root = document) => {
+      const embedFrames = Array.from(root.querySelectorAll('iframe[data-embed-src]'));
+      if (!embedFrames.length) return;
+
+      embedFrames.forEach((frame) => {
+        frame.addEventListener('load', () => {
+          markEmbedReady(frame);
+        });
+      });
+
+      if (!('IntersectionObserver' in window)) {
+        embedFrames.forEach((frame) => {
+          hydrateEmbedFrame(frame);
+        });
+        return;
+      }
+
+      const observer = new IntersectionObserver((entries, observerInstance) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const frame = entry.target;
+          if (!(frame instanceof HTMLIFrameElement)) return;
+          hydrateEmbedFrame(frame);
+          observerInstance.unobserve(frame);
+        });
+      }, {
+        rootMargin: '900px 0px',
+        threshold: 0.01,
+      });
+
+      embedFrames.forEach((frame) => {
+        observer.observe(frame);
+      });
+    };
+
+    const initializeHeroVideoGalleries = (root = document) => {
+      const galleries = Array.from(root.querySelectorAll('[data-hero-video-gallery]'));
+      if (!galleries.length) return;
+
+      galleries.forEach((galleryRoot) => {
+        if (galleryRoot.dataset.heroVideoInit === 'true') return;
+        galleryRoot.dataset.heroVideoInit = 'true';
+
+        const featuredFrame = galleryRoot.querySelector('[data-hero-video-featured-frame]');
+        const thumbnails = Array.from(galleryRoot.querySelectorAll('[data-hero-video-thumb]'));
+        const thumbnailImages = Array.from(galleryRoot.querySelectorAll('[data-hero-video-thumb-image]'));
+        if (!featuredFrame || !thumbnails.length) return;
+
+        thumbnailImages.forEach((image) => {
+          const fallbackQueue = [image.dataset.fallbackPrimary, image.dataset.fallbackSecondary, image.dataset.fallbackTertiary].filter(Boolean);
+          let fallbackIndex = 0;
+
+          const applyFallback = () => {
+            if (fallbackIndex >= fallbackQueue.length) return;
+            const nextSource = fallbackQueue[fallbackIndex];
+            fallbackIndex += 1;
+            if (!nextSource) return;
+
+            image.setAttribute('srcset', '');
+            image.src = nextSource;
+          };
+
+          image.addEventListener('load', () => {
+            const currentSource = image.currentSrc || image.src || '';
+            const isMaxResCandidate = currentSource.indexOf('/maxresdefault.') > -1;
+            if (isMaxResCandidate && image.naturalWidth < 1000) {
+              applyFallback();
+            }
+          });
+
+          image.addEventListener('error', () => {
+            applyFallback();
+          });
+        });
+
+        thumbnails.forEach((thumbnail) => {
+          thumbnail.addEventListener('click', () => {
+            const youtubeId = (thumbnail.dataset.heroVideoId || '').trim();
+            if (!youtubeId) return;
+
+            const nextSource = `https://www.youtube.com/embed/${youtubeId}?rel=0&autoplay=1`;
+            featuredFrame.dataset.embedSrc = `https://www.youtube.com/embed/${youtubeId}?rel=0`;
+            hydrateEmbedFrame(featuredFrame, nextSource);
+
+            const nextTitle = (thumbnail.dataset.heroVideoTitle || '').trim();
+            if (nextTitle) {
+              featuredFrame.setAttribute('title', nextTitle);
+            }
+
+            thumbnails.forEach((item) => {
+              item.classList.toggle('is-active', item === thumbnail);
+            });
+          });
+        });
+      });
+    };
+
+    const initializeAll = (scope = document) => {
+      initializeHeroVideoEmbeds(scope);
+      initializeHeroVideoGalleries(scope);
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => initializeAll());
+    } else {
+      initializeAll();
+    }
+
+    document.addEventListener('shopify:section:load', (event) => {
+      initializeAll(event.target || document);
+    });
+  })();
+{% endjavascript %}
 
 {% schema %}
 {
@@ -66,7 +659,7 @@
     {
       "type": "video_url",
       "id": "youtube_url",
-      "label": "YouTube URL",
+      "label": "Fallback YouTube URL",
       "accept": ["youtube"],
       "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
     }

@@ -1,48 +1,251 @@
-{% assign contact_page_url = pages['contact-us'].url | default: '/pages/contact-us' %}
+{% liquid
+  assign contact_page_fallback_url = routes.root_url | append: 'pages/contact-us'
+  assign contact_page_url = pages['contact-us'].url | default: contact_page_fallback_url
+  assign use_product_metaobjects = section.settings.use_product_metaobjects
+  assign uses_metaobject_content = false
+  assign hide_section = false
+  assign has_faqs = false
+  assign has_tech_specs = false
+  assign has_renderable_block_items = false
+  assign section_media = blank
+  assign tech_specs_title = blank
+  assign tech_specs_items = blank
+  assign faq_items = blank
 
-<section class="sb-accordion" id="sb-accordion-{{ section.id }}">
-  <div class="sb-accordion__intro" data-sb-reveal>
-    <h2 class="sb-accordion__title font-title weight-bold" data-sb-reveal-item>
-      {% if section.settings.use_custom_title and section.settings.custom_title != blank %}
-        {{ section.settings.custom_title }}
-      {% else %}
-        Frequently asked questions
-      {% endif %}
-    </h2>
-    {% if section.settings.show_subtitle %}
-      <p class="sb-accordion__subtitle font-body weight-semibold" data-sb-reveal-item>
-        If you can't find your answer,
-        <a href="{{ contact_page_url }}">contact us</a>!
-      </p>
-    {% endif %}
-  </div>
+  assign section_title = 'Frequently asked questions'
+  if section.settings.use_custom_title and section.settings.custom_title != blank
+    assign section_title = section.settings.custom_title
+  endif
 
-  <div class="sb-accordion__items">
-    {% for block in section.blocks %}
-      {% if block.type == 'accordion_item' %}
-        <article class="sb-accordion__item" data-sb-reveal {{ block.shopify_attributes }}>
-          <button
-            type="button"
-            class="sb-accordion__trigger"
-            aria-expanded="false"
-            data-accordion-trigger
-            data-sb-reveal-item
-          >
-            <span class="sb-accordion__question font-body weight-bold">{{ block.settings.question }}</span>
-            <span class="sb-accordion__icon" aria-hidden="true">
-              <span class="sb-accordion__icon-plus">{{ 'icon-accordion-add.svg' | inline_asset_content }}</span>
-              <span class="sb-accordion__icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
-            </span>
-          </button>
-          <div class="sb-accordion__answer font-body weight-regular rte" data-accordion-answer data-sb-reveal-item>
-            {{ block.settings.answer }}
-          </div>
-          <hr class="sb-accordion__divider" data-sb-reveal-item>
-        </article>
+  if use_product_metaobjects
+    if request.page_type != 'product' or product == blank
+      assign hide_section = true
+    else
+      assign source_ref = product.metafields.custom.sbv2_tech_specs_faqs
+      assign source_root = source_ref.value | default: source_ref.reference.value | default: source_ref.reference
+
+      if source_root == blank
+        assign hide_section = true
+      else
+        assign uses_metaobject_content = true
+        assign section_title = source_root.title.value | default: source_root.title | default: section_title
+        assign section_media = source_root.image.value | default: source_root.image
+        assign tech_specs_title = source_root.tech_specs_title.value | default: source_root.tech_specs_title
+        assign tech_specs_items = source_root.items_tech_specs.value | default: source_root.items_tech_specs.references | default: source_root.items_tech_specs
+        assign faq_items = source_root.items.value | default: source_root.items.references | default: source_root.items
+      endif
+    endif
+  else
+    assign section_media = section.settings.image
+  endif
+
+  if hide_section == false and uses_metaobject_content
+    if tech_specs_items != blank
+      for raw_item in tech_specs_items
+        assign item_entry = raw_item.value | default: raw_item.reference.value | default: raw_item.reference | default: raw_item
+        assign line_title = item_entry.tech_specs_line_title.value | default: item_entry.tech_specs_line_title
+        assign line_text = item_entry.tech_specs_line_text | metafield_tag
+        if line_text == blank
+          assign line_text = item_entry.tech_specs_line_text.value | default: item_entry.tech_specs_line_text
+        endif
+        assign line_title = line_title | append: '' | strip
+        assign line_text = line_text | append: '' | strip
+        if line_title != blank or line_text != blank
+          assign has_tech_specs = true
+          break
+        endif
+      endfor
+    endif
+
+    if faq_items != blank
+      for raw_faq in faq_items
+        assign faq_entry = raw_faq.value | default: raw_faq.reference.value | default: raw_faq.reference | default: raw_faq
+        assign faq_title_check = faq_entry.faq_title.value | default: faq_entry.faq_title
+        assign faq_answer_check = faq_entry.faq_text | metafield_tag
+        if faq_answer_check == blank
+          assign faq_answer_check = faq_entry.faq_text.value | default: faq_entry.faq_text
+        endif
+        assign faq_title_check = faq_title_check | append: '' | strip
+        assign faq_answer_check = faq_answer_check | append: '' | strip
+        if faq_title_check != blank or faq_answer_check != blank
+          assign has_faqs = true
+          break
+        endif
+      endfor
+    endif
+
+    if has_tech_specs == false and has_faqs == false
+      assign hide_section = true
+    endif
+  elsif hide_section == false
+    for block in section.blocks
+      if block.type != 'accordion_item'
+        continue
+      endif
+      assign block_question = block.settings.question | strip
+      assign block_answer = block.settings.answer | strip
+      if block_question != blank or block_answer != blank
+        assign has_renderable_block_items = true
+        break
+      endif
+    endfor
+    if has_renderable_block_items == false
+      assign hide_section = true
+    endif
+  endif
+%}
+
+{% if hide_section %}
+  <script>
+    (() => {
+      const sectionWrapper = document.currentScript && document.currentScript.closest('.shopify-section');
+      if (sectionWrapper) {
+        sectionWrapper.style.setProperty('display', 'none', 'important');
+      }
+    })();
+  </script>
+{% else %}
+  <section class="sb-accordion{% if section_media != blank %} sb-accordion--with-media{% endif %}" id="sb-accordion-{{ section.id }}">
+    <div class="sb-accordion__intro" data-sb-reveal>
+      <h2 class="sb-accordion__title font-title weight-bold" data-sb-reveal-item>{{ section_title }}</h2>
+      {% if section.settings.show_subtitle %}
+        <p class="sb-accordion__subtitle font-body weight-semibold" data-sb-reveal-item>
+          If you can't find your answer,
+          <a href="{{ contact_page_url }}">contact us</a>!
+        </p>
       {% endif %}
-    {% endfor %}
-  </div>
-</section>
+    </div>
+
+    <div class="sb-accordion__layout{% if section_media != blank %} sb-accordion__layout--with-media{% endif %}">
+      {% if section_media != blank %}
+        <div class="sb-accordion__media-wrap" data-sb-reveal>
+          {% assign section_media_width = section_media.width | default: 2400 %}
+          {{
+            section_media
+            | image_url: width: section_media_width
+            | image_tag:
+              class: 'sb-accordion__media',
+              widths: '600, 900, 1200, 1600, 2000, 2400, 3000',
+              sizes: '(min-width: 990px) 600px, 100vw',
+              loading: 'lazy',
+              alt: section_title
+          }}
+        </div>
+      {% endif %}
+
+      <div class="sb-accordion__items">
+        {% if uses_metaobject_content %}
+          {% if has_tech_specs %}
+            <article class="sb-accordion__item" data-sb-reveal>
+              <button
+                type="button"
+                class="sb-accordion__trigger"
+                aria-expanded="false"
+                data-accordion-trigger
+                data-sb-reveal-item
+              >
+                <span class="sb-accordion__question font-body weight-bold">{{ tech_specs_title }}</span>
+                <span class="sb-accordion__icon" aria-hidden="true">
+                  <span class="sb-accordion__icon-plus">{{ 'icon-accordion-add.svg' | inline_asset_content }}</span>
+                  <span class="sb-accordion__icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
+                </span>
+              </button>
+              <div class="sb-accordion__answer sb-accordion__answer--tech-specs" data-accordion-answer data-sb-reveal-item>
+                {% for raw_item in tech_specs_items %}
+                  {% liquid
+                    assign item_entry = raw_item.value | default: raw_item.reference.value | default: raw_item.reference | default: raw_item
+                    assign line_title = item_entry.tech_specs_line_title.value | default: item_entry.tech_specs_line_title
+                    assign line_text = item_entry.tech_specs_line_text | metafield_tag
+                    if line_text == blank
+                      assign line_text = item_entry.tech_specs_line_text.value | default: item_entry.tech_specs_line_text
+                    endif
+                    assign line_title = line_title | append: '' | strip
+                    assign line_text = line_text | append: '' | strip
+                  %}
+                  {% if line_title == blank and line_text == blank %}
+                    {% continue %}
+                  {% endif %}
+                  <div class="sb-accordion__spec-row">
+                    <p class="sb-accordion__spec-label font-caption weight-bold">{{ line_title }}</p>
+                    <div class="sb-accordion__spec-value font-caption weight-regular">{{ line_text }}</div>
+                  </div>
+                {% endfor %}
+              </div>
+              <hr class="sb-accordion__divider" data-sb-reveal-item>
+            </article>
+          {% endif %}
+
+          {% if has_faqs %}
+            {% for raw_faq in faq_items %}
+              {% liquid
+                assign faq_entry = raw_faq.value | default: raw_faq.reference.value | default: raw_faq.reference | default: raw_faq
+                assign faq_title = faq_entry.faq_title.value | default: faq_entry.faq_title
+                assign faq_answer = faq_entry.faq_text | metafield_tag
+                if faq_answer == blank
+                  assign faq_answer = faq_entry.faq_text.value | default: faq_entry.faq_text
+                endif
+                assign faq_title = faq_title | append: '' | strip
+                assign faq_answer = faq_answer | append: '' | strip
+              %}
+              {% if faq_title == blank and faq_answer == blank %}
+                {% continue %}
+              {% endif %}
+              <article class="sb-accordion__item" data-sb-reveal>
+                <button
+                  type="button"
+                  class="sb-accordion__trigger"
+                  aria-expanded="false"
+                  data-accordion-trigger
+                  data-sb-reveal-item
+                >
+                  <span class="sb-accordion__question font-body weight-bold">{{ faq_title }}</span>
+                  <span class="sb-accordion__icon" aria-hidden="true">
+                    <span class="sb-accordion__icon-plus">{{ 'icon-accordion-add.svg' | inline_asset_content }}</span>
+                    <span class="sb-accordion__icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
+                  </span>
+                </button>
+                <div class="sb-accordion__answer font-body weight-regular rte" data-accordion-answer data-sb-reveal-item>
+                  {% render 'localized-richtext-links', content: faq_answer %}
+                </div>
+                <hr class="sb-accordion__divider" data-sb-reveal-item>
+              </article>
+            {% endfor %}
+          {% endif %}
+        {% else %}
+          {% for block in section.blocks %}
+            {% if block.type != 'accordion_item' %}
+              {% continue %}
+            {% endif %}
+            {% assign block_question = block.settings.question | strip %}
+            {% assign block_answer = block.settings.answer | strip %}
+            {% if block_question == blank and block_answer == blank %}
+              {% continue %}
+            {% endif %}
+            <article class="sb-accordion__item" data-sb-reveal {{ block.shopify_attributes }}>
+              <button
+                type="button"
+                class="sb-accordion__trigger"
+                aria-expanded="false"
+                data-accordion-trigger
+                data-sb-reveal-item
+              >
+                <span class="sb-accordion__question font-body weight-bold">{{ block.settings.question }}</span>
+                <span class="sb-accordion__icon" aria-hidden="true">
+                  <span class="sb-accordion__icon-plus">{{ 'icon-accordion-add.svg' | inline_asset_content }}</span>
+                  <span class="sb-accordion__icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
+                </span>
+              </button>
+              <div class="sb-accordion__answer font-body weight-regular rte" data-accordion-answer data-sb-reveal-item>
+                {% render 'localized-richtext-links', content: block.settings.answer %}
+              </div>
+              <hr class="sb-accordion__divider" data-sb-reveal-item>
+            </article>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  </section>
+{% endif %}
 
 {% stylesheet %}
   .sb-accordion {
@@ -80,11 +283,44 @@
     text-decoration: underline;
   }
 
+  .sb-accordion__layout {
+    margin-top: var(--sb-space-48);
+    width: 100%;
+  }
+
+  .sb-accordion__layout--with-media {
+    align-items: stretch;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .sb-accordion__media-wrap {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .sb-accordion__media {
+    display: block;
+    height: auto;
+    max-width: 600px;
+    width: min(100%, 600px);
+  }
+
   .sb-accordion__items {
     display: flex;
     flex-direction: column;
     gap: var(--sb-space-24);
-    margin-top: var(--sb-space-48);
+    margin-top: 0;
+    width: 100%;
+  }
+
+  .sb-accordion__layout--with-media > .sb-accordion__items {
+    align-self: stretch;
+    flex: 1 1 auto;
+    max-width: none;
   }
 
   .sb-accordion__item {
@@ -162,6 +398,32 @@
     margin-top: var(--sb-space-24);
   }
 
+  .sb-accordion__answer--tech-specs {
+    display: none;
+  }
+
+  .sb-accordion__spec-row {
+    align-items: start;
+    column-gap: 16px;
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    width: 100%;
+  }
+
+  .sb-accordion__spec-row + .sb-accordion__spec-row {
+    margin-top: 20px;
+  }
+
+  .sb-accordion__spec-label,
+  .sb-accordion__spec-value {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+  }
+
+  .sb-accordion__spec-value p {
+    margin: 0;
+  }
+
   .sb-accordion__item.is-open .sb-accordion__answer {
     display: block;
   }
@@ -192,6 +454,13 @@
     height: 1px;
     margin: var(--sb-space-24) 0 0;
     width: 100%;
+  }
+
+  @media (max-width: 749px) {
+    .sb-accordion__spec-row {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: 8px;
+    }
   }
 {% endstylesheet %}
 
@@ -228,6 +497,12 @@
   "settings": [
     {
       "type": "checkbox",
+      "id": "use_product_metaobjects",
+      "label": "Use product page metaobjects",
+      "default": false
+    },
+    {
+      "type": "checkbox",
       "id": "use_custom_title",
       "label": "Use custom title",
       "default": false
@@ -244,6 +519,13 @@
       "id": "show_subtitle",
       "label": "Show subtitle",
       "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Target minimum 600x600 at 3x export (1800x1800).",
+      "visible_if": "{{ section.settings.use_product_metaobjects == false }}"
     }
   ],
   "blocks": [

@@ -1,66 +1,258 @@
-<section class="sb-feature-carousel" data-sb-carousel data-sb-reveal>
-  {% if section.settings.title != blank %}
-    <h2 class="sb-feature-carousel__title font-title weight-bold" data-sb-reveal-item>{{ section.settings.title }}</h2>
-  {% endif %}
+{% liquid
+  assign use_product_metaobjects = section.settings.use_product_metaobjects
+  assign uses_product_metaobjects = false
+  assign hide_section = false
+  assign section_title = section.settings.title
+  assign carousel_items = blank
+  assign has_valid_item = false
 
-  <div class="sb-feature-carousel__viewport" data-sb-carousel-viewport>
-    <div class="sb-feature-carousel__track" data-sb-carousel-track>
-      {% for block in section.blocks %}
-        {% assign item_image = block.settings.image %}
-        {% assign item_video = block.settings.video %}
-        {% if item_image != blank %}
-          {% assign item_image_request_width = item_image.width | at_most: 864 %}
-          {% assign item_image_url = item_image | image_url: width: item_image_request_width %}
-        {% else %}
-          {% assign item_image_url = 'placeholder-feature-carousel.jpg' | asset_url %}
-        {% endif %}
+  if use_product_metaobjects
+    if request.page_type == 'product' and product != blank
+      assign source_ref = product.metafields.custom.sbv2_features_carousel
+      assign source_root = source_ref.value | default: source_ref.reference.value | default: source_ref.reference | default: source_ref
 
-        <article class="sb-feature-carousel__item" data-sb-carousel-item data-sb-reveal-item {{ block.shopify_attributes }}>
-          <div class="sb-feature-carousel__media">
-            {% if item_video != blank %}
-              {{
-                item_video
-                | video_tag:
-                  class: 'sb-feature-carousel__media-video',
-                  controls: true,
-                  autoplay: false,
-                  loop: false,
-                  muted: false,
-                  image_size: '864x',
-                  preload: 'metadata'
-              }}
-            {% else %}
-              <img
-                src="{{ item_image_url }}"
-                alt="{{ item_image.alt | default: block.settings.body | strip_html | truncate: 80 | escape }}"
-                loading="lazy"
-                width="283"
-                height="283"
-              >
+      if source_root != blank
+        assign uses_product_metaobjects = true
+        assign section_title = source_root.title.value | default: source_root.title | default: section_title
+        assign carousel_items = source_root.items.value | default: source_root.items.references | default: source_root.items
+      endif
+    endif
+
+    if carousel_items != blank
+      for carousel_item in carousel_items
+        assign carousel_item_entry = carousel_item.value | default: carousel_item.reference.value | default: carousel_item.reference | default: carousel_item
+        assign carousel_item_info_check = carousel_item_entry.info.value | default: carousel_item_entry.info | append: '' | strip
+        assign carousel_item_image_check = carousel_item_entry.image.value | default: carousel_item_entry.image
+        assign carousel_item_video_check_field = carousel_item_entry.video_url.value | default: carousel_item_entry.video_url
+        assign carousel_item_video_check = carousel_item_video_check_field.url | default: carousel_item_video_check_field.src | default: carousel_item_video_check_field | append: '' | strip
+
+        if carousel_item_info_check != blank or carousel_item_image_check != blank or carousel_item_video_check != blank
+          assign has_valid_item = true
+          break
+        endif
+      endfor
+    endif
+
+    if has_valid_item == false
+      assign hide_section = true
+    endif
+  endif
+
+  if use_product_metaobjects == false and section.blocks.size == 0
+    assign hide_section = true
+  endif
+%}
+
+{% if hide_section %}
+  <script>
+    (() => {
+      const sectionWrapper = document.currentScript && document.currentScript.closest('.shopify-section');
+      if (sectionWrapper) {
+        sectionWrapper.style.setProperty('display', 'none', 'important');
+      }
+    })();
+  </script>
+{% else %}
+  <section class="sb-feature-carousel" data-sb-carousel data-sb-reveal>
+    {% if section_title != blank %}
+      <h2 class="sb-feature-carousel__title font-title weight-bold" data-sb-reveal-item>{{ section_title }}</h2>
+    {% endif %}
+
+    <div class="sb-feature-carousel__viewport" data-sb-carousel-viewport>
+      <div class="sb-feature-carousel__track" data-sb-carousel-track>
+        {% if uses_product_metaobjects %}
+          {% for carousel_item in carousel_items %}
+            {% liquid
+              assign carousel_item_entry = carousel_item.value | default: carousel_item.reference.value | default: carousel_item.reference | default: carousel_item
+              assign item_info = carousel_item_entry.info | metafield_tag
+              if item_info == blank
+                assign item_info = carousel_item_entry.info.value | default: carousel_item_entry.info
+              endif
+
+              assign item_image = carousel_item_entry.image.value | default: carousel_item_entry.image
+              assign item_image_url = blank
+              assign item_image_request_width = 864
+              if item_image != blank and item_image.width != blank
+                assign item_image_request_width = item_image.width | at_most: 864
+                assign item_image_url = item_image | image_url: width: item_image_request_width
+              else
+                assign item_image_url = item_image.url | default: item_image.src | default: item_image
+              endif
+
+              assign item_video_field = carousel_item_entry.video_url.value | default: carousel_item_entry.video_url
+              assign item_video_url = blank
+              if item_video_field != blank
+                if item_video_field.sources != blank
+                  for item_video_source in item_video_field.sources
+                    assign item_video_source_url = item_video_source.url | default: item_video_source.src
+                    assign item_video_source_format = item_video_source.format | downcase
+                    assign item_video_source_mime = item_video_source.mime_type | downcase
+
+                    if item_video_source_url != blank
+                      if item_video_source_format contains 'mp4' or item_video_source_mime contains 'mp4'
+                        assign item_video_url = item_video_source_url
+                        break
+                      endif
+                      if item_video_url == blank
+                        assign item_video_url = item_video_source_url
+                      endif
+                    endif
+                  endfor
+                endif
+                if item_video_url == blank
+                  assign item_video_url = item_video_field.url | default: item_video_field.src | default: item_video_field
+                endif
+              endif
+              assign item_video_url = item_video_url | append: '' | strip
+
+              assign item_video_embed_url = blank
+              assign item_video_use_iframe = false
+              if item_video_url != blank
+                assign item_video_url_downcase = item_video_url | downcase
+
+                if item_video_url_downcase contains 'youtube.com/watch'
+                  assign item_youtube_id = item_video_url | split: 'v=' | last | split: '&' | first
+                  if item_youtube_id != blank
+                    assign item_video_embed_url = 'https://www.youtube.com/embed/' | append: item_youtube_id | append: '?autoplay=1&mute=1&loop=1&playlist=' | append: item_youtube_id | append: '&playsinline=1&controls=0&rel=0'
+                    assign item_video_use_iframe = true
+                  endif
+                elsif item_video_url_downcase contains 'youtu.be/'
+                  assign item_youtube_id = item_video_url | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first
+                  if item_youtube_id != blank
+                    assign item_video_embed_url = 'https://www.youtube.com/embed/' | append: item_youtube_id | append: '?autoplay=1&mute=1&loop=1&playlist=' | append: item_youtube_id | append: '&playsinline=1&controls=0&rel=0'
+                    assign item_video_use_iframe = true
+                  endif
+                elsif item_video_url_downcase contains 'vimeo.com/'
+                  assign item_vimeo_id = item_video_url | split: 'vimeo.com/' | last | split: '?' | first | split: '&' | first | split: '/' | first
+                  if item_vimeo_id != blank
+                    assign item_video_embed_url = 'https://player.vimeo.com/video/' | append: item_vimeo_id | append: '?autoplay=1&muted=1&loop=1&background=1'
+                    assign item_video_use_iframe = true
+                  endif
+                endif
+              endif
+
+              assign item_alt = item_image.alt | default: item_info | strip_html | strip
+            %}
+
+            {% if item_info == blank and item_image_url == blank and item_video_url == blank %}
+              {% continue %}
             {% endif %}
-          </div>
-          <div class="sb-feature-carousel__body font-body weight-regular rte">
-            {{ block.settings.body }}
-          </div>
-        </article>
-      {% endfor %}
+
+            <article class="sb-feature-carousel__item" data-sb-carousel-item data-sb-reveal-item>
+              <div class="sb-feature-carousel__media">
+                {% if item_video_url != blank %}
+                  {% if item_video_use_iframe and item_video_embed_url != blank %}
+                    <iframe
+                      class="sb-feature-carousel__media-video sb-feature-carousel__media-video-iframe"
+                      src="{{ item_video_embed_url | escape }}"
+                      title="{{ item_alt | default: 'Feature video' | escape }}"
+                      loading="lazy"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowfullscreen
+                    ></iframe>
+                  {% else %}
+                    <video
+                      class="sb-feature-carousel__media-video"
+                      autoplay
+                      loop
+                      muted
+                      playsinline
+                      preload="metadata"
+                      {% if item_image_url != blank %}
+                        poster="{{ item_image_url }}"
+                      {% endif %}
+                      src="{{ item_video_url | escape }}"
+                    ></video>
+                  {% endif %}
+                {% elsif item_image_url != blank %}
+                  {% # theme-check-disable RemoteAsset %}
+                  <img
+                    src="{{ item_image_url }}"
+                    alt="{{ item_alt | default: 'Feature media' | escape }}"
+                    loading="lazy"
+                    width="283"
+                    height="283"
+                  >
+                  {% # theme-check-enable RemoteAsset %}
+                {% else %}
+                  <img
+                    src="{{ 'placeholder-feature-carousel.jpg' | asset_url }}"
+                    alt="{{ item_alt | default: 'Feature media' | escape }}"
+                    loading="lazy"
+                    width="283"
+                    height="283"
+                  >
+                {% endif %}
+              </div>
+              {% if item_info != blank %}
+                <div class="sb-feature-carousel__body font-body weight-regular rte">
+                  {{ item_info }}
+                </div>
+              {% endif %}
+            </article>
+          {% endfor %}
+        {% else %}
+          {% for block in section.blocks %}
+            {% assign item_image = block.settings.image %}
+            {% assign item_video = block.settings.video %}
+            {% if item_image != blank %}
+              {% assign item_image_request_width = item_image.width | at_most: 864 %}
+              {% assign item_image_url = item_image | image_url: width: item_image_request_width %}
+            {% else %}
+              {% assign item_image_url = 'placeholder-feature-carousel.jpg' | asset_url %}
+            {% endif %}
+
+            <article class="sb-feature-carousel__item" data-sb-carousel-item data-sb-reveal-item {{ block.shopify_attributes }}>
+              <div class="sb-feature-carousel__media">
+                {% if item_video != blank %}
+                  {{
+                    item_video
+                    | video_tag:
+                      class: 'sb-feature-carousel__media-video',
+                      controls: false,
+                      autoplay: true,
+                      loop: true,
+                      muted: true,
+                      playsinline: true,
+                      image_size: '864x',
+                      preload: 'metadata'
+                  }}
+                {% else %}
+                  {% # theme-check-disable RemoteAsset %}
+                  <img
+                    src="{{ item_image_url }}"
+                    alt="{{ item_image.alt | default: block.settings.body | strip_html | truncate: 80 | escape }}"
+                    loading="lazy"
+                    width="283"
+                    height="283"
+                  >
+                  {% # theme-check-enable RemoteAsset %}
+                {% endif %}
+              </div>
+              <div class="sb-feature-carousel__body font-body weight-regular rte">
+                {{ block.settings.body }}
+              </div>
+            </article>
+          {% endfor %}
+        {% endif %}
+      </div>
     </div>
-  </div>
 
-  <div class="sb-feature-carousel__controls" data-sb-carousel-controls>
-    <button type="button" class="sb-feature-carousel__arrow" data-sb-carousel-prev aria-label="Previous" disabled>
-      <span class="sb-feature-carousel__arrow-icon sb-feature-carousel__arrow-icon--left" aria-hidden="true">
-        {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
-      </span>
-    </button>
+    <div class="sb-feature-carousel__controls" data-sb-carousel-controls>
+      <button type="button" class="sb-feature-carousel__arrow" data-sb-carousel-prev aria-label="Previous" disabled>
+        <span class="sb-feature-carousel__arrow-icon sb-feature-carousel__arrow-icon--left" aria-hidden="true">
+          {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
+        </span>
+      </button>
 
-    <button type="button" class="sb-feature-carousel__arrow" data-sb-carousel-next aria-label="Next" disabled>
-      <span class="sb-feature-carousel__arrow-icon sb-feature-carousel__arrow-icon--right" aria-hidden="true">
-        {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
-      </span>
-    </button>
-  </div>
-</section>
+      <button type="button" class="sb-feature-carousel__arrow" data-sb-carousel-next aria-label="Next" disabled>
+        <span class="sb-feature-carousel__arrow-icon sb-feature-carousel__arrow-icon--right" aria-hidden="true">
+          {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
+        </span>
+      </button>
+    </div>
+  </section>
+{% endif %}
 
 {% stylesheet %}
   .sb-feature-carousel {
@@ -78,8 +270,12 @@
   .sb-feature-carousel__viewport {
     margin-left: calc(-1 * var(--sb-carousel-bleed-inline));
     margin-right: calc(-1 * var(--sb-carousel-bleed-inline));
+    margin-top: -10px;
+    margin-bottom: -10px;
     overflow-x: auto;
     overflow-y: hidden;
+    padding-top: 10px;
+    padding-bottom: 10px;
     padding-left: var(--sb-carousel-bleed-inline);
     padding-right: var(--sb-carousel-bleed-inline);
     scrollbar-width: none;
@@ -105,7 +301,9 @@
   }
 
   .sb-feature-carousel__media {
+    background: var(--sb-color-neutral-200);
     border-radius: 24px;
+    box-shadow: 0 0 10px 0 var(--sb-color-always-black-12);
     overflow: hidden;
   }
 
@@ -117,8 +315,10 @@
     width: 100%;
   }
 
-  .sb-feature-carousel__media-video {
+  .sb-feature-carousel__media-video,
+  .sb-feature-carousel__media-video-iframe {
     aspect-ratio: 1 / 1;
+    border: 0;
     display: block;
     height: auto;
     object-fit: cover;
@@ -199,8 +399,13 @@
     fill: var(--sb-color-primary-500);
   }
 
+  .sb-feature-carousel.is-not-overflowing .sb-feature-carousel__viewport {
+    display: flex;
+    justify-content: center;
+  }
+
   .sb-feature-carousel.is-not-overflowing .sb-feature-carousel__track {
-    margin-inline: auto;
+    margin-inline: 0;
   }
 
   @media (max-width: 749px) {
@@ -220,6 +425,12 @@
 {
   "name": "Feature carousel",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_product_metaobjects",
+      "label": "Use product page metaobjects",
+      "default": false
+    },
     {
       "type": "text",
       "id": "title",

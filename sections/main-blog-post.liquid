@@ -1,5 +1,6 @@
 {% liquid
-  assign blog_url = blog.url | default: '/blogs/articles'
+  assign default_blog_url = routes.root_url | append: 'blogs/articles'
+  assign blog_url = blog.url | default: default_blog_url
   assign active_tag_handle = ''
   if current_tags != blank
     assign active_tag_handle = current_tags.first | handleize
@@ -491,7 +492,7 @@
 
           {% if section.settings.about_box_content != blank %}
             <section class="sb-blog-post__about-box rte font-body weight-regular" aria-label="About Soundbrenner">
-              {{ section.settings.about_box_content }}
+              {% render 'localized-richtext-links', content: section.settings.about_box_content %}
             </section>
           {% endif %}
 
@@ -557,7 +558,7 @@
   }
 
   .sb-blog-post {
-    --sb-blog-post-first-offset: 128px;
+    --sb-blog-post-first-offset: calc(var(--sb-sticky-top-stack-bottom, 0px) + var(--sb-space-96));
     --sb-blog-post-sidebar-start-offset: 0px;
     --sb-menu-unroll-duration: 420ms;
     --sb-menu-unroll-ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -819,7 +820,7 @@
   .sb-blog-post__sidebar-card-wrap {
     overflow: visible;
     position: sticky;
-    top: var(--sb-sidebar-sticky-top, 112px);
+    top: max(112px, calc(var(--sb-sticky-top-stack-bottom, 0px) + 36px));
   }
 
   .sb-blog-post__sidebar-phase--1 .sb-blog-post__sidebar-card-wrap {
@@ -1137,16 +1138,23 @@
   .sb-blog-post__read-next .sb-blog-overview-card--archive .sb-blog-overview-card__media {
     aspect-ratio: 16 / 9;
     border-radius: 12px;
-    opacity: 1;
-  }
-
-  .sb-blog-post__read-next .sb-blog-overview-card--archive .sb-blog-overview-card__media:hover,
-  .sb-blog-post__read-next .sb-blog-overview-card--archive .sb-blog-overview-card__media:focus-visible {
-    opacity: 0.75;
   }
 
   .sb-blog-post__read-next .sb-blog-overview-card--archive .sb-blog-overview-card__content {
     padding: 0;
+  }
+
+  @media (min-width: 990px) {
+    .sb-blog-post__read-next .sb-blog-overview-card--archive .sb-blog-overview-card__media {
+      transform: scale(1);
+      transform-origin: center center;
+      transition: transform 220ms ease;
+    }
+
+    .sb-blog-post__read-next .sb-blog-overview-card--archive .sb-blog-overview-card__media:hover,
+    .sb-blog-post__read-next .sb-blog-overview-card--archive .sb-blog-overview-card__media:focus-visible {
+      transform: scale(var(--sb-hover-scale-factor, 1.015));
+    }
   }
 
   .sb-blog-sidebar-box {
@@ -1518,17 +1526,11 @@
     const stickyNavWraps = Array.from(root.querySelectorAll('[data-sb-blog-post-sticky-nav-wrap]'));
     const sidebarStacks = Array.from(root.querySelectorAll('[data-sb-blog-post-sticky-stack]'));
     const articleMain = root.querySelector('.sb-blog-post__main');
+    const articleInner = root.querySelector('.sb-blog-post__inner');
     const articleContent = root.querySelector('.sb-blog-post__content');
     const filterDropdowns = Array.from(root.querySelectorAll('[data-sb-blog-post-filter-dropdown]'));
     const filterCloseButtons = Array.from(root.querySelectorAll('[data-sb-blog-post-filter-close]'));
     const filterBackdrop = root.querySelector('[data-sb-blog-post-filter-backdrop]');
-    const headerElement = document.querySelector('.header');
-
-    const parseSpaceVar = (name, fallback) => {
-      const rawValue = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-      const parsed = Number.parseFloat(rawValue);
-      return Number.isFinite(parsed) ? parsed : fallback;
-    };
 
     const closeFilterDropdown = (dropdown, { returnFocus = false } = {}) => {
       if (!dropdown || dropdown.getAttribute('data-open') !== 'true') return;
@@ -1652,75 +1654,33 @@
     }
 
     const isDesktop = () => window.matchMedia('(min-width: 990px)').matches;
-
-    const syncStickyNavTop = () => {
-      if (!stickyNavWraps.length) return;
-      if (!headerElement) {
-        stickyNavWraps.forEach((wrap) => {
-          const spacing = Number.parseFloat(getComputedStyle(wrap).getPropertyValue('--sb-supplementary-sticky-top-gap')) || 16;
-          const fallbackTop = `${Math.round(spacing)}px`;
-          if (wrap.style.top !== fallbackTop) {
-            wrap.style.top = fallbackTop;
-          }
-        });
-        return;
-      }
-
-      const headerStyles = getComputedStyle(headerElement);
-      const headerBorderBottom = Number.parseFloat(headerStyles.borderBottomWidth) || 0;
-      const headerBottom = headerElement.getBoundingClientRect().bottom - headerBorderBottom;
-      stickyNavWraps.forEach((wrap) => {
-        const spacing = Number.parseFloat(getComputedStyle(wrap).getPropertyValue('--sb-supplementary-sticky-top-gap')) || 16;
-        const nextTop = Math.max(headerBottom + spacing, spacing);
-        const nextTopValue = `${Math.floor(nextTop)}px`;
-        if (wrap.style.top !== nextTopValue) {
-          wrap.style.top = nextTopValue;
-        }
-      });
+    const parseSpaceVar = (name, fallback) => {
+      const rawValue = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+      const parsed = Number.parseFloat(rawValue);
+      return Number.isFinite(parsed) ? parsed : fallback;
     };
 
-    const syncStickyLayoutMetrics = () => {
-      const baseGap = parseSpaceVar('--sb-space-128', 128);
-      const isDesktopViewport = window.matchMedia('(min-width: 990px)').matches;
-      const activeWrap = stickyNavWraps.find((wrap) => wrap.getClientRects().length > 0) || null;
-      const activeNav = activeWrap ? activeWrap.querySelector('[data-sb-blog-post-sticky-nav]') : null;
-      let nextOffset = baseGap;
-
-      if (isDesktopViewport && activeWrap && activeNav && activeNav.getClientRects().length > 0) {
-        const stickyNavStyles = getComputedStyle(activeNav);
-        const stickyPaddingTop = Number.parseFloat(stickyNavStyles.paddingTop) || 0;
-        const stickyPaddingBottom = Number.parseFloat(stickyNavStyles.paddingBottom) || 0;
-        const singleRowHeight = stickyPaddingTop + 36 + stickyPaddingBottom;
-        const stickyNavHeight = activeNav.getBoundingClientRect().height;
-        const wrappedRowsOffset = Math.max(0, stickyNavHeight - singleRowHeight);
-        nextOffset += wrappedRowsOffset;
+    const getTopStackBottom = () => {
+      if (window.SBStickyStack && typeof window.SBStickyStack.getState === 'function') {
+        const stickyState = window.SBStickyStack.getState();
+        if (Number.isFinite(stickyState?.topStackBottom)) {
+          return Math.max(stickyState.topStackBottom, 0);
+        }
       }
+      return parseSpaceVar('--sb-sticky-top-stack-bottom', 0);
+    };
 
-      const nextOffsetValue = activeWrap ? `${Math.round(nextOffset)}px` : '0px';
+    const syncFirstContentOffset = () => {
+      const headingOffset = parseSpaceVar('--sb-space-96', 96);
+      const currentScrollTop = window.scrollY || window.pageYOffset || 0;
+      const innerTop = (articleInner || root).getBoundingClientRect().top + currentScrollTop;
+      const topStackBottom = getTopStackBottom();
+      const nextOffset = Math.max(Math.round(topStackBottom + headingOffset - innerTop), headingOffset);
+      const nextOffsetValue = `${nextOffset}px`;
       const currentOffsetValue = root.style.getPropertyValue('--sb-blog-post-first-offset');
       if (currentOffsetValue !== nextOffsetValue) {
         root.style.setProperty('--sb-blog-post-first-offset', nextOffsetValue);
       }
-    };
-
-    const syncSidebarStickyTop = () => {
-      if (!sidebarStacks.length) return;
-      const defaultTop = 112;
-      const activeWrap = stickyNavWraps.find((wrap) => wrap.getClientRects().length > 0) || null;
-      const activeNav = activeWrap ? activeWrap.querySelector('[data-sb-blog-post-sticky-nav]') : null;
-
-      if (!isDesktop() || !activeWrap || !activeNav || activeWrap.getClientRects().length === 0) {
-        sidebarStacks.forEach((stack) => {
-          stack.style.setProperty('--sb-sidebar-sticky-top', `${defaultTop}px`);
-        });
-        return;
-      }
-
-      const navBottom = activeNav.getBoundingClientRect().bottom;
-      const nextTop = Math.max(defaultTop, Math.round(navBottom + 36));
-      sidebarStacks.forEach((stack) => {
-        stack.style.setProperty('--sb-sidebar-sticky-top', `${nextTop}px`);
-      });
     };
 
     const applySidebarLayout = () => {
@@ -1754,37 +1714,20 @@
       frameRequested = true;
       window.requestAnimationFrame(() => {
         frameRequested = false;
-        syncStickyNavTop();
-        syncSidebarStickyTop();
         syncSidebarStartOffset();
         applySidebarLayout();
-        syncStickyLayoutMetrics();
+        syncFirstContentOffset();
       });
     };
 
-    window.addEventListener(
-      'scroll',
-      () => {
-        syncStickyNavTop();
-        syncSidebarStickyTop();
-      },
-      { passive: true }
-    );
-
     window.addEventListener('resize', requestLayoutUpdate);
     window.addEventListener('load', requestLayoutUpdate);
-
-    if (headerElement) {
-      const headerObserver = new MutationObserver(() => {
-        requestLayoutUpdate();
-      });
-      headerObserver.observe(headerElement, { attributes: true, attributeFilter: ['class', 'style'] });
-    }
+    document.addEventListener('sb:cart-drawer:state-change', requestLayoutUpdate);
+    document.addEventListener('sb:sticky-stack:change', requestLayoutUpdate);
 
     if ('ResizeObserver' in window) {
       const observer = new ResizeObserver(requestLayoutUpdate);
       observer.observe(document.body);
-      if (headerElement) observer.observe(headerElement);
       stickyNavWraps.forEach((wrap) => {
         observer.observe(wrap);
         const nav = wrap.querySelector('[data-sb-blog-post-sticky-nav]');

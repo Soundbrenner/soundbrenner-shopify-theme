@@ -75,13 +75,18 @@
   endif
   assign rating_display = rating_integer | append: '.' | append: rating_decimal
 
-  assign read_all_url = section.settings.read_all_url | default: '/pages/all-reviews'
+  assign read_all_fallback_url = pages['all-reviews'].url | default: routes.root_url
+  assign read_all_url = section.settings.read_all_url | default: read_all_fallback_url
   assign star_icon_url = 'icon-review-star.svg' | asset_url
   assign read_all_arrow_icon_url = 'arrow-reduced-padding.svg' | asset_url
   assign view_all_arrow_icon_url = 'collection-overview-view-all-arrow.svg' | asset_url
 %}
 
-<section class="sb-collection-overview" data-sb-reveal>
+<section
+  class="sb-collection-overview"
+  data-sb-reveal
+  data-sb-thumbnail-section
+>
   <div class="sb-collection-overview__header-wrap">
     <div class="sb-collection-overview__header" data-sb-reveal-item>
       <span class="sb-collection-overview__dot" aria-hidden="true"></span>
@@ -140,7 +145,7 @@
             assign collection_title = 'Collection name'
           endif
 
-          assign explore_link = overview_collection.url | default: '/collections'
+          assign explore_link = overview_collection.url | default: routes.collections_url
           assign compare_link = block.settings.compare_link
 
           assign manual_products_count = 0
@@ -163,6 +168,14 @@
               assign manual_products_count = manual_products_count | plus: 1
             endif
           endfor
+
+          assign collection_products_total = overview_collection.all_products_count | default: overview_collection.products_count | default: 0
+          assign show_view_all_card = false
+          if collection_products_total > 6
+            assign show_view_all_card = true
+          elsif collection_products_total == 0 and manual_products_count >= 6
+            assign show_view_all_card = true
+          endif
         %}
 
         <article class="sb-collection-overview__row{% unless forloop.first %} sb-collection-overview__row--with-divider{% endunless %}" {{ block.shopify_attributes }}>
@@ -237,18 +250,20 @@
                   {% endfor %}
                 {% endif %}
 
-                <div class="sb-collection-overview__carousel-item sb-collection-overview__carousel-item--view-all" data-sb-carousel-item>
-                  <a class="sb-collection-overview__view-all-link" href="{{ explore_link }}">
-                    <span class="sb-collection-overview__view-all-card">
-                      <span class="sb-collection-overview__view-all-label font-callout weight-bold">View all</span>
-                      <span
-                        class="sb-collection-overview__view-all-icon"
-                        aria-hidden="true"
-                        style="--sb-collection-overview-view-all-arrow-url: url('{{ view_all_arrow_icon_url }}');"
-                      ></span>
-                    </span>
-                  </a>
-                </div>
+                {% if show_view_all_card %}
+                  <div class="sb-collection-overview__carousel-item sb-collection-overview__carousel-item--view-all" data-sb-carousel-item>
+                    <a class="sb-collection-overview__view-all-link" href="{{ explore_link }}">
+                      <span class="sb-collection-overview__view-all-card">
+                        <span class="sb-collection-overview__view-all-label font-callout weight-bold">View all</span>
+                        <span
+                          class="sb-collection-overview__view-all-icon"
+                          aria-hidden="true"
+                          style="--sb-collection-overview-view-all-arrow-url: url('{{ view_all_arrow_icon_url }}');"
+                        ></span>
+                      </span>
+                    </a>
+                  </div>
+                {% endif %}
               </div>
             </div>
 
@@ -275,7 +290,7 @@
           <div class="sb-collection-overview__actions">
             {% render 'radiant-button',
               label: 'Explore collection',
-              link: '/collections',
+              link: routes.collections_url,
               size: 'large',
               extra_class: 'sb-collection-overview__explore-button font-caption weight-bold'
             %}
@@ -296,18 +311,6 @@
                 </div>
               {% endfor %}
 
-              <div class="sb-collection-overview__carousel-item sb-collection-overview__carousel-item--view-all" data-sb-carousel-item>
-                <a class="sb-collection-overview__view-all-link" href="{{ routes.collections_url }}">
-                  <span class="sb-collection-overview__view-all-card">
-                    <span class="sb-collection-overview__view-all-label font-callout weight-bold">View all</span>
-                    <span
-                      class="sb-collection-overview__view-all-icon"
-                      aria-hidden="true"
-                      style="--sb-collection-overview-view-all-arrow-url: url('{{ view_all_arrow_icon_url }}');"
-                    ></span>
-                  </span>
-                </a>
-              </div>
             </div>
           </div>
 
@@ -552,7 +555,7 @@
   .sb-collection-overview__view-all-link:hover .sb-collection-overview__view-all-card,
   .sb-collection-overview__view-all-link:focus-visible .sb-collection-overview__view-all-card {
     background: var(--sb-color-neutral-400);
-    transform: scale(1.04);
+    transform: scale(var(--sb-hover-scale-factor, 1.015));
   }
 
   .sb-collection-overview__view-all-label {
@@ -634,7 +637,7 @@
   }
 
   .sb-collection-overview__carousel.is-not-overflowing .sb-collection-overview__carousel-track {
-    margin-inline: auto;
+    margin-inline: 0;
   }
 
   .sb-collection-overview__carousel-item,
@@ -648,391 +651,6 @@
     display: flex;
     margin: 0 !important;
     padding: 0 !important;
-  }
-
-  .sb-collection-overview .sb-product-thumbnail {
-    display: flex;
-    flex-direction: column;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__media-wrap {
-    margin: 0 !important;
-    padding: 0 !important;
-    position: relative;
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__media {
-    background: var(--sb-color-neutral-100);
-    border-radius: var(--sb-space-24);
-    box-shadow: 0 0 10px 0 var(--sb-color-always-black-12);
-    display: block;
-    overflow: hidden;
-    position: relative;
-    text-decoration: none;
-    width: 100%;
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__media-item,
-  .sb-collection-overview .sb-product-thumbnail__image-placeholder {
-    aspect-ratio: 1 / 1;
-    display: block;
-    height: auto;
-    object-fit: cover;
-    width: 100%;
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__video.sb-product-thumbnail__media-item {
-    background: var(--sb-color-neutral-100);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__image-placeholder {
-    background: var(--sb-color-neutral-200);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__badge {
-    align-items: center;
-    border-radius: var(--sb-space-12);
-    color: var(--sb-color-always-white);
-    display: inline-flex;
-    left: var(--sb-space-16);
-    padding: var(--sb-space-8) var(--sb-space-12);
-    position: absolute;
-    top: var(--sb-space-16);
-    white-space: nowrap;
-    z-index: 2;
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__badge--bestseller {
-    background: var(--sb-color-red-500);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__badge--new {
-    background: var(--sb-color-primary-500);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__name {
-    color: var(--sb-color-neutral-900);
-    display: block;
-    margin: var(--sb-space-16) 0 0;
-    text-decoration: none;
-    width: 100%;
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__name:hover,
-  .sb-collection-overview .sb-product-thumbnail__name:focus-visible {
-    color: var(--sb-color-primary-500);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__rating-row {
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--sb-space-12);
-    margin-top: var(--sb-space-8);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__stars {
-    align-items: center;
-    display: inline-flex;
-    gap: var(--sb-space-4);
-    padding-bottom: var(--sb-space-2);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__star {
-    display: inline-block;
-    height: var(--sb-space-20);
-    position: relative;
-    width: var(--sb-space-20);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__star::before,
-  .sb-collection-overview .sb-product-thumbnail__star::after {
-    content: '';
-    display: block;
-    height: 100%;
-    left: 0;
-    mask: center / contain no-repeat var(--sb-star-icon-url);
-    position: absolute;
-    top: 0;
-    width: 100%;
-    -webkit-mask: center / contain no-repeat var(--sb-star-icon-url);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__star::before {
-    background: var(--sb-color-neutral-900-50);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__star::after {
-    background: var(--sb-color-neutral-900);
-    clip-path: inset(0 calc(100% - var(--sb-star-fill)) 0 0);
-    -webkit-clip-path: inset(0 calc(100% - var(--sb-star-fill)) 0 0);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__reviews {
-    color: var(--sb-color-neutral-900);
-    margin: 0;
-    white-space: nowrap;
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__price-row {
-    align-items: center;
-    display: flex;
-    gap: var(--sb-space-8);
-    margin-top: var(--sb-space-8);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__price {
-    margin: 0;
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__price--compare {
-    color: var(--sb-color-neutral-800);
-    text-decoration: line-through;
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__price--current {
-    color: var(--sb-color-blue-500);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__swatches {
-    align-items: center;
-    display: flex;
-    gap: var(--sb-space-8);
-    margin-top: var(--sb-space-8);
-    min-height: var(--sb-space-36);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__swatches.is-empty {
-    display: none;
-    pointer-events: none;
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__swatch {
-    align-items: center;
-    background: transparent;
-    border: 0;
-    border-radius: 999px;
-    box-shadow: inset 0 0 0 2px transparent;
-    cursor: pointer;
-    display: inline-flex;
-    height: var(--sb-space-36);
-    justify-content: center;
-    padding: var(--sb-space-4);
-    width: var(--sb-space-36);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__swatch:hover,
-  .sb-collection-overview .sb-product-thumbnail__swatch:focus-visible {
-    box-shadow: inset 0 0 0 2px var(--sb-color-neutral-800);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__swatch.is-selected {
-    box-shadow: inset 0 0 0 2px var(--sb-color-primary-500);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__swatch-fill {
-    background: var(--sb-swatch-color);
-    border-radius: 999px;
-    box-shadow: 0 0 8px 0 var(--sb-color-always-white-50) inset;
-    display: block;
-    height: 100%;
-    width: 100%;
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__gallery-sources {
-    display: none;
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__carousel {
-    display: block;
-    overflow: hidden;
-    width: 100%;
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__carousel-track {
-    display: flex;
-    transform: translate3d(0, 0, 0);
-    transition: transform 180ms linear;
-    width: 100%;
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__carousel-track.is-instant {
-    transition: none;
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__carousel-slide {
-    flex: 0 0 100%;
-    width: 100%;
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__gallery-nav {
-    align-items: center;
-    background: transparent;
-    border: 0;
-    border-radius: 999px;
-    box-shadow: 0 0 24px 0 var(--sb-color-always-black-25);
-    cursor: pointer;
-    display: inline-flex;
-    height: var(--sb-space-36);
-    justify-content: center;
-    opacity: 0;
-    padding: 0;
-    pointer-events: none;
-    position: absolute;
-    top: 50%;
-    transition: opacity 120ms, transform 120ms;
-    width: var(--sb-space-36);
-    z-index: 2;
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__gallery-nav--left {
-    left: var(--sb-space-16);
-    transform: translate(calc(-1 * var(--sb-space-8)), -50%);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__gallery-nav--right {
-    right: var(--sb-space-16);
-    transform: translate(var(--sb-space-8), -50%);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__media-wrap:hover .sb-product-thumbnail__gallery-nav,
-  .sb-collection-overview .sb-product-thumbnail__gallery-nav:focus-visible {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translate(0, -50%);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__gallery-nav-icon {
-    display: block;
-    height: var(--sb-space-36);
-    width: var(--sb-space-36);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__gallery-nav--right .sb-product-thumbnail__gallery-nav-icon {
-    transform: rotate(180deg);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__gallery-nav-icon svg {
-    display: block;
-    height: 100%;
-    width: 100%;
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__gallery-nav-icon svg path:first-child {
-    fill: var(--sb-color-always-white);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__gallery-nav-icon svg path:last-child {
-    fill: var(--sb-color-always-black);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__gallery-nav:hover .sb-product-thumbnail__gallery-nav-icon svg path:last-child,
-  .sb-collection-overview .sb-product-thumbnail__gallery-nav:focus-visible .sb-product-thumbnail__gallery-nav-icon svg path:last-child {
-    fill: var(--sb-color-primary-500);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__add-to-cart {
-    --sb-add-label-width: 3ch;
-    --sb-add-gap: var(--sb-space-8);
-    --sb-add-pill-padding: var(--sb-space-16);
-    align-items: center;
-    background: var(--sb-color-always-white);
-    border: 0;
-    border-radius: 500px;
-    box-sizing: border-box;
-    bottom: var(--sb-space-16);
-    box-shadow: 0 0 24px 0 var(--sb-color-always-black-25);
-    color: var(--sb-color-always-black);
-    cursor: pointer;
-    display: inline-flex;
-    gap: 0;
-    height: var(--sb-space-36);
-    inline-size: max-content;
-    justify-content: center;
-    opacity: 0;
-    overflow: hidden;
-    padding-inline: 10px;
-    pointer-events: none;
-    position: absolute;
-    right: var(--sb-space-16);
-    transition: width 140ms linear, opacity 140ms linear, gap 140ms linear, padding-inline 140ms linear;
-    width: var(--sb-space-36);
-    z-index: 2;
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__media-wrap:hover .sb-product-thumbnail__add-to-cart,
-  .sb-collection-overview .sb-product-thumbnail__add-to-cart:focus-visible,
-  .sb-collection-overview .sb-product-thumbnail__add-to-cart.is-added,
-  .sb-collection-overview .sb-product-thumbnail__add-to-cart.is-loading {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__add-to-cart:hover,
-  .sb-collection-overview .sb-product-thumbnail__add-to-cart:focus-visible,
-  .sb-collection-overview .sb-product-thumbnail__add-to-cart.is-loading {
-    gap: var(--sb-add-gap);
-    padding-inline: var(--sb-add-pill-padding);
-    width: calc((var(--sb-add-pill-padding) * 2) + var(--sb-space-16) + var(--sb-add-gap) + var(--sb-add-label-width));
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__add-to-cart.is-added {
-    --sb-add-label-width: 5ch;
-    gap: var(--sb-add-gap);
-    padding-inline: var(--sb-add-pill-padding);
-    width: calc((var(--sb-add-pill-padding) * 2) + var(--sb-space-16) + var(--sb-add-gap) + var(--sb-add-label-width));
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__add-to-cart-icon-image {
-    display: block;
-    flex: 0 0 var(--sb-space-16);
-    filter: var(--sb-add-icon-filter, brightness(0));
-    height: var(--sb-space-16);
-    max-width: none;
-    object-fit: contain;
-    width: var(--sb-space-16);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__add-to-cart-label {
-    color: var(--sb-color-always-black);
-    display: inline-block;
-    max-width: 0;
-    opacity: 0;
-    overflow: hidden;
-    transition: max-width 140ms linear, opacity 140ms linear;
-    white-space: nowrap;
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__add-to-cart:hover .sb-product-thumbnail__add-to-cart-label,
-  .sb-collection-overview .sb-product-thumbnail__add-to-cart:focus-visible .sb-product-thumbnail__add-to-cart-label,
-  .sb-collection-overview .sb-product-thumbnail__add-to-cart.is-added .sb-product-thumbnail__add-to-cart-label,
-  .sb-collection-overview .sb-product-thumbnail__add-to-cart.is-loading .sb-product-thumbnail__add-to-cart-label {
-    max-width: var(--sb-add-label-width);
-    opacity: 1;
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__add-to-cart:hover .sb-product-thumbnail__add-to-cart-label,
-  .sb-collection-overview .sb-product-thumbnail__add-to-cart:focus-visible .sb-product-thumbnail__add-to-cart-label {
-    color: var(--sb-color-primary-500);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__add-to-cart:hover .sb-product-thumbnail__add-to-cart-icon-image,
-  .sb-collection-overview .sb-product-thumbnail__add-to-cart:focus-visible .sb-product-thumbnail__add-to-cart-icon-image {
-    --sb-add-icon-filter: brightness(0) saturate(100%) invert(45%) sepia(80%) saturate(808%) hue-rotate(134deg)
-      brightness(91%) contrast(96%);
-  }
-
-  .sb-collection-overview .sb-product-thumbnail__meta-rows {
-    display: none;
-  }
-
-  @media (hover: none) {
-    .sb-collection-overview .sb-product-thumbnail__add-to-cart {
-      opacity: 1;
-      pointer-events: auto;
-    }
   }
 
   @media (max-width: 989px) {
@@ -1058,432 +676,6 @@
     }
   }
 {% endstylesheet %}
-
-<script>
-  (() => {
-    const initCollectionOverviewThumbnails = (scope = document) => {
-      const roots = scope.querySelectorAll('.sb-collection-overview');
-      if (!roots.length) return;
-      const variantUpdateEvent = window.SBProductThumbnail?.ThemeEvents?.variantUpdate || 'variant:update';
-
-      const parseGalleryToken = (token) => {
-        const raw = (token || '').trim();
-        if (!raw) return null;
-        const parts = raw.split('::');
-        if (parts.length > 1) {
-          const type = parts[0] === 'video' ? 'video' : 'image';
-          const src = (parts[1] || '').trim();
-          const poster = (parts[2] || '').trim();
-          if (!src) return null;
-          return { type, src, poster };
-        }
-        const lowerRaw = raw.toLowerCase();
-        if (lowerRaw.includes('.mp4') || lowerRaw.includes('.webm') || lowerRaw.includes('.m3u8')) {
-          return { type: 'video', src: raw, poster: '' };
-        }
-        return { type: 'image', src: raw, poster: '' };
-      };
-
-      const buildMediaNode = (item, loading = 'lazy') => {
-        if (!item || !item.src) return null;
-        const baseClassName = 'sb-product-thumbnail__media-item';
-        if (item.type === 'video') {
-          const video = document.createElement('video');
-          video.className = `${baseClassName} sb-product-thumbnail__video`;
-          video.src = item.src;
-          video.autoplay = true;
-          video.muted = true;
-          video.loop = true;
-          video.playsInline = true;
-          video.setAttribute('playsinline', 'true');
-          if (item.poster) video.poster = item.poster;
-          return video;
-        }
-        const image = document.createElement('img');
-        image.className = `${baseClassName} sb-product-thumbnail__image`;
-        image.src = item.src;
-        image.loading = loading;
-        image.decoding = 'async';
-        return image;
-      };
-
-      const getSourceItems = (mediaWrap) => {
-        const fromSources = Array.from(mediaWrap.querySelectorAll('.sb-product-thumbnail__gallery-image-source'))
-          .map((node) => parseGalleryToken(node.dataset.galleryImage || ''))
-          .filter(Boolean);
-        if (fromSources.length) return fromSources;
-
-        const mediaItem = mediaWrap.querySelector('.sb-product-thumbnail__media-item');
-        if (mediaItem instanceof HTMLVideoElement) {
-          return [{ type: 'video', src: mediaItem.currentSrc || mediaItem.src || '', poster: mediaItem.poster || '' }].filter((item) => item.src);
-        }
-        if (mediaItem instanceof HTMLImageElement && mediaItem.src) {
-          return [{ type: 'image', src: mediaItem.src, poster: '' }];
-        }
-        return [];
-      };
-
-      const updateSlide = (mediaWrap, nextIndex) => {
-        const track = mediaWrap.querySelector('.sb-product-thumbnail__carousel-track');
-        if (!track) return;
-        const slides = Array.from(track.children);
-        const total = slides.length;
-        if (!total) return;
-        const wrapped = ((nextIndex % total) + total) % total;
-        track.style.transform = `translate3d(${-wrapped * 100}%, 0, 0)`;
-        slides.forEach((slide, idx) => slide.setAttribute('aria-hidden', idx === wrapped ? 'false' : 'true'));
-        mediaWrap.dataset.galleryIndex = `${wrapped}`;
-      };
-
-      const renderMediaFromSources = (mediaWrap, sourceItems) => {
-        const mediaLink = mediaWrap.querySelector('.sb-product-thumbnail__media');
-        if (!mediaLink) return;
-
-        const normalizedItems = sourceItems.filter((item) => item && item.src);
-        if (!normalizedItems.length) return;
-
-        mediaLink
-          .querySelectorAll(':scope > .sb-product-thumbnail__media-item, :scope > .sb-product-thumbnail__carousel, :scope > .sb-product-thumbnail__image-placeholder')
-          .forEach((node) => node.remove());
-
-        if (normalizedItems.length > 1) {
-          const carousel = document.createElement('div');
-          carousel.className = 'sb-product-thumbnail__carousel';
-          const track = document.createElement('div');
-          track.className = 'sb-product-thumbnail__carousel-track is-instant';
-          carousel.appendChild(track);
-
-          normalizedItems.forEach((item, index) => {
-            const slide = document.createElement('div');
-            slide.className = 'sb-product-thumbnail__carousel-slide';
-            slide.setAttribute('aria-hidden', index === 0 ? 'false' : 'true');
-            const node = buildMediaNode(item, index === 0 ? 'eager' : 'lazy');
-            if (node) slide.appendChild(node);
-            track.appendChild(slide);
-          });
-
-          mediaLink.appendChild(carousel);
-          mediaWrap.dataset.galleryIndex = '0';
-          updateSlide(mediaWrap, 0);
-          requestAnimationFrame(() => track.classList.remove('is-instant'));
-        } else {
-          const node = buildMediaNode(normalizedItems[0], 'eager');
-          if (node) mediaLink.appendChild(node);
-          mediaWrap.dataset.galleryIndex = '0';
-        }
-
-        mediaWrap.querySelectorAll('[data-gallery-nav]').forEach((button) => {
-          button.hidden = normalizedItems.length < 2;
-        });
-      };
-
-      const mediaLoadPromiseCache = new Map();
-      const ensureMediaReady = (item) => {
-        if (!item || !item.src) return Promise.resolve();
-        if (mediaLoadPromiseCache.has(item.src)) return mediaLoadPromiseCache.get(item.src);
-
-        const mediaReadyPromise = new Promise((resolve) => {
-          if (item.type === 'video') {
-            const video = document.createElement('video');
-            const done = () => resolve();
-            video.preload = 'auto';
-            video.muted = true;
-            video.playsInline = true;
-            video.src = item.src;
-            if (item.poster) video.poster = item.poster;
-            video.addEventListener('loadeddata', done, { once: true });
-            video.addEventListener('canplay', done, { once: true });
-            video.addEventListener('error', done, { once: true });
-            video.load();
-            return;
-          }
-
-          const image = new Image();
-          const done = () => resolve();
-          image.decoding = 'async';
-          image.onload = done;
-          image.onerror = done;
-          image.src = item.src;
-          if (image.complete) resolve();
-        });
-
-        mediaLoadPromiseCache.set(item.src, mediaReadyPromise);
-        return mediaReadyPromise;
-      };
-
-      const preloadHoverImage = (mediaWrap) => {
-        const hoverImage = String(mediaWrap.dataset.hoverImage || '').trim();
-        if (!hoverImage) return;
-        void ensureMediaReady({ type: 'image', src: hoverImage, poster: '' });
-      };
-
-      const ensureDefaultMediaData = (mediaWrap) => {
-        const sourceItems = getSourceItems(mediaWrap);
-        if (!mediaWrap.dataset.defaultImage) {
-          mediaWrap.dataset.defaultImage = (sourceItems[0] && sourceItems[0].src) || '';
-        }
-        if (!mediaWrap.dataset.primaryImage) {
-          mediaWrap.dataset.primaryImage = mediaWrap.dataset.defaultImage || '';
-        }
-        if (typeof mediaWrap.dataset.defaultHoverImage === 'undefined') {
-          mediaWrap.dataset.defaultHoverImage = mediaWrap.dataset.hoverImage || '';
-        }
-        if (typeof mediaWrap.dataset.hoverImage === 'undefined') {
-          mediaWrap.dataset.hoverImage = mediaWrap.dataset.defaultHoverImage || '';
-        }
-        if (typeof mediaWrap.dataset.isHovering === 'undefined') {
-          mediaWrap.dataset.isHovering = 'false';
-        }
-      };
-
-      const setFirstSlideImage = (mediaWrap, nextSource) => {
-        const nextSrc = String(nextSource || '').trim();
-        if (!nextSrc) return;
-        const mediaLink = mediaWrap.querySelector('.sb-product-thumbnail__media');
-        if (!mediaLink) return;
-
-        const firstSlide = mediaLink.querySelector('.sb-product-thumbnail__carousel-slide');
-        const standaloneMedia = mediaLink.querySelector(':scope > .sb-product-thumbnail__media-item');
-        const currentMedia = firstSlide
-          ? firstSlide.querySelector('.sb-product-thumbnail__media-item')
-          : standaloneMedia;
-        if (!currentMedia) return;
-
-        const currentSrc = currentMedia.currentSrc || currentMedia.getAttribute('src') || '';
-        if (currentMedia.tagName.toLowerCase() === 'img' && currentSrc === nextSrc) return;
-
-        const token = String((Number(mediaWrap.dataset.firstSlideSwapToken || '0') || 0) + 1);
-        mediaWrap.dataset.firstSlideSwapToken = token;
-        const applyIfCurrent = (callback) => {
-          if (mediaWrap.dataset.firstSlideSwapToken !== token) return;
-          callback();
-        };
-
-        const preload = new Image();
-        preload.decoding = 'async';
-        preload.src = nextSrc;
-
-        const apply = () => {
-          applyIfCurrent(() => {
-            if (currentMedia.tagName.toLowerCase() === 'img') {
-              currentMedia.setAttribute('src', nextSrc);
-              currentMedia.removeAttribute('srcset');
-              currentMedia.setAttribute('loading', 'eager');
-            } else {
-              const replacement = document.createElement('img');
-              replacement.className = 'sb-product-thumbnail__media-item sb-product-thumbnail__image';
-              replacement.loading = 'eager';
-              replacement.decoding = 'async';
-              replacement.src = nextSrc;
-              replacement.alt = currentMedia.getAttribute('aria-label') || '';
-              currentMedia.replaceWith(replacement);
-            }
-          });
-        };
-
-        if (preload.complete) {
-          apply();
-        } else {
-          preload.addEventListener('load', apply, { once: true });
-        }
-      };
-
-      const syncFirstSlideForState = (mediaWrap) => {
-        const currentIndex = Number.parseInt(mediaWrap.dataset.galleryIndex || '0', 10);
-        if (Number.isFinite(currentIndex) && currentIndex !== 0) return;
-
-        const hoverImage = String(mediaWrap.dataset.hoverImage || '').trim();
-        const primaryImage = String(mediaWrap.dataset.primaryImage || mediaWrap.dataset.defaultImage || '').trim();
-        const shouldUseHover = mediaWrap.dataset.isHovering === 'true' && hoverImage;
-        const nextSource = shouldUseHover ? hoverImage : primaryImage;
-        if (!nextSource) return;
-
-        setFirstSlideImage(mediaWrap, nextSource);
-      };
-
-      const setGallerySources = (mediaWrap, sourceItems) => {
-        let sourcesContainer = mediaWrap.querySelector('.sb-product-thumbnail__gallery-sources');
-        if (!sourcesContainer) {
-          sourcesContainer = document.createElement('div');
-          sourcesContainer.className = 'sb-product-thumbnail__gallery-sources';
-          sourcesContainer.setAttribute('aria-hidden', 'true');
-          mediaWrap.appendChild(sourcesContainer);
-        }
-
-        sourcesContainer.innerHTML = '';
-        sourceItems.forEach((item) => {
-          if (!item || !item.src) return;
-          const sourceNode = document.createElement('span');
-          sourceNode.className = 'sb-product-thumbnail__gallery-image-source';
-          const token =
-            item.type === 'video'
-              ? `video::${item.src}${item.poster ? `::${item.poster}` : ''}`
-              : `image::${item.src}`;
-          sourceNode.dataset.galleryImage = token;
-          sourcesContainer.appendChild(sourceNode);
-        });
-      };
-
-      roots.forEach((root) => {
-        if (root.dataset.sbCollectionOverviewThumbnailsInitialized === 'true') return;
-        root.dataset.sbCollectionOverviewThumbnailsInitialized = 'true';
-
-        if (window.SBProductThumbnail && typeof window.SBProductThumbnail.initThumbnailMediaScope === 'function') {
-          window.SBProductThumbnail.initThumbnailMediaScope(root, { initSwatchInteractions: true });
-        } else if (!window.SBProductThumbnailLegacyFallbackEnabled) {
-          document.addEventListener(
-            'sb:product-thumbnail:ready',
-            () => {
-              if (window.SBProductThumbnail && typeof window.SBProductThumbnail.initThumbnailMediaScope === 'function') {
-                window.SBProductThumbnail.initThumbnailMediaScope(root, { initSwatchInteractions: true });
-              }
-            },
-            { once: true }
-          );
-        } else {
-          root.querySelectorAll('.sb-product-thumbnail__media-wrap').forEach((mediaWrap) => {
-            ensureDefaultMediaData(mediaWrap);
-            renderMediaFromSources(mediaWrap, getSourceItems(mediaWrap));
-            syncFirstSlideForState(mediaWrap);
-            preloadHoverImage(mediaWrap);
-
-            mediaWrap.addEventListener('mouseenter', () => {
-              mediaWrap.dataset.isHovering = 'true';
-              preloadHoverImage(mediaWrap);
-              syncFirstSlideForState(mediaWrap);
-            });
-
-            mediaWrap.addEventListener('mouseleave', () => {
-              mediaWrap.dataset.isHovering = 'false';
-              syncFirstSlideForState(mediaWrap);
-            });
-
-            mediaWrap.addEventListener('focusin', () => {
-              preloadHoverImage(mediaWrap);
-            });
-
-            if (mediaWrap.dataset.galleryNavBound !== 'true') {
-              mediaWrap.dataset.galleryNavBound = 'true';
-              mediaWrap.querySelectorAll('[data-gallery-nav]').forEach((button) => {
-                button.addEventListener('click', (event) => {
-                  event.preventDefault();
-                  event.stopPropagation();
-                  const delta = Number.parseInt(button.dataset.galleryNav || '0', 10);
-                  if (!Number.isFinite(delta) || delta === 0) return;
-                  const currentIndex = Number.parseInt(mediaWrap.dataset.galleryIndex || '0', 10) || 0;
-                  updateSlide(mediaWrap, currentIndex + delta);
-                  syncFirstSlideForState(mediaWrap);
-                });
-              });
-            }
-          });
-
-          root.querySelectorAll('.sb-product-thumbnail__swatches').forEach((row) => {
-            const applySwatchMedia = async (swatchButton, sourceId = '') => {
-              if (!swatchButton) return;
-              const thumbnail = row.closest('.sb-product-thumbnail');
-              if (!thumbnail) return;
-              const mediaWrap = thumbnail.querySelector('.sb-product-thumbnail__media-wrap');
-              if (!mediaWrap) return;
-              const swatchSwapToken = String((Number(mediaWrap.dataset.swatchSwapToken || '0') || 0) + 1);
-              mediaWrap.dataset.swatchSwapToken = swatchSwapToken;
-
-              const nextImage = (swatchButton.dataset.thumbnailImage || '').trim();
-              const nextHoverImage = (swatchButton.dataset.thumbnailHoverImage || '').trim();
-              const nextGallery = (swatchButton.dataset.thumbnailGallery || '').trim();
-              if (nextImage) {
-                mediaWrap.dataset.primaryImage = nextImage;
-              }
-              mediaWrap.dataset.hoverImage = nextHoverImage || mediaWrap.dataset.defaultHoverImage || '';
-              preloadHoverImage(mediaWrap);
-              const isPreviewSource =
-                sourceId === 'product-thumbnail-swatch-hover' || sourceId === 'product-thumbnail-swatch-focus';
-
-              if (isPreviewSource) {
-                if (nextImage) {
-                  await ensureMediaReady({ type: 'image', src: nextImage, poster: '' });
-                  if (mediaWrap.dataset.swatchSwapToken !== swatchSwapToken) return;
-                  mediaWrap.dataset.galleryIndex = '0';
-                  setFirstSlideImage(mediaWrap, nextImage);
-                } else {
-                  syncFirstSlideForState(mediaWrap);
-                }
-                return;
-              }
-
-              let nextSourceItems = nextGallery
-                .split('||')
-                .map((token) => parseGalleryToken(token))
-                .filter(Boolean);
-
-              if (!nextSourceItems.length && nextImage) {
-                nextSourceItems = [{ type: 'image', src: nextImage, poster: '' }];
-              }
-
-              if (!nextSourceItems.length) return;
-              await ensureMediaReady(nextSourceItems[0]);
-              if (mediaWrap.dataset.swatchSwapToken !== swatchSwapToken) return;
-              setGallerySources(mediaWrap, nextSourceItems);
-              renderMediaFromSources(mediaWrap, nextSourceItems);
-              syncFirstSlideForState(mediaWrap);
-            };
-
-            row.addEventListener(variantUpdateEvent, (event) => {
-              const swatchButton = event?.detail?.data?.swatchButton;
-              if (!(swatchButton instanceof HTMLElement)) return;
-              if (!row.contains(swatchButton)) return;
-              applySwatchMedia(swatchButton, String(event?.detail?.sourceId || ''));
-            });
-          });
-
-          if (window.SBProductThumbnail && typeof window.SBProductThumbnail.initSwatchInteractionScope === 'function') {
-            window.SBProductThumbnail.initSwatchInteractionScope(root);
-          }
-        }
-
-        root.querySelectorAll('[data-add-to-cart]').forEach((button) => {
-          if (button.dataset.collectionOverviewAtcBound === 'true') return;
-          button.dataset.collectionOverviewAtcBound = 'true';
-
-          button.addEventListener('click', async (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            if (button.disabled) return;
-
-            const variantId = Number.parseInt(button.dataset.variantId || '', 10);
-            if (!Number.isFinite(variantId) || variantId <= 0) return;
-
-            button.disabled = true;
-            try {
-              if (window.SBCart && typeof window.SBCart.add === 'function') {
-                await window.SBCart.add(variantId, {
-                  quantity: 1,
-                  sourceElement: button
-                });
-              } else {
-                const response = await fetch('/cart/add.js', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-                  credentials: 'same-origin',
-                  body: JSON.stringify({ id: variantId, quantity: 1 })
-                });
-                if (!response.ok) throw new Error('Add to cart failed');
-              }
-            } finally {
-              button.disabled = false;
-            }
-          });
-        });
-      });
-    };
-
-    window.SBInitCollectionOverviewThumbnails = initCollectionOverviewThumbnails;
-    initCollectionOverviewThumbnails(document);
-    document.addEventListener('shopify:section:load', (event) => {
-      initCollectionOverviewThumbnails(event.target);
-    });
-  })();
-</script>
 
 {% render 'sb-carousel-init' %}
 

@@ -1,86 +1,372 @@
-<section class="sb-large-feature" data-sb-reveal>
-  <div class="sb-large-feature__layout {% if section.settings.media_position == 'right' %}sb-large-feature__layout--media-right{% endif %}">
-    <div class="sb-large-feature__media" data-sb-reveal-item>
-      {% assign media_alt = section.settings.media.alt | default: section.settings.title_part_one | default: 'Large feature image' %}
-      {% if section.settings.media_video != blank %}
-        {{
-          section.settings.media_video
-          | video_tag:
-            class: 'sb-large-feature__media-video',
-            controls: true,
-            autoplay: false,
-            loop: false,
-            muted: false,
-            image_size: '1240x',
-            preload: 'metadata'
-        }}
-      {% elsif section.settings.media != blank %}
-        {{
-          section.settings.media
-          | image_url: width: 1240
-          | image_tag:
-            class: 'sb-large-feature__media-image',
-            widths: '400, 620, 800, 1024, 1240',
-            sizes: '(min-width: 750px) 620px, 100vw',
-            alt: media_alt,
-            loading: 'lazy'
-        }}
+{% liquid
+  assign large_feature_app_store_link = 'https://apps.apple.com/us/app/the-metronome-by-soundbrenner/id1048954353'
+  assign large_feature_google_play_link = 'https://play.google.com/store/apps/details?id=com.soundbrenner.pulse'
+  assign use_product_metaobjects = section.settings.use_product_metaobjects
+  assign hide_section = false
+  assign meta_feature_items = blank
+  assign meta_has_items = false
+
+  if use_product_metaobjects
+    if request.page_type == 'product' and product != blank
+      assign source_ref = product.metafields.custom.sbv2_large_photo_video_features
+      assign source_root = source_ref.value | default: source_ref.reference.value | default: source_ref.reference | default: source_ref
+
+      if source_root != blank
+        assign meta_feature_items = source_root.features.value | default: source_root.features.references | default: source_root.features
+      endif
+    endif
+
+    if meta_feature_items != blank
+      for feature_item in meta_feature_items
+        assign feature_entry = feature_item.value | default: feature_item.reference.value | default: feature_item.reference | default: feature_item
+        assign feature_title_check = feature_entry.title_part_one.value | default: feature_entry.title_part_one | append: '' | strip
+        assign feature_title_two_check = feature_entry.title_part_two.value | default: feature_entry.title_part_two | append: '' | strip
+        if feature_title_check == blank and feature_title_two_check == blank
+          assign feature_title_check = feature_entry.title.value | default: feature_entry.title | append: '' | strip
+        endif
+        assign feature_subtitle_check = feature_entry.subtitle.value | default: feature_entry.subtitle | append: '' | strip
+        assign feature_image_check = feature_entry.image.value | default: feature_entry.image
+        assign feature_video_check_field = feature_entry.video_url.value | default: feature_entry.video_url
+        assign feature_video_check = feature_video_check_field.url | default: feature_video_check_field.src | default: feature_video_check_field | append: '' | strip
+
+        if feature_title_check != blank or feature_subtitle_check != blank or feature_image_check != blank or feature_video_check != blank
+          assign meta_has_items = true
+          break
+        endif
+      endfor
+    endif
+
+    if meta_has_items == false
+      assign hide_section = true
+    endif
+  endif
+%}
+
+{% if hide_section %}
+  <script>
+    (() => {
+      const sectionWrapper = document.currentScript && document.currentScript.closest('.shopify-section');
+      if (sectionWrapper) {
+        sectionWrapper.style.setProperty('display', 'none', 'important');
+      }
+    })();
+  </script>
+{% else %}
+  <section class="sb-large-feature" data-sb-reveal>
+    <div class="sb-large-feature__stack">
+      {% if use_product_metaobjects %}
+        {% for feature_item in meta_feature_items %}
+          {% liquid
+            assign feature_entry = feature_item.value | default: feature_item.reference.value | default: feature_item.reference | default: feature_item
+            assign feature_align_media_right_raw = feature_entry.align_media_right.value | default: feature_entry.align_media_right | append: '' | downcase
+            assign feature_media_right = false
+            if feature_align_media_right_raw == 'true' or feature_align_media_right_raw == '1' or feature_align_media_right_raw == 'yes'
+              assign feature_media_right = true
+            endif
+
+            assign feature_image = feature_entry.image.value | default: feature_entry.image
+            assign feature_image_request_width = 1240
+            if feature_image != blank and feature_image.width != blank
+              assign feature_image_request_width = feature_image.width | at_most: 1240
+            endif
+
+            assign feature_video_field = feature_entry.video_url.value | default: feature_entry.video_url
+            assign feature_video_url = blank
+            if feature_video_field != blank
+              if feature_video_field.sources != blank
+                for feature_video_source in feature_video_field.sources
+                  assign feature_video_source_url = feature_video_source.url | default: feature_video_source.src
+                  assign feature_video_source_format = feature_video_source.format | downcase
+                  assign feature_video_source_mime = feature_video_source.mime_type | downcase
+
+                  if feature_video_source_url != blank
+                    if feature_video_source_format contains 'mp4' or feature_video_source_mime contains 'mp4'
+                      assign feature_video_url = feature_video_source_url
+                      break
+                    endif
+                    if feature_video_url == blank
+                      assign feature_video_url = feature_video_source_url
+                    endif
+                  endif
+                endfor
+              endif
+              if feature_video_url == blank
+                assign feature_video_url = feature_video_field.url | default: feature_video_field.src | default: feature_video_field
+              endif
+            endif
+            assign feature_video_url = feature_video_url | append: '' | strip
+
+            assign feature_video_embed_url = blank
+            assign feature_video_use_iframe = false
+            if feature_video_url != blank
+              assign feature_video_url_downcase = feature_video_url | downcase
+
+              if feature_video_url_downcase contains 'youtube.com/watch'
+                assign feature_youtube_id = feature_video_url | split: 'v=' | last | split: '&' | first
+                if feature_youtube_id != blank
+                  assign feature_video_embed_url = 'https://www.youtube.com/embed/' | append: feature_youtube_id | append: '?autoplay=1&mute=1&loop=1&playlist=' | append: feature_youtube_id | append: '&playsinline=1&controls=0&rel=0'
+                  assign feature_video_use_iframe = true
+                endif
+              elsif feature_video_url_downcase contains 'youtu.be/'
+                assign feature_youtube_id = feature_video_url | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first
+                if feature_youtube_id != blank
+                  assign feature_video_embed_url = 'https://www.youtube.com/embed/' | append: feature_youtube_id | append: '?autoplay=1&mute=1&loop=1&playlist=' | append: feature_youtube_id | append: '&playsinline=1&controls=0&rel=0'
+                  assign feature_video_use_iframe = true
+                endif
+              elsif feature_video_url_downcase contains 'vimeo.com/'
+                assign feature_vimeo_id = feature_video_url | split: 'vimeo.com/' | last | split: '?' | first | split: '&' | first | split: '/' | first
+                if feature_vimeo_id != blank
+                  assign feature_video_embed_url = 'https://player.vimeo.com/video/' | append: feature_vimeo_id | append: '?autoplay=1&muted=1&loop=1&background=1'
+                  assign feature_video_use_iframe = true
+                endif
+              endif
+            endif
+
+            assign feature_title_primary = feature_entry.title_part_one.value | default: feature_entry.title_part_one | append: '' | strip
+            assign feature_title_accent = feature_entry.title_part_two.value | default: feature_entry.title_part_two | append: '' | strip
+            assign feature_title_accent_color_raw = feature_entry.title_part_two_color.value | default: feature_entry.title_part_two_color | append: '' | strip | downcase
+            assign feature_title_accent_color = section.settings.title_accent_color
+
+            if feature_title_accent_color_raw == 'orange'
+              assign feature_title_accent_color = 'tangerine-pop-500'
+            elsif feature_title_accent_color_raw == 'purple'
+              assign feature_title_accent_color = 'grape-jam-500'
+            elsif feature_title_accent_color_raw == 'blue'
+              assign feature_title_accent_color = 'berry-blue-700'
+            elsif feature_title_accent_color_raw == 'primary-500' or feature_title_accent_color_raw == 'tangerine-pop-500' or feature_title_accent_color_raw == 'grape-jam-500' or feature_title_accent_color_raw == 'berry-blue-700'
+              assign feature_title_accent_color = feature_title_accent_color_raw
+            endif
+
+            if feature_title_primary == blank and feature_title_accent == blank
+              assign feature_title_raw = feature_entry.title.value | default: feature_entry.title | append: ''
+              assign feature_title_primary = feature_title_raw | strip_html | strip
+              assign feature_title_accent = blank
+
+              if feature_title_raw contains '<span'
+                assign feature_title_primary = feature_title_raw | split: '<span' | first | strip_html | strip
+                assign feature_title_span_segment = feature_title_raw | split: '<span' | last
+                assign feature_title_span_inner = feature_title_span_segment | split: '>' | last
+                assign feature_title_accent = feature_title_span_inner | split: '</span>' | first | strip_html | strip
+                assign feature_title_after_span = feature_title_span_inner | split: '</span>' | last | strip_html | strip
+
+                if feature_title_after_span != blank
+                  if feature_title_primary != blank
+                    assign feature_title_primary = feature_title_primary | append: ' ' | append: feature_title_after_span
+                  else
+                    assign feature_title_primary = feature_title_after_span
+                  endif
+                endif
+              endif
+            endif
+
+            assign feature_subtitle = feature_entry.subtitle | metafield_tag
+            if feature_subtitle == blank
+              assign feature_subtitle = feature_entry.subtitle.value | default: feature_entry.subtitle
+            endif
+
+            assign feature_show_app_raw = feature_entry.show_app.value | default: feature_entry.show_app | append: '' | downcase
+            assign feature_show_app = false
+            if feature_show_app_raw == 'true' or feature_show_app_raw == '1' or feature_show_app_raw == 'yes'
+              assign feature_show_app = true
+            endif
+
+            assign feature_media_alt = feature_image.alt | default: feature_title_primary | default: 'Large feature image'
+          %}
+
+          {% if feature_title_primary == blank and feature_title_accent == blank and feature_subtitle == blank and feature_image == blank and feature_video_url == blank %}
+            {% continue %}
+          {% endif %}
+
+          <div class="sb-large-feature__layout {% if feature_media_right %}sb-large-feature__layout--media-right{% endif %}">
+            <div class="sb-large-feature__media" data-sb-reveal-item>
+              {% if feature_video_url != blank %}
+                {% if feature_video_use_iframe and feature_video_embed_url != blank %}
+                  <iframe
+                    class="sb-large-feature__media-video-iframe"
+                    src="{{ feature_video_embed_url | escape }}"
+                    title="{{ feature_media_alt | escape }}"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                  ></iframe>
+                {% else %}
+                  <video
+                    class="sb-large-feature__media-video"
+                    autoplay
+                    loop
+                    muted
+                    playsinline
+                    preload="metadata"
+                    {% if feature_image != blank %}
+                      poster="{{ feature_image | image_url: width: feature_image_request_width }}"
+                    {% endif %}
+                    src="{{ feature_video_url | escape }}"
+                  ></video>
+                {% endif %}
+              {% elsif feature_image != blank %}
+                {{
+                  feature_image
+                  | image_url: width: feature_image_request_width
+                  | image_tag:
+                    class: 'sb-large-feature__media-image',
+                    widths: '400, 620, 800, 1024, 1240',
+                    sizes: '(min-width: 750px) 620px, 100vw',
+                    alt: feature_media_alt,
+                    loading: 'lazy'
+                }}
+              {% else %}
+                <img
+                  class="sb-large-feature__media-image"
+                  src="{{ 'placeholder-large-feature.png' | asset_url }}"
+                  alt="{{ feature_media_alt | escape }}"
+                  loading="lazy"
+                  width="1240"
+                  height="1108"
+                >
+              {% endif %}
+            </div>
+
+            <div class="sb-large-feature__content" data-sb-reveal-item>
+              {% if feature_title_primary != blank or feature_title_accent != blank %}
+                <h2 class="sb-large-feature__title font-title weight-bold">
+                  {% if feature_title_primary != blank %}
+                    <span class="sb-large-feature__title-primary">{{ feature_title_primary }}</span>
+                  {% endif %}
+                  {% if feature_title_accent != blank %}
+                    {% if feature_title_primary != blank %} {% endif %}
+                    <span class="sb-large-feature__title-accent sb-large-feature__title-accent--{{ feature_title_accent_color }}">
+                      {{ feature_title_accent }}
+                    </span>
+                  {% endif %}
+                </h2>
+              {% endif %}
+
+              {% if feature_subtitle != blank %}
+                <div class="sb-large-feature__body font-body weight-regular rte">
+                  {{ feature_subtitle }}
+                </div>
+              {% endif %}
+
+              {% if feature_show_app %}
+                <div class="sb-large-feature__app-downloads">
+                  <a class="sb-large-feature__app-download-link" href="{{ large_feature_app_store_link }}" target="_blank" rel="noopener noreferrer">
+                    <img
+                      class="sb-large-feature__app-download-badge sb-large-feature__app-download-badge--app-store"
+                      src="{{ 'app-download-app-store.png' | asset_url }}"
+                      alt="Download on the App Store"
+                      loading="lazy"
+                      width="108"
+                      height="36"
+                    >
+                  </a>
+                  <a class="sb-large-feature__app-download-link" href="{{ large_feature_google_play_link }}" target="_blank" rel="noopener noreferrer">
+                    <img
+                      class="sb-large-feature__app-download-badge sb-large-feature__app-download-badge--google-play"
+                      src="{{ 'app-download-google-play.png' | asset_url }}"
+                      alt="Get it on Google Play"
+                      loading="lazy"
+                      width="122"
+                      height="36"
+                    >
+                  </a>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
       {% else %}
-        <img
-          class="sb-large-feature__media-image"
-          src="{{ 'placeholder-large-feature.png' | asset_url }}"
-          alt="{{ media_alt | escape }}"
-          loading="lazy"
-          width="1240"
-          height="1108"
-        >
-      {% endif %}
-    </div>
+        <div class="sb-large-feature__layout {% if section.settings.media_position == 'right' %}sb-large-feature__layout--media-right{% endif %}">
+          <div class="sb-large-feature__media" data-sb-reveal-item>
+            {% assign media_alt = section.settings.media.alt | default: section.settings.title_part_one | default: 'Large feature image' %}
+            {% if section.settings.media_video != blank %}
+              {{
+                section.settings.media_video
+                | video_tag:
+                  class: 'sb-large-feature__media-video',
+                  controls: false,
+                  autoplay: true,
+                  loop: true,
+                  muted: true,
+                  playsinline: true,
+                  image_size: '1240x',
+                  preload: 'metadata'
+              }}
+            {% elsif section.settings.media != blank %}
+              {{
+                section.settings.media
+                | image_url: width: 1240
+                | image_tag:
+                  class: 'sb-large-feature__media-image',
+                  widths: '400, 620, 800, 1024, 1240',
+                  sizes: '(min-width: 750px) 620px, 100vw',
+                  alt: media_alt,
+                  loading: 'lazy'
+              }}
+            {% else %}
+              <img
+                class="sb-large-feature__media-image"
+                src="{{ 'placeholder-large-feature.png' | asset_url }}"
+                alt="{{ media_alt | escape }}"
+                loading="lazy"
+                width="1240"
+                height="1108"
+              >
+            {% endif %}
+          </div>
 
-    <div class="sb-large-feature__content" data-sb-reveal-item>
-      {% if section.settings.show_icon_and_kicker %}
-        {% assign large_feature_kicker_text = section.settings.kicker_text | default: 'Kicker' %}
-        {% if section.settings.kicker_icon != blank %}
-          {% assign large_feature_kicker_icon_url = section.settings.kicker_icon | image_url: width: 16 %}
-        {% else %}
-          {% assign large_feature_kicker_icon_url = 'icon-square-placeholder.svg' | asset_url %}
-        {% endif %}
-        <div class="sb-large-feature__kicker-row">
-          <span
-            class="sb-large-feature__kicker-icon"
-            style="--sb-large-feature-kicker-icon-url: url('{{ large_feature_kicker_icon_url }}');"
-            aria-hidden="true"
-          ></span>
-          <p class="sb-large-feature__kicker-text font-body weight-regular">{{ large_feature_kicker_text }}</p>
+          <div class="sb-large-feature__content" data-sb-reveal-item>
+            {% if section.settings.show_icon_and_kicker %}
+              {% assign large_feature_kicker_text = section.settings.kicker_text | default: 'Kicker' %}
+              {% if section.settings.kicker_icon != blank %}
+                {% assign large_feature_kicker_icon_url = section.settings.kicker_icon | image_url: width: 16 %}
+              {% else %}
+                {% assign large_feature_kicker_icon_url = 'icon-square-placeholder.svg' | asset_url %}
+              {% endif %}
+              <div class="sb-large-feature__kicker-row">
+                <span
+                  class="sb-large-feature__kicker-icon"
+                  style="--sb-large-feature-kicker-icon-url: url('{{ large_feature_kicker_icon_url }}');"
+                  aria-hidden="true"
+                ></span>
+                <p class="sb-large-feature__kicker-text font-body weight-regular">{{ large_feature_kicker_text }}</p>
+              </div>
+            {% endif %}
+
+            {% if section.settings.title_part_one != blank or section.settings.title_part_two != blank %}
+              <h2 class="sb-large-feature__title font-title weight-bold">
+                {% if section.settings.title_part_one != blank %}
+                  <span class="sb-large-feature__title-primary">{{ section.settings.title_part_one }}</span>
+                {% endif %}
+                {% if section.settings.title_part_two != blank %}
+                  {% if section.settings.title_part_one != blank %} {% endif %}
+                  <span class="sb-large-feature__title-accent sb-large-feature__title-accent--{{ section.settings.title_accent_color }}">
+                    {{ section.settings.title_part_two }}
+                  </span>
+                {% endif %}
+              </h2>
+            {% endif %}
+
+            {% if section.settings.body != blank %}
+              <div class="sb-large-feature__body font-body weight-regular rte">
+                {{ section.settings.body }}
+              </div>
+            {% endif %}
+          </div>
         </div>
       {% endif %}
-
-      {% if section.settings.title_part_one != blank or section.settings.title_part_two != blank %}
-        <h2 class="sb-large-feature__title font-title weight-bold">
-          {% if section.settings.title_part_one != blank %}
-            <span class="sb-large-feature__title-primary">{{ section.settings.title_part_one }}</span>
-          {% endif %}
-          {% if section.settings.title_part_two != blank %}
-            {% if section.settings.title_part_one != blank %} {% endif %}
-            <span class="sb-large-feature__title-accent sb-large-feature__title-accent--{{ section.settings.title_accent_color }}">
-              {{ section.settings.title_part_two }}
-            </span>
-          {% endif %}
-        </h2>
-      {% endif %}
-
-      {% if section.settings.body != blank %}
-        <div class="sb-large-feature__body font-body weight-regular rte">
-          {{ section.settings.body }}
-        </div>
-      {% endif %}
     </div>
-  </div>
-</section>
+  </section>
+{% endif %}
 
 {% stylesheet %}
   .sb-large-feature {
     width: 100%;
+  }
+
+  .sb-large-feature__stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-96);
   }
 
   .sb-large-feature__layout {
@@ -112,8 +398,10 @@
     width: 100%;
   }
 
-  .sb-large-feature__media-video {
+  .sb-large-feature__media-video,
+  .sb-large-feature__media-video-iframe {
     aspect-ratio: 620 / 554;
+    border: 0;
     display: block;
     height: auto;
     object-fit: cover;
@@ -157,6 +445,12 @@
   .sb-large-feature__title {
     color: var(--sb-color-neutral-900);
     margin: 0;
+    text-wrap: balance;
+  }
+
+  .sb-large-feature__title-primary,
+  .sb-large-feature__title-accent {
+    text-wrap: pretty;
   }
 
   .sb-large-feature__title-accent--primary-500 {
@@ -177,7 +471,7 @@
 
   .sb-large-feature__body {
     color: var(--sb-color-neutral-900);
-    margin-top: var(--sb-space-36);
+    margin-top: var(--sb-space-30);
   }
 
   .sb-large-feature__body > * {
@@ -188,7 +482,50 @@
     margin-top: var(--sb-space-24);
   }
 
+  .sb-large-feature__body .metafield-rich_text_field > * + * {
+    margin-top: var(--sb-space-24);
+  }
+
+  .sb-large-feature__app-downloads {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sb-space-20);
+    margin-top: var(--sb-space-36);
+    width: 100%;
+  }
+
+  .sb-large-feature__app-download-link {
+    display: inline-flex;
+    flex: 0 0 auto;
+    line-height: 0;
+    text-decoration: none;
+  }
+
+  .sb-large-feature__app-download-badge {
+    display: block;
+    height: var(--sb-space-36);
+    width: auto;
+  }
+
+  .sb-large-feature__app-download-badge--app-store {
+    aspect-ratio: 108 / 36;
+  }
+
+  .sb-large-feature__app-download-badge--google-play {
+    aspect-ratio: 122 / 36;
+  }
+
+  .sb-large-feature__app-download-link[href]:hover,
+  .sb-large-feature__app-download-link[href]:focus-visible {
+    opacity: 0.75;
+  }
+
   @media (max-width: 749px) {
+    .sb-large-feature__stack {
+      gap: var(--sb-space-96);
+    }
+
     .sb-large-feature__layout,
     .sb-large-feature__layout--media-right {
       gap: var(--sb-space-36);
@@ -200,10 +537,52 @@
   }
 {% endstylesheet %}
 
+<script>
+  (() => {
+    const applyLargeFeatureTitleWidowControl = (scope) => {
+      if (!scope) return;
+
+      scope.querySelectorAll('.sb-large-feature__title-primary, .sb-large-feature__title-accent').forEach((node) => {
+        if (node.dataset.sbWidowControlled === 'true') return;
+
+        const normalizedText = (node.textContent || '').replace(/\s+/g, ' ').trim();
+        if (!normalizedText) {
+          node.dataset.sbWidowControlled = 'true';
+          return;
+        }
+
+        const words = normalizedText.split(' ');
+        if (words.length >= 2) {
+          const finalPair = `${words[words.length - 2]}\u00A0${words[words.length - 1]}`;
+          const leading = words.slice(0, -2).join(' ');
+          node.textContent = leading ? `${leading} ${finalPair}` : finalPair;
+        } else {
+          node.textContent = normalizedText;
+        }
+
+        node.dataset.sbWidowControlled = 'true';
+      });
+    };
+
+    const currentSection = document.currentScript && document.currentScript.closest('.shopify-section');
+    applyLargeFeatureTitleWidowControl(currentSection || document);
+
+    document.addEventListener('shopify:section:load', (event) => {
+      applyLargeFeatureTitleWidowControl(event.target);
+    });
+  })();
+</script>
+
 {% schema %}
 {
   "name": "Large feature",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_product_metaobjects",
+      "label": "Use product page metaobjects",
+      "default": false
+    },
     {
       "type": "select",
       "id": "media_position",

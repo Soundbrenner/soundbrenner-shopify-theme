@@ -4,25 +4,30 @@
 {% assign legal_menu = linklists['footer'] %}
 {% assign trustpilot_entry = metaobjects.trustpilot.values | first %}
 {% assign trustpilot_rating_value = trustpilot_entry.rating.value | default: trustpilot_entry.rating %}
+{% assign footer_newsletter_arrow_icon_url = 'arrow-reduced-padding.svg' | asset_url %}
 {% if trustpilot_rating_value != blank %}
   {% assign trustpilot_rating_text = trustpilot_rating_value | append: ' out of 5' %}
 {% else %}
   {% assign trustpilot_rating_text = section.settings.trustpilot_rating %}
 {% endif %}
 
-<footer class="sb-footer full-width" data-sb-reveal>
+<footer class="sb-footer full-width" data-sb-reveal style="--sb-footer-newsletter-arrow-icon-url: url('{{ footer_newsletter_arrow_icon_url }}');">
   <div class="sb-footer__masthead" data-sb-reveal-item style="--sb-reveal-delay: 0ms;" aria-hidden="true">
     <img
       class="sb-footer__masthead-image sb-footer__masthead-image--dark"
       src="{{ 'masthead-master-your-craft-dark.png' | asset_url }}"
       alt=""
       loading="lazy"
+      width="1732"
+      height="264"
     >
     <img
       class="sb-footer__masthead-image sb-footer__masthead-image--light"
       src="{{ 'masthead-master-your-craft-light.png' | asset_url }}"
       alt=""
       loading="lazy"
+      width="1732"
+      height="264"
     >
   </div>
 
@@ -310,14 +315,24 @@
 
   .sb-footer__newsletter-klaviyo .klaviyo-form [data-testid='form-row'] {
     align-items: stretch !important;
+    column-gap: 0 !important;
+    display: grid !important;
+    flex-wrap: nowrap !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    min-width: 0 !important;
     overflow: visible !important;
+    width: 100% !important;
   }
 
   .sb-footer__newsletter-klaviyo .klaviyo-form [data-testid='form-component']:first-child {
     flex: 1 1 auto !important;
+    grid-column: 1 !important;
+    max-width: none !important;
+    min-width: 0 !important;
     overflow: visible !important;
     padding: 0 !important;
     position: relative !important;
+    width: 100% !important;
     z-index: 1 !important;
   }
 
@@ -326,9 +341,13 @@
     height: 100% !important;
     justify-content: center !important;
     min-height: 48px !important;
+    min-width: 0 !important;
+    width: 100% !important;
   }
 
   .sb-footer__newsletter-klaviyo .klaviyo-form [data-testid='form-component']:last-child {
+    align-self: center !important;
+    grid-column: 2 !important;
     margin: 0 !important;
     padding: 6px 6px 6px 0 !important;
     overflow: visible !important;
@@ -339,7 +358,7 @@
   .sb-footer__newsletter-klaviyo .klaviyo-form button {
     align-items: center !important;
     background-color: var(--sb-color-primary-500) !important;
-    background-image: url('{{ 'arrow-reduced-padding.svg' | asset_url }}') !important;
+    background-image: var(--sb-footer-newsletter-arrow-icon-url) !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
     background-size: 16px 16px !important;
@@ -418,6 +437,29 @@
     opacity: 0.75;
   }
 
+  .sb-footer__newsletter-klaviyo .klaviyo-form button .sb-footer__newsletter-submit-icon {
+    align-items: center !important;
+    display: inline-flex !important;
+    flex: 0 0 16px !important;
+    height: 16px !important;
+    justify-content: center !important;
+    position: relative !important;
+    width: 16px !important;
+    z-index: 4 !important;
+  }
+
+  .sb-footer__newsletter-klaviyo .klaviyo-form button .sb-footer__newsletter-submit-icon svg {
+    display: block !important;
+    height: 100% !important;
+    width: 100% !important;
+  }
+
+  .sb-footer__newsletter-klaviyo .klaviyo-form button .sb-footer__newsletter-submit-icon path:not([fill='none']),
+  .sb-footer__newsletter-klaviyo .klaviyo-form button .sb-footer__newsletter-submit-icon circle:not([fill='none']),
+  .sb-footer__newsletter-klaviyo .klaviyo-form button .sb-footer__newsletter-submit-icon rect:not([fill='none']) {
+    fill: var(--sb-color-always-white) !important;
+  }
+
   .sb-footer__newsletter-klaviyo .klaviyo-form button:hover,
   .sb-footer__newsletter-klaviyo .klaviyo-form button:focus-visible {
     box-shadow:
@@ -439,6 +481,41 @@
     transform: translateY(0);
   }
 
+  @media (max-width: 749px) {
+    .sb-footer__newsletter-klaviyo .klaviyo-form button::before {
+      filter: blur(10px);
+      height: 8px;
+      left: -12px;
+      width: 72px;
+    }
+
+    .sb-footer__newsletter-klaviyo .klaviyo-form button:hover,
+    .sb-footer__newsletter-klaviyo .klaviyo-form button:focus-visible {
+      box-shadow:
+        0 -18px 30px 0 var(--sb-color-primary-300-25),
+        0 -6px 14px 0 var(--sb-color-primary-300-25),
+        0 -10px 20px 0 var(--sb-color-primary-500-25),
+        0 0 0 1px var(--sb-color-primary-700) inset,
+        0 -20px 20px 0 var(--sb-color-always-white-50) inset,
+        0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
+      transform: translateY(var(--sb-button-hover-lift, -2px));
+    }
+  }
+
+  @media (hover: none), (pointer: coarse) {
+    .sb-footer__newsletter-klaviyo .klaviyo-form button:hover,
+    .sb-footer__newsletter-klaviyo .klaviyo-form button:focus-visible {
+      box-shadow:
+        0 -18px 30px 0 var(--sb-color-primary-300-25),
+        0 -6px 14px 0 var(--sb-color-primary-300-25),
+        0 -10px 20px 0 var(--sb-color-primary-500-25),
+        0 0 0 1px var(--sb-color-primary-700) inset,
+        0 -20px 20px 0 var(--sb-color-always-white-50) inset,
+        0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
+      transform: translateY(var(--sb-button-hover-lift, -2px));
+    }
+  }
+
   .sb-footer__newsletter-klaviyo .klaviyo-form input[type='email'] {
     background-color: transparent !important;
     border: 0 !important;
@@ -450,10 +527,13 @@
     outline: none !important;
     height: 48px !important;
     line-height: 48px !important;
+    max-width: none !important;
     min-height: 0 !important;
+    min-width: 0 !important;
     padding-block: 0 !important;
     padding-left: 16px !important;
-    padding-right: 16px !important;
+    padding-right: 12px !important;
+    width: 100% !important;
     -webkit-appearance: none !important;
     appearance: none !important;
     transform: none !important;
@@ -757,6 +837,7 @@
       const lastComponent = root.querySelector('[data-testid="form-component"]:last-child');
       const successNode = root.querySelector(successMessageSelector);
       const iconUrl = {{ 'arrow-reduced-padding.svg' | asset_url | json }};
+      const iconSvg = {{ 'arrow-reduced-padding.svg' | inline_asset_content | strip_newlines | json }};
       const hasSubmissionControls = Boolean(input && button);
       if (input) {
         const localizedPlaceholder = normalizeText(newsletterCopy.placeholder);
@@ -818,7 +899,13 @@
         setImportant(form, 'pointer-events', 'none');
         if (formRow) {
           setImportant(formRow, 'align-items', 'center');
+          setImportant(formRow, 'column-gap', '0');
+          setImportant(formRow, 'display', 'grid');
+          setImportant(formRow, 'flex-wrap', 'nowrap');
+          setImportant(formRow, 'grid-template-columns', 'minmax(0, 1fr) auto');
           setImportant(formRow, 'min-height', '48px');
+          setImportant(formRow, 'min-width', '0');
+          setImportant(formRow, 'width', '100%');
         }
         if (firstComponent) {
           setImportant(firstComponent, 'display', 'flex');
@@ -827,6 +914,10 @@
           setImportant(firstComponent, 'padding', '0');
           setImportant(firstComponent, 'min-height', '48px');
           setImportant(firstComponent, 'flex', '1 1 auto');
+          setImportant(firstComponent, 'min-width', '0');
+          setImportant(firstComponent, 'max-width', 'none');
+          setImportant(firstComponent, 'grid-column', '1');
+          setImportant(firstComponent, 'width', '100%');
         }
         if (firstComponentInner) {
           setImportant(firstComponentInner, 'width', '100%');
@@ -834,6 +925,7 @@
           setImportant(firstComponentInner, 'align-items', 'center');
           setImportant(firstComponentInner, 'justify-content', 'center');
           setImportant(firstComponentInner, 'min-height', '48px');
+          setImportant(firstComponentInner, 'min-width', '0');
           setImportant(firstComponentInner, 'margin', '0');
         }
         setImportant(form, 'min-height', '48px');
@@ -852,17 +944,25 @@
       if (firstComponent) {
         setImportant(firstComponent, 'padding', '0');
         setImportant(firstComponent, 'flex', '1 1 auto');
+        setImportant(firstComponent, 'grid-column', '1');
+        setImportant(firstComponent, 'min-width', '0');
+        setImportant(firstComponent, 'max-width', 'none');
         setImportant(firstComponent, 'overflow', 'visible');
         setImportant(firstComponent, 'position', 'relative');
+        setImportant(firstComponent, 'width', '100%');
         setImportant(firstComponent, 'z-index', '1');
       }
       if (firstComponentInner) {
         setImportant(firstComponentInner, 'height', '100%');
         setImportant(firstComponentInner, 'justify-content', 'center');
         setImportant(firstComponentInner, 'min-height', '48px');
+        setImportant(firstComponentInner, 'min-width', '0');
         setImportant(firstComponentInner, 'align-self', 'stretch');
+        setImportant(firstComponentInner, 'width', '100%');
       }
       if (lastComponent) {
+        setImportant(lastComponent, 'align-self', 'center');
+        setImportant(lastComponent, 'grid-column', '2');
         setImportant(lastComponent, 'padding', '6px 6px 6px 0');
         setImportant(lastComponent, 'margin', '0');
         setImportant(lastComponent, 'overflow', 'visible');
@@ -872,8 +972,11 @@
 
       setImportant(input, 'height', '48px');
       setImportant(input, 'line-height', '48px');
+      setImportant(input, 'width', '100%');
+      setImportant(input, 'min-width', '0');
+      setImportant(input, 'max-width', 'none');
       setImportant(input, 'padding-left', '16px');
-      setImportant(input, 'padding-right', '16px');
+      setImportant(input, 'padding-right', '12px');
       setImportant(input, 'padding-top', '0');
       setImportant(input, 'padding-bottom', '0');
       setImportant(input, 'font-size', '16px');
@@ -903,6 +1006,11 @@
       setImportant(button, 'background-size', '16px 16px');
       setImportant(button, 'background-image', `url("${iconUrl}")`);
       button.textContent = '';
+      const iconNode = document.createElement('span');
+      iconNode.className = 'sb-footer__newsletter-submit-icon';
+      iconNode.setAttribute('aria-hidden', 'true');
+      iconNode.innerHTML = iconSvg;
+      button.appendChild(iconNode);
       button.removeAttribute('aria-busy');
       button.removeAttribute('data-loading');
       button.disabled = false;
@@ -920,7 +1028,6 @@
           .querySelectorAll("[role='progressbar'], progress, [class*='loading' i], [class*='spinner' i], [class*='progress' i]")
           .forEach((node) => node.remove());
       }
-      button.querySelectorAll('*').forEach((child) => setImportant(child, 'display', 'none'));
       if (!button.dataset.sbKlaviyoScrubBound) {
         button.dataset.sbKlaviyoScrubBound = 'true';
         button.addEventListener('click', () => {

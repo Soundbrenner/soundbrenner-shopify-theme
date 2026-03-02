@@ -13,6 +13,56 @@
       "type": "product-page-hero",
       "settings": {}
     },
+    "hero_video_product": {
+      "type": "hero-video",
+      "settings": {}
+    },
+    "target_audience_carousel_product": {
+      "type": "target-audience-carousel",
+      "settings": {}
+    },
+    "large_feature_product": {
+      "type": "large-feature",
+      "settings": {
+        "use_product_metaobjects": true
+      }
+    },
+    "feature_carousel_product": {
+      "type": "feature-carousel",
+      "settings": {
+        "use_product_metaobjects": true
+      }
+    },
+    "trust_indicators_product": {
+      "type": "trust-indicators",
+      "settings": {
+        "use_product_metaobjects": true
+      }
+    },
+    "value_breakdown_product": {
+      "type": "value-breakdown",
+      "settings": {}
+    },
+    "see_it_in_action_carousel_product": {
+      "type": "see-it-in-action-carousel",
+      "settings": {
+        "use_product_metaobjects": true
+      }
+    },
+    "tech_specs_faqs_product": {
+      "type": "accordion",
+      "settings": {
+        "use_product_metaobjects": true,
+        "use_custom_title": false,
+        "show_subtitle": true
+      }
+    },
+    "compare_product": {
+      "type": "compare",
+      "settings": {
+        "use_metaobject_title": true
+      }
+    },
     "top_feature_highlights": {
       "type": "top-feature-highlights",
       "settings": {
@@ -123,8 +173,17 @@
   },
   "order": [
     "product_page_hero",
-    "top_feature_highlights",
     "press_ticker_product",
+    "top_feature_highlights",
+    "hero_video_product",
+    "target_audience_carousel_product",
+    "large_feature_product",
+    "feature_carousel_product",
+    "trust_indicators_product",
+    "value_breakdown_product",
+    "see_it_in_action_carousel_product",
+    "tech_specs_faqs_product",
+    "compare_product",
     "main",
     "reviews_heading",
     "177155579933e4f180",

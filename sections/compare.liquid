@@ -1,19 +1,37 @@
 {% liquid
-  assign compare_table = page.metafields.custom.sbv2_compare_table.value | default: page.metafields.custom.sbv2_compare_table
+  assign compare_table = blank
+  if request.page_type == 'product' and product != blank
+    assign compare_table = product.metafields.custom.sbv2_compare_table.value | default: product.metafields.custom.sbv2_compare_table
+  endif
+  if compare_table == blank
+    assign compare_table = page.metafields.custom.sbv2_compare_table.value | default: page.metafields.custom.sbv2_compare_table
+  endif
   assign compare_title = blank
   assign compare_products = blank
   if compare_table != blank
     if section.settings.use_metaobject_title
       assign compare_title = compare_table.title.value | default: compare_table.title
     endif
-    assign compare_products = compare_table.products.value | default: compare_table.products
+    assign compare_products = compare_table.products.value | default: compare_table.products.references | default: compare_table.products
   endif
   assign compare_chevron_icon_url = 'icon-chevron.svg' | asset_url
-  assign compare_add_to_cart_icon_url = 'icon-add-to-cart.svg' | asset_url
-  assign compare_check_icon_url = 'icon-check.svg' | asset_url
 %}
 
-<section class="sb-compare" data-sb-reveal>
+{% if compare_products == blank %}
+  <script>
+    (() => {
+      const sectionWrapper = document.currentScript && document.currentScript.closest('.shopify-section');
+      if (sectionWrapper) {
+        sectionWrapper.style.setProperty('display', 'none', 'important');
+      }
+    })();
+  </script>
+{% else %}
+<section
+  class="sb-compare"
+  data-sb-reveal
+  data-sb-thumbnail-section
+>
   {% if compare_title != blank %}
     <h2 class="sb-compare__title font-title weight-bold" data-sb-reveal-item>{{ compare_title }}</h2>
   {% endif %}
@@ -24,16 +42,13 @@
       {% for compare_item in compare_products limit: 12 %}
         {% liquid
           assign compare_product = blank
-          if compare_item.url != blank and compare_item.variants != blank
-            assign compare_product = compare_item
-          elsif compare_item.value != blank
-            assign compare_product = compare_item.value
-          elsif compare_item.product != blank
-            assign compare_product = compare_item.product.value | default: compare_item.product
-          elsif compare_item.reference != blank
-            assign compare_product = compare_item.reference.value | default: compare_item.reference
-          elsif compare_item.handle != blank
-            assign compare_product = all_products[compare_item.handle]
+          assign compare_item_entry = compare_item.value | default: compare_item.reference.value | default: compare_item.reference | default: compare_item
+          if compare_item_entry.url != blank and compare_item_entry.variants != blank
+            assign compare_product = compare_item_entry
+          elsif compare_item_entry.product != blank
+            assign compare_product = compare_item_entry.product.value | default: compare_item_entry.product
+          elsif compare_item_entry.handle != blank
+            assign compare_product = all_products[compare_item_entry.handle]
           endif
         %}
         {% if compare_product != blank %}
@@ -41,178 +56,6 @@
           {% if compare_meta_products_rendered > 4 %}
             {% break %}
           {% endif %}
-        {% liquid
-          assign compare_rating = 0
-          assign compare_reviews_count = 0
-
-          if compare_product.metafields.reviews.rating.value != blank
-            assign rating_value = compare_product.metafields.reviews.rating.value
-            assign compare_rating = rating_value.rating | default: rating_value | plus: 0
-          endif
-
-          assign compare_reviews_count = compare_product.metafields.reviews.rating_count.value | default: 0 | plus: 0 | round: 0
-
-          assign selected_variant = compare_product.selected_or_first_available_variant
-          assign compare_price_text = ''
-          assign price_text = ''
-          if selected_variant != blank
-            assign price_text = selected_variant.price | money
-            if selected_variant.compare_at_price > selected_variant.price
-              assign compare_price_text = selected_variant.compare_at_price | money
-            endif
-          endif
-
-          assign swatch_1 = blank
-          assign swatch_2 = blank
-          assign swatch_3 = blank
-          assign swatch_4 = blank
-          assign swatch_1_image = blank
-          assign swatch_2_image = blank
-          assign swatch_3_image = blank
-          assign swatch_4_image = blank
-          assign swatch_1_hover_image = blank
-          assign swatch_2_hover_image = blank
-          assign swatch_3_hover_image = blank
-          assign swatch_4_hover_image = blank
-          assign swatch_1_gallery = blank
-          assign swatch_2_gallery = blank
-          assign swatch_3_gallery = blank
-          assign swatch_4_gallery = blank
-          assign swatch_index = 0
-
-          for option in compare_product.options_with_values
-            assign option_name_downcase = option.name | downcase
-            if option_name_downcase contains 'color' or option_name_downcase contains 'colour'
-              for option_value in option.values
-                assign option_swatch_color = option_value.swatch.color | default: option_value.name
-                assign option_swatch_image = blank
-                assign option_swatch_hover_image = blank
-                assign option_swatch_gallery = blank
-                if option_value.swatch.image != blank
-                  assign option_swatch_image = option_value.swatch.image | image_url: width: 584
-                endif
-                if option_swatch_image == blank
-                  for product_variant in compare_product.variants
-                    assign variant_color_value = blank
-                    case option.position
-                      when 1
-                        assign variant_color_value = product_variant.option1
-                      when 2
-                        assign variant_color_value = product_variant.option2
-                      when 3
-                        assign variant_color_value = product_variant.option3
-                    endcase
-                    if variant_color_value == option_value.name and product_variant.featured_image != blank
-                      assign option_swatch_image = product_variant.featured_image | image_url: width: 584
-                      assign option_swatch_gallery = 'image::' | append: option_swatch_image
-                      capture option_swatch_hover_image_url
-                        render 'sb-hover-image-url', resource: product_variant, width: 584
-                      endcapture
-                      assign option_swatch_hover_image_url = option_swatch_hover_image_url | strip
-                      if option_swatch_hover_image_url != blank
-                        assign option_swatch_hover_image = option_swatch_hover_image_url
-                      endif
-                      assign option_variant_gallery_images = product_variant.metafields.custom.images.value | default: product_variant.metafields.custom.images
-                      if option_variant_gallery_images != blank
-                        for option_variant_gallery_image in option_variant_gallery_images
-                          assign option_variant_gallery_media = option_variant_gallery_image.value | default: option_variant_gallery_image
-                          assign option_variant_gallery_type = option_variant_gallery_media.media_type | default: 'image'
-                          assign option_variant_gallery_image_url = blank
-                          assign option_variant_gallery_video_url = blank
-                          assign option_variant_gallery_poster_url = blank
-                          if option_variant_gallery_type == 'video'
-                            if option_variant_gallery_media.sources != blank
-                              for option_variant_video_source in option_variant_gallery_media.sources
-                                assign option_variant_gallery_video_url = option_variant_video_source.url | default: option_variant_video_source.src
-                                if option_variant_gallery_video_url != blank
-                                  break
-                                endif
-                              endfor
-                            endif
-                            if option_variant_gallery_media.preview_image != blank
-                              assign option_variant_gallery_poster_url = option_variant_gallery_media.preview_image | image_url: width: 584
-                            endif
-                          else
-                            if option_variant_gallery_media.preview_image != blank
-                              assign option_variant_gallery_image_url = option_variant_gallery_media.preview_image | image_url: width: 584
-                            elsif option_variant_gallery_media != blank
-                              assign option_variant_gallery_image_url = option_variant_gallery_media | image_url: width: 584
-                            endif
-                          endif
-
-                          assign option_variant_gallery_token = blank
-                          if option_variant_gallery_video_url != blank
-                            assign option_variant_gallery_token = 'video::' | append: option_variant_gallery_video_url
-                            if option_variant_gallery_poster_url != blank
-                              assign option_variant_gallery_token = option_variant_gallery_token | append: '::' | append: option_variant_gallery_poster_url
-                            endif
-                          elsif option_variant_gallery_image_url != blank and option_variant_gallery_image_url != option_swatch_image
-                            assign option_variant_gallery_token = 'image::' | append: option_variant_gallery_image_url
-                          endif
-
-                          if option_variant_gallery_token != blank
-                            assign option_swatch_gallery = option_swatch_gallery | append: '||' | append: option_variant_gallery_token
-                          endif
-                        endfor
-                      endif
-                      break
-                    endif
-                  endfor
-                endif
-                if option_swatch_hover_image == blank
-                  for product_variant in compare_product.variants
-                    assign variant_color_value = blank
-                    case option.position
-                      when 1
-                        assign variant_color_value = product_variant.option1
-                      when 2
-                        assign variant_color_value = product_variant.option2
-                      when 3
-                        assign variant_color_value = product_variant.option3
-                    endcase
-                    if variant_color_value == option_value.name
-                      capture option_swatch_hover_image_url
-                        render 'sb-hover-image-url', resource: product_variant, width: 584
-                      endcapture
-                      assign option_swatch_hover_image_url = option_swatch_hover_image_url | strip
-                      if option_swatch_hover_image_url != blank
-                        assign option_swatch_hover_image = option_swatch_hover_image_url
-                        break
-                      endif
-                    endif
-                  endfor
-                endif
-                if option_swatch_color != blank and swatch_index < 4
-                  assign swatch_index = swatch_index | plus: 1
-                  case swatch_index
-                    when 1
-                      assign swatch_1 = option_swatch_color
-                      assign swatch_1_image = option_swatch_image
-                      assign swatch_1_hover_image = option_swatch_hover_image
-                      assign swatch_1_gallery = option_swatch_gallery
-                    when 2
-                      assign swatch_2 = option_swatch_color
-                      assign swatch_2_image = option_swatch_image
-                      assign swatch_2_hover_image = option_swatch_hover_image
-                      assign swatch_2_gallery = option_swatch_gallery
-                    when 3
-                      assign swatch_3 = option_swatch_color
-                      assign swatch_3_image = option_swatch_image
-                      assign swatch_3_hover_image = option_swatch_hover_image
-                      assign swatch_3_gallery = option_swatch_gallery
-                    when 4
-                      assign swatch_4 = option_swatch_color
-                      assign swatch_4_image = option_swatch_image
-                      assign swatch_4_hover_image = option_swatch_hover_image
-                      assign swatch_4_gallery = option_swatch_gallery
-                  endcase
-                endif
-              endfor
-            endif
-          endfor
-
-        %}
-
         <article class="sb-compare__column" data-sb-reveal-item>
           <div class="sb-compare__selector-wrap" style="--sb-compare-chevron-url: url('{{ compare_chevron_icon_url }}');">
             <select class="sb-compare__selector sb-compare__selector-input font-caption weight-semibold" data-compare-select>
@@ -220,16 +63,13 @@
               {% for selector_item in compare_products limit: 12 %}
                 {% liquid
                   assign selector_product = blank
-                  if selector_item.url != blank and selector_item.variants != blank
-                    assign selector_product = selector_item
-                  elsif selector_item.value != blank
-                    assign selector_product = selector_item.value
-                  elsif selector_item.product != blank
-                    assign selector_product = selector_item.product.value | default: selector_item.product
-                  elsif selector_item.reference != blank
-                    assign selector_product = selector_item.reference.value | default: selector_item.reference
-                  elsif selector_item.handle != blank
-                    assign selector_product = all_products[selector_item.handle]
+                  assign selector_item_entry = selector_item.value | default: selector_item.reference.value | default: selector_item.reference | default: selector_item
+                  if selector_item_entry.url != blank and selector_item_entry.variants != blank
+                    assign selector_product = selector_item_entry
+                  elsif selector_item_entry.product != blank
+                    assign selector_product = selector_item_entry.product.value | default: selector_item_entry.product
+                  elsif selector_item_entry.handle != blank
+                    assign selector_product = all_products[selector_item_entry.handle]
                   endif
                 %}
                 {% if selector_product != blank %}
@@ -253,49 +93,20 @@
             {% for variant_item in compare_products limit: 12 %}
               {% liquid
                 assign variant_product = blank
-                if variant_item.url != blank and variant_item.variants != blank
-                  assign variant_product = variant_item
-                elsif variant_item.value != blank
-                  assign variant_product = variant_item.value
-                elsif variant_item.product != blank
-                  assign variant_product = variant_item.product.value | default: variant_item.product
-                elsif variant_item.reference != blank
-                  assign variant_product = variant_item.reference.value | default: variant_item.reference
-                elsif variant_item.handle != blank
-                  assign variant_product = all_products[variant_item.handle]
+                assign variant_item_entry = variant_item.value | default: variant_item.reference.value | default: variant_item.reference | default: variant_item
+                if variant_item_entry.url != blank and variant_item_entry.variants != blank
+                  assign variant_product = variant_item_entry
+                elsif variant_item_entry.product != blank
+                  assign variant_product = variant_item_entry.product.value | default: variant_item_entry.product
+                elsif variant_item_entry.handle != blank
+                  assign variant_product = all_products[variant_item_entry.handle]
                 endif
               %}
               {% if variant_product != blank %}
                 {% assign variant_index = variant_index | plus: 1 %}
                 {% liquid
-                  assign variant_rating = 0
-                  assign variant_reviews_count = 0
-                  assign variant_hide_reviews = false
-
-                  if variant_product.metafields.reviews.rating.value != blank
-                    assign variant_rating_value = variant_product.metafields.reviews.rating.value
-                    assign variant_rating = variant_rating_value.rating | default: variant_rating_value | plus: 0
-                  endif
-
-                  assign variant_reviews_count = variant_product.metafields.reviews.rating_count.value | default: 0 | plus: 0 | round: 0
-                  assign variant_product_settings_ref = variant_product.metafields.custom.sbv2_product_settings.value | default: variant_product.metafields.custom.sbv2_product_settings
-                  if variant_product_settings_ref != blank
-                    assign variant_hide_reviews_value = variant_product_settings_ref.hide_reviews.value | default: variant_product_settings_ref.hide_reviews
-                    if variant_hide_reviews_value == true or variant_hide_reviews_value == 'true' or variant_hide_reviews_value == 1 or variant_hide_reviews_value == '1'
-                      assign variant_hide_reviews = true
-                    endif
-                  endif
-
-                  assign variant_selected_variant = variant_product.selected_or_first_available_variant
-                  assign variant_compare_price_text = ''
-                  assign variant_price_text = ''
                   assign variant_compare_info_text = blank
-                  if variant_selected_variant != blank
-                    assign variant_price_text = variant_selected_variant.price | money
-                    if variant_selected_variant.compare_at_price > variant_selected_variant.price
-                      assign variant_compare_price_text = variant_selected_variant.compare_at_price | money
-                    endif
-                  endif
+                  assign variant_product_settings_ref = variant_product.metafields.custom.sbv2_product_settings.value | default: variant_product.metafields.custom.sbv2_product_settings
 
                   if variant_product_settings_ref != blank
                     assign variant_compare_points = variant_product_settings_ref.compare_table_compare_points.value | default: variant_product_settings_ref.compare_table_compare_points
@@ -432,205 +243,6 @@
                     assign variant_compare_info_text = variant_compare_info_rows
                   endif
 
-                  assign variant_swatch_1 = blank
-                  assign variant_swatch_2 = blank
-                  assign variant_swatch_3 = blank
-                  assign variant_swatch_4 = blank
-                  assign variant_swatch_1_image = blank
-                  assign variant_swatch_2_image = blank
-                  assign variant_swatch_3_image = blank
-                  assign variant_swatch_4_image = blank
-                  assign variant_swatch_1_hover_image = blank
-                  assign variant_swatch_2_hover_image = blank
-                  assign variant_swatch_3_hover_image = blank
-                  assign variant_swatch_4_hover_image = blank
-                  assign variant_swatch_1_gallery = blank
-                  assign variant_swatch_2_gallery = blank
-                  assign variant_swatch_3_gallery = blank
-                  assign variant_swatch_4_gallery = blank
-                  assign variant_swatch_1_variant_id = blank
-                  assign variant_swatch_2_variant_id = blank
-                  assign variant_swatch_3_variant_id = blank
-                  assign variant_swatch_4_variant_id = blank
-                  assign variant_swatch_1_price_text = blank
-                  assign variant_swatch_2_price_text = blank
-                  assign variant_swatch_3_price_text = blank
-                  assign variant_swatch_4_price_text = blank
-                  assign variant_swatch_1_compare_price_text = blank
-                  assign variant_swatch_2_compare_price_text = blank
-                  assign variant_swatch_3_compare_price_text = blank
-                  assign variant_swatch_4_compare_price_text = blank
-                  assign variant_swatch_index = 0
-
-                  for variant_option in variant_product.options_with_values
-                    assign variant_option_name_downcase = variant_option.name | downcase
-                    if variant_option_name_downcase contains 'color' or variant_option_name_downcase contains 'colour'
-                      for variant_option_value in variant_option.values
-                        assign variant_option_swatch_color = variant_option_value.swatch.color | default: variant_option_value.name
-                        assign variant_option_swatch_image = blank
-                        assign variant_option_swatch_hover_image = blank
-                        assign variant_option_swatch_gallery = blank
-                        assign variant_option_swatch_variant_id = blank
-                        assign variant_option_swatch_price_text = blank
-                        assign variant_option_swatch_compare_price_text = blank
-                        if variant_option_value.swatch.image != blank
-                          assign variant_option_swatch_image = variant_option_value.swatch.image | image_url: width: 584
-                        endif
-
-                        for product_variant in variant_product.variants
-                          assign variant_color_value = blank
-                          case variant_option.position
-                            when 1
-                              assign variant_color_value = product_variant.option1
-                            when 2
-                              assign variant_color_value = product_variant.option2
-                            when 3
-                              assign variant_color_value = product_variant.option3
-                          endcase
-                          if variant_color_value == variant_option_value.name
-                            assign variant_option_swatch_variant_id = product_variant.id
-                            assign variant_option_swatch_price_text = product_variant.price | money
-                            if product_variant.compare_at_price > product_variant.price
-                              assign variant_option_swatch_compare_price_text = product_variant.compare_at_price | money
-                            else
-                              assign variant_option_swatch_compare_price_text = blank
-                            endif
-                            break
-                          endif
-                        endfor
-
-                        if variant_option_swatch_image == blank
-                          for product_variant in variant_product.variants
-                            assign variant_color_value = blank
-                            case variant_option.position
-                              when 1
-                                assign variant_color_value = product_variant.option1
-                              when 2
-                                assign variant_color_value = product_variant.option2
-                              when 3
-                                assign variant_color_value = product_variant.option3
-                            endcase
-                            if variant_color_value == variant_option_value.name and product_variant.featured_image != blank
-                              assign variant_option_swatch_image = product_variant.featured_image | image_url: width: 584
-                              assign variant_option_swatch_gallery = 'image::' | append: variant_option_swatch_image
-                              capture variant_option_swatch_hover_image_url
-                                render 'sb-hover-image-url', resource: product_variant, width: 584
-                              endcapture
-                              assign variant_option_swatch_hover_image_url = variant_option_swatch_hover_image_url | strip
-                              if variant_option_swatch_hover_image_url != blank
-                                assign variant_option_swatch_hover_image = variant_option_swatch_hover_image_url
-                              endif
-                              assign variant_gallery_images = product_variant.metafields.custom.images.value | default: product_variant.metafields.custom.images
-                              if variant_gallery_images != blank
-                                for variant_gallery_image in variant_gallery_images
-                                  assign variant_gallery_media = variant_gallery_image.value | default: variant_gallery_image
-                                  assign variant_gallery_type = variant_gallery_media.media_type | default: 'image'
-                                  assign variant_gallery_image_url = blank
-                                  assign variant_gallery_video_url = blank
-                                  assign variant_gallery_poster_url = blank
-                                  if variant_gallery_type == 'video'
-                                    if variant_gallery_media.sources != blank
-                                      for variant_video_source in variant_gallery_media.sources
-                                        assign variant_gallery_video_url = variant_video_source.url | default: variant_video_source.src
-                                        if variant_gallery_video_url != blank
-                                          break
-                                        endif
-                                      endfor
-                                    endif
-                                    if variant_gallery_media.preview_image != blank
-                                      assign variant_gallery_poster_url = variant_gallery_media.preview_image | image_url: width: 584
-                                    endif
-                                  else
-                                    if variant_gallery_media.preview_image != blank
-                                      assign variant_gallery_image_url = variant_gallery_media.preview_image | image_url: width: 584
-                                    elsif variant_gallery_media != blank
-                                      assign variant_gallery_image_url = variant_gallery_media | image_url: width: 584
-                                    endif
-                                  endif
-
-                                  assign variant_gallery_token = blank
-                                  if variant_gallery_video_url != blank
-                                    assign variant_gallery_token = 'video::' | append: variant_gallery_video_url
-                                    if variant_gallery_poster_url != blank
-                                      assign variant_gallery_token = variant_gallery_token | append: '::' | append: variant_gallery_poster_url
-                                    endif
-                                  elsif variant_gallery_image_url != blank and variant_gallery_image_url != variant_option_swatch_image
-                                    assign variant_gallery_token = 'image::' | append: variant_gallery_image_url
-                                  endif
-
-                                  if variant_gallery_token != blank
-                                    assign variant_option_swatch_gallery = variant_option_swatch_gallery | append: '||' | append: variant_gallery_token
-                                  endif
-                                endfor
-                              endif
-                              break
-                            endif
-                          endfor
-                        endif
-                        if variant_option_swatch_hover_image == blank
-                          for product_variant in variant_product.variants
-                            assign variant_color_value = blank
-                            case variant_option.position
-                              when 1
-                                assign variant_color_value = product_variant.option1
-                              when 2
-                                assign variant_color_value = product_variant.option2
-                              when 3
-                                assign variant_color_value = product_variant.option3
-                            endcase
-                            if variant_color_value == variant_option_value.name
-                              capture variant_option_swatch_hover_image_url
-                                render 'sb-hover-image-url', resource: product_variant, width: 584
-                              endcapture
-                              assign variant_option_swatch_hover_image_url = variant_option_swatch_hover_image_url | strip
-                              if variant_option_swatch_hover_image_url != blank
-                                assign variant_option_swatch_hover_image = variant_option_swatch_hover_image_url
-                                break
-                              endif
-                            endif
-                          endfor
-                        endif
-                        if variant_option_swatch_color != blank and variant_swatch_index < 4
-                          assign variant_swatch_index = variant_swatch_index | plus: 1
-                          case variant_swatch_index
-                            when 1
-                              assign variant_swatch_1 = variant_option_swatch_color
-                              assign variant_swatch_1_image = variant_option_swatch_image
-                              assign variant_swatch_1_hover_image = variant_option_swatch_hover_image
-                              assign variant_swatch_1_gallery = variant_option_swatch_gallery
-                              assign variant_swatch_1_variant_id = variant_option_swatch_variant_id
-                              assign variant_swatch_1_price_text = variant_option_swatch_price_text
-                              assign variant_swatch_1_compare_price_text = variant_option_swatch_compare_price_text
-                            when 2
-                              assign variant_swatch_2 = variant_option_swatch_color
-                              assign variant_swatch_2_image = variant_option_swatch_image
-                              assign variant_swatch_2_hover_image = variant_option_swatch_hover_image
-                              assign variant_swatch_2_gallery = variant_option_swatch_gallery
-                              assign variant_swatch_2_variant_id = variant_option_swatch_variant_id
-                              assign variant_swatch_2_price_text = variant_option_swatch_price_text
-                              assign variant_swatch_2_compare_price_text = variant_option_swatch_compare_price_text
-                            when 3
-                              assign variant_swatch_3 = variant_option_swatch_color
-                              assign variant_swatch_3_image = variant_option_swatch_image
-                              assign variant_swatch_3_hover_image = variant_option_swatch_hover_image
-                              assign variant_swatch_3_gallery = variant_option_swatch_gallery
-                              assign variant_swatch_3_variant_id = variant_option_swatch_variant_id
-                              assign variant_swatch_3_price_text = variant_option_swatch_price_text
-                              assign variant_swatch_3_compare_price_text = variant_option_swatch_compare_price_text
-                            when 4
-                              assign variant_swatch_4 = variant_option_swatch_color
-                              assign variant_swatch_4_image = variant_option_swatch_image
-                              assign variant_swatch_4_hover_image = variant_option_swatch_hover_image
-                              assign variant_swatch_4_gallery = variant_option_swatch_gallery
-                              assign variant_swatch_4_variant_id = variant_option_swatch_variant_id
-                              assign variant_swatch_4_price_text = variant_option_swatch_price_text
-                              assign variant_swatch_4_compare_price_text = variant_option_swatch_compare_price_text
-                          endcase
-                        endif
-                      endfor
-                    endif
-                  endfor
-
                 %}
                 <div
                   class="sb-compare__variant{% if variant_index == compare_meta_products_rendered %} is-active{% endif %}"
@@ -639,42 +251,6 @@
                   {% render 'product-thumbnail',
                     product: variant_product,
                     product_name: variant_product.title,
-                    rating: variant_rating,
-                    reviews_count_number: variant_reviews_count,
-                    reviews_count: variant_reviews_count | append: ' reviews',
-                    compare_price_text: variant_compare_price_text,
-                    price_text: variant_price_text,
-                    swatch_1: variant_swatch_1,
-                    swatch_2: variant_swatch_2,
-                    swatch_3: variant_swatch_3,
-                    swatch_4: variant_swatch_4,
-                    swatch_1_image: variant_swatch_1_image,
-                    swatch_2_image: variant_swatch_2_image,
-                    swatch_3_image: variant_swatch_3_image,
-                    swatch_4_image: variant_swatch_4_image,
-                    swatch_1_hover_image: variant_swatch_1_hover_image,
-                    swatch_2_hover_image: variant_swatch_2_hover_image,
-                    swatch_3_hover_image: variant_swatch_3_hover_image,
-                    swatch_4_hover_image: variant_swatch_4_hover_image,
-                    swatch_1_gallery: variant_swatch_1_gallery,
-                    swatch_2_gallery: variant_swatch_2_gallery,
-                    swatch_3_gallery: variant_swatch_3_gallery,
-                    swatch_4_gallery: variant_swatch_4_gallery,
-                    swatch_1_variant_id: variant_swatch_1_variant_id,
-                    swatch_2_variant_id: variant_swatch_2_variant_id,
-                    swatch_3_variant_id: variant_swatch_3_variant_id,
-                    swatch_4_variant_id: variant_swatch_4_variant_id,
-                    swatch_1_price_text: variant_swatch_1_price_text,
-                    swatch_2_price_text: variant_swatch_2_price_text,
-                    swatch_3_price_text: variant_swatch_3_price_text,
-                    swatch_4_price_text: variant_swatch_4_price_text,
-                    swatch_1_compare_price_text: variant_swatch_1_compare_price_text,
-                    swatch_2_compare_price_text: variant_swatch_2_compare_price_text,
-                    swatch_3_compare_price_text: variant_swatch_3_compare_price_text,
-                    swatch_4_compare_price_text: variant_swatch_4_compare_price_text,
-                    selected_swatch: 1,
-                    hide_reviews: variant_hide_reviews,
-                    show_add_to_cart: true,
                     show_compare_add_to_cart_large: true,
                     compare_info_text: variant_compare_info_text
                   %}
@@ -689,6 +265,7 @@
 
   </div>
 </section>
+{% endif %}
 
 {% stylesheet %}
   .sb-compare {
@@ -741,8 +318,12 @@
   .sb-compare__selector-input {
     appearance: none;
     cursor: pointer;
+    min-width: 0;
     outline: none;
+    overflow: hidden;
     padding-right: calc(var(--sb-space-20) + var(--sb-space-12) + var(--sb-space-12));
+    text-overflow: ellipsis;
+    white-space: nowrap;
     -webkit-tap-highlight-color: transparent;
     -webkit-appearance: none;
   }
@@ -805,343 +386,8 @@
     display: block;
   }
 
-  .sb-product-thumbnail__media-wrap {
-    position: relative;
-  }
-
-  .sb-product-thumbnail__media {
-    background: var(--sb-color-neutral-100);
-    border-radius: 24px;
-    box-shadow: 0 0 10px 0 var(--sb-color-always-black-12);
-    display: block;
-    overflow: hidden;
-    position: relative;
-    text-decoration: none;
-    width: 100%;
-  }
-
-  .sb-product-thumbnail__badge {
-    border-radius: 12px;
-    color: var(--sb-color-always-white);
-    display: inline-flex;
-    align-items: center;
-    left: var(--sb-space-16);
-    padding: var(--sb-space-8) var(--sb-space-12);
-    position: absolute;
-    top: var(--sb-space-16);
-    white-space: nowrap;
-    z-index: 4;
-  }
-
-  .sb-product-thumbnail__badge--bestseller {
-    background: var(--sb-color-red-500);
-  }
-
-  .sb-product-thumbnail__badge--new {
-    background: var(--sb-color-primary-500);
-  }
-
-  .sb-product-thumbnail__add-to-cart {
-    --sb-add-label-width: 3ch;
-    --sb-add-gap: var(--sb-space-8);
-    --sb-add-pill-padding: var(--sb-space-16);
-    align-items: center;
-    background: var(--sb-color-always-white);
-    border: 0;
-    border-radius: 500px;
-    box-sizing: border-box;
-    bottom: var(--sb-space-16);
-    box-shadow: 0 0 24px 0 var(--sb-color-always-black-25);
-    color: var(--sb-color-always-black);
-    display: inline-flex;
-    gap: 0;
-    height: var(--sb-space-36);
-    inline-size: max-content;
-    justify-content: center;
-    opacity: 0;
-    overflow: hidden;
-    padding-inline: calc((var(--sb-space-36) - var(--sb-space-16)) / 2);
-    pointer-events: none;
-    position: absolute;
-    right: var(--sb-space-16);
-    width: var(--sb-space-36);
-    transition: width 140ms linear, opacity 140ms linear, gap 140ms linear, padding-inline 140ms linear;
-    z-index: 2;
-    cursor: pointer;
-  }
-
-  .sb-product-thumbnail__gallery-nav {
-    align-items: center;
-    background: transparent;
-    border: 0;
-    border-radius: 999px;
-    box-shadow: 0 0 24px 0 var(--sb-color-always-black-25);
-    cursor: pointer;
-    display: inline-flex;
-    height: var(--sb-space-36);
-    justify-content: center;
-    opacity: 0;
-    padding: 0;
-    pointer-events: none;
-    position: absolute;
-    top: 50%;
-    transition: opacity 120ms, transform 120ms;
-    width: var(--sb-space-36);
-    z-index: 2;
-  }
-
-  .sb-product-thumbnail__gallery-nav--left {
-    left: var(--sb-space-16);
-    transform: translate(calc(-1 * var(--sb-space-8)), -50%);
-  }
-
-  .sb-product-thumbnail__gallery-nav--right {
-    right: var(--sb-space-16);
-    transform: translate(var(--sb-space-8), -50%);
-  }
-
-  .sb-product-thumbnail__media-wrap:hover .sb-product-thumbnail__gallery-nav,
-  .sb-product-thumbnail__gallery-nav:focus-visible {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translate(0, -50%);
-  }
-
-  .sb-product-thumbnail__gallery-nav-icon {
-    display: block;
-    height: var(--sb-space-36);
-    width: var(--sb-space-36);
-  }
-
-  .sb-product-thumbnail__gallery-nav--right .sb-product-thumbnail__gallery-nav-icon {
-    transform: rotate(180deg);
-  }
-
-  .sb-product-thumbnail__gallery-nav-icon svg {
-    display: block;
-    height: 100%;
-    width: 100%;
-  }
-
-  .sb-product-thumbnail__gallery-nav-icon svg path:first-child {
-    fill: var(--sb-color-always-white);
-  }
-
-  .sb-product-thumbnail__gallery-nav-icon svg path:last-child {
-    fill: var(--sb-color-always-black);
-  }
-
-  .sb-product-thumbnail__gallery-nav:hover .sb-product-thumbnail__gallery-nav-icon svg path:last-child,
-  .sb-product-thumbnail__gallery-nav:focus-visible .sb-product-thumbnail__gallery-nav-icon svg path:last-child {
-    fill: var(--sb-color-primary-500);
-  }
-
-  .sb-product-thumbnail__media-wrap:hover .sb-product-thumbnail__add-to-cart,
-  .sb-product-thumbnail__add-to-cart:focus-visible,
-  .sb-product-thumbnail__add-to-cart.is-added,
-  .sb-product-thumbnail__add-to-cart.is-loading {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .sb-product-thumbnail__add-to-cart:hover,
-  .sb-product-thumbnail__add-to-cart:focus-visible {
-    gap: var(--sb-add-gap);
-    width: calc((var(--sb-add-pill-padding) * 2) + var(--sb-space-16) + var(--sb-add-gap) + var(--sb-add-label-width));
-    padding-inline: var(--sb-add-pill-padding);
-  }
-
-  .sb-product-thumbnail__add-to-cart.is-loading {
-    gap: var(--sb-add-gap);
-    width: calc((var(--sb-add-pill-padding) * 2) + var(--sb-space-16) + var(--sb-add-gap) + var(--sb-add-label-width));
-    padding-inline: var(--sb-add-pill-padding);
-  }
-
-  .sb-product-thumbnail__add-to-cart.is-added {
-    --sb-add-label-width: 5ch;
-    gap: var(--sb-add-gap);
-    width: calc((var(--sb-add-pill-padding) * 2) + var(--sb-space-16) + var(--sb-add-gap) + var(--sb-add-label-width));
-    padding-inline: var(--sb-add-pill-padding);
-  }
-
-  .sb-product-thumbnail__add-to-cart-icon-image {
-    display: block;
-    flex: 0 0 var(--sb-space-16);
-    filter: var(--sb-add-icon-filter, brightness(0));
-    height: var(--sb-space-16);
-    max-width: none;
-    object-fit: contain;
-    width: var(--sb-space-16);
-  }
-
-  .sb-product-thumbnail__add-to-cart-label {
-    color: var(--sb-color-always-black);
-    display: inline-block;
-    max-width: 0;
-    opacity: 0;
-    overflow: hidden;
-    transition: max-width 140ms linear, opacity 140ms linear;
-    white-space: nowrap;
-  }
-
-  .sb-product-thumbnail__add-to-cart:hover .sb-product-thumbnail__add-to-cart-label,
-  .sb-product-thumbnail__add-to-cart:focus-visible .sb-product-thumbnail__add-to-cart-label,
-  .sb-product-thumbnail__add-to-cart.is-added .sb-product-thumbnail__add-to-cart-label,
-  .sb-product-thumbnail__add-to-cart.is-loading .sb-product-thumbnail__add-to-cart-label {
-    opacity: 1;
-    max-width: var(--sb-add-label-width);
-  }
-
-  .sb-product-thumbnail__add-to-cart:hover .sb-product-thumbnail__add-to-cart-label,
-  .sb-product-thumbnail__add-to-cart:focus-visible .sb-product-thumbnail__add-to-cart-label {
-    color: var(--sb-color-primary-500);
-  }
-
-  .sb-product-thumbnail__add-to-cart:hover .sb-product-thumbnail__add-to-cart-icon-image,
-  .sb-product-thumbnail__add-to-cart:focus-visible .sb-product-thumbnail__add-to-cart-icon-image {
-    --sb-add-icon-filter: brightness(0) saturate(100%) invert(45%) sepia(80%) saturate(808%) hue-rotate(134deg)
-      brightness(91%) contrast(96%);
-  }
-
-  .sb-product-thumbnail__carousel {
-    display: block;
-    overflow: hidden;
-    width: 100%;
-  }
-
-  .sb-product-thumbnail__carousel-track {
-    display: flex;
-    transform: translate3d(0, 0, 0);
-    transition: transform 180ms linear;
-    width: 100%;
-  }
-
-  .sb-product-thumbnail__carousel-track.is-instant {
-    transition: none;
-  }
-
-  .sb-product-thumbnail__carousel-slide {
-    flex: 0 0 100%;
-    width: 100%;
-  }
-
-  .sb-product-thumbnail__media-item {
-    aspect-ratio: 1 / 1;
-    display: block;
-    height: auto;
-    object-fit: cover;
-    width: 100%;
-  }
-
-  .sb-product-thumbnail__video.sb-product-thumbnail__media-item {
-    background: var(--sb-color-neutral-100);
-  }
-
-  .sb-product-thumbnail__gallery-sources {
-    display: none;
-  }
-
-  .sb-product-thumbnail__image-placeholder {
-    aspect-ratio: 1 / 1;
-    background: var(--sb-color-neutral-100);
-    width: 100%;
-  }
-
-  .sb-product-thumbnail__name {
-    color: var(--sb-color-neutral-900);
-    display: block;
-    margin: var(--sb-space-16) 0 0;
-    text-decoration: none;
-    width: 100%;
-  }
-
-  .sb-product-thumbnail__name:hover,
-  .sb-product-thumbnail__name:focus-visible {
-    color: var(--sb-color-primary-500);
-  }
-
-  .sb-product-thumbnail__rating-row {
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--sb-space-12);
-    margin-top: var(--sb-space-8);
-  }
-
-  .sb-product-thumbnail__stars {
-    align-items: center;
-    display: inline-flex;
-    gap: 4px;
-    padding-bottom: var(--sb-space-2);
-  }
-
-  .sb-product-thumbnail__star {
-    display: inline-block;
-    height: var(--sb-space-20);
-    position: relative;
-    width: var(--sb-space-20);
-  }
-
-  .sb-product-thumbnail__star::before,
-  .sb-product-thumbnail__star::after {
-    content: '';
-    display: block;
-    height: 100%;
-    left: 0;
-    mask: center / contain no-repeat var(--sb-star-icon-url);
-    position: absolute;
-    top: 0;
-    width: 100%;
-    -webkit-mask: center / contain no-repeat var(--sb-star-icon-url);
-  }
-
-  .sb-product-thumbnail__star::before {
-    background: var(--sb-color-neutral-900-50);
-  }
-
-  .sb-product-thumbnail__star::after {
-    background: var(--sb-color-neutral-900);
-    clip-path: inset(0 calc(100% - var(--sb-star-fill)) 0 0);
-    -webkit-clip-path: inset(0 calc(100% - var(--sb-star-fill)) 0 0);
-    width: 100%;
-  }
-
-  .sb-product-thumbnail__reviews {
-    color: var(--sb-color-neutral-900);
-    margin: 0;
-    white-space: nowrap;
-  }
-
-  .sb-product-thumbnail__price-row {
-    align-items: center;
-    display: flex;
-    gap: var(--sb-space-8);
-    margin-top: var(--sb-space-8);
-  }
-
-  .sb-product-thumbnail__price {
-    margin: 0;
-  }
-
-  .sb-product-thumbnail__price--compare {
-    color: var(--sb-color-neutral-800);
-    text-decoration: line-through;
-  }
-
-  .sb-product-thumbnail__price--current {
-    color: var(--sb-color-blue-500);
-  }
-
-  .sb-product-thumbnail__swatches {
-    align-items: center;
-    display: flex;
-    gap: var(--sb-space-8);
-    margin-top: var(--sb-space-8);
-    min-height: var(--sb-space-36);
-  }
-
   .sb-compare .sb-product-thumbnail__swatches.is-empty {
-    display: flex !important;
+    display: grid !important;
     visibility: hidden;
     pointer-events: none;
   }
@@ -1149,7 +395,7 @@
   .sb-compare .sb-product-thumbnail__swatches.is-empty::before {
     content: '';
     display: block;
-    height: var(--sb-space-36);
+    height: var(--sb-product-thumbnail-swatch-size, var(--sb-space-36));
     width: 1px;
   }
 
@@ -1157,64 +403,25 @@
     display: none !important;
   }
 
-  .sb-product-thumbnail__add-to-cart-large {
+  .sb-compare .sb-product-thumbnail__add-to-cart-large {
     margin-top: var(--sb-space-36);
     width: 100%;
     cursor: pointer;
   }
 
-  .sb-product-thumbnail__meta-rows {
+  .sb-compare .sb-product-thumbnail__meta-rows {
     display: grid;
     gap: var(--sb-space-36);
     margin-top: var(--sb-space-36);
   }
 
-  .sb-product-thumbnail__meta-row {
+  .sb-compare .sb-product-thumbnail__meta-row {
     color: var(--sb-color-neutral-900);
     margin: 0;
   }
 
-  .sb-product-thumbnail__meta-row.is-placeholder {
+  .sb-compare .sb-product-thumbnail__meta-row.is-placeholder {
     visibility: hidden;
-  }
-
-  .sb-product-thumbnail__swatch {
-    align-items: center;
-    background: transparent;
-    border: 0;
-    border-radius: 999px;
-    box-shadow: inset 0 0 0 2px transparent;
-    display: inline-flex;
-    height: var(--sb-space-36);
-    justify-content: center;
-    padding: 4px;
-    cursor: pointer;
-    width: var(--sb-space-36);
-  }
-
-  .sb-product-thumbnail__swatch:hover,
-  .sb-product-thumbnail__swatch:focus-visible {
-    box-shadow: inset 0 0 0 2px var(--sb-color-neutral-800);
-  }
-
-  @media (hover: none) {
-    .sb-product-thumbnail__add-to-cart {
-      opacity: 1;
-      pointer-events: auto;
-    }
-  }
-
-  .sb-product-thumbnail__swatch.is-selected {
-    box-shadow: inset 0 0 0 2px var(--sb-color-primary-500);
-  }
-
-  .sb-product-thumbnail__swatch-fill {
-    background: var(--sb-swatch-color);
-    border-radius: 999px;
-    box-shadow: 0 0 8px 0 var(--sb-color-always-white-50) inset;
-    display: block;
-    height: 100%;
-    width: 100%;
   }
 
   @media (min-width: 750px) {
@@ -1246,24 +453,38 @@
 
 <script>
   (() => {
-    const ThemeEvents = {
-      variantUpdate: 'variant:update',
+    const getMatchingRoots = (scope, selector) => {
+      if (!(scope instanceof Element || scope instanceof Document)) return [];
+      const roots = Array.from(scope.querySelectorAll(selector));
+      if (scope instanceof Element && scope.matches(selector)) {
+        roots.unshift(scope);
+      }
+      return roots;
     };
 
     const applyReviewFormatting = (scope) => {
-      const reviewLabels = scope.querySelectorAll('.sb-product-thumbnail__reviews[data-review-count]');
-      reviewLabels.forEach((node) => {
-        const rawValue = Number.parseInt(node.dataset.reviewCount || '0', 10);
-        if (!Number.isFinite(rawValue)) return;
-        node.textContent = `${rawValue.toLocaleString()} reviews`;
-      });
+      if (
+        window.SBProductThumbnailSections &&
+        typeof window.SBProductThumbnailSections.applyReviewFormatting === 'function'
+      ) {
+        window.SBProductThumbnailSections.applyReviewFormatting(scope);
+      }
     };
 
-    const initCompare = (scope) => {
-      const roots = scope.querySelectorAll('.sb-compare');
+    if (!(window.__sbCompareRoots instanceof Set)) {
+      window.__sbCompareRoots = new Set();
+    }
+    const compareRoots = window.__sbCompareRoots;
+
+    const initCompare = (scope = document) => {
+      const roots = getMatchingRoots(scope, '.sb-compare');
       if (!roots.length) return;
 
       roots.forEach((root) => {
+        if (!(root instanceof HTMLElement)) return;
+        if (root.dataset.sbCompareInitialized === 'true') return;
+        root.dataset.sbCompareInitialized = 'true';
+
         const getVisibleThumbnails = () => {
           const columns = Array.from(root.querySelectorAll('.sb-compare__column')).filter(
             (column) => window.getComputedStyle(column).display !== 'none'
@@ -1288,7 +509,7 @@
             '.sb-product-thumbnail__rating-row',
             '.sb-product-thumbnail__price-row',
             '.sb-product-thumbnail__swatches',
-            '.sb-product-thumbnail__add-to-cart-large'
+            '.sb-product-thumbnail__add-to-cart-large',
           ];
 
           rowSelectors.forEach((rowSelector) => {
@@ -1354,12 +575,6 @@
           }
         };
 
-        const scheduleAlignment = () => {
-          syncSwatchSpacing();
-          syncCoreRowHeights();
-          syncMetaRowHeights();
-        };
-
         const syncSwatchSpacing = () => {
           const visibleColumns = Array.from(root.querySelectorAll('.sb-compare__column')).filter(
             (column) => window.getComputedStyle(column).display !== 'none'
@@ -1378,6 +593,12 @@
           root.classList.toggle('sb-compare--no-visible-swatches', !anyVisibleSwatches);
         };
 
+        const scheduleAlignment = () => {
+          syncSwatchSpacing();
+          syncCoreRowHeights();
+          syncMetaRowHeights();
+        };
+
         const applySelectorVisibility = () => {
           const visibleSlots = window.matchMedia('(max-width: 749px)').matches ? 2 : 4;
           const selectorWraps = root.querySelectorAll('.sb-compare__column .sb-compare__selector-wrap');
@@ -1392,7 +613,9 @@
             }
           });
 
-          const fallbackButtons = root.querySelectorAll(':scope > .sb-compare__grid > .sb-compare__column > .sb-compare__selector');
+          const fallbackButtons = root.querySelectorAll(
+            ':scope > .sb-compare__grid > .sb-compare__column > .sb-compare__selector'
+          );
           fallbackButtons.forEach((button) => {
             button.style.display = 'none';
             const column = button.closest('.sb-compare__column');
@@ -1417,633 +640,10 @@
           });
         });
 
-        const parseGalleryToken = (token) => {
-          const raw = (token || '').trim();
-          if (!raw) return null;
-
-          const parts = raw.split('::');
-          if (parts.length > 1) {
-            const type = parts[0] === 'video' ? 'video' : 'image';
-            const src = (parts[1] || '').trim();
-            const poster = (parts[2] || '').trim();
-            if (!src) return null;
-            return { type, src, poster };
-          }
-
-          const lowerRaw = raw.toLowerCase();
-          if (lowerRaw.includes('.mp4') || lowerRaw.includes('.webm') || lowerRaw.includes('.m3u8')) {
-            return { type: 'video', src: raw, poster: '' };
-          }
-
-          return { type: 'image', src: raw, poster: '' };
-        };
-
-        const toGalleryToken = (item) => {
-          if (!item || !item.src) return '';
-          if (item.type === 'video') {
-            return item.poster ? `video::${item.src}::${item.poster}` : `video::${item.src}`;
-          }
-          return `image::${item.src}`;
-        };
-
-        const getMediaLink = (mediaWrap) => mediaWrap.querySelector('.sb-product-thumbnail__media');
-        const getCarouselTrack = (mediaWrap) => mediaWrap.querySelector('.sb-product-thumbnail__carousel-track');
-        const getCarouselSlides = (mediaWrap) => Array.from(mediaWrap.querySelectorAll('.sb-product-thumbnail__carousel-slide'));
-
-        const getGalleryItems = (mediaWrap) =>
-          Array.from(mediaWrap.querySelectorAll('.sb-product-thumbnail__gallery-image-source'))
-            .map((node) => parseGalleryToken(node.dataset.galleryImage || ''))
-            .filter(Boolean);
-
-        const setGalleryItems = (mediaWrap, galleryValue) => {
-          if (!mediaWrap) return [];
-
-          const parsedItems = Array.isArray(galleryValue)
-            ? galleryValue.filter((item) => item && item.src)
-            : String(galleryValue || '')
-                .split('||')
-                .map((item) => parseGalleryToken(item))
-                .filter(Boolean);
-
-          let sourcesContainer = mediaWrap.querySelector('.sb-product-thumbnail__gallery-sources');
-          if (!sourcesContainer) {
-            sourcesContainer = document.createElement('div');
-            sourcesContainer.className = 'sb-product-thumbnail__gallery-sources';
-            sourcesContainer.setAttribute('aria-hidden', 'true');
-            mediaWrap.appendChild(sourcesContainer);
-          }
-
-          sourcesContainer.innerHTML = '';
-          parsedItems.forEach((item) => {
-            const sourceNode = document.createElement('span');
-            sourceNode.className = 'sb-product-thumbnail__gallery-image-source';
-            sourceNode.dataset.galleryImage = toGalleryToken(item);
-            sourcesContainer.appendChild(sourceNode);
-          });
-
-          return parsedItems;
-        };
-
-        const mediaLoadPromiseCache = new Map();
-        const ensureMediaReady = (item) => {
-          if (!item || !item.src) return Promise.resolve();
-          if (mediaLoadPromiseCache.has(item.src)) return mediaLoadPromiseCache.get(item.src);
-
-          const mediaReadyPromise = new Promise((resolve) => {
-            if (item.type === 'video') {
-              const video = document.createElement('video');
-              const done = () => resolve();
-              video.preload = 'auto';
-              video.muted = true;
-              video.playsInline = true;
-              video.src = item.src;
-              if (item.poster) video.poster = item.poster;
-              video.addEventListener('loadeddata', done, { once: true });
-              video.addEventListener('canplay', done, { once: true });
-              video.addEventListener('error', done, { once: true });
-              video.load();
-              return;
-            }
-
-            const image = new Image();
-            const done = () => resolve();
-            image.decoding = 'async';
-            image.onload = done;
-            image.onerror = done;
-            image.src = item.src;
-            if (image.complete) resolve();
-          });
-
-          mediaLoadPromiseCache.set(item.src, mediaReadyPromise);
-          return mediaReadyPromise;
-        };
-
-        const preloadMediaItem = (item) => {
-          void ensureMediaReady(item);
-        };
-
-        const ensureDefaultMediaData = (mediaWrap) => {
-          const mediaLink = getMediaLink(mediaWrap);
-          if (!mediaLink) return;
-
-          const currentImage = mediaLink.querySelector('.sb-product-thumbnail__media-item');
-          const sourceItems = getGalleryItems(mediaWrap);
-
-          if (!mediaWrap.dataset.defaultImage) {
-            mediaWrap.dataset.defaultImage =
-              (sourceItems[0] && sourceItems[0].src) ||
-              (currentImage ? currentImage.currentSrc || currentImage.getAttribute('src') || '' : '');
-          }
-
-          if (!mediaWrap.dataset.primaryImage) {
-            mediaWrap.dataset.primaryImage = mediaWrap.dataset.defaultImage || '';
-          }
-
-          if (typeof mediaWrap.dataset.defaultHoverImage === 'undefined') {
-            mediaWrap.dataset.defaultHoverImage = mediaWrap.dataset.hoverImage || '';
-          }
-
-          if (typeof mediaWrap.dataset.isHovering === 'undefined') {
-            mediaWrap.dataset.isHovering = 'false';
-          }
-        };
-
-        const normalizeGalleryItems = (mediaWrap) => {
-          ensureDefaultMediaData(mediaWrap);
-          const sourceItems = getGalleryItems(mediaWrap);
-          const primaryImage = (mediaWrap.dataset.primaryImage || mediaWrap.dataset.defaultImage || '').trim();
-
-          let items = sourceItems.slice();
-          if (primaryImage) {
-            if (!items.length) {
-              items = [{ type: 'image', src: primaryImage, poster: '' }];
-            } else {
-              items[0] = { type: 'image', src: primaryImage, poster: '' };
-            }
-          }
-
-          if (!items.length) {
-            const fallbackImage = (mediaWrap.dataset.defaultImage || '').trim();
-            if (fallbackImage) items = [{ type: 'image', src: fallbackImage, poster: '' }];
-          }
-
-          return items;
-        };
-
-        const updateNavButtonsVisibility = (mediaWrap, count) => {
-          const slideCount = Number.isFinite(count) ? count : getCarouselSlides(mediaWrap).length;
-          const navButtons = mediaWrap.querySelectorAll('[data-gallery-nav]');
-          navButtons.forEach((navButton) => {
-            navButton.style.display = slideCount > 1 ? '' : 'none';
-          });
-        };
-
-        const createMediaElement = (mediaItem, referenceElement, loading = 'lazy') => {
-          if (!mediaItem || !mediaItem.src) return null;
-          const baseClassName = 'sb-product-thumbnail__media-item';
-
-          if (mediaItem.type === 'video') {
-            const video = document.createElement('video');
-            video.className = `${baseClassName} sb-product-thumbnail__video`;
-            video.autoplay = true;
-            video.controls = false;
-            video.loop = true;
-            video.muted = true;
-            video.playsInline = true;
-            video.preload = 'auto';
-            video.src = mediaItem.src;
-            video.setAttribute('autoplay', '');
-            video.setAttribute('muted', '');
-            video.setAttribute('loop', '');
-            video.setAttribute('playsinline', '');
-            if (mediaItem.poster) video.poster = mediaItem.poster;
-            return video;
-          }
-
-          const image = document.createElement('img');
-          image.className = `${baseClassName} sb-product-thumbnail__image`;
-          image.loading = loading;
-          image.decoding = 'async';
-          image.src = mediaItem.src;
-          image.alt = referenceElement?.getAttribute('aria-label') || referenceElement?.getAttribute('title') || '';
-          return image;
-        };
-
-        const pauseInactiveVideos = (mediaWrap, activeIndex) => {
-          getCarouselSlides(mediaWrap).forEach((slide, index) => {
-            const video = slide.querySelector('video');
-            if (!video || index === activeIndex) return;
-            try {
-              video.pause();
-            } catch (_) {}
-          });
-        };
-
-        const getCurrentIndex = (mediaWrap) => {
-          const slideCount = getCarouselSlides(mediaWrap).length;
-          if (!slideCount) return 0;
-
-          let currentIndex = Number.parseInt(mediaWrap.dataset.galleryIndex || '0', 10);
-          if (!Number.isFinite(currentIndex)) currentIndex = 0;
-          if (currentIndex < 0 || currentIndex >= slideCount) currentIndex = 0;
-          return currentIndex;
-        };
-
-        const setFirstSlideImage = (mediaWrap, nextSource) => {
-          if (!nextSource) return;
-          const firstSlide = getCarouselSlides(mediaWrap)[0];
-          if (!firstSlide) return;
-
-          const currentMedia = firstSlide.querySelector('.sb-product-thumbnail__media-item');
-          if (!currentMedia) return;
-
-          const currentSrc = currentMedia.currentSrc || currentMedia.getAttribute('src') || '';
-          if (currentMedia.tagName.toLowerCase() === 'img' && currentSrc === nextSource) return;
-
-          const token = String((Number(mediaWrap.dataset.firstSlideSwapToken || '0') || 0) + 1);
-          mediaWrap.dataset.firstSlideSwapToken = token;
-          const applyIfCurrent = (callback) => {
-            if (mediaWrap.dataset.firstSlideSwapToken !== token) return;
-            callback();
-          };
-
-          const preload = new Image();
-          preload.decoding = 'async';
-          preload.src = nextSource;
-
-          const apply = () => {
-            applyIfCurrent(() => {
-              if (currentMedia.tagName.toLowerCase() === 'img') {
-                currentMedia.setAttribute('src', nextSource);
-                currentMedia.removeAttribute('srcset');
-              } else {
-                const replacement = document.createElement('img');
-                replacement.className = 'sb-product-thumbnail__media-item sb-product-thumbnail__image';
-                replacement.loading = 'eager';
-                replacement.decoding = 'async';
-                replacement.src = nextSource;
-                replacement.alt = currentMedia.getAttribute('aria-label') || '';
-                currentMedia.replaceWith(replacement);
-              }
-            });
-          };
-
-          if (preload.complete) {
-            apply();
-          } else {
-            preload.addEventListener('load', apply, { once: true });
-          }
-        };
-
-        const syncFirstSlideForState = (mediaWrap) => {
-          if (getCurrentIndex(mediaWrap) !== 0) return;
-
-          const hoverImage = (mediaWrap.dataset.hoverImage || '').trim();
-          const primaryImage = (mediaWrap.dataset.primaryImage || mediaWrap.dataset.defaultImage || '').trim();
-          const shouldUseHover = mediaWrap.dataset.isHovering === 'true' && hoverImage;
-          const targetImage = shouldUseHover ? hoverImage : primaryImage;
-          if (!targetImage) return;
-
-          setFirstSlideImage(mediaWrap, targetImage);
-        };
-
-        const selectSlide = (mediaWrap, requestedIndex, { instant = false } = {}) => {
-          const track = getCarouselTrack(mediaWrap);
-          const slides = getCarouselSlides(mediaWrap);
-          if (!track || !slides.length) return 0;
-
-          let index = Number.parseInt(`${requestedIndex}`, 10);
-          if (!Number.isFinite(index)) index = 0;
-          index = (index + slides.length) % slides.length;
-
-          track.classList.toggle('is-instant', instant);
-          track.style.transform = `translate3d(-${index * 100}%, 0, 0)`;
-          mediaWrap.dataset.galleryIndex = String(index);
-
-          slides.forEach((slide, slideIndex) => {
-            slide.setAttribute('aria-hidden', `${slideIndex !== index}`);
-          });
-
-          pauseInactiveVideos(mediaWrap, index);
-          const activeVideo = slides[index].querySelector('video');
-          if (activeVideo) {
-            const playPromise = activeVideo.play();
-            if (playPromise && typeof playPromise.catch === 'function') {
-              playPromise.catch(() => {});
-            }
-          }
-          syncFirstSlideForState(mediaWrap);
-
-          const galleryItems = getGalleryItems(mediaWrap);
-          if (galleryItems.length > 1) {
-            preloadMediaItem(galleryItems[(index + 1) % galleryItems.length]);
-            preloadMediaItem(galleryItems[(index - 1 + galleryItems.length) % galleryItems.length]);
-          }
-
-          return index;
-        };
-
-        const renderCarousel = (mediaWrap, { preferredIndex = 0, instant = true } = {}) => {
-          const mediaLink = getMediaLink(mediaWrap);
-          if (!mediaLink) return;
-
-          const normalizedItems = normalizeGalleryItems(mediaWrap);
-          if (!normalizedItems.length) return;
-
-          setGalleryItems(mediaWrap, normalizedItems);
-
-          mediaLink.querySelectorAll(':scope > .sb-product-thumbnail__media-item, :scope > .sb-product-thumbnail__image-placeholder, :scope > .sb-product-thumbnail__carousel').forEach((node) => {
-            node.remove();
-          });
-
-          const carousel = document.createElement('div');
-          carousel.className = 'sb-product-thumbnail__carousel';
-
-          const track = document.createElement('div');
-          track.className = 'sb-product-thumbnail__carousel-track';
-
-          normalizedItems.forEach((item, index) => {
-            const slide = document.createElement('div');
-            slide.className = 'sb-product-thumbnail__carousel-slide';
-            slide.setAttribute('aria-hidden', `${index !== 0}`);
-            const mediaElement = createMediaElement(item, mediaLink, index === 0 ? 'eager' : 'lazy');
-            if (mediaElement) {
-              slide.appendChild(mediaElement);
-            }
-            track.appendChild(slide);
-          });
-
-          carousel.appendChild(track);
-          mediaLink.appendChild(carousel);
-
-          updateNavButtonsVisibility(mediaWrap, normalizedItems.length);
-          selectSlide(mediaWrap, preferredIndex, { instant });
-          preloadMediaItem(normalizedItems[0]);
-          preloadMediaItem(normalizedItems[1]);
-
-          const hoverImage = (mediaWrap.dataset.hoverImage || '').trim();
-          if (hoverImage) preloadMediaItem({ type: 'image', src: hoverImage, poster: '' });
-        };
-
-        const preloadGallery = (mediaWrap) => {
-          const galleryItems = getGalleryItems(mediaWrap);
-          galleryItems.forEach((item) => preloadMediaItem(item));
-          const hoverImage = (mediaWrap.dataset.hoverImage || '').trim();
-          if (hoverImage) preloadMediaItem({ type: 'image', src: hoverImage, poster: '' });
-        };
-
-        if (window.SBProductThumbnail && typeof window.SBProductThumbnail.initThumbnailMediaScope === 'function') {
-          window.SBProductThumbnail.initThumbnailMediaScope(root, { initSwatchInteractions: true });
-        } else if (!window.SBProductThumbnailLegacyFallbackEnabled) {
-          document.addEventListener(
-            'sb:product-thumbnail:ready',
-            () => {
-              if (window.SBProductThumbnail && typeof window.SBProductThumbnail.initThumbnailMediaScope === 'function') {
-                window.SBProductThumbnail.initThumbnailMediaScope(root, { initSwatchInteractions: true });
-              }
-            },
-            { once: true }
-          );
-        } else {
-          const mediaWraps = root.querySelectorAll('.sb-product-thumbnail__media-wrap');
-          mediaWraps.forEach((mediaWrap) => {
-            ensureDefaultMediaData(mediaWrap);
-            renderCarousel(mediaWrap, { preferredIndex: getCurrentIndex(mediaWrap), instant: true });
-
-            mediaWrap.addEventListener('mouseenter', () => {
-              mediaWrap.dataset.isHovering = 'true';
-              preloadGallery(mediaWrap);
-              syncFirstSlideForState(mediaWrap);
-            });
-
-            mediaWrap.addEventListener('mouseleave', () => {
-              mediaWrap.dataset.isHovering = 'false';
-              syncFirstSlideForState(mediaWrap);
-            });
-
-            mediaWrap.addEventListener('focusin', () => {
-              preloadGallery(mediaWrap);
-            });
-          });
-
-          const rows = root.querySelectorAll('.sb-product-thumbnail__swatches');
-          rows.forEach((row) => {
-            const applySwatchImage = async (button, sourceId = '') => {
-              if (!button) return;
-
-              const nextImage = (button.dataset.thumbnailImage || '').trim();
-              const nextHoverImage = (button.dataset.thumbnailHoverImage || '').trim();
-              const nextGallery = (button.dataset.thumbnailGallery || '').trim();
-              const thumbnail = button.closest('.sb-product-thumbnail');
-              const mediaWrap = thumbnail ? thumbnail.querySelector('.sb-product-thumbnail__media-wrap') : null;
-              if (!mediaWrap) return;
-              const swatchSwapToken = String((Number(mediaWrap.dataset.swatchSwapToken || '0') || 0) + 1);
-              mediaWrap.dataset.swatchSwapToken = swatchSwapToken;
-
-              if (nextImage) {
-                mediaWrap.dataset.primaryImage = nextImage;
-              }
-              mediaWrap.dataset.hoverImage = nextHoverImage || mediaWrap.dataset.defaultHoverImage || '';
-
-              const isPreviewSource =
-                sourceId === 'product-thumbnail-swatch-hover' || sourceId === 'product-thumbnail-swatch-focus';
-
-              if (isPreviewSource) {
-                if (nextImage) {
-                  await ensureMediaReady({ type: 'image', src: nextImage, poster: '' });
-                  if (mediaWrap.dataset.swatchSwapToken !== swatchSwapToken) return;
-                  mediaWrap.dataset.galleryIndex = '0';
-                  setFirstSlideImage(mediaWrap, nextImage);
-                } else {
-                  syncFirstSlideForState(mediaWrap);
-                }
-                return;
-              }
-
-              const galleryPayload = nextGallery || (nextImage ? `image::${nextImage}` : '');
-              if (galleryPayload) {
-                setGalleryItems(mediaWrap, galleryPayload);
-              }
-
-              const normalizedItems = normalizeGalleryItems(mediaWrap);
-              await ensureMediaReady(normalizedItems[0]);
-              if (mediaWrap.dataset.swatchSwapToken !== swatchSwapToken) return;
-
-              mediaWrap.dataset.galleryIndex = '0';
-              renderCarousel(mediaWrap, { preferredIndex: 0, instant: true });
-              preloadGallery(mediaWrap);
-              syncFirstSlideForState(mediaWrap);
-            };
-
-            row.addEventListener(ThemeEvents.variantUpdate, (event) => {
-              const swatchButton = event?.detail?.data?.swatchButton;
-              if (!(swatchButton instanceof HTMLElement)) return;
-              if (!row.contains(swatchButton)) return;
-              applySwatchImage(swatchButton, String(event?.detail?.sourceId || ''));
-            });
-          });
-
-          if (window.SBProductThumbnail && typeof window.SBProductThumbnail.initSwatchInteractionScope === 'function') {
-            window.SBProductThumbnail.initSwatchInteractionScope(root);
-          }
-
-          const galleryButtons = root.querySelectorAll('[data-gallery-nav]');
-          galleryButtons.forEach((button) => {
-            button.addEventListener('click', async (event) => {
-              event.preventDefault();
-              event.stopPropagation();
-
-              const direction = Number.parseInt(button.dataset.galleryNav || '0', 10);
-              if (!direction) return;
-
-              const mediaWrap = button.closest('.sb-product-thumbnail__media-wrap');
-              if (!mediaWrap) return;
-              if (mediaWrap.dataset.galleryAnimating === 'true') return;
-
-              const slides = getCarouselSlides(mediaWrap);
-              if (slides.length < 2) return;
-
-              const currentIndex = getCurrentIndex(mediaWrap);
-              const nextIndex = (currentIndex + direction + slides.length) % slides.length;
-              const galleryItems = getGalleryItems(mediaWrap);
-              const navigationToken = String((Number(mediaWrap.dataset.galleryNavigationToken || '0') || 0) + 1);
-              mediaWrap.dataset.galleryNavigationToken = navigationToken;
-              mediaWrap.dataset.galleryAnimating = 'true';
-              await ensureMediaReady(galleryItems[nextIndex]);
-              if (mediaWrap.dataset.galleryNavigationToken !== navigationToken) {
-                mediaWrap.dataset.galleryAnimating = 'false';
-                return;
-              }
-              selectSlide(mediaWrap, nextIndex, { instant: false });
-
-              const track = getCarouselTrack(mediaWrap);
-              let cleared = false;
-              const clearAnimating = () => {
-                if (cleared) return;
-                cleared = true;
-                mediaWrap.dataset.galleryAnimating = 'false';
-              };
-
-              if (track) {
-                track.addEventListener('transitionend', clearAnimating, { once: true });
-                setTimeout(clearAnimating, 220);
-              } else {
-                clearAnimating();
-              }
-            });
-          });
-        }
-
         root.addEventListener('sb:thumbnail-purchase-state', (event) => {
           if (!root.contains(event.target)) return;
           scheduleAlignment();
           requestAnimationFrame(() => scheduleAlignment());
-        });
-
-        const shopRoot = (() => {
-          const rootPath = window.Shopify && window.Shopify.routes && typeof window.Shopify.routes.root === 'string'
-            ? window.Shopify.routes.root
-            : '/';
-          return rootPath.endsWith('/') ? rootPath : `${rootPath}/`;
-        })();
-        const cartUrl = (path) => `${shopRoot}${path}`;
-
-        const addToCartNative = async (variantId, quantity = 1) => {
-          const variantIdValue = `${variantId}`.trim();
-          const parsedQuantity = Number.parseInt(`${quantity}`, 10);
-          if (!variantIdValue) throw new Error('Invalid variant id');
-          if (!Number.isFinite(parsedQuantity) || parsedQuantity <= 0) throw new Error('Invalid quantity');
-
-          const formData = new FormData();
-          formData.append('id', variantIdValue);
-          formData.append('quantity', `${parsedQuantity}`);
-
-          const addResponse = await fetch(cartUrl('cart/add.js'), {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json'
-            },
-            credentials: 'same-origin',
-            body: formData
-          });
-          if (!addResponse.ok) {
-            const errorBody = await addResponse.text();
-            throw new Error(`Add to cart failed: ${errorBody || addResponse.status}`);
-          }
-
-          const cartResponse = await fetch(cartUrl('cart.js'), {
-            method: 'GET',
-            headers: { Accept: 'application/json' },
-            credentials: 'same-origin'
-          });
-          if (!cartResponse.ok) throw new Error('Cart refresh failed');
-          const cart = await cartResponse.json();
-
-          document.dispatchEvent(
-            new CustomEvent('cart:update', {
-              bubbles: true,
-              detail: {
-                resource: cart,
-                sourceId: `compare-${variantIdValue}`,
-                data: {
-                  source: 'compare',
-                  itemCount: parsedQuantity,
-                  variantId: variantIdValue
-                }
-              }
-            })
-          );
-
-          return cart;
-        };
-
-        const addToCartButtons = root.querySelectorAll('[data-add-to-cart]');
-        const getFlyImageSource = (thumbnail) => {
-          if (!thumbnail) return '';
-          const mediaWrap = thumbnail.querySelector('.sb-product-thumbnail__media-wrap');
-          const activeMedia = thumbnail.querySelector(
-            '.sb-product-thumbnail__carousel-slide[aria-hidden="false"] .sb-product-thumbnail__media-item'
-          );
-
-          if (activeMedia) {
-            const tagName = (activeMedia.tagName || '').toLowerCase();
-            if (tagName === 'img') {
-              const src = activeMedia.currentSrc || activeMedia.getAttribute('src') || '';
-              if (src) return src;
-            }
-            if (tagName === 'video') {
-              const poster = activeMedia.getAttribute('poster') || '';
-              if (poster) return poster;
-            }
-          }
-
-          const primaryImage = mediaWrap ? (mediaWrap.dataset.primaryImage || '').trim() : '';
-          if (primaryImage) return primaryImage;
-
-          const defaultImage = mediaWrap ? (mediaWrap.dataset.defaultImage || '').trim() : '';
-          if (defaultImage) return defaultImage;
-
-          const fallbackImage = thumbnail.querySelector('.sb-product-thumbnail__media-item[src]');
-          return fallbackImage ? fallbackImage.getAttribute('src') || '' : '';
-        };
-
-        addToCartButtons.forEach((button) => {
-          const isLargeButton = button.classList.contains('sb-product-thumbnail__add-to-cart-large');
-          const resetToDefault = () => {
-            button.classList.remove('is-added');
-          };
-
-          button.addEventListener('click', async (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            if (button.disabled) return;
-
-            const variantId = Number.parseInt(button.dataset.variantId || '', 10);
-            if (!Number.isFinite(variantId) || variantId <= 0) return;
-
-            button.disabled = true;
-
-            try {
-              const thumbnail = button.closest('.sb-product-thumbnail');
-              const imageSrc = getFlyImageSource(thumbnail);
-
-              if (window.SBCart && typeof window.SBCart.add === 'function') {
-                await window.SBCart.add(variantId, {
-                  quantity: 1,
-                  sourceElement: button,
-                  imageSrc
-                });
-              } else {
-                await addToCartNative(variantId, 1);
-              }
-
-              if (!isLargeButton) button.classList.remove('is-added');
-            } catch (error) {
-              resetToDefault();
-            } finally {
-              button.disabled = false;
-            }
-          });
         });
 
         applySelectorVisibility();
@@ -2052,126 +652,30 @@
           scheduleAlignment();
           setTimeout(() => scheduleAlignment(), 0);
         });
-        if (!window.__sbCompareResizeBound) {
-          window.addEventListener('resize', () => {
-            document.querySelectorAll('.sb-compare').forEach((compareRoot) => {
-              const visibleSlots = window.matchMedia('(max-width: 749px)').matches ? 2 : 4;
-              compareRoot.querySelectorAll('.sb-compare__column .sb-compare__selector-wrap').forEach((wrap) => {
-                const select = wrap.querySelector('[data-compare-select]');
-                if (!select) return;
-                const shouldHide = select.options.length <= visibleSlots;
-                wrap.style.display = shouldHide ? 'none' : '';
-                const column = wrap.closest('.sb-compare__column');
-                if (column) {
-                  column.classList.toggle('sb-compare__column--selector-hidden', shouldHide);
-                }
-              });
-
-              const columns = Array.from(compareRoot.querySelectorAll('.sb-compare__column'));
-              const rowGroups = columns
-                .map((column) => {
-                  const activeVariant = column.querySelector('.sb-compare__variant.is-active');
-                  const thumbnail = activeVariant
-                    ? activeVariant.querySelector('.sb-product-thumbnail')
-                    : column.querySelector('.sb-product-thumbnail');
-                  return thumbnail ? thumbnail.querySelector('[data-compare-meta-rows]') : null;
-                })
-                .filter(Boolean);
-
-              rowGroups.forEach((group) => {
-                group.querySelectorAll('.sb-product-thumbnail__meta-row.is-placeholder').forEach((row) => row.remove());
-                group.querySelectorAll('.sb-product-thumbnail__meta-row').forEach((row) => {
-                  row.style.minHeight = '';
-                });
-              });
-
-              if (!rowGroups.length) return;
-
-              let maxRows = 0;
-              rowGroups.forEach((group) => {
-                const rows = group.querySelectorAll('.sb-product-thumbnail__meta-row:not(.is-placeholder)');
-                maxRows = Math.max(maxRows, rows.length);
-              });
-
-              rowGroups.forEach((group) => {
-                let rows = group.querySelectorAll('.sb-product-thumbnail__meta-row');
-                while (rows.length < maxRows) {
-                  const placeholder = document.createElement('p');
-                  placeholder.className = 'sb-product-thumbnail__meta-row is-placeholder font-body weight-regular';
-                  placeholder.textContent = '\u00a0';
-                  group.appendChild(placeholder);
-                  rows = group.querySelectorAll('.sb-product-thumbnail__meta-row');
-                }
-              });
-
-              for (let index = 0; index < maxRows; index += 1) {
-                let maxHeight = 0;
-                rowGroups.forEach((group) => {
-                  const row = group.querySelectorAll('.sb-product-thumbnail__meta-row')[index];
-                  if (!row) return;
-                  maxHeight = Math.max(maxHeight, row.getBoundingClientRect().height);
-                });
-                rowGroups.forEach((group) => {
-                  const row = group.querySelectorAll('.sb-product-thumbnail__meta-row')[index];
-                  if (!row) return;
-                  row.style.minHeight = `${maxHeight}px`;
-                });
-              }
-
-              const visibleColumns = Array.from(compareRoot.querySelectorAll('.sb-compare__column')).filter(
-                (column) => window.getComputedStyle(column).display !== 'none'
-              );
-              const anyVisibleSwatches = visibleColumns.some((column) => {
-                const activeVariant = column.querySelector('.sb-compare__variant.is-active');
-                const thumbnail = activeVariant
-                  ? activeVariant.querySelector('.sb-product-thumbnail')
-                  : column.querySelector('.sb-product-thumbnail');
-                const swatchRow = thumbnail ? thumbnail.querySelector('.sb-product-thumbnail__swatches') : null;
-                if (!swatchRow) return false;
-                return swatchRow.querySelector('.sb-product-thumbnail__swatch') !== null;
-              });
-              compareRoot.classList.toggle('sb-compare--no-visible-swatches', !anyVisibleSwatches);
-
-              const visibleThumbnails = visibleColumns
-                .map((column) => {
-                  const activeVariant = column.querySelector('.sb-compare__variant.is-active');
-                  return activeVariant
-                    ? activeVariant.querySelector('.sb-product-thumbnail')
-                    : column.querySelector('.sb-product-thumbnail');
-                })
-                .filter(Boolean);
-
-              const rowSelectors = [
-                '.sb-product-thumbnail__name',
-                '.sb-product-thumbnail__rating-row',
-                '.sb-product-thumbnail__price-row',
-                '.sb-product-thumbnail__swatches',
-                '.sb-product-thumbnail__add-to-cart-large'
-              ];
-
-              rowSelectors.forEach((rowSelector) => {
-                const rows = visibleThumbnails.map((thumbnail) => thumbnail.querySelector(rowSelector));
-                let maxHeight = 0;
-
-                rows.forEach((row) => {
-                  if (!row) return;
-                  row.style.minHeight = '';
-                  maxHeight = Math.max(maxHeight, row.getBoundingClientRect().height);
-                });
-
-                rows.forEach((row) => {
-                  if (!row) return;
-                  row.style.minHeight = `${maxHeight}px`;
-                });
-              });
-            });
-          });
-          window.__sbCompareResizeBound = true;
-        }
-
         applyReviewFormatting(root);
+
+        root.__sbCompareRelayout = () => {
+          applySelectorVisibility();
+          scheduleAlignment();
+        };
+        compareRoots.add(root);
       });
     };
+
+    if (!window.__sbCompareResizeBound) {
+      window.addEventListener('resize', () => {
+        compareRoots.forEach((root) => {
+          if (!document.contains(root)) {
+            compareRoots.delete(root);
+            return;
+          }
+          if (typeof root.__sbCompareRelayout === 'function') {
+            root.__sbCompareRelayout();
+          }
+        });
+      });
+      window.__sbCompareResizeBound = true;
+    }
 
     initCompare(document);
     document.addEventListener('shopify:section:load', (event) => {

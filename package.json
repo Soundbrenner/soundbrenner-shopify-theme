@@ -1,0 +1,15 @@
+{
+  "name": "soundbrenner-theme-v3-tools",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Local tooling for visual verification of the Shopify theme.",
+  "scripts": {
+    "visual:capture": "node scripts/visual-capture.mjs",
+    "visual:install": "playwright install chromium",
+    "qa:snap": "node scripts/qa-snap.mjs",
+    "qa:stop": "node scripts/qa-snap.mjs --stop"
+  },
+  "devDependencies": {
+    "playwright": "^1.52.0"
+  }
+}

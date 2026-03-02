@@ -1,0 +1,603 @@
+{% assign hide_section = false %}
+{% assign section_title = blank %}
+{% assign first_item_subtitle = blank %}
+{% assign section_media = blank %}
+{% assign show_first_dividing_line = true %}
+{% assign breakdown_items = blank %}
+
+{% if request.page_type != 'product' or product == blank %}
+  {% assign hide_section = true %}
+{% else %}
+  {% assign source_ref = product.metafields.custom.sbv2_value_breakdown %}
+  {% assign source_root = source_ref.value | default: source_ref.reference.value | default: source_ref.reference | default: source_ref %}
+
+  {% if source_root == blank %}
+    {% assign hide_section = true %}
+  {% else %}
+    {% assign section_title = source_root.title.value | default: source_root.title %}
+    {% assign first_item_subtitle = source_root.subtitle.value | default: source_root.subtitle %}
+    {% assign section_media = source_root.media.value | default: source_root.media %}
+    {% assign breakdown_items = source_root.products_inside.value | default: source_root.products_inside.references | default: source_root.products_inside %}
+
+    {% assign show_first_dividing_line_raw = source_root.show_dividing_line.value | default: source_root.show_dividing_line | append: '' | downcase %}
+    {% if show_first_dividing_line_raw == 'false' or show_first_dividing_line_raw == '0' or show_first_dividing_line_raw == 'no' %}
+      {% assign show_first_dividing_line = false %}
+    {% endif %}
+  {% endif %}
+{% endif %}
+
+{% assign current_variant = product.selected_or_first_available_variant %}
+{% assign current_price_cents = current_variant.price | default: 0 | plus: 0 %}
+{% assign current_compare_price_cents = current_variant.compare_at_price | default: 0 | plus: 0 %}
+{% assign total_compare_price_cents = current_price_cents %}
+{% if current_compare_price_cents > current_price_cents %}
+  {% assign total_compare_price_cents = current_compare_price_cents %}
+{% endif %}
+{% assign total_current_price_cents = current_price_cents %}
+
+{% assign extra_compare_sum_cents = 0 %}
+{% if breakdown_items != blank %}
+  {% for raw_item in breakdown_items %}
+    {% assign item_entry = raw_item.value | default: raw_item.reference.value | default: raw_item.reference | default: raw_item %}
+    {% assign item_product = item_entry.product.value | default: item_entry.product %}
+    {% assign item_show_price = true %}
+    {% assign item_show_price_raw = item_entry.show_price.value | default: item_entry.show_price | append: '' | downcase %}
+    {% if item_show_price_raw == 'false' or item_show_price_raw == '0' or item_show_price_raw == 'no' %}
+      {% assign item_show_price = false %}
+    {% endif %}
+    {% if item_show_price and item_product != blank and item_product.selected_or_first_available_variant != blank %}
+      {% assign extra_compare_sum_cents = extra_compare_sum_cents | plus: item_product.selected_or_first_available_variant.price %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% assign first_compare_price_cents = total_compare_price_cents | minus: extra_compare_sum_cents %}
+{% assign first_current_price_cents = total_current_price_cents | minus: extra_compare_sum_cents %}
+{% if first_compare_price_cents < 0 %}
+  {% assign first_compare_price_cents = 0 %}
+{% endif %}
+{% if first_current_price_cents < 0 %}
+  {% assign first_current_price_cents = 0 %}
+{% endif %}
+
+{% if hide_section %}
+  <script>
+    (() => {
+      const sectionWrapper = document.currentScript && document.currentScript.closest('.shopify-section');
+      if (sectionWrapper) {
+        sectionWrapper.style.setProperty('display', 'none', 'important');
+      }
+    })();
+  </script>
+{% else %}
+  <section
+    class="sb-value-breakdown"
+    data-value-breakdown
+    data-currency="{{ cart.currency.iso_code | default: shop.currency }}"
+    data-initial-variant-id="{{ current_variant.id }}"
+    data-extra-compare-sum-cents="{{ extra_compare_sum_cents }}"
+    data-sb-reveal
+  >
+    {% if section_title != blank %}
+      <h2 class="sb-value-breakdown__title font-title weight-bold" data-sb-reveal-item>{{ section_title }}</h2>
+    {% endif %}
+
+    <div class="sb-value-breakdown__layout">
+      <div class="sb-value-breakdown__media-wrap" data-sb-reveal-item>
+        {% if section_media != blank %}
+          {% assign section_media_width = section_media.width | default: 1240 | at_most: 1240 %}
+          {{
+            section_media
+            | image_url: width: section_media_width
+            | image_tag:
+              class: 'sb-value-breakdown__media',
+              widths: '480, 640, 960, 1240',
+              sizes: '(min-width: 990px) 50vw, 100vw',
+              alt: section_title,
+              loading: 'lazy'
+          }}
+        {% else %}
+          <img
+            class="sb-value-breakdown__media"
+            src="{{ 'placeholder-feature-carousel.jpg' | asset_url }}"
+            alt="{{ section_title | default: product.title | escape }}"
+            loading="lazy"
+            width="1240"
+            height="1240"
+          >
+        {% endif %}
+      </div>
+
+      <div class="sb-value-breakdown__right" data-sb-reveal-item>
+        <div class="sb-value-breakdown__line-item">
+          <div class="sb-value-breakdown__line-item-top">
+            <p class="sb-value-breakdown__line-item-title font-body weight-bold">{{ product.title }}</p>
+            <div class="sb-value-breakdown__line-item-prices">
+              <span class="sb-value-breakdown__line-item-price-compare font-body weight-regular" data-value-breakdown-first-compare>
+                {{ first_compare_price_cents | money }}
+              </span>
+              <span class="sb-value-breakdown__line-item-price-current font-body weight-regular" data-value-breakdown-first-current>
+                {{ first_current_price_cents | money }}
+              </span>
+            </div>
+          </div>
+          {% if first_item_subtitle != blank %}
+            <p class="sb-value-breakdown__line-item-subtitle font-caption weight-regular">{{ first_item_subtitle }}</p>
+          {% endif %}
+        </div>
+        {% if show_first_dividing_line %}
+          <hr class="sb-value-breakdown__divider" aria-hidden="true">
+        {% endif %}
+
+        {% if breakdown_items != blank %}
+          {% for raw_item in breakdown_items %}
+            {% liquid
+              assign item_entry = raw_item.value | default: raw_item.reference.value | default: raw_item.reference | default: raw_item
+              assign item_product = item_entry.product.value | default: item_entry.product
+              assign item_title = item_entry.title.value | default: item_entry.title
+              assign item_subtitle = item_entry.subtitle.value | default: item_entry.subtitle
+              assign item_show_dividing_line = true
+              assign item_show_dividing_line_raw = item_entry.show_dividing_line.value | default: item_entry.show_dividing_line | append: '' | downcase
+              if item_show_dividing_line_raw == 'false' or item_show_dividing_line_raw == '0' or item_show_dividing_line_raw == 'no'
+                assign item_show_dividing_line = false
+              endif
+              assign item_show_price = true
+              assign item_show_price_raw = item_entry.show_price.value | default: item_entry.show_price | append: '' | downcase
+              if item_show_price_raw == 'false' or item_show_price_raw == '0' or item_show_price_raw == 'no'
+                assign item_show_price = false
+              endif
+              if item_title == blank and item_product != blank
+                assign item_title = item_product.title
+              endif
+              assign item_compare_price_cents = 0
+              if item_product != blank and item_product.selected_or_first_available_variant != blank
+                assign item_compare_price_cents = item_product.selected_or_first_available_variant.price | plus: 0
+              endif
+            %}
+
+            {% if item_title == blank and item_subtitle == blank and item_show_price == false %}
+              {% continue %}
+            {% endif %}
+
+            <div class="sb-value-breakdown__line-item">
+              <div class="sb-value-breakdown__line-item-top">
+                <p class="sb-value-breakdown__line-item-title font-body weight-bold">{{ item_title }}</p>
+                {% if item_show_price %}
+                  <div class="sb-value-breakdown__line-item-prices">
+                    <span class="sb-value-breakdown__line-item-price-compare font-body weight-regular">
+                      {{ item_compare_price_cents | money }}
+                    </span>
+                    <span class="sb-value-breakdown__line-item-price-current font-body weight-regular">Free</span>
+                  </div>
+                {% endif %}
+              </div>
+              {% if item_subtitle != blank %}
+                <p class="sb-value-breakdown__line-item-subtitle font-caption weight-regular">{{ item_subtitle }}</p>
+              {% endif %}
+            </div>
+            {% if item_show_dividing_line %}
+              <hr class="sb-value-breakdown__divider" aria-hidden="true">
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+
+        <div class="sb-value-breakdown__total-row">
+          <p class="sb-value-breakdown__total-title font-body weight-bold">Total</p>
+          <div class="sb-value-breakdown__line-item-prices">
+            <span class="sb-value-breakdown__line-item-price-compare font-body weight-regular" data-value-breakdown-total-compare>
+              {{ total_compare_price_cents | money }}
+            </span>
+            <span class="sb-value-breakdown__line-item-price-current font-body weight-regular" data-value-breakdown-total-current>
+              {{ total_current_price_cents | money }}
+            </span>
+          </div>
+        </div>
+
+        <button
+          class="sb-value-breakdown__add-button sb-button-radiant sb-button-radiant--large sb-button-radiant--leading-icon font-caption weight-bold"
+          type="button"
+          data-value-breakdown-add-button
+          {% unless current_variant.available %}disabled{% endunless %}
+          aria-label="{% if current_variant.available %}Add to cart{% else %}Sold out{% endif %}"
+        >
+          <span class="sb-button-radiant__icon sb-value-breakdown__add-button-icon" aria-hidden="true">
+            <img
+              class="sb-value-breakdown__add-button-icon-image"
+              src="{{ 'icon-add-to-cart.svg' | asset_url }}"
+              alt=""
+              width="16"
+              height="16"
+            >
+          </span>
+          <span class="sb-button-radiant__label" data-value-breakdown-add-button-label>
+            {% if current_variant.available %}Add to cart{% else %}Sold out{% endif %}
+          </span>
+        </button>
+
+        <div class="sb-value-breakdown__guarantee">
+          <span
+            class="sb-value-breakdown__guarantee-icon"
+            aria-hidden="true"
+            style="--sb-value-breakdown-guarantee-icon-url: url('{{ 'icon-check.svg' | asset_url }}');"
+          ></span>
+          <p class="sb-value-breakdown__guarantee-text font-caption weight-semibold">30 days money-back guarantee</p>
+        </div>
+      </div>
+    </div>
+
+    <script type="application/json" data-value-breakdown-variants>
+      {
+        {% for variant in product.variants %}
+          "{{ variant.id }}": {
+            "price": {{ variant.price | plus: 0 }},
+            "compareAtPrice": {{ variant.compare_at_price | default: 0 | plus: 0 }},
+            "available": {% if variant.available %}true{% else %}false{% endif %}
+          }{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      }
+    </script>
+  </section>
+{% endif %}
+
+{% stylesheet %}
+  .sb-value-breakdown {
+    width: 100%;
+  }
+
+  .sb-value-breakdown__title {
+    color: var(--sb-color-neutral-900);
+    margin: 0 0 48px;
+    text-align: center;
+  }
+
+  .sb-value-breakdown__layout {
+    align-items: start;
+    display: grid;
+    gap: 48px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    width: 100%;
+  }
+
+  .sb-value-breakdown__media-wrap {
+    border-radius: 24px;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .sb-value-breakdown__media {
+    aspect-ratio: 1 / 1;
+    display: block;
+    height: auto;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .sb-value-breakdown__right {
+    align-self: center;
+    width: 100%;
+  }
+
+  .sb-value-breakdown__line-item {
+    width: 100%;
+  }
+
+  .sb-value-breakdown__line-item + .sb-value-breakdown__line-item,
+  .sb-value-breakdown__line-item + .sb-value-breakdown__total-row {
+    margin-top: 24px;
+  }
+
+  .sb-value-breakdown__line-item-top {
+    align-items: flex-start;
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .sb-value-breakdown__line-item-title {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+  }
+
+  .sb-value-breakdown__line-item-prices {
+    align-items: center;
+    display: flex;
+    flex: 0 0 auto;
+    gap: 8px;
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  .sb-value-breakdown__line-item-price-compare {
+    color: var(--sb-color-neutral-800);
+    text-decoration: line-through;
+  }
+
+  .sb-value-breakdown__line-item-price-current {
+    color: var(--sb-color-blue-500);
+  }
+
+  .sb-value-breakdown__line-item-subtitle {
+    color: var(--sb-color-neutral-800);
+    margin: 4px 0 0;
+  }
+
+  .sb-value-breakdown__divider {
+    border: 0;
+    border-top: 1px solid var(--sb-color-neutral-600);
+    margin: 24px 0;
+    width: 100%;
+  }
+
+  .sb-value-breakdown__total-row {
+    align-items: flex-start;
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .sb-value-breakdown__total-title {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+  }
+
+  .sb-value-breakdown__add-button {
+    box-sizing: border-box;
+    justify-content: center;
+    margin-top: 36px;
+    width: 100%;
+  }
+
+  .sb-value-breakdown__guarantee {
+    align-items: center;
+    color: var(--sb-color-neutral-800);
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 16px;
+    text-align: center;
+    width: 100%;
+  }
+
+  .sb-value-breakdown__guarantee-icon {
+    -webkit-mask-image: var(--sb-value-breakdown-guarantee-icon-url);
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    background: var(--sb-color-neutral-800);
+    display: block;
+    flex: 0 0 16px;
+    height: 16px;
+    mask-image: var(--sb-value-breakdown-guarantee-icon-url);
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    width: 16px;
+  }
+
+  .sb-value-breakdown__guarantee-text {
+    color: var(--sb-color-neutral-800);
+    margin: 0;
+  }
+
+  @media (max-width: 989px) {
+    .sb-value-breakdown__title {
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .sb-value-breakdown__layout {
+      gap: 24px;
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+{% endstylesheet %}
+
+<script>
+  (() => {
+    const initializedSections = new WeakSet();
+
+    const initValueBreakdownSection = (root) => {
+      if (!root || initializedSections.has(root)) return;
+      initializedSections.add(root);
+
+      const variantsElement = root.querySelector('[data-value-breakdown-variants]');
+      const firstCompareElement = root.querySelector('[data-value-breakdown-first-compare]');
+      const firstCurrentElement = root.querySelector('[data-value-breakdown-first-current]');
+      const totalCompareElement = root.querySelector('[data-value-breakdown-total-compare]');
+      const totalCurrentElement = root.querySelector('[data-value-breakdown-total-current]');
+      const addButton = root.querySelector('[data-value-breakdown-add-button]');
+      const addButtonLabel = root.querySelector('[data-value-breakdown-add-button-label]');
+      const productRoot = document.querySelector('.sb-product-main');
+      const variantSelect = productRoot ? productRoot.querySelector('[data-product-variant-id]') : null;
+      const extraCompareSumCents = Number.parseInt(root.dataset.extraCompareSumCents || '0', 10) || 0;
+      const currencyCode = root.dataset.currency || 'USD';
+
+      if (!variantsElement || !firstCompareElement || !firstCurrentElement || !totalCompareElement || !totalCurrentElement) return;
+
+      let variantsById = {};
+      try {
+        variantsById = JSON.parse(variantsElement.textContent || '{}') || {};
+      } catch (error) {
+        variantsById = {};
+      }
+
+      const initialPriceSample = (firstCurrentElement.textContent || '').trim();
+      const shouldAppendCurrencyCode = new RegExp(`\\b${currencyCode}\\b`, 'i').test(initialPriceSample);
+      const moneyFormatter = new Intl.NumberFormat(undefined, {
+        style: 'currency',
+        currency: currencyCode,
+      });
+
+      const formatMoney = (centsValue) => {
+        const amount = Number(centsValue) || 0;
+        const formatted = moneyFormatter.format(amount / 100);
+        if (!shouldAppendCurrencyCode) return formatted;
+        return `${formatted} ${currencyCode}`;
+      };
+
+      const getCurrentVariantId = () => {
+        if (variantSelect && variantSelect.value) return `${variantSelect.value}`;
+        return `${root.dataset.currentVariantId || root.dataset.initialVariantId || ''}`;
+      };
+
+      const getComparablePrice = (variant) => {
+        const price = Number(variant?.price) || 0;
+        const compareAt = Number(variant?.compareAtPrice) || 0;
+        return compareAt > price ? compareAt : price;
+      };
+
+      const getVariantFromSelectorList = (variantId) => {
+        if (!productRoot) return null;
+        const normalizedVariantId = `${variantId || ''}`;
+        const explicitMatch = productRoot.querySelector(
+          `[data-selector-list-item][data-variant-id="${normalizedVariantId}"]`
+        );
+        const selectedItem =
+          explicitMatch
+          || productRoot.querySelector('[data-selector-list-item].is-selected')
+          || null;
+
+        if (!selectedItem) return null;
+
+        const price = Number.parseInt(selectedItem.dataset.variantPrice || '0', 10);
+        const compareAtPrice = Number.parseInt(selectedItem.dataset.variantComparePrice || '0', 10);
+        const available = selectedItem.dataset.variantAvailable === 'true';
+        const normalizedPrice = Number.isFinite(price) ? price : 0;
+        const normalizedCompareAtPrice = Number.isFinite(compareAtPrice) ? compareAtPrice : 0;
+
+        if (normalizedPrice <= 0 && normalizedCompareAtPrice <= 0) return null;
+
+        return {
+          price: normalizedPrice,
+          compareAtPrice: normalizedCompareAtPrice,
+          available,
+        };
+      };
+
+      const syncVariantPricing = (variantId) => {
+        const normalizedVariantId = `${variantId || ''}`;
+        if (!normalizedVariantId) return;
+        const variant = variantsById[normalizedVariantId] || getVariantFromSelectorList(normalizedVariantId);
+        if (!variant) return;
+
+        const comparablePrice = getComparablePrice(variant);
+        const currentPrice = Number(variant.price) || 0;
+        const firstLineComparePrice = Math.max(comparablePrice - extraCompareSumCents, 0);
+        const firstLineCurrentPrice = Math.max(currentPrice - extraCompareSumCents, 0);
+        firstCompareElement.textContent = formatMoney(firstLineComparePrice);
+        firstCurrentElement.textContent = formatMoney(firstLineCurrentPrice);
+        totalCompareElement.textContent = formatMoney(comparablePrice);
+        totalCurrentElement.textContent = formatMoney(currentPrice);
+
+        root.dataset.currentVariantId = normalizedVariantId;
+
+        if (addButton) {
+          const isAvailable = Boolean(variant.available);
+          addButton.disabled = !isAvailable;
+          addButton.setAttribute('aria-label', isAvailable ? 'Add to cart' : 'Sold out');
+          if (addButtonLabel) addButtonLabel.textContent = isAvailable ? 'Add to cart' : 'Sold out';
+        }
+      };
+
+      const syncFromSelectedVariant = () => {
+        syncVariantPricing(getCurrentVariantId());
+      };
+
+      syncFromSelectedVariant();
+
+      if (variantSelect) {
+        variantSelect.addEventListener('change', syncFromSelectedVariant);
+      }
+
+      if (productRoot) {
+        productRoot.addEventListener('click', (event) => {
+          if (!event.target.closest('[data-selector-list-item], [data-option-value]')) return;
+          window.requestAnimationFrame(syncFromSelectedVariant);
+        });
+      }
+
+      document.addEventListener('variant:selected', (event) => {
+        if (productRoot && event.target && !productRoot.contains(event.target)) return;
+        const nextVariantId = event?.detail?.resource?.id;
+        if (!nextVariantId) return;
+        syncVariantPricing(nextVariantId);
+      });
+
+      document.addEventListener('variant:update', (event) => {
+        if (productRoot && event.target && !productRoot.contains(event.target)) return;
+        const nextVariantId = event?.detail?.resource?.id;
+        if (!nextVariantId) return;
+        syncVariantPricing(nextVariantId);
+      });
+
+      if (addButton) {
+        addButton.addEventListener('click', async () => {
+          const variantId = Number.parseInt(getCurrentVariantId(), 10);
+          if (!Number.isFinite(variantId) || variantId <= 0) return;
+
+          if (window.SBCart && typeof window.SBCart.setNextAddSourceElement === 'function') {
+            window.SBCart.setNextAddSourceElement(addButton);
+          }
+
+          if (window.SBCart && typeof window.SBCart.add === 'function') {
+            try {
+              await window.SBCart.add(variantId, {
+                sourceElement: addButton,
+                sourceId: `pdp-value-breakdown-${variantId}`,
+                sourceData: {
+                  source: 'product-value-breakdown',
+                },
+              });
+            } catch (error) {
+              // Keep UI stable when add-to-cart fails.
+            }
+            return;
+          }
+
+          try {
+            const routesRoot = window.Shopify && window.Shopify.routes && window.Shopify.routes.root
+              ? window.Shopify.routes.root
+              : '/';
+            const localizedRoot = routesRoot.endsWith('/') ? routesRoot : `${routesRoot}/`;
+            await fetch(`${localizedRoot}cart/add.js`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                id: variantId,
+                quantity: 1,
+              }),
+            });
+          } catch (error) {
+            // Keep UI stable when add-to-cart fails.
+          }
+        });
+      }
+    };
+
+    const initAll = (scope = document) => {
+      scope.querySelectorAll('[data-value-breakdown]').forEach((root) => initValueBreakdownSection(root));
+    };
+
+    initAll(document);
+    document.addEventListener('shopify:section:load', (event) => {
+      if (!event.target) return;
+      initAll(event.target);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Value breakdown",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Value breakdown"
+    }
+  ]
+}
+{% endschema %}

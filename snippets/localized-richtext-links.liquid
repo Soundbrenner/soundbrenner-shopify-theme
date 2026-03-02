@@ -1,0 +1,91 @@
+{% liquid
+  assign localized_richtext_content = content | default: ''
+  assign locale_root = request.locale.root_url | default: routes.root_url | default: '/'
+  if locale_root == blank
+    assign locale_root = '/'
+  endif
+  assign locale_root_last_char = locale_root | slice: -1, 1
+  unless locale_root_last_char == '/'
+    assign locale_root = locale_root | append: '/'
+  endunless
+
+  assign href_root_double = 'href="' | append: locale_root | append: '"'
+  assign href_root_single = "href='" | append: locale_root | append: "'"
+
+  assign href_pages_double = 'href="' | append: locale_root | append: 'pages/'
+  assign href_pages_single = "href='" | append: locale_root | append: "pages/"
+  assign href_policies_double = 'href="' | append: locale_root | append: 'policies/'
+  assign href_policies_single = "href='" | append: locale_root | append: "policies/"
+  assign href_collections_double = 'href="' | append: locale_root | append: 'collections/'
+  assign href_collections_single = "href='" | append: locale_root | append: "collections/"
+  assign href_blogs_double = 'href="' | append: locale_root | append: 'blogs/'
+  assign href_blogs_single = "href='" | append: locale_root | append: "blogs/"
+  assign href_products_double = 'href="' | append: locale_root | append: 'products/'
+  assign href_products_single = "href='" | append: locale_root | append: "products/"
+
+  assign href_pages_base_double = 'href="' | append: locale_root | append: 'pages"'
+  assign href_pages_base_single = "href='" | append: locale_root | append: "pages'"
+  assign href_policies_base_double = 'href="' | append: locale_root | append: 'policies"'
+  assign href_policies_base_single = "href='" | append: locale_root | append: "policies'"
+  assign href_collections_base_double = 'href="' | append: locale_root | append: 'collections"'
+  assign href_collections_base_single = "href='" | append: locale_root | append: "collections'"
+  assign href_blogs_base_double = 'href="' | append: locale_root | append: 'blogs"'
+  assign href_blogs_base_single = "href='" | append: locale_root | append: "blogs'"
+  assign href_products_base_double = 'href="' | append: locale_root | append: 'products"'
+  assign href_products_base_single = "href='" | append: locale_root | append: "products'"
+  assign href_search_base_double = 'href="' | append: locale_root | append: 'search"'
+  assign href_search_base_single = "href='" | append: locale_root | append: "search'"
+  assign href_account_base_double = 'href="' | append: locale_root | append: 'account"'
+  assign href_account_base_single = "href='" | append: locale_root | append: "account'"
+  assign href_cart_base_double = 'href="' | append: locale_root | append: 'cart"'
+  assign href_cart_base_single = "href='" | append: locale_root | append: "cart'"
+  assign href_checkout_base_double = 'href="' | append: locale_root | append: 'checkout"'
+  assign href_checkout_base_single = "href='" | append: locale_root | append: "checkout'"
+
+  assign href_soundbrenner_www_double = 'href="' | append: locale_root
+  assign href_soundbrenner_www_single = "href='" | append: locale_root
+  assign href_soundbrenner_double = 'href="' | append: locale_root
+  assign href_soundbrenner_single = "href='" | append: locale_root
+%}
+
+{{
+  localized_richtext_content
+  | replace: 'href="/pages/', href_pages_double
+  | replace: "href='/pages/", href_pages_single
+  | replace: 'href="/policies/', href_policies_double
+  | replace: "href='/policies/", href_policies_single
+  | replace: 'href="/collections/', href_collections_double
+  | replace: "href='/collections/", href_collections_single
+  | replace: 'href="/blogs/', href_blogs_double
+  | replace: "href='/blogs/", href_blogs_single
+  | replace: 'href="/products/', href_products_double
+  | replace: "href='/products/", href_products_single
+  | replace: 'href="/pages"', href_pages_base_double
+  | replace: "href='/pages'", href_pages_base_single
+  | replace: 'href="/policies"', href_policies_base_double
+  | replace: "href='/policies'", href_policies_base_single
+  | replace: 'href="/collections"', href_collections_base_double
+  | replace: "href='/collections'", href_collections_base_single
+  | replace: 'href="/blogs"', href_blogs_base_double
+  | replace: "href='/blogs'", href_blogs_base_single
+  | replace: 'href="/products"', href_products_base_double
+  | replace: "href='/products'", href_products_base_single
+  | replace: 'href="/search"', href_search_base_double
+  | replace: "href='/search'", href_search_base_single
+  | replace: 'href="/account"', href_account_base_double
+  | replace: "href='/account'", href_account_base_single
+  | replace: 'href="/cart"', href_cart_base_double
+  | replace: "href='/cart'", href_cart_base_single
+  | replace: 'href="/checkout"', href_checkout_base_double
+  | replace: "href='/checkout'", href_checkout_base_single
+  | replace: 'href="https://www.soundbrenner.com/', href_soundbrenner_www_double
+  | replace: "href='https://www.soundbrenner.com/", href_soundbrenner_www_single
+  | replace: 'href="http://www.soundbrenner.com/', href_soundbrenner_www_double
+  | replace: "href='http://www.soundbrenner.com/", href_soundbrenner_www_single
+  | replace: 'href="https://soundbrenner.com/', href_soundbrenner_double
+  | replace: "href='https://soundbrenner.com/", href_soundbrenner_single
+  | replace: 'href="http://soundbrenner.com/', href_soundbrenner_double
+  | replace: "href='http://soundbrenner.com/", href_soundbrenner_single
+  | replace: 'href="/"', href_root_double
+  | replace: "href='/'", href_root_single
+}}

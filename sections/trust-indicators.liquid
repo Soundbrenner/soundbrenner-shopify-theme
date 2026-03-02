@@ -1,53 +1,172 @@
-<section class="sb-trust-indicators" data-sb-reveal>
-  {% assign trustpilot_entry = metaobjects.trustpilot.values | first %}
-  {% assign metronome_rating_raw = trustpilot_entry.the_metronome_app_review_rating.value | default: trustpilot_entry.the_metronome_app_review_rating %}
-  {% assign metronome_count_raw = trustpilot_entry.the_metronome_app_review_count.value | default: trustpilot_entry.the_metronome_app_review_count %}
-  {% assign metronome_rating_display = metronome_rating_raw | strip %}
-  {% assign metronome_count_display = metronome_count_raw | strip %}
-  {% if metronome_rating_display != blank and metronome_count_display != blank %}
-    {% assign metronome_summary = metronome_rating_display | append: ' rating, ' | append: metronome_count_display | append: ' reviews' %}
-  {% else %}
-    {% assign metronome_summary = '' %}
-  {% endif %}
+{% liquid
+  assign use_product_metaobjects = section.settings.use_product_metaobjects
+  assign uses_product_metaobjects = false
+  assign hide_section = false
+  assign section_title = section.settings.title
+  assign indicator_items = blank
+  assign has_valid_item = false
 
-  {% if section.settings.title != blank %}
-    <h2 class="sb-trust-indicators__title font-title weight-bold" data-sb-reveal-item>
-      {{ section.settings.title }}
-    </h2>
-  {% endif %}
+  assign trustpilot_entry = metaobjects.trustpilot.values | first
+  assign trustpilot_rating_raw = trustpilot_entry.rating.value | default: trustpilot_entry.rating | append: '' | strip
+  if trustpilot_rating_raw == blank
+    assign trustpilot_rating_raw = 'X.X'
+  endif
+  assign trustpilot_summary = trustpilot_rating_raw | append: ' TrustScore on Trustpilot'
+  assign trustpilot_indicator_icon_url = 'trustpilot-star-ratings-indicator.svg' | asset_url
 
-  <div class="sb-trust-indicators__items">
-    {% for block in section.blocks %}
-      {% assign icon_url = '' %}
-      {% if block.settings.icon != blank %}
-        {% assign icon_url = block.settings.icon | image_url: width: 200 %}
+  assign metronome_rating_raw = trustpilot_entry.the_metronome_app_review_rating.value | default: trustpilot_entry.the_metronome_app_review_rating
+  assign metronome_count_raw = trustpilot_entry.the_metronome_app_review_count.value | default: trustpilot_entry.the_metronome_app_review_count
+  assign metronome_rating_display = metronome_rating_raw | strip
+  assign metronome_count_display = metronome_count_raw | strip
+  if metronome_rating_display != blank and metronome_count_display != blank
+    assign metronome_summary = metronome_rating_display | append: ' rating, ' | append: metronome_count_display | append: ' reviews'
+  else
+    assign metronome_summary = ''
+  endif
+
+  if use_product_metaobjects
+    if request.page_type == 'product' and product != blank
+      assign source_ref = product.metafields.custom.sbv2_trust_indicators
+      assign source_root = source_ref.value | default: source_ref.reference.value | default: source_ref.reference | default: source_ref
+
+      if source_root != blank
+        assign uses_product_metaobjects = true
+        assign section_title = source_root.title.value | default: source_root.title | default: section_title
+        assign indicator_items = source_root.items.value | default: source_root.items.references | default: source_root.items
+      endif
+    endif
+
+    if indicator_items != blank
+      for indicator_item in indicator_items
+        assign item_entry = indicator_item.value | default: indicator_item.reference.value | default: indicator_item.reference | default: indicator_item
+        assign item_text_check = item_entry.text.value | default: item_entry.text | append: '' | strip
+        assign item_image_check = item_entry.image.value | default: item_entry.image
+        assign item_show_trustpilot_raw = item_entry.show_trustpilot_rating.value | default: item_entry.show_trustpilot_rating | append: '' | downcase
+        assign item_show_trustpilot = false
+        if item_show_trustpilot_raw == 'true' or item_show_trustpilot_raw == '1' or item_show_trustpilot_raw == 'yes'
+          assign item_show_trustpilot = true
+        endif
+
+        if item_show_trustpilot or item_text_check != blank or item_image_check != blank
+          assign has_valid_item = true
+          break
+        endif
+      endfor
+    endif
+
+    if has_valid_item == false
+      assign hide_section = true
+    endif
+  endif
+
+  if use_product_metaobjects == false and section.blocks.size == 0
+    assign hide_section = true
+  endif
+%}
+
+{% if hide_section %}
+  <script>
+    (() => {
+      const sectionWrapper = document.currentScript && document.currentScript.closest('.shopify-section');
+      if (sectionWrapper) {
+        sectionWrapper.style.setProperty('display', 'none', 'important');
+      }
+    })();
+  </script>
+{% else %}
+  <section class="sb-trust-indicators" data-sb-reveal>
+    {% if section_title != blank %}
+      <h2 class="sb-trust-indicators__title font-title weight-bold" data-sb-reveal-item>
+        {{ section_title }}
+      </h2>
+    {% endif %}
+
+    <div class="sb-trust-indicators__items">
+      {% if uses_product_metaobjects %}
+        {% for indicator_item in indicator_items %}
+          {% liquid
+            assign item_entry = indicator_item.value | default: indicator_item.reference.value | default: indicator_item.reference | default: indicator_item
+            assign item_icon = item_entry.image.value | default: item_entry.image
+            assign item_text = item_entry.text | metafield_tag
+            if item_text == blank
+              assign item_text = item_entry.text.value | default: item_entry.text
+            endif
+
+            assign item_show_trustpilot_raw = item_entry.show_trustpilot_rating.value | default: item_entry.show_trustpilot_rating | append: '' | downcase
+            assign item_show_trustpilot = false
+            if item_show_trustpilot_raw == 'true' or item_show_trustpilot_raw == '1' or item_show_trustpilot_raw == 'yes'
+              assign item_show_trustpilot = true
+            endif
+
+            assign item_icon_url = blank
+            if item_show_trustpilot
+              assign item_icon_url = trustpilot_indicator_icon_url
+            elsif item_icon != blank
+              if item_icon.width != blank
+                assign item_icon_width = item_icon.width | at_most: 200
+                assign item_icon_url = item_icon | image_url: width: item_icon_width
+              else
+                assign item_icon_url = item_icon.url | default: item_icon.src | default: item_icon
+              endif
+            else
+              assign item_icon_url = 'icon-trust-indicator-placeholder.svg' | asset_url
+            endif
+          %}
+
+          {% if item_show_trustpilot == false and item_text == blank and item_icon == blank %}
+            {% continue %}
+          {% endif %}
+
+          <article class="sb-trust-indicators__item" style="--sb-trust-icon-mask-url: url('{{ item_icon_url }}');" data-sb-reveal-item>
+            <div class="sb-trust-indicators__icon" aria-hidden="true">
+              <span class="sb-trust-indicators__icon-glyph"></span>
+            </div>
+
+            {% if item_show_trustpilot %}
+              <div class="sb-trust-indicators__text font-body weight-regular rte">
+                <p>{{ trustpilot_summary }}</p>
+              </div>
+            {% elsif item_text != blank %}
+              <div class="sb-trust-indicators__text font-body weight-regular rte">
+                {{ item_text }}
+              </div>
+            {% endif %}
+          </article>
+        {% endfor %}
       {% else %}
-        {% assign icon_url = 'icon-trust-indicator-placeholder.svg' | asset_url %}
+        {% for block in section.blocks %}
+          {% assign icon_url = '' %}
+          {% if block.settings.icon != blank %}
+            {% assign icon_url = block.settings.icon | image_url: width: 200 %}
+          {% else %}
+            {% assign icon_url = 'icon-trust-indicator-placeholder.svg' | asset_url %}
+          {% endif %}
+
+          <article
+            class="sb-trust-indicators__item"
+            style="--sb-trust-icon-mask-url: url('{{ icon_url }}');"
+            data-sb-reveal-item
+            {{ block.shopify_attributes }}
+          >
+            <div class="sb-trust-indicators__icon" aria-hidden="true">
+              <span class="sb-trust-indicators__icon-glyph"></span>
+            </div>
+
+            {% if block.settings.show_metronome_app_ratings and metronome_summary != blank %}
+              <div class="sb-trust-indicators__text font-body weight-regular rte">
+                <p>{{ metronome_summary }}</p>
+              </div>
+            {% elsif block.settings.text != blank %}
+              <div class="sb-trust-indicators__text font-body weight-regular rte">
+                {{ block.settings.text }}
+              </div>
+            {% endif %}
+          </article>
+        {% endfor %}
       {% endif %}
-
-      <article
-        class="sb-trust-indicators__item"
-        style="--sb-trust-icon-mask-url: url('{{ icon_url }}');"
-        data-sb-reveal-item
-        {{ block.shopify_attributes }}
-      >
-        <div class="sb-trust-indicators__icon" aria-hidden="true">
-          <span class="sb-trust-indicators__icon-glyph"></span>
-        </div>
-
-        {% if block.settings.show_metronome_app_ratings and metronome_summary != blank %}
-          <div class="sb-trust-indicators__text font-body weight-regular rte">
-            <p>{{ metronome_summary }}</p>
-          </div>
-        {% elsif block.settings.text != blank %}
-          <div class="sb-trust-indicators__text font-body weight-regular rte">
-            {{ block.settings.text }}
-          </div>
-        {% endif %}
-      </article>
-    {% endfor %}
-  </div>
-</section>
+    </div>
+  </section>
+{% endif %}
 
 {% stylesheet %}
   .sb-trust-indicators {
@@ -136,6 +255,12 @@
 {
   "name": "Trust indicators",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_product_metaobjects",
+      "label": "Use product page metaobjects",
+      "default": false
+    },
     {
       "type": "text",
       "id": "title",

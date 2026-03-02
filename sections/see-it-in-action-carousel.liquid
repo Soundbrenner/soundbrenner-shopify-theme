@@ -1,0 +1,911 @@
+{% liquid
+  assign use_product_metaobjects = section.settings.use_product_metaobjects
+  assign uses_product_metaobjects = false
+  assign hide_section = false
+  assign section_title = section.settings.title
+  assign section_subtitle = section.settings.subtitle
+  assign carousel_items = blank
+  assign has_valid_item = false
+
+  if use_product_metaobjects
+    if request.page_type == 'product' and product != blank
+      assign source_ref = product.metafields.custom.sbv2_see_it_in_action_video_carousel
+      assign source_root = source_ref.value | default: source_ref.reference.value | default: source_ref.reference | default: source_ref
+
+      if source_root != blank
+        assign uses_product_metaobjects = true
+        assign carousel_root = source_root.video_carousel.value | default: source_root.video_carousel.reference.value | default: source_root.video_carousel.reference | default: source_root.video_carousel
+        if carousel_root == blank
+          assign carousel_root = source_root
+        endif
+
+        assign section_title = source_root.title.value | default: source_root.title | default: carousel_root.title.value | default: carousel_root.title | default: section_title
+        assign section_subtitle = source_root.subtitle.value | default: source_root.subtitle | default: carousel_root.subtitle.value | default: carousel_root.subtitle | default: section_subtitle
+        assign carousel_items = carousel_root.videos.value | default: carousel_root.videos.references | default: carousel_root.videos
+        if carousel_items == blank
+          assign carousel_items = carousel_root.items.value | default: carousel_root.items.references | default: carousel_root.items
+        endif
+      endif
+    endif
+
+    if carousel_items != blank
+      for carousel_item in carousel_items
+        assign carousel_item_entry = carousel_item.value | default: carousel_item.reference.value | default: carousel_item.reference | default: carousel_item
+        assign carousel_item_text = carousel_item_entry.video_title.value | default: carousel_item_entry.video_title | default: carousel_item_entry.caption.value | default: carousel_item_entry.caption | default: carousel_item_entry.title.value | default: carousel_item_entry.title | default: carousel_item_entry.subtitle.value | default: carousel_item_entry.subtitle
+        if carousel_item_text == blank
+          assign carousel_item_text = carousel_item_entry.info | metafield_tag
+          if carousel_item_text == blank
+            assign carousel_item_text = carousel_item_entry.info.value | default: carousel_item_entry.info
+          endif
+        endif
+        assign carousel_item_text = carousel_item_text | append: '' | strip
+
+        assign carousel_item_image = carousel_item_entry.video_thumbnail.value | default: carousel_item_entry.video_thumbnail | default: carousel_item_entry.video_poster.value | default: carousel_item_entry.video_poster | default: carousel_item_entry.thumbnail.value | default: carousel_item_entry.thumbnail | default: carousel_item_entry.image.value | default: carousel_item_entry.image
+        assign carousel_item_image_url = blank
+        if carousel_item_image != blank and carousel_item_image.width != blank
+          assign carousel_item_image_request_width = carousel_item_image.width | at_most: 849
+          assign carousel_item_image_url = carousel_item_image | image_url: width: carousel_item_image_request_width
+        else
+          assign carousel_item_image_url = carousel_item_image.url | default: carousel_item_image.src | default: carousel_item_image
+        endif
+
+        assign carousel_item_video_field = carousel_item_entry.video_file.value | default: carousel_item_entry.video_file | default: carousel_item_entry.video_url.value | default: carousel_item_entry.video_url | default: carousel_item_entry.video.value | default: carousel_item_entry.video
+        assign carousel_item_video_url = blank
+        if carousel_item_video_field != blank
+          if carousel_item_video_field.sources != blank
+            for carousel_item_video_source in carousel_item_video_field.sources
+              assign carousel_item_video_source_url = carousel_item_video_source.url | default: carousel_item_video_source.src
+              assign carousel_item_video_source_format = carousel_item_video_source.format | downcase
+              assign carousel_item_video_source_mime = carousel_item_video_source.mime_type | downcase
+
+              if carousel_item_video_source_url != blank
+                if carousel_item_video_source_format contains 'mp4' or carousel_item_video_source_mime contains 'mp4'
+                  assign carousel_item_video_url = carousel_item_video_source_url
+                  break
+                endif
+                if carousel_item_video_url == blank
+                  assign carousel_item_video_url = carousel_item_video_source_url
+                endif
+              endif
+            endfor
+          endif
+          if carousel_item_video_url == blank
+            assign carousel_item_video_url = carousel_item_video_field.url | default: carousel_item_video_field.src | default: carousel_item_video_field
+          endif
+        endif
+        assign carousel_item_video_url = carousel_item_video_url | append: '' | strip
+
+        if carousel_item_text != blank or carousel_item_image_url != blank or carousel_item_video_url != blank
+          assign has_valid_item = true
+          break
+        endif
+      endfor
+    endif
+
+    if has_valid_item == false
+      assign hide_section = true
+    endif
+  endif
+
+  if use_product_metaobjects == false and section.blocks.size == 0
+    assign hide_section = true
+  endif
+%}
+
+{% if hide_section %}
+  <script>
+    (() => {
+      const sectionWrapper = document.currentScript && document.currentScript.closest('.shopify-section');
+      if (sectionWrapper) {
+        sectionWrapper.style.setProperty('display', 'none', 'important');
+      }
+    })();
+  </script>
+{% else %}
+  <section
+    class="sb-see-action-carousel"
+    style="--sb-see-action-play-icon-url: url('{{ 'play_arrow.svg' | asset_url }}');"
+    data-see-action-carousel
+    data-sb-carousel
+    data-sb-reveal
+  >
+    {% if section_title != blank or section_subtitle != blank %}
+      <div class="sb-see-action-carousel__header">
+        {% if section_title != blank %}
+          <h2 class="sb-see-action-carousel__title font-title weight-bold" data-sb-reveal-item>{{ section_title }}</h2>
+        {% endif %}
+        {% if section_subtitle != blank %}
+          <p class="sb-see-action-carousel__subtitle font-body weight-semibold" data-sb-reveal-item>{{ section_subtitle }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="sb-see-action-carousel__viewport" data-sb-carousel-viewport>
+      <div class="sb-see-action-carousel__track" data-sb-carousel-track>
+        {% if uses_product_metaobjects %}
+          {% for carousel_item in carousel_items %}
+            {% liquid
+              assign carousel_item_entry = carousel_item.value | default: carousel_item.reference.value | default: carousel_item.reference | default: carousel_item
+              assign item_text = carousel_item_entry.video_title.value | default: carousel_item_entry.video_title | default: carousel_item_entry.caption.value | default: carousel_item_entry.caption | default: carousel_item_entry.title.value | default: carousel_item_entry.title | default: carousel_item_entry.subtitle.value | default: carousel_item_entry.subtitle
+              if item_text == blank
+                assign item_text = carousel_item_entry.info | metafield_tag
+                if item_text == blank
+                  assign item_text = carousel_item_entry.info.value | default: carousel_item_entry.info
+                endif
+              endif
+
+              assign item_image = carousel_item_entry.video_thumbnail.value | default: carousel_item_entry.video_thumbnail | default: carousel_item_entry.video_poster.value | default: carousel_item_entry.video_poster | default: carousel_item_entry.thumbnail.value | default: carousel_item_entry.thumbnail | default: carousel_item_entry.image.value | default: carousel_item_entry.image
+              assign item_image_url = blank
+              assign item_video_field = carousel_item_entry.video_file.value | default: carousel_item_entry.video_file | default: carousel_item_entry.video_url.value | default: carousel_item_entry.video_url | default: carousel_item_entry.video.value | default: carousel_item_entry.video
+              if item_image == blank and item_video_field != blank and item_video_field.preview_image != blank
+                assign item_image = item_video_field.preview_image
+              endif
+              if item_image != blank and item_image.width != blank
+                assign item_image_request_width = item_image.width | at_most: 849
+                assign item_image_url = item_image | image_url: width: item_image_request_width
+              else
+                assign item_image_url = item_image.url | default: item_image.src | default: item_image
+              endif
+
+              assign item_video_url = blank
+              if item_video_field != blank
+                if item_video_field.sources != blank
+                  for item_video_source in item_video_field.sources
+                    assign item_video_source_url = item_video_source.url | default: item_video_source.src
+                    assign item_video_source_format = item_video_source.format | downcase
+                    assign item_video_source_mime = item_video_source.mime_type | downcase
+
+                    if item_video_source_url != blank
+                      if item_video_source_format contains 'mp4' or item_video_source_mime contains 'mp4'
+                        assign item_video_url = item_video_source_url
+                        break
+                      endif
+                      if item_video_url == blank
+                        assign item_video_url = item_video_source_url
+                      endif
+                    endif
+                  endfor
+                endif
+                if item_video_url == blank
+                  assign item_video_url = item_video_field.url | default: item_video_field.src | default: item_video_field
+                endif
+              endif
+              assign item_video_url = item_video_url | append: '' | strip
+
+              assign item_video_embed_url = blank
+              assign item_video_use_iframe = false
+              if item_video_url != blank
+                assign item_video_url_downcase = item_video_url | downcase
+
+                if item_video_url_downcase contains 'youtube.com/watch'
+                  assign item_youtube_id = item_video_url | split: 'v=' | last | split: '&' | first
+                  if item_youtube_id != blank
+                    assign item_video_embed_url = 'https://www.youtube.com/embed/' | append: item_youtube_id | append: '?autoplay=1&playsinline=1&controls=0&rel=0'
+                    assign item_video_use_iframe = true
+                  endif
+                elsif item_video_url_downcase contains 'youtu.be/'
+                  assign item_youtube_id = item_video_url | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first
+                  if item_youtube_id != blank
+                    assign item_video_embed_url = 'https://www.youtube.com/embed/' | append: item_youtube_id | append: '?autoplay=1&playsinline=1&controls=0&rel=0'
+                    assign item_video_use_iframe = true
+                  endif
+                elsif item_video_url_downcase contains 'vimeo.com/'
+                  assign item_vimeo_id = item_video_url | split: 'vimeo.com/' | last | split: '?' | first | split: '&' | first | split: '/' | first
+                  if item_vimeo_id != blank
+                    assign item_video_embed_url = 'https://player.vimeo.com/video/' | append: item_vimeo_id | append: '?autoplay=1&playsinline=1'
+                    assign item_video_use_iframe = true
+                  endif
+                endif
+              endif
+
+              assign item_text = item_text | append: '' | strip
+              assign item_alt = item_text | strip_html | strip
+            %}
+            {% if item_text == blank and item_image_url == blank and item_video_url == blank %}
+              {% continue %}
+            {% endif %}
+
+            <article class="sb-see-action-carousel__item" data-sb-carousel-item data-sb-reveal-item>
+              <div class="sb-see-action-carousel__media" data-see-action-media>
+                {% assign item_thumbnail_url = item_image_url %}
+                {% if item_thumbnail_url == blank %}
+                  {% assign item_thumbnail_url = 'placeholder-feature-carousel.jpg' | asset_url %}
+                {% endif %}
+
+                {% if item_video_url != blank %}
+                  <button
+                    type="button"
+                    class="sb-see-action-carousel__media-trigger"
+                    data-see-action-video-trigger
+                    data-see-action-video-url="{{ item_video_url | escape }}"
+                    {% if item_video_use_iframe and item_video_embed_url != blank %}
+                      data-see-action-video-embed-url="{{ item_video_embed_url | escape }}"
+                    {% endif %}
+                    aria-label="Play video"
+                  >
+                    {% # theme-check-disable RemoteAsset %}
+                    <img
+                      src="{{ item_thumbnail_url }}"
+                      alt="{{ item_alt | default: 'See it in action media' | escape }}"
+                      loading="lazy"
+                      width="283"
+                      height="453"
+                    >
+                    {% # theme-check-enable RemoteAsset %}
+                    <span class="sb-see-action-carousel__media-overlay" aria-hidden="true"></span>
+                    <span class="sb-see-action-carousel__media-play" aria-hidden="true">
+                      <span class="sb-see-action-carousel__media-play-icon"></span>
+                    </span>
+                    <span class="sb-see-action-carousel__media-badge" aria-hidden="true">
+                      <img src="{{ 'see-action-tiktok-logo-color.svg' | asset_url }}" alt="" loading="lazy" width="40" height="40">
+                    </span>
+                  </button>
+                  {% if item_video_use_iframe and item_video_embed_url != blank %}
+                    <iframe
+                      class="sb-see-action-carousel__media-iframe"
+                      data-see-action-inline-iframe
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowfullscreen
+                      hidden
+                      title="Video player"
+                    ></iframe>
+                  {% else %}
+                    <video
+                      class="sb-see-action-carousel__media-video"
+                      data-see-action-inline-video
+                      playsinline
+                      webkit-playsinline="true"
+                      disablepictureinpicture
+                      controlslist="nofullscreen noremoteplayback nodownload"
+                      x-webkit-airplay="deny"
+                      preload="metadata"
+                      hidden
+                    ></video>
+                  {% endif %}
+                {% else %}
+                  <div class="sb-see-action-carousel__media-static" aria-hidden="true">
+                    {% # theme-check-disable RemoteAsset %}
+                    <img
+                      src="{{ item_thumbnail_url }}"
+                      alt="{{ item_alt | default: 'See it in action media' | escape }}"
+                      loading="lazy"
+                      width="283"
+                      height="453"
+                    >
+                    {% # theme-check-enable RemoteAsset %}
+                    <span class="sb-see-action-carousel__media-badge" aria-hidden="true">
+                      <img src="{{ 'see-action-tiktok-logo-color.svg' | asset_url }}" alt="" loading="lazy" width="40" height="40">
+                    </span>
+                  </div>
+                {% endif %}
+              </div>
+              <div class="sb-see-action-carousel__body">
+                <p class="sb-see-action-carousel__text font-caption weight-semibold">{{ item_text | strip_html }}</p>
+              </div>
+            </article>
+          {% endfor %}
+        {% else %}
+          {% for block in section.blocks %}
+            {% assign item_video = block.settings.video %}
+            {% assign item_image = block.settings.thumbnail %}
+            {% assign item_text = block.settings.text | strip %}
+            {% assign item_video_url = blank %}
+            {% if item_video != blank %}
+              {% if item_video.sources != blank %}
+                {% for item_video_source in item_video.sources %}
+                  {% assign item_video_source_url = item_video_source.url | default: item_video_source.src %}
+                  {% assign item_video_source_format = item_video_source.format | downcase %}
+                  {% assign item_video_source_mime = item_video_source.mime_type | downcase %}
+                  {% if item_video_source_url != blank %}
+                    {% if item_video_source_format contains 'mp4' or item_video_source_mime contains 'mp4' %}
+                      {% assign item_video_url = item_video_source_url %}
+                      {% break %}
+                    {% endif %}
+                    {% if item_video_url == blank %}
+                      {% assign item_video_url = item_video_source_url %}
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+              {% if item_video_url == blank %}
+                {% assign item_video_url = item_video.url | default: item_video.src | default: item_video %}
+              {% endif %}
+            {% endif %}
+            {% assign item_video_url = item_video_url | append: '' | strip %}
+
+            {% assign item_image_url = blank %}
+            {% if item_image != blank %}
+              {% assign item_image_request_width = item_image.width | at_most: 849 %}
+              {% assign item_image_url = item_image | image_url: width: item_image_request_width %}
+            {% elsif item_video != blank and item_video.preview_image != blank %}
+              {% assign item_video_preview_width = item_video.preview_image.width | at_most: 849 %}
+              {% assign item_image_url = item_video.preview_image | image_url: width: item_video_preview_width %}
+            {% else %}
+              {% assign item_image_url = 'placeholder-feature-carousel.jpg' | asset_url %}
+            {% endif %}
+
+            <article class="sb-see-action-carousel__item" data-sb-carousel-item data-sb-reveal-item {{ block.shopify_attributes }}>
+              <div class="sb-see-action-carousel__media" data-see-action-media>
+                {% if item_video_url != blank %}
+                  <button
+                    type="button"
+                    class="sb-see-action-carousel__media-trigger"
+                    data-see-action-video-trigger
+                    data-see-action-video-url="{{ item_video_url | escape }}"
+                    aria-label="Play video"
+                  >
+                    {% # theme-check-disable RemoteAsset %}
+                    <img
+                      src="{{ item_image_url }}"
+                      alt="{{ item_text | default: item_image.alt | escape }}"
+                      loading="lazy"
+                      width="283"
+                      height="453"
+                    >
+                    {% # theme-check-enable RemoteAsset %}
+                    <span class="sb-see-action-carousel__media-overlay" aria-hidden="true"></span>
+                    <span class="sb-see-action-carousel__media-play" aria-hidden="true">
+                      <span class="sb-see-action-carousel__media-play-icon"></span>
+                    </span>
+                    <span class="sb-see-action-carousel__media-badge" aria-hidden="true">
+                      <img src="{{ 'see-action-tiktok-logo-color.svg' | asset_url }}" alt="" loading="lazy" width="40" height="40">
+                    </span>
+                  </button>
+                  <video
+                    class="sb-see-action-carousel__media-video"
+                    data-see-action-inline-video
+                    playsinline
+                    webkit-playsinline="true"
+                    disablepictureinpicture
+                    controlslist="nofullscreen noremoteplayback nodownload"
+                    x-webkit-airplay="deny"
+                    preload="metadata"
+                    hidden
+                  ></video>
+                {% else %}
+                  <div class="sb-see-action-carousel__media-static" aria-hidden="true">
+                    {% # theme-check-disable RemoteAsset %}
+                    <img
+                      src="{{ item_image_url }}"
+                      alt="{{ item_text | default: item_image.alt | escape }}"
+                      loading="lazy"
+                      width="283"
+                      height="453"
+                    >
+                    {% # theme-check-enable RemoteAsset %}
+                    <span class="sb-see-action-carousel__media-badge" aria-hidden="true">
+                      <img src="{{ 'see-action-tiktok-logo-color.svg' | asset_url }}" alt="" loading="lazy" width="40" height="40">
+                    </span>
+                  </div>
+                {% endif %}
+              </div>
+              <div class="sb-see-action-carousel__body">
+                <p class="sb-see-action-carousel__text font-caption weight-semibold">{{ item_text }}</p>
+              </div>
+            </article>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="sb-see-action-carousel__controls" data-sb-carousel-controls>
+      <button type="button" class="sb-see-action-carousel__arrow" data-sb-carousel-prev aria-label="Previous" disabled>
+        <span class="sb-see-action-carousel__arrow-icon sb-see-action-carousel__arrow-icon--left" aria-hidden="true">
+          {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
+        </span>
+      </button>
+
+      <button type="button" class="sb-see-action-carousel__arrow" data-sb-carousel-next aria-label="Next" disabled>
+        <span class="sb-see-action-carousel__arrow-icon sb-see-action-carousel__arrow-icon--right" aria-hidden="true">
+          {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
+        </span>
+      </button>
+    </div>
+  </section>
+{% endif %}
+
+{% stylesheet %}
+  .sb-see-action-carousel {
+    --sb-carousel-gap: 36px;
+    --sb-carousel-bleed-inline: var(--page-margin);
+    --sb-see-action-play-size: 72px;
+    --sb-see-action-play-icon-box-size: 60px;
+    --sb-see-action-play-icon-width: 22px;
+    --sb-see-action-play-icon-height: 28px;
+    --sb-see-action-play-icon-offset-x: 3px;
+    width: 100%;
+  }
+
+  .sb-see-action-carousel__header {
+    margin-bottom: 48px;
+  }
+
+  .sb-see-action-carousel__title {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+    text-align: center;
+  }
+
+  .sb-see-action-carousel__subtitle {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+    text-align: center;
+  }
+
+  .sb-see-action-carousel__title + .sb-see-action-carousel__subtitle {
+    margin-top: 24px;
+  }
+
+  .sb-see-action-carousel__viewport {
+    margin-left: calc(-1 * var(--sb-carousel-bleed-inline));
+    margin-right: calc(-1 * var(--sb-carousel-bleed-inline));
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-left: var(--sb-carousel-bleed-inline);
+    padding-right: var(--sb-carousel-bleed-inline);
+    scrollbar-width: none;
+    width: calc(100% + (var(--sb-carousel-bleed-inline) * 2));
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sb-see-action-carousel__viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sb-see-action-carousel__track {
+    align-items: stretch;
+    display: flex;
+    gap: var(--sb-carousel-gap);
+    padding: 0;
+    width: max-content;
+  }
+
+  .sb-see-action-carousel__item {
+    background: var(--sb-color-neutral-200);
+    border-radius: 24px;
+    display: flex;
+    flex: 0 0 283px;
+    flex-direction: column;
+    max-width: 283px;
+    min-width: 283px;
+    overflow: hidden;
+  }
+
+  .sb-see-action-carousel__media {
+    aspect-ratio: 283 / 453;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+
+  .sb-see-action-carousel__media img {
+    border: 0;
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .sb-see-action-carousel__media-trigger,
+  .sb-see-action-carousel__media-static {
+    background: transparent;
+    border: 0;
+    display: block;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    width: 100%;
+  }
+
+  .sb-see-action-carousel__media-trigger {
+    cursor: pointer;
+  }
+
+  .sb-see-action-carousel__media-badge {
+    display: inline-flex;
+    line-height: 0;
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    z-index: 3;
+  }
+
+  .sb-see-action-carousel__media-badge img {
+    display: block;
+    height: 40px;
+    object-fit: contain;
+    width: auto;
+  }
+
+  .sb-see-action-carousel__media-overlay {
+    background: var(--sb-color-always-black-25);
+    inset: 0;
+    pointer-events: none;
+    position: absolute;
+    z-index: 1;
+  }
+
+  .sb-see-action-carousel__media-play {
+    -webkit-backdrop-filter: blur(2px);
+    align-items: center;
+    backdrop-filter: blur(2px);
+    background: var(--rare-always-black-50, var(--sb-color-always-black-50));
+    border-radius: 999px;
+    display: inline-flex;
+    height: var(--sb-see-action-play-size);
+    justify-content: center;
+    left: 50%;
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: var(--sb-see-action-play-size);
+    z-index: 2;
+  }
+
+  .sb-see-action-carousel__media-play-icon {
+    -webkit-mask-image: var(--sb-see-action-play-icon-url);
+    -webkit-mask-position: calc(50% + var(--sb-see-action-play-icon-offset-x)) 50%;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: var(--sb-see-action-play-icon-width) var(--sb-see-action-play-icon-height);
+    background: var(--sb-color-always-white);
+    display: block;
+    height: var(--sb-see-action-play-icon-box-size);
+    mask-image: var(--sb-see-action-play-icon-url);
+    mask-position: calc(50% + var(--sb-see-action-play-icon-offset-x)) 50%;
+    mask-repeat: no-repeat;
+    mask-size: var(--sb-see-action-play-icon-width) var(--sb-see-action-play-icon-height);
+    width: var(--sb-see-action-play-icon-box-size);
+  }
+
+  .sb-see-action-carousel__item:hover .sb-see-action-carousel__media-overlay,
+  .sb-see-action-carousel__item:focus-within .sb-see-action-carousel__media-overlay {
+    opacity: 0;
+  }
+
+  .sb-see-action-carousel__item:hover .sb-see-action-carousel__media-play,
+  .sb-see-action-carousel__item:focus-within .sb-see-action-carousel__media-play {
+    transform: translate(-50%, -50%) scale(var(--sb-hover-scale-factor, 1.015));
+  }
+
+  .sb-see-action-carousel__media-video,
+  .sb-see-action-carousel__media-iframe {
+    border: 0;
+    display: block;
+    height: 100%;
+    inset: 0;
+    object-fit: cover;
+    position: absolute;
+    width: 100%;
+  }
+
+  .sb-see-action-carousel__media-video {
+    pointer-events: none;
+  }
+
+  .sb-see-action-carousel__media-iframe {
+    pointer-events: none;
+  }
+
+  .sb-see-action-carousel__media-video[hidden],
+  .sb-see-action-carousel__media-iframe[hidden] {
+    display: none;
+  }
+
+  .sb-see-action-carousel__media.is-playing .sb-see-action-carousel__media-trigger {
+    inset: 0;
+    position: absolute;
+    z-index: 4;
+  }
+
+  .sb-see-action-carousel__media.is-playing .sb-see-action-carousel__media-overlay {
+    opacity: 0;
+  }
+
+  .sb-see-action-carousel__media.is-playing .sb-see-action-carousel__media-play {
+    opacity: 0;
+  }
+
+  .sb-see-action-carousel__media.is-playing .sb-see-action-carousel__media-trigger > img {
+    opacity: 0;
+  }
+
+  .sb-see-action-carousel__body {
+    align-items: center;
+    background: var(--sb-color-neutral-200);
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: center;
+    padding: 12px 16px;
+  }
+
+  .sb-see-action-carousel__text {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+    text-align: center;
+  }
+
+  .sb-see-action-carousel__controls {
+    align-items: center;
+    display: none;
+    gap: 16px;
+    justify-content: flex-end;
+    margin-bottom: 0;
+    margin-top: 48px;
+    padding-bottom: 0;
+  }
+
+  .sb-see-action-carousel.is-overflowing .sb-see-action-carousel__controls {
+    display: flex;
+  }
+
+  .sb-see-action-carousel__arrow {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    display: inline-flex;
+    height: 48px;
+    justify-content: center;
+    padding: 0;
+    width: 48px;
+  }
+
+  .sb-see-action-carousel__arrow[disabled] {
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  .sb-see-action-carousel__arrow-icon {
+    display: inline-flex;
+    height: 48px;
+    width: 48px;
+  }
+
+  .sb-see-action-carousel__arrow-icon--right {
+    transform: scaleX(-1);
+  }
+
+  .sb-see-action-carousel__arrow-icon svg {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .sb-see-action-carousel__arrow-icon svg path:first-child {
+    fill: var(--sb-color-neutral-200);
+  }
+
+  .sb-see-action-carousel__arrow-icon svg path:last-child {
+    fill: var(--sb-color-neutral-800);
+  }
+
+  .sb-see-action-carousel__arrow:hover:not([disabled]) .sb-see-action-carousel__arrow-icon svg path:last-child,
+  .sb-see-action-carousel__arrow:focus-visible:not([disabled]) .sb-see-action-carousel__arrow-icon svg path:last-child {
+    fill: var(--sb-color-primary-500);
+  }
+
+  .sb-see-action-carousel.is-not-overflowing .sb-see-action-carousel__track {
+    margin-inline: auto;
+  }
+
+  @media (max-width: 749px) {
+    .sb-see-action-carousel__viewport {
+      overflow-x: auto;
+    }
+
+    .sb-see-action-carousel__controls {
+      justify-content: flex-end;
+    }
+  }
+{% endstylesheet %}
+
+{% render 'sb-carousel-init' %}
+
+<script>
+  (() => {
+    const initializedSections = new WeakSet();
+    const EMPTY_IFRAME_SRC = 'about:blank';
+    const EMPTY_VIDEO_SRC = '';
+
+      const stopMedia = (media) => {
+        if (!(media instanceof HTMLElement)) return;
+        media.classList.remove('is-playing');
+
+        const trigger = media.querySelector('[data-see-action-video-trigger]');
+        if (trigger instanceof HTMLElement) {
+          trigger.setAttribute('aria-pressed', 'false');
+          trigger.setAttribute('aria-label', 'Play video');
+        }
+
+      const videoPlayer = media.querySelector('[data-see-action-inline-video]');
+      if (videoPlayer instanceof HTMLVideoElement) {
+        videoPlayer.pause();
+        videoPlayer.hidden = true;
+        videoPlayer.removeAttribute('src');
+        videoPlayer.load();
+      }
+
+      const iframePlayer = media.querySelector('[data-see-action-inline-iframe]');
+      if (iframePlayer instanceof HTMLIFrameElement) {
+        iframePlayer.hidden = true;
+        iframePlayer.setAttribute('src', EMPTY_IFRAME_SRC);
+      }
+    };
+
+    const stopAllMedia = (root, exceptMedia) => {
+      const mediaElements = root.querySelectorAll('[data-see-action-media].is-playing');
+      mediaElements.forEach((media) => {
+        if (media === exceptMedia) return;
+        stopMedia(media);
+      });
+    };
+
+    const initSection = (root) => {
+      if (!root || initializedSections.has(root)) return;
+      initializedSections.add(root);
+
+      const triggers = Array.from(root.querySelectorAll('[data-see-action-video-trigger]'));
+      if (!triggers.length) return;
+
+      triggers.forEach((trigger) => {
+        trigger.setAttribute('aria-pressed', 'false');
+        trigger.setAttribute('aria-label', 'Play video');
+
+        trigger.addEventListener('click', () => {
+          const media = trigger.closest('[data-see-action-media]');
+          if (!(media instanceof HTMLElement)) return;
+
+          if (media.classList.contains('is-playing')) {
+            stopMedia(media);
+            return;
+          }
+
+          const videoUrl = (trigger.getAttribute('data-see-action-video-url') || '').trim();
+          const embedUrl = (trigger.getAttribute('data-see-action-video-embed-url') || '').trim();
+          if (!videoUrl && !embedUrl) return;
+
+          stopAllMedia(root, media);
+          media.classList.add('is-playing');
+          trigger.setAttribute('aria-pressed', 'true');
+          trigger.setAttribute('aria-label', 'Pause video');
+
+          const videoPlayer = media.querySelector('[data-see-action-inline-video]');
+          const iframePlayer = media.querySelector('[data-see-action-inline-iframe]');
+
+          if (embedUrl && iframePlayer instanceof HTMLIFrameElement) {
+            if (videoPlayer instanceof HTMLVideoElement) {
+              videoPlayer.pause();
+              videoPlayer.hidden = true;
+              videoPlayer.removeAttribute('src');
+              videoPlayer.load();
+            }
+            iframePlayer.hidden = false;
+            iframePlayer.setAttribute('src', embedUrl);
+            return;
+          }
+
+          if (iframePlayer instanceof HTMLIFrameElement) {
+            iframePlayer.hidden = true;
+            iframePlayer.setAttribute('src', EMPTY_IFRAME_SRC);
+          }
+
+          if (videoPlayer instanceof HTMLVideoElement) {
+            if (videoPlayer.getAttribute('src') !== videoUrl) {
+              videoPlayer.setAttribute('src', videoUrl || EMPTY_VIDEO_SRC);
+              videoPlayer.load();
+            }
+            videoPlayer.defaultMuted = false;
+            videoPlayer.muted = false;
+            videoPlayer.loop = false;
+            videoPlayer.controls = false;
+            videoPlayer.removeAttribute('controls');
+            videoPlayer.playsInline = true;
+            videoPlayer.hidden = false;
+            const playPromise = videoPlayer.play();
+            if (playPromise && typeof playPromise.catch === 'function') {
+              playPromise.catch(() => {});
+            }
+          }
+        });
+      });
+
+      const inlineVideos = Array.from(root.querySelectorAll('[data-see-action-inline-video]'));
+      inlineVideos.forEach((videoPlayer) => {
+        if (!(videoPlayer instanceof HTMLVideoElement)) return;
+        videoPlayer.addEventListener('ended', () => {
+          const media = videoPlayer.closest('[data-see-action-media]');
+          if (media instanceof HTMLElement) {
+            stopMedia(media);
+          }
+        });
+      });
+    };
+
+    const initAll = (scope = document) => {
+      scope.querySelectorAll('[data-see-action-carousel]').forEach((root) => initSection(root));
+    };
+
+    initAll(document);
+    document.addEventListener('shopify:section:load', (event) => {
+      if (!event.target) return;
+      initAll(event.target);
+    });
+
+    document.addEventListener('shopify:section:unload', (event) => {
+      if (!event.target) return;
+      event.target.querySelectorAll('[data-see-action-media].is-playing').forEach((media) => {
+        stopMedia(media);
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "See it in action carousel",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_product_metaobjects",
+      "label": "Use product page metaobjects",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "See it in action"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Watch musicians use it in action."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Carousel item",
+      "settings": [
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video",
+          "info": "Target minimum 283x453 at 3x export (849x1359). If both are set, video is shown."
+        },
+        {
+          "type": "image_picker",
+          "id": "thumbnail",
+          "label": "Thumbnail",
+          "info": "Target minimum 283x453 at 3x export (849x1359)."
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Label",
+          "default": "Placeholder label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "See it in action carousel",
+      "blocks": [
+        {
+          "type": "item"
+        },
+        {
+          "type": "item"
+        },
+        {
+          "type": "item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

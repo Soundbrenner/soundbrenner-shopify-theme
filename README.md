@@ -145,6 +145,60 @@ When developing components defined by schema settings, we recommend these guidel
 
 For CSS and JavaScript, we recommend using the [`{% stylesheet %}`](https://shopify.dev/docs/api/liquid/tags#stylesheet) and [`{% javascript %}`](https://shopify.dev/docs/api/liquid/tags/javascript) tags. They can be included multiple times, but the code will only appear once.
 
+## Visual snapshots (Playwright)
+
+Use the local screenshot harness to capture rendered UI states from your Shopify preview (`http://127.0.0.1:9292`) without manual browsing.
+
+1. Install dependencies:
+
+```bash
+npm install
+npm run visual:install
+```
+
+2. Run captures:
+
+```bash
+npm run visual:capture
+```
+
+3. Output:
+
+- Screenshots are written to `tmp/visual-captures/<timestamp>/`.
+- Configure pages and interactions in `scripts/visual-capture.config.json`.
+- Action reference: `docs/visual-capture.md`.
+
+Capture only one configured page:
+
+```bash
+npm run visual:capture -- --page product-desktop
+```
+
+Use a different preview URL:
+
+```bash
+npm run visual:capture -- --base-url http://127.0.0.1:9292
+```
+
+### One-command QA run
+
+After one-time setup, use this single command for each pass:
+
+```bash
+npm run qa:snap
+```
+
+What it does:
+- Starts `shopify theme dev` in the background if `127.0.0.1:9292` is not running.
+- Waits for preview to become reachable.
+- Runs screenshot capture using your config.
+
+Stop the background theme dev process started by this command:
+
+```bash
+npm run qa:stop
+```
+
 ### `critical.css`
 
 The Skeleton Theme explicitly separates essential CSS necessary for every page into a dedicated `critical.css` file.

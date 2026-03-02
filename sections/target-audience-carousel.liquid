@@ -1,0 +1,372 @@
+{% liquid
+  assign hide_section = false
+  assign section_title = blank
+  assign section_subtitle = blank
+  assign member_items = blank
+  assign has_valid_member = false
+
+  if request.page_type == 'product' and product != blank
+    assign source_ref = product.metafields.custom.sbv2_target_audience_carousel
+    assign source_root = source_ref.value | default: source_ref.reference.value | default: source_ref.reference | default: source_ref
+
+    if source_root != blank
+      assign section_title = source_root.title.value | default: source_root.title
+      assign section_subtitle = source_root.subtitle.value | default: source_root.subtitle
+      assign member_items = source_root.members.value | default: source_root.members.references | default: source_root.members
+
+      if member_items != blank
+        for item in member_items
+          assign member_entry = item.value | default: item.reference.value | default: item.reference | default: item
+          assign member_name = member_entry.name.value | default: member_entry.name
+          assign member_subtitle = member_entry.subtitle.value | default: member_entry.subtitle
+          assign member_photo = member_entry.photo.value | default: member_entry.photo
+          if member_name != blank or member_subtitle != blank or member_photo != blank
+            assign has_valid_member = true
+            break
+          endif
+        endfor
+      endif
+    endif
+  endif
+
+  if has_valid_member == false
+    assign hide_section = true
+  endif
+%}
+
+{% if hide_section %}
+  <script>
+    (() => {
+      const sectionWrapper = document.currentScript && document.currentScript.closest('.shopify-section');
+      if (sectionWrapper) {
+        sectionWrapper.style.setProperty('display', 'none', 'important');
+      }
+    })();
+  </script>
+{% else %}
+  <section class="sb-target-audience-carousel" data-sb-carousel data-sb-reveal>
+    {% if section_title != blank %}
+      <h2 class="sb-target-audience-carousel__title font-title weight-bold" data-sb-reveal-item>{{ section_title }}</h2>
+    {% endif %}
+
+    {% if section_subtitle != blank %}
+      <p class="sb-target-audience-carousel__subtitle font-body weight-semibold" data-sb-reveal-item>{{ section_subtitle }}</p>
+    {% endif %}
+
+    <div class="sb-target-audience-carousel__viewport" data-sb-carousel-viewport>
+      <div class="sb-target-audience-carousel__track" data-sb-carousel-track>
+        {% for item in member_items %}
+          {% liquid
+            assign member_entry = item.value | default: item.reference.value | default: item.reference | default: item
+            assign member_name = member_entry.name.value | default: member_entry.name
+            assign member_subtitle = member_entry.subtitle.value | default: member_entry.subtitle
+            assign member_link = member_entry.link.value | default: member_entry.link
+            assign member_photo = member_entry.photo.value | default: member_entry.photo
+            assign member_link_url = member_link.url | default: member_link
+            assign member_link_url = member_link_url | append: '' | strip
+            assign member_has_link = false
+            if member_link_url != blank
+              assign member_has_link = true
+            endif
+
+            assign member_photo_request_width = 849
+            if member_photo != blank and member_photo.width != blank
+              assign member_photo_request_width = member_photo.width | at_most: 849
+            endif
+          %}
+
+          {% if member_name == blank and member_subtitle == blank and member_photo == blank %}
+            {% continue %}
+          {% endif %}
+
+          <article class="sb-target-audience-carousel__item" data-sb-carousel-item data-sb-reveal-item>
+            {% if member_has_link %}
+              <a
+                class="sb-target-audience-carousel__media-link"
+                href="{{ member_link_url }}"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div class="sb-target-audience-carousel__media">
+                  {% if member_photo != blank %}
+                    {{
+                      member_photo
+                      | image_url: width: member_photo_request_width
+                      | image_tag:
+                        alt: member_name | default: member_subtitle,
+                        loading: 'lazy',
+                        width: 283,
+                        height: 283
+                    }}
+                  {% else %}
+                    <div class="sb-target-audience-carousel__media-placeholder" aria-hidden="true"></div>
+                  {% endif %}
+                </div>
+              </a>
+            {% else %}
+              <div class="sb-target-audience-carousel__media">
+                {% if member_photo != blank %}
+                  {{
+                    member_photo
+                    | image_url: width: member_photo_request_width
+                    | image_tag:
+                      alt: member_name | default: member_subtitle,
+                      loading: 'lazy',
+                      width: 283,
+                      height: 283
+                  }}
+                {% else %}
+                  <div class="sb-target-audience-carousel__media-placeholder" aria-hidden="true"></div>
+                {% endif %}
+              </div>
+            {% endif %}
+
+            <div class="sb-target-audience-carousel__body">
+              {% if member_name != blank %}
+                {% if member_has_link %}
+                  <p class="sb-target-audience-carousel__name font-body weight-bold">
+                    <a href="{{ member_link_url }}" target="_blank" rel="noopener noreferrer">{{ member_name }}</a>
+                  </p>
+                {% else %}
+                  <p class="sb-target-audience-carousel__name font-body weight-bold">{{ member_name }}</p>
+                {% endif %}
+              {% endif %}
+
+              {% if member_subtitle != blank %}
+                {% if member_has_link %}
+                  <p class="sb-target-audience-carousel__member-subtitle font-caption weight-regular">
+                    <a href="{{ member_link_url }}" target="_blank" rel="noopener noreferrer">{{ member_subtitle }}</a>
+                  </p>
+                {% else %}
+                  <p class="sb-target-audience-carousel__member-subtitle font-caption weight-regular">{{ member_subtitle }}</p>
+                {% endif %}
+              {% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="sb-target-audience-carousel__controls" data-sb-carousel-controls>
+      <button type="button" class="sb-target-audience-carousel__arrow" data-sb-carousel-prev aria-label="Previous" disabled>
+        <span class="sb-target-audience-carousel__arrow-icon sb-target-audience-carousel__arrow-icon--left" aria-hidden="true">
+          {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
+        </span>
+      </button>
+
+      <button type="button" class="sb-target-audience-carousel__arrow" data-sb-carousel-next aria-label="Next" disabled>
+        <span class="sb-target-audience-carousel__arrow-icon sb-target-audience-carousel__arrow-icon--right" aria-hidden="true">
+          {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
+        </span>
+      </button>
+    </div>
+  </section>
+{% endif %}
+
+{% stylesheet %}
+  .sb-target-audience-carousel {
+    --sb-carousel-gap: 36px;
+    --sb-carousel-bleed-inline: var(--page-margin);
+    --sb-carousel-hover-bleed: 8px;
+    width: 100%;
+  }
+
+  .sb-target-audience-carousel__title {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+    text-align: center;
+  }
+
+  .sb-target-audience-carousel__subtitle {
+    color: var(--sb-color-neutral-900);
+    margin: 24px 0 0;
+    text-align: center;
+  }
+
+  .sb-target-audience-carousel__viewport {
+    margin-left: calc(-1 * (var(--sb-carousel-bleed-inline) + var(--sb-carousel-hover-bleed)));
+    margin-right: calc(-1 * (var(--sb-carousel-bleed-inline) + var(--sb-carousel-hover-bleed)));
+    margin-top: calc(48px - var(--sb-carousel-hover-bleed));
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: var(--sb-carousel-hover-bleed);
+    padding-left: calc(var(--sb-carousel-bleed-inline) + var(--sb-carousel-hover-bleed));
+    padding-right: calc(var(--sb-carousel-bleed-inline) + var(--sb-carousel-hover-bleed));
+    padding-top: var(--sb-carousel-hover-bleed);
+    scrollbar-width: none;
+    width: calc(100% + ((var(--sb-carousel-bleed-inline) + var(--sb-carousel-hover-bleed)) * 2));
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sb-target-audience-carousel__viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sb-target-audience-carousel__track {
+    align-items: stretch;
+    display: flex;
+    gap: var(--sb-carousel-gap);
+    padding: 0;
+    width: max-content;
+  }
+
+  .sb-target-audience-carousel__item {
+    background: var(--sb-color-neutral-200);
+    border-radius: 24px;
+    display: flex;
+    flex: 0 0 283px;
+    flex-direction: column;
+    height: auto;
+    max-width: 283px;
+    min-width: 283px;
+    overflow: hidden;
+    position: relative;
+    transform: scale(1);
+    transform-origin: center center;
+    transition: transform 220ms ease;
+  }
+
+  .sb-target-audience-carousel__item:hover,
+  .sb-target-audience-carousel__item:focus-within {
+    transform: scale(var(--sb-hover-scale-factor, 1.015));
+  }
+
+  .sb-target-audience-carousel__media-link {
+    border: 0;
+    color: inherit;
+    display: block;
+    flex: 0 0 auto;
+    font-size: 0;
+    line-height: 0;
+    text-decoration: none;
+  }
+
+  .sb-target-audience-carousel__media {
+    aspect-ratio: 1 / 1;
+    background: var(--sb-color-neutral-200);
+    display: block;
+    flex: 0 0 auto;
+    line-height: 0;
+    margin-bottom: -1px;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .sb-target-audience-carousel__media img,
+  .sb-target-audience-carousel__media-placeholder {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    vertical-align: top;
+    width: 100%;
+  }
+
+  .sb-target-audience-carousel__media-placeholder {
+    background: var(--sb-color-neutral-200);
+  }
+
+  .sb-target-audience-carousel__body {
+    background: var(--sb-color-neutral-200);
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 16px;
+  }
+
+  .sb-target-audience-carousel__name {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+  }
+
+  .sb-target-audience-carousel__name a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .sb-target-audience-carousel__member-subtitle {
+    color: var(--sb-color-neutral-800);
+    margin: 4px 0 0;
+  }
+
+  .sb-target-audience-carousel__member-subtitle a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .sb-target-audience-carousel__controls {
+    align-items: center;
+    display: none;
+    gap: 16px;
+    justify-content: flex-end;
+    margin-top: 48px;
+  }
+
+  .sb-target-audience-carousel.is-overflowing .sb-target-audience-carousel__controls {
+    display: flex;
+  }
+
+  .sb-target-audience-carousel__arrow {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    display: inline-flex;
+    height: var(--sb-space-48);
+    justify-content: center;
+    padding: 0;
+    width: var(--sb-space-48);
+  }
+
+  .sb-target-audience-carousel__arrow[disabled] {
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  .sb-target-audience-carousel__arrow-icon {
+    display: inline-flex;
+    height: var(--sb-space-48);
+    width: var(--sb-space-48);
+  }
+
+  .sb-target-audience-carousel__arrow-icon--right {
+    transform: scaleX(-1);
+  }
+
+  .sb-target-audience-carousel__arrow-icon svg {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .sb-target-audience-carousel__arrow-icon svg path:first-child {
+    fill: var(--sb-color-neutral-200);
+  }
+
+  .sb-target-audience-carousel__arrow-icon svg path:last-child {
+    fill: var(--sb-color-neutral-800);
+  }
+
+  .sb-target-audience-carousel__arrow:hover:not([disabled]) .sb-target-audience-carousel__arrow-icon svg path:last-child,
+  .sb-target-audience-carousel__arrow:focus-visible:not([disabled]) .sb-target-audience-carousel__arrow-icon svg path:last-child {
+    fill: var(--sb-color-primary-500);
+  }
+
+  .sb-target-audience-carousel.is-not-overflowing .sb-target-audience-carousel__track {
+    margin-inline: auto;
+  }
+{% endstylesheet %}
+
+{% render 'sb-carousel-init' %}
+
+{% schema %}
+{
+  "name": "Target audience carousel",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Target audience carousel"
+    }
+  ]
+}
+{% endschema %}

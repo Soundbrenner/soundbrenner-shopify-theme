@@ -88,6 +88,8 @@
 
     {% # Load and preload the critical CSS %}
     {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
+    <script src="{{ 'sb-sticky-stack.js' | asset_url }}"></script>
+    <script src="{{ 'product-thumbnail-section-init.js' | asset_url }}"></script>
 
     {% # Social, title, etc. %}
     {% render 'meta-tags' %}

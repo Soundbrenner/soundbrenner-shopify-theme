@@ -1,13 +1,51 @@
 {% assign button_size = size | default: 'large' %}
 {% assign button_icon_position = icon_position | default: 'none' %}
 {% assign button_html_type = button_type | default: 'button' %}
+{% assign button_link = link %}
+
+{% liquid
+  if button_link != blank
+    assign locale_root = request.locale.root_url | default: routes.root_url | default: '/'
+    if locale_root == blank
+      assign locale_root = '/'
+    endif
+    assign locale_root_last_char = locale_root | slice: -1, 1
+    unless locale_root_last_char == '/'
+      assign locale_root = locale_root | append: '/'
+    endunless
+
+    assign button_link_first_char = button_link | slice: 0, 1
+    assign button_link_first_two = button_link | slice: 0, 2
+
+    if button_link == '/'
+      assign button_link = locale_root
+    elsif button_link_first_char == '/' and button_link_first_two != '//'
+      if locale_root != '/'
+        assign locale_root_len = locale_root | size
+        assign button_link_prefix = button_link | slice: 0, locale_root_len
+        unless button_link_prefix == locale_root
+          assign button_link_trimmed = button_link | remove_first: '/'
+          assign button_link = locale_root | append: button_link_trimmed
+        endunless
+      endif
+    elsif button_link contains '://www.soundbrenner.com/' or button_link contains '://soundbrenner.com/'
+      assign button_link_parts = button_link | split: 'soundbrenner.com'
+      assign button_link_path = button_link_parts | last
+      assign button_link_path_first_char = button_link_path | slice: 0, 1
+      if button_link_path_first_char == '/'
+        assign button_link_path = button_link_path | remove_first: '/'
+        assign button_link = locale_root | append: button_link_path
+      endif
+    endif
+  endif
+%}
 
 {% capture button_classes -%}
   sb-button-radiant
   sb-button-radiant--{{ button_size }}
   {%- if button_icon_position == 'leading' -%} sb-button-radiant--leading-icon{%- endif -%}
   {%- if button_icon_position == 'trailing' -%} sb-button-radiant--trailing-icon{%- endif -%}
-  {%- if extra_class != blank -%} {{ extra_class }}{%- endif -%}
+  {%- if extra_class != blank %} {{ extra_class }}{%- endif -%}
 {%- endcapture %}
 
 {% capture button_icon %}
@@ -16,8 +54,8 @@
   </span>
 {% endcapture %}
 
-{% if link != blank %}
-  <a class="{{ button_classes | strip }}" href="{{ link }}" {% if reveal %}data-sb-reveal-item{% endif %}>
+{% if button_link != blank %}
+  <a class="{{ button_classes | strip }}" href="{{ button_link }}" {% if reveal %}data-sb-reveal-item{% endif %}>
     {% if button_icon_position == 'leading' %}
       {{ button_icon }}
     {% endif %}

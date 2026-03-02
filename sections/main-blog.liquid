@@ -656,7 +656,7 @@
     --sb-menu-unroll-duration: 420ms;
     --sb-menu-unroll-ease: cubic-bezier(0.22, 1, 0.36, 1);
     --sb-menu-surface-shadow: 0 var(--sb-space-48) var(--sb-space-48) 0 var(--sb-color-always-black-25);
-    --sb-blog-sticky-first-offset: var(--sb-space-128);
+    --sb-blog-sticky-first-offset: calc(var(--sb-sticky-top-stack-bottom, 0px) + var(--sb-space-96));
     padding: 0;
   }
 
@@ -1318,7 +1318,7 @@
 
   .sb-blog-overview-card--feature:hover,
   .sb-blog-overview-card--feature:focus-within {
-    transform: scale(1.015);
+    transform: scale(var(--sb-hover-scale-factor, 1.015));
   }
 
   .sb-blog-overview-card--half .sb-blog-overview-card__media,
@@ -1326,21 +1326,9 @@
     aspect-ratio: 16 / 9;
   }
 
-  .sb-blog-overview-card--half .sb-blog-overview-card__media,
-  .sb-blog-overview-card--third .sb-blog-overview-card__media {
-    opacity: 1;
-  }
-
   .sb-blog-overview-card--half .sb-blog-overview-card__date,
   .sb-blog-overview-card--third .sb-blog-overview-card__date {
     margin-top: auto;
-  }
-
-  .sb-blog-overview-card--half .sb-blog-overview-card__media:hover,
-  .sb-blog-overview-card--half .sb-blog-overview-card__media:focus-visible,
-  .sb-blog-overview-card--third .sb-blog-overview-card__media:hover,
-  .sb-blog-overview-card--third .sb-blog-overview-card__media:focus-visible {
-    opacity: 0.75;
   }
 
   .sb-blog-overview__archive {
@@ -1389,17 +1377,30 @@
   .sb-blog-overview-card--archive .sb-blog-overview-card__media {
     aspect-ratio: 16 / 9;
     border-radius: var(--sb-space-12);
-    opacity: 1;
-  }
-
-  .sb-blog-overview-card--archive .sb-blog-overview-card__media:hover,
-  .sb-blog-overview-card--archive .sb-blog-overview-card__media:focus-visible {
-    opacity: 0.75;
   }
 
   .sb-blog-overview-card--archive .sb-blog-overview-card__content {
     justify-content: center;
     padding: 0;
+  }
+
+  @media (min-width: 990px) {
+    .sb-blog-overview-card--half .sb-blog-overview-card__media,
+    .sb-blog-overview-card--third .sb-blog-overview-card__media,
+    .sb-blog-overview-card--archive .sb-blog-overview-card__media {
+      transform: scale(1);
+      transform-origin: center center;
+      transition: transform 220ms ease;
+    }
+
+    .sb-blog-overview-card--half .sb-blog-overview-card__media:hover,
+    .sb-blog-overview-card--half .sb-blog-overview-card__media:focus-visible,
+    .sb-blog-overview-card--third .sb-blog-overview-card__media:hover,
+    .sb-blog-overview-card--third .sb-blog-overview-card__media:focus-visible,
+    .sb-blog-overview-card--archive .sb-blog-overview-card__media:hover,
+    .sb-blog-overview-card--archive .sb-blog-overview-card__media:focus-visible {
+      transform: scale(var(--sb-hover-scale-factor, 1.015));
+    }
   }
 
   .sb-blog-overview__sidebar {
@@ -1434,7 +1435,7 @@
   .sb-blog-overview__sidebar-card-wrap {
     overflow: visible;
     position: sticky;
-    top: var(--sb-sidebar-sticky-top, 112px);
+    top: max(112px, calc(var(--sb-sticky-top-stack-bottom, 0px) + 36px));
   }
 
   .sb-blog-overview__sidebar-phase--1 .sb-blog-overview__sidebar-card-wrap {
@@ -1821,7 +1822,6 @@
     const stickyNavWraps = Array.from(document.querySelectorAll('.sb-blog-overview__sticky-nav-wrap'));
     const blogFilterDropdowns = Array.from(document.querySelectorAll('[data-sb-blog-filter-dropdown]'));
     const blogFilterBackdrops = Array.from(document.querySelectorAll('[data-sb-blog-filter-backdrop]'));
-    const headerElement = document.querySelector('.header');
     if (!stacks.length && !stickyNavWraps.length && !blogFilterDropdowns.length && !blogFilterBackdrops.length) return;
 
     const parseSpaceVar = (name, fallback) => {
@@ -1830,64 +1830,21 @@
       return Number.isFinite(parsed) ? parsed : fallback;
     };
 
-    const getSidebarStickyTop = (stack) => {
-      const defaultTop = 112;
-      const menuGap = 36;
-      const isDesktopSidebar = window.matchMedia('(min-width: 990px)').matches;
-      if (!isDesktopSidebar) return defaultTop;
-
-      const section = stack.closest('.sb-blog-overview');
-      const stickyNavWrap = section
-        ? Array.from(section.querySelectorAll('.sb-blog-overview__sticky-nav-wrap')).find((wrap) => wrap.getClientRects().length > 0)
-        : null;
-      const stickyNav = stickyNavWrap?.querySelector('.sb-blog-overview__sticky-nav');
-      if (!stickyNavWrap || !stickyNav || stickyNavWrap.getClientRects().length === 0) return defaultTop;
-
-      const navBottom = stickyNav.getBoundingClientRect().bottom;
-      return Math.max(defaultTop, Math.round(navBottom + menuGap));
-    };
-
-    const syncSidebarStickyTops = () => {
-      stacks.forEach((stack) => {
-        const nextTopValue = `${getSidebarStickyTop(stack)}px`;
-        const currentTopValue = stack.style.getPropertyValue('--sb-sidebar-sticky-top');
-        if (currentTopValue !== nextTopValue) {
-          stack.style.setProperty('--sb-sidebar-sticky-top', nextTopValue);
+    const getTopStackBottom = () => {
+      if (window.SBStickyStack && typeof window.SBStickyStack.getState === 'function') {
+        const stickyState = window.SBStickyStack.getState();
+        if (Number.isFinite(stickyState?.topStackBottom)) {
+          return Math.max(stickyState.topStackBottom, 0);
         }
-      });
-    };
-
-    const syncStickyBlogNavTop = () => {
-      if (!stickyNavWraps.length) return;
-      if (!headerElement) {
-        stickyNavWraps.forEach((wrap) => {
-          const spacing = Number.parseFloat(getComputedStyle(wrap).getPropertyValue('--sb-supplementary-sticky-top-gap')) || 16;
-          const fallbackTop = `${Math.round(spacing)}px`;
-          if (wrap.style.top !== fallbackTop) {
-            wrap.style.top = fallbackTop;
-          }
-        });
-        return;
       }
-
-      const headerStyles = getComputedStyle(headerElement);
-      const headerBorderBottom = Number.parseFloat(headerStyles.borderBottomWidth) || 0;
-      const headerBottom = headerElement.getBoundingClientRect().bottom - headerBorderBottom;
-      stickyNavWraps.forEach((wrap) => {
-        const spacing = Number.parseFloat(getComputedStyle(wrap).getPropertyValue('--sb-supplementary-sticky-top-gap')) || 16;
-        const nextTop = Math.max(headerBottom + spacing, spacing);
-        const nextTopValue = `${Math.floor(nextTop)}px`;
-        if (wrap.style.top !== nextTopValue) {
-          wrap.style.top = nextTopValue;
-        }
-      });
+      return parseSpaceVar('--sb-sticky-top-stack-bottom', 0);
     };
 
-    const syncStickyBlogNavMetrics = () => {
+    const syncFirstContentOffset = () => {
       if (!stickyNavWraps.length) return;
-      const baseGap = parseSpaceVar('--sb-space-128', 128);
-      const isDesktopViewport = window.matchMedia('(min-width: 990px)').matches;
-
+      const headingOffset = parseSpaceVar('--sb-space-96', 96);
+      const currentScrollTop = window.scrollY || window.pageYOffset || 0;
+      const topStackBottom = getTopStackBottom();
       const sections = Array.from(
         new Set(
           stickyNavWraps
@@ -1897,25 +1854,10 @@
       );
 
       sections.forEach((section) => {
-        const activeWrap = stickyNavWraps.find(
-          (wrap) => wrap.closest('.sb-blog-overview') === section && wrap.getClientRects().length > 0
-        );
-        let nextOffset = baseGap;
-
-        if (isDesktopViewport && activeWrap) {
-          const stickyNav = activeWrap.querySelector('.sb-blog-overview__sticky-nav');
-          if (stickyNav && stickyNav.getClientRects().length > 0) {
-            const stickyNavStyles = getComputedStyle(stickyNav);
-            const stickyPaddingTop = Number.parseFloat(stickyNavStyles.paddingTop) || 0;
-            const stickyPaddingBottom = Number.parseFloat(stickyNavStyles.paddingBottom) || 0;
-            const singleRowHeight = stickyPaddingTop + 36 + stickyPaddingBottom;
-            const stickyNavHeight = stickyNav.getBoundingClientRect().height;
-            const wrappedRowsOffset = Math.max(0, stickyNavHeight - singleRowHeight);
-            nextOffset += wrappedRowsOffset;
-          }
-        }
-
-        const nextOffsetValue = activeWrap ? `${Math.round(nextOffset)}px` : '0px';
+        const sectionInner = section.querySelector('.sb-blog-overview__inner') || section;
+        const sectionInnerTop = sectionInner.getBoundingClientRect().top + currentScrollTop;
+        const nextOffset = Math.max(Math.round(topStackBottom + headingOffset - sectionInnerTop), headingOffset);
+        const nextOffsetValue = `${nextOffset}px`;
         const currentOffsetValue = section.style.getPropertyValue('--sb-blog-sticky-first-offset');
         if (currentOffsetValue !== nextOffsetValue) {
           section.style.setProperty('--sb-blog-sticky-first-offset', nextOffsetValue);
@@ -2049,7 +1991,6 @@
     const applyStickyLayout = () => {
       const gap = parseSpaceVar('--sb-space-30', 30);
       const isMobileViewport = window.matchMedia('(max-width: 989px)').matches;
-      syncSidebarStickyTops();
 
       stacks.forEach((stack) => {
         const cards = Array.from(stack.querySelectorAll('[data-sb-sidebar-sticky-card]'));
@@ -2102,33 +2043,15 @@
       frameRequested = true;
       window.requestAnimationFrame(() => {
         frameRequested = false;
-        syncStickyBlogNavTop();
         applyStickyLayout();
-        syncStickyBlogNavMetrics();
+        syncFirstContentOffset();
       });
     };
 
-    window.addEventListener(
-      'scroll',
-      () => {
-        syncStickyBlogNavTop();
-        syncSidebarStickyTops();
-      },
-      { passive: true }
-    );
-    window.addEventListener('resize', () => {
-      requestStickyLayoutUpdate();
-    });
-    window.addEventListener('load', () => {
-      requestStickyLayoutUpdate();
-    });
-
-    if (headerElement) {
-      const headerObserver = new MutationObserver(() => {
-        requestStickyLayoutUpdate();
-      });
-      headerObserver.observe(headerElement, { attributes: true, attributeFilter: ['class', 'style'] });
-    }
+    window.addEventListener('resize', requestStickyLayoutUpdate);
+    window.addEventListener('load', requestStickyLayoutUpdate);
+    document.addEventListener('sb:cart-drawer:state-change', requestStickyLayoutUpdate);
+    document.addEventListener('sb:sticky-stack:change', requestStickyLayoutUpdate);
 
     if ('ResizeObserver' in window) {
       const observer = new ResizeObserver(requestStickyLayoutUpdate);
@@ -2136,7 +2059,6 @@
       stacks.forEach((stack) => {
         observer.observe(stack);
       });
-      if (headerElement) observer.observe(headerElement);
       stickyNavWraps.forEach((wrap) => {
         observer.observe(wrap);
       });

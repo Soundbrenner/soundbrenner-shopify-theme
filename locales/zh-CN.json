@@ -9,6 +9,7 @@
  */
 {
   "404": {
+    "title": "404",
     "not_found": "页面未找到。",
     "back_to_shopping": "返回购物"
   },

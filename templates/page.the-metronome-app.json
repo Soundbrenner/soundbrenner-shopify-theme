@@ -17,7 +17,7 @@
         "background_image_desktop": "shopify://shop_images/Property_1_The_Metronome_1.jpg",
         "background_image_mobile": "shopify://shop_images/Property_1_The_Metronome_1_mobile.jpg",
         "kicker": "The Metronome app",
-        "headline": "Make music practice addictive.",
+        "headline": "Make music practice addictive. Try it free.",
         "subheadline": "",
         "show_button": false,
         "button_label": "",
@@ -28,6 +28,12 @@
         "show_app_download_app_store": true,
         "show_app_download_google_play": true,
         "show_app_download_china": true
+      }
+    },
+    "metronome_app_sticky_nav": {
+      "type": "metronome-app-sticky-nav",
+      "settings": {
+        "fallback_title": "The Metronome app"
       }
     },
     "trust_indicators": {
@@ -155,25 +161,10 @@
         "body": ""
       }
     },
-    "hero_card_1": {
-      "type": "hero-card",
+    "download_app_section": {
+      "type": "download-app-section",
       "settings": {
-        "use_resource_title_description": true,
-        "use_seasonal_hero_card": false,
-        "background_image_desktop": "shopify://shop_images/Property_1_App_1_6ff69b0f-a787-456a-8986-2636d4ddafe0.jpg",
-        "background_image_mobile": "shopify://shop_images/Property_1_App_1_mobile.jpg",
-        "kicker": "The Metronome app",
-        "headline": "Make music practice addictive.",
-        "subheadline": "",
-        "show_button": false,
-        "button_label": "",
-        "button_size": "large",
-        "icon_position": "none",
-        "button_link": "",
-        "show_app_download_qr": true,
-        "show_app_download_app_store": true,
-        "show_app_download_google_play": true,
-        "show_app_download_china": true
+        "title": "Try it for free now"
       }
     },
     "hero_card_2": {
@@ -199,13 +190,14 @@
   },
   "order": [
     "hero_card_TeBW6V",
+    "metronome_app_sticky_nav",
     "trust_indicators",
     "large_feature_1",
     "large_feature_2",
     "large_feature_3",
     "large_feature_4",
     "large_feature_5",
-    "hero_card_1",
+    "download_app_section",
     "hero_card_2"
   ]
 }
