@@ -1,0 +1,290 @@
+{
+  "404": {
+    "title": "404",
+    "not_found": "Page not found.",
+    "back_to_shopping": "Back to shopping"
+  },
+  "blog": {
+    "article_comments": "Comments",
+    "article_metadata_html": "{{ date }} by {{ author }}",
+    "comment_form_body": "Comment",
+    "comment_form_email": "Email",
+    "comment_form_name": "Name",
+    "comment_form_submit": "Post",
+    "comment_form_title": "Add a comment"
+  },
+  "cart": {
+    "checkout": "Checkout",
+    "title": "Cart",
+    "update": "Update",
+    "remove": "Remove",
+    "discount_code_error": "Discount code cannot be applied to your cart",
+    "shipping_discount_error": "Shipping discounts are shown at checkout after adding an address"
+  },
+  "customers": {
+    "login": {
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in",
+      "title": "Login"
+    }
+  },
+  "collections": {
+    "title": "Collections"
+  },
+  "gift_card": {
+    "add_to_apple_wallet": "Add to Apple Wallet",
+    "card": "Gift card",
+    "expired": "This gift card has expired",
+    "expires_on": "Expires on {{ expires_on }}",
+    "use_at_checkout": "Use this gift card at checkout"
+  },
+  "password": {
+    "title": "This shop is private",
+    "password": "Password",
+    "enter": "Enter"
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search articles, pages, or products",
+    "submit": "Search",
+    "no_results_html": "No results found for {{ terms }}",
+    "results_for_html": "{{ count }} results found for {{ terms }}"
+  },
+  "sb": {
+    "accordion": {
+      "contact_prompt_html": "If you can't find your answer, <a href=\"{{ url }}\">contact us</a>!",
+      "frequently_asked_questions": "Frequently asked questions"
+    },
+    "app": {
+      "app_store": "App Store",
+      "download_app_store": "Download on the App Store",
+      "download_china": "Download in China",
+      "download_google_play": "Download on Google Play",
+      "google_play": "Google Play"
+    },
+    "blog": {
+      "about_soundbrenner": "About Soundbrenner",
+      "all": "All",
+      "archive": "Archive",
+      "blog": "Blog",
+      "by_instrument": "By instrument",
+      "by_product": "By product",
+      "by_team_soundbrenner": "by Team Soundbrenner",
+      "categories": "Categories",
+      "category_filters": "Blog category filters",
+      "close_categories": "Close categories",
+      "comment_pagination": "Comment pagination",
+      "company_news": "Company news",
+      "explore_shop": "Explore our shop",
+      "featured_articles": "Featured articles",
+      "gift_guides": "Gift guides",
+      "latest": "Latest",
+      "min_read": "{{ minutes }} min read",
+      "most_popular": "Most popular",
+      "music_insights": "Music insights",
+      "next_page": "Next page",
+      "pagination": "Pagination",
+      "previous_page": "Previous page",
+      "product_tips": "Product tips",
+      "read_this_next": "Read this next",
+      "sidebar_content": "Sidebar content",
+      "sidebar_promo": "Sidebar promo",
+      "sticky_navigation": "Sticky blog navigation"
+    },
+    "cart": {
+      "accepted_payment_methods": "Accepted payment methods",
+      "apply": "Apply",
+      "clear_cart": "Clear cart",
+      "decrease_quantity": "Decrease quantity",
+      "discount": "Discount",
+      "discount_code": "Discount code",
+      "discount_with_percent": "{{ code }} ({{ percent }}% OFF)",
+      "empty_message": "Your cart is empty. Let's fill it with beautifully designed music gear.",
+      "free_shipping": "Free shipping",
+      "free_shipping_remaining_html": "👉 You're only <strong>{{ amount }}</strong> away from <strong>free shipping</strong>.",
+      "free_shipping_unlocked_html": "🥳 You've unlocked <strong>free shipping</strong>.",
+      "included_in_price": "Included in price",
+      "increase_quantity": "Increase quantity",
+      "quantity": "Quantity",
+      "remove_discount_code": "Remove {{ code }}",
+      "remove_item": "Remove item",
+      "secure_checkout": "Secure checkout",
+      "shipping_days_delivery_in": "{{ min }}-{{ max }} days delivery in {{ country }}",
+      "shipping_not_shipping_to": "We're not shipping to {{ country }}",
+      "shipping_ships_to": "Ships to {{ country }}",
+      "shipping_ships_worldwide": "Ships worldwide",
+      "shop_all_products": "Shop all products",
+      "subtotal": "Subtotal",
+      "taxes_and_duties": "Taxes and duties",
+      "taxes_may_be_due_on_delivery": "May be due on delivery",
+      "total": "Total",
+      "your_country": "your country"
+    },
+    "collection_overview": {
+      "collection_name": "Collection name",
+      "compare": "Compare",
+      "explore_collection": "Explore collection",
+      "product_placeholder": "Product",
+      "rating_summary": "{{ rating }} out of {{ count }} reviews",
+      "read_all": "Read all",
+      "view_all": "View all"
+    },
+    "common": {
+      "back": "Back",
+      "cart_drawer": "Cart drawer",
+      "close_cart": "Close cart",
+      "close_menu": "Close menu",
+      "continue": "Continue",
+      "days": "days",
+      "download": "Download",
+      "hours": "hours",
+      "language": "Language",
+      "menu": "Menu",
+      "mins": "mins",
+      "next": "Next",
+      "no_results_found": "No results found",
+      "previous": "Previous",
+      "primary": "Primary",
+      "primary_navigation": "Primary navigation",
+      "region_selector": "Region selector",
+      "search": "Search",
+      "secs": "secs",
+      "verified_buyer": "Verified buyer"
+    },
+    "contact": {
+      "email": "Email",
+      "full_name": "Full name",
+      "send": "Send",
+      "success_message": "Thank you for contacting us. We'll get back as soon as possible."
+    },
+    "footer": {
+      "company": "Company",
+      "partner_with_us": "Partner with us",
+      "resources": "Resources"
+    },
+    "header": {
+      "accessories": "Accessories",
+      "download_ios_android": "Download for iOS and Android",
+      "metronome_app": "The Metronome app",
+      "ratings": "{{ count }} ratings",
+      "region_and_language": "Region and language",
+      "mobile_review_date": "8 Jan, 2026",
+      "mobile_review_name": "Wesley G.",
+      "mobile_review_text": "I have the in-ear monitors and the Pulse. They work exactly as promised. Shipping was good and without bad surprises. Thank you Soundbrenner!",
+      "mobile_menu_reviews_json": "[{\"day\":8,\"name\":\"Wesley G.\",\"text\":\"I have the in-ear monitors and the Pulse. They work exactly as promised. Shipping was good and without bad surprises. Thank you Soundbrenner!\"},{\"day\":4,\"name\":\"Rob M.\",\"text\":\"I had questions about my purchase, and Ethan has been super attentive offering excellent explanations and suggestions. Services matters as much as the product you buy, and I'm impressed.\"},{\"day\":15,\"name\":\"Lee K.\",\"text\":\"My initial order was delayed but the staff were super responsive to my emails and sorted it out without problem. Issues happen from time to time but I appreciate that they care about their customers and service.\"},{\"day\":2,\"name\":\"Samuel A.\",\"text\":\"Amazing customer service, great and quick service overall. I am really happy I purchased this product and I will be looking forward to future purchases.\"},{\"day\":21,\"name\":\"Nate L.\",\"text\":\"Soundbrenner's customer service has been top notch. They helped me with a return for a bad adapter and made it right. Will gladly buy again from SB.\"},{\"day\":9,\"name\":\"Christos T.\",\"text\":\"Incredible customer service experience: prompt and deliberate responses, and understanding of my needs. I am very pleased with how they handled my return process.\"},{\"day\":12,\"name\":\"Paul S.\",\"text\":\"Easy to shop for, shipping was fast, and the package presentation was much higher end than I expected.\"},{\"day\":27,\"name\":\"Mark C.\",\"text\":\"This company is a breath of fresh air to deal with! I did have a problem with part of my order but it was resolved so quickly it really wasn't a problem. I genuinely look forward to using this company again.\"},{\"day\":18,\"name\":\"Curtis E.\",\"text\":\"One of the best customer support experiences I've ever had. I had one minor issue and they went above and beyond to correct it and emailed back within an hour. I don't see myself or my son buying from anyone else again.\"},{\"day\":5,\"name\":\"Jerry W.\",\"text\":\"Easy checkout and fast shipping. These folks know how to treat a customer with respect and appreciation.\"},{\"day\":24,\"name\":\"Cymil M.\",\"text\":\"Shopping was seamless and easy. Customer service is very responsive and always presents options for whatever concern you may have. Five star.\"}]"
+    },
+    "hero_video": {
+      "play_title": "Play {{ title }}",
+      "title": "Hero video",
+      "title_index": "Hero video {{ index }}",
+      "video_index": "Video {{ index }}"
+    },
+    "large_feature": {
+      "image_alt": "Large feature image",
+      "kicker": "Kicker"
+    },
+    "manual": {
+      "chapter": "Chapter",
+      "chapters": "Chapters",
+      "close_chapters": "Close chapters",
+      "product_manual": "Product manual",
+      "sticky_navigation": "Sticky manual navigation"
+    },
+    "media": {
+      "close_video": "Close video",
+      "play_video": "Play video",
+      "video_player": "Video player",
+      "video_story_player": "Video story player",
+      "vimeo_video": "Vimeo video",
+      "vimeo_video_placeholder": "Vimeo video placeholder",
+      "pause_video": "Pause video"
+    },
+    "press_ticker": {
+      "logos_aria_label": "As seen on logos",
+      "title": "As seen on"
+    },
+    "product": {
+      "add": "Add",
+      "add_to_cart": "Add to cart",
+      "added": "Added",
+      "all_taxes_duties_included": "All taxes and duties included in price",
+      "buy_now": "Buy now",
+      "buy_with": "Buy with",
+      "color_option": "Color {{ index }}",
+      "color_selector": "Color selector",
+      "description": "Description",
+      "free_shipping_over": "Free shipping over {{ threshold }}",
+      "go_to_reviews": "Go to reviews",
+      "in_the_box": "In the box",
+      "learn_more": "Learn more",
+      "money_back_30_day": "30-day money-back guarantee",
+      "next_image": "Next image",
+      "page_mode": "Page mode",
+      "popular_add_ons": "Popular add-ons",
+      "previous_image": "Previous image",
+      "purchase_guarantees": "Purchase guarantees",
+      "reviews_count": "{{ count }} reviews",
+      "save_percent": "Save {{ percent }}%",
+      "shop_pay_installments_from": "Shop Pay installments from",
+      "sold_out": "Sold out",
+      "warranty_1_year": "1-year warranty",
+      "badge_bestseller": "Bestseller",
+      "badge_new": "New",
+      "buy_multiple_save_extra": "Buy multiple and save extra",
+      "product_name": "Product name",
+      "variant": "Variant",
+      "week_fifth": "fifth",
+      "week_first": "first",
+      "week_fourth": "fourth",
+      "week_of_month": "{{ week }} week of {{ month }}",
+      "week_second": "second",
+      "week_third": "third"
+    },
+    "rating": {
+      "out_of_five_stars": "{{ rating }} out of 5 stars"
+    },
+    "see_it_in_action": {
+      "media_alt": "See it in action media"
+    },
+    "shogun": {
+      "view_product_page": "View product page"
+    },
+    "social": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "links": "Social links",
+      "tiktok": "TikTok",
+      "x": "X",
+      "youtube": "YouTube"
+    },
+    "trustpilot": {
+      "logo_link": "Trustpilot logo link",
+      "rating_out_of_five": "{{ rating }} out of 5",
+      "read_reviews": "Read Soundbrenner reviews on Trustpilot",
+      "stars_link": "Trustpilot stars link",
+      "metronome_rating_summary": "{{ rating }} rating, {{ count }} reviews",
+      "trustscore_summary": "{{ rating }} TrustScore on Trustpilot"
+    },
+    "value_breakdown": {
+      "free": "Free",
+      "total": "Total"
+    },
+    "data_sharing": {
+      "opt_out": "Opt out"
+    },
+    "feature_carousel": {
+      "media_alt": "Feature media",
+      "video_alt": "Feature video"
+    },
+    "hero_card": {
+      "affiliate_headline": "Special deal brought to you by {{ Affiliate name }}",
+      "placeholder_button": "Placeholder",
+      "product_mode_headline": "Not happy? Get your money back!",
+      "product_mode_subheadline": "Test risk free with 30-day money-back guarantee.",
+      "subheadline_blocked": "We're not shipping to {{ Shipping country }}. Select a different country.",
+      "subheadline_free_shipping": "Save up to {{ Sitewide discount depth }}% and get free shipping in {{ Shipping country }} on orders over {{ Free shipping threshold }}.",
+      "subheadline_no_free_shipping": "Save up to {{ Sitewide discount depth }}% in {{ Shipping country }}."
+    }
+  }
+}
