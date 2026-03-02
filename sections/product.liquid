@@ -1285,15 +1285,16 @@
 
             {% if product_dynamic_checkout_markup != blank %}
               <div class="sb-product-main__shop-pay-proxy{% unless current_variant.available %} is-unavailable{% endunless %}" data-shop-pay-proxy>
-                <div
+                <button
+                  type="button"
                   class="sb-product-main__shop-pay-button sb-button-radiant sb-button-radiant--large sb-button-radiant--shop-pay sb-button-radiant--trailing-icon font-caption weight-bold"
-                  aria-hidden="true"
+                  aria-label="Buy with Shop Pay"
                 >
                   <span class="sb-button-radiant__label">Buy with</span>
                   <span class="sb-button-radiant__icon" aria-hidden="true">
                     {{ 'logo-shop-pay.svg' | inline_asset_content }}
                   </span>
-                </div>
+                </button>
                 <div
                   class="sb-product-main__dynamic-checkout sb-product-main__dynamic-checkout--proxy"
                   data-product-dynamic-checkout
@@ -3016,7 +3017,6 @@
   }
 
   .sb-product-main__shop-pay-button {
-    pointer-events: none;
     width: 100%;
   }
 
@@ -3723,6 +3723,7 @@
     margin: 0;
     position: absolute;
     overflow: hidden;
+    pointer-events: none;
     z-index: 2;
   }
 
@@ -3931,6 +3932,7 @@
       const savingsBadgeElement = root.querySelector('[data-product-savings-badge]');
       const monthlyPriceElement = root.querySelector('[data-product-monthly-price]');
       const shopPayProxy = root.querySelector('[data-shop-pay-proxy]');
+      const shopPayProxyButton = root.querySelector('.sb-product-main__shop-pay-button');
       const dynamicCheckoutContainer = root.querySelector('[data-product-dynamic-checkout]');
       const productTitle = root.dataset.productTitle || '';
       const productId = root.dataset.productId || '';
@@ -3950,6 +3952,25 @@
           || dynamicCheckoutContainer.querySelector('.shopify-payment-button')
           || dynamicCheckoutContainer.querySelector('button')
         );
+      };
+
+      const getDynamicCheckoutButtonTarget = () => {
+        if (!dynamicCheckoutContainer) return null;
+        return (
+          dynamicCheckoutContainer.querySelector('.shopify-payment-button__button--branded')
+          || dynamicCheckoutContainer.querySelector('.shopify-payment-button__button')
+          || dynamicCheckoutContainer.querySelector('shopify-accelerated-checkout')
+          || dynamicCheckoutContainer.querySelector('.shopify-payment-button button')
+          || dynamicCheckoutContainer.querySelector('button')
+        );
+      };
+
+      const triggerDynamicCheckout = () => {
+        const checkoutButtonTarget = getDynamicCheckoutButtonTarget();
+        if (!(checkoutButtonTarget instanceof HTMLElement)) return;
+        if (checkoutButtonTarget.hasAttribute('disabled')) return;
+        if (checkoutButtonTarget.getAttribute('aria-disabled') === 'true') return;
+        checkoutButtonTarget.click();
       };
 
       const syncShopPayButtonState = () => {
@@ -3974,6 +3995,14 @@
       }
 
       syncShopPayButtonState();
+
+      if (shopPayProxyButton) {
+        shopPayProxyButton.addEventListener('click', (event) => {
+          event.preventDefault();
+          if (shopPayProxy && shopPayProxy.classList.contains('is-unavailable')) return;
+          triggerDynamicCheckout();
+        });
+      }
 
       if (stickyAddButton && addButton) {
         stickyAddButton.addEventListener('click', () => {
