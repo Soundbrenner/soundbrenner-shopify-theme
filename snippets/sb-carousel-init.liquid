@@ -120,7 +120,27 @@
           let clamped = Math.max(0, Math.min(value, max));
           if (clamped < scrollEpsilon) clamped = 0;
           if (clamped > max - scrollEpsilon) clamped = max;
-          viewport.scrollTo({ left: clamped, behavior: 'smooth' });
+          const startOffset = viewport.scrollLeft;
+          const intendedDelta = Math.abs(clamped - startOffset);
+          if (intendedDelta <= scrollEpsilon) return;
+
+          try {
+            viewport.scrollTo({ left: clamped, behavior: 'smooth' });
+          } catch (_error) {
+            viewport.scrollLeft = clamped;
+            syncState();
+            return;
+          }
+
+          // Chrome can occasionally no-op smooth scroll on overflow containers.
+          // If movement never starts, force the final offset.
+          window.setTimeout(() => {
+            if (!document.contains(viewport)) return;
+            const movedBy = Math.abs(viewport.scrollLeft - startOffset);
+            if (movedBy > scrollEpsilon) return;
+            viewport.scrollLeft = clamped;
+            syncState();
+          }, 180);
         };
 
         prev.addEventListener('click', () => {
