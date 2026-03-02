@@ -28,12 +28,11 @@
         endif
         assign feature_subtitle_check = feature_entry.subtitle.value | default: feature_entry.subtitle | append: '' | strip
         assign feature_media_check = feature_entry.media.value | default: feature_entry.media
-        assign feature_video_media_check = feature_entry.video.value | default: feature_entry.video
         assign feature_image_check = feature_entry.image.value | default: feature_entry.image
         assign feature_video_check_field = feature_entry.video_url.value | default: feature_entry.video_url
         assign feature_video_check = feature_video_check_field.url | default: feature_video_check_field.src | default: feature_video_check_field | append: '' | strip
 
-        if feature_title_check != blank or feature_subtitle_check != blank or feature_media_check != blank or feature_video_media_check != blank or feature_image_check != blank or feature_video_check != blank
+        if feature_title_check != blank or feature_subtitle_check != blank or feature_media_check != blank or feature_image_check != blank or feature_video_check != blank
           assign meta_has_items = true
           break
         endif
@@ -69,10 +68,11 @@
             endif
 
             assign feature_media = feature_entry.media.value | default: feature_entry.media
-            assign feature_video_media = feature_entry.video.value | default: feature_entry.video
             assign feature_image = feature_entry.image.value | default: feature_entry.image
+            assign feature_video_field = feature_entry.video_url.value | default: feature_entry.video_url
+            assign feature_video_media = blank
 
-            if feature_video_media == blank and feature_media != blank and feature_media.media_type == 'video'
+            if feature_media != blank and feature_media.media_type == 'video'
               assign feature_video_media = feature_media
             endif
             if feature_image == blank and feature_media != blank and feature_media.media_type == 'image'
@@ -84,9 +84,12 @@
               assign feature_image_request_width = feature_image.width | at_most: 1240
             endif
 
-            assign feature_video_field = feature_entry.video_url.value | default: feature_entry.video_url
+            if feature_video_media == blank and feature_video_field != blank and feature_video_field.media_type == 'video'
+              assign feature_video_media = feature_video_field
+            endif
+
             assign feature_video_url = blank
-            if feature_video_field != blank
+            if feature_video_media == blank and feature_video_field != blank
               if feature_video_field.sources != blank
                 for feature_video_source in feature_video_field.sources
                   assign feature_video_source_url = feature_video_source.url | default: feature_video_source.src
