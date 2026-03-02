@@ -6127,10 +6127,25 @@
     const topThreshold = 8;
     const upwardRevealThreshold = 20;
     const scrollDeltaDeadzone = 1;
+    const inputIntentWindowMs = 500;
     let upwardTravel = 0;
     let hiddenOffset = 0;
     let topExitMode = lastY <= topThreshold;
     let scrollSyncLocked = false;
+    let lastInputDirection = 0;
+    let lastInputTimestamp = 0;
+    let touchTracking = false;
+    let lastTouchY = null;
+
+    const recordScrollIntent = (direction) => {
+      if (!Number.isFinite(direction) || direction === 0) return;
+      lastInputDirection = direction > 0 ? 1 : -1;
+      lastInputTimestamp = Date.now();
+    };
+    const hasRecentUpwardIntent = () => (
+      lastInputDirection < 0
+      && (Date.now() - lastInputTimestamp) <= inputIntentWindowMs
+    );
 
     const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
     const headerSection = header.closest('.shopify-section');
@@ -6667,6 +6682,7 @@
       }
 
       if (delta > 0) {
+        recordScrollIntent(1);
         upwardTravel = 0;
         if (topExitMode) {
           // Only when leaving the top, follow page scroll.
@@ -6679,6 +6695,13 @@
         applyOffset();
       } else if (delta < 0) {
         if (!shouldHidePrimaryNavigationOnScroll) {
+          upwardTravel = 0;
+          hiddenOffset = maxOffset;
+          applyOffset();
+          lastY = normalizedY;
+          return;
+        }
+        if (!hasRecentUpwardIntent()) {
           upwardTravel = 0;
           hiddenOffset = maxOffset;
           applyOffset();
@@ -6711,6 +6734,71 @@
     };
 
     window.addEventListener('scroll', onWindowScroll, { passive: true });
+    window.addEventListener(
+      'wheel',
+      (event) => {
+        const deltaY = Number(event.deltaY);
+        if (!Number.isFinite(deltaY) || Math.abs(deltaY) <= 0.5) return;
+        recordScrollIntent(deltaY > 0 ? 1 : -1);
+      },
+      { passive: true }
+    );
+    window.addEventListener(
+      'touchstart',
+      (event) => {
+        const touch = event.touches && event.touches[0];
+        if (!touch) return;
+        touchTracking = true;
+        lastTouchY = touch.clientY;
+      },
+      { passive: true }
+    );
+    window.addEventListener(
+      'touchmove',
+      (event) => {
+        if (!touchTracking) return;
+        const touch = event.touches && event.touches[0];
+        if (!touch) return;
+        const currentTouchY = touch.clientY;
+        if (!Number.isFinite(lastTouchY)) {
+          lastTouchY = currentTouchY;
+          return;
+        }
+        const pointerDelta = currentTouchY - lastTouchY;
+        if (Math.abs(pointerDelta) > 0.5) {
+          // Finger down means page up (upward reveal intent), finger up means page down.
+          recordScrollIntent(pointerDelta > 0 ? -1 : 1);
+        }
+        lastTouchY = currentTouchY;
+      },
+      { passive: true }
+    );
+    const resetTouchIntentTracking = () => {
+      touchTracking = false;
+      lastTouchY = null;
+    };
+    window.addEventListener('touchend', resetTouchIntentTracking, { passive: true });
+    window.addEventListener('touchcancel', resetTouchIntentTracking, { passive: true });
+    document.addEventListener('keydown', (event) => {
+      if (!event || typeof event.key !== 'string') return;
+      switch (event.key) {
+        case 'ArrowUp':
+        case 'PageUp':
+        case 'Home':
+          recordScrollIntent(-1);
+          break;
+        case 'ArrowDown':
+        case 'PageDown':
+        case 'End':
+          recordScrollIntent(1);
+          break;
+        case ' ':
+          recordScrollIntent(event.shiftKey ? -1 : 1);
+          break;
+        default:
+          break;
+      }
+    });
     window.addEventListener(
       'resize',
       () => {
