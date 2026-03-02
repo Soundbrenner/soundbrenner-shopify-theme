@@ -96,6 +96,8 @@
         class="sb-collection-overview__stars"
         role="img"
         aria-label="{{ 'sb.rating.out_of_five_stars' | t: rating: rating_display }}"
+        data-sb-rating-value="{{ all_reviews_rating_number }}"
+        data-sb-rating-template="{{ 'sb.rating.out_of_five_stars' | t: rating: '__RATING__' | escape }}"
         style="--sb-collection-overview-star-url: url('{{ star_icon_url }}');"
       >
         {% for star_index in (1..5) %}
@@ -114,7 +116,12 @@
         {% endfor %}
       </div>
 
-      <p class="sb-collection-overview__summary font-caption weight-regular">
+      <p
+        class="sb-collection-overview__summary font-caption weight-regular"
+        data-sb-rating-value="{{ all_reviews_rating_number }}"
+        data-sb-count-value="{{ all_reviews_count_number }}"
+        data-sb-summary-template="{{ 'sb.collection_overview.rating_summary' | t: rating: '__RATING__', count: '__COUNT__' | escape }}"
+      >
         {{ 'sb.collection_overview.rating_summary' | t: rating: rating_display, count: all_reviews_count_display }}
       </p>
 
@@ -679,6 +686,50 @@
 {% endstylesheet %}
 
 {% render 'sb-carousel-init' %}
+
+<script>
+  (() => {
+    const formatLocalizedRatingSummary = (scope = document) => {
+      const locale = document.documentElement.lang || undefined;
+      const ratingFormatter = new Intl.NumberFormat(locale, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+      const countFormatter = new Intl.NumberFormat(locale, {
+        maximumFractionDigits: 0,
+      });
+
+      scope.querySelectorAll('[data-sb-summary-template][data-sb-rating-value][data-sb-count-value]').forEach((node) => {
+        const ratingValue = Number.parseFloat(node.getAttribute('data-sb-rating-value') || '0');
+        const countValue = Number.parseFloat(node.getAttribute('data-sb-count-value') || '0');
+        const template = node.getAttribute('data-sb-summary-template') || '';
+        const formattedRating = ratingFormatter.format(Number.isFinite(ratingValue) ? ratingValue : 0);
+        const formattedCount = countFormatter.format(Number.isFinite(countValue) ? countValue : 0);
+        node.textContent = template
+          .replace('__RATING__', formattedRating)
+          .replace('__COUNT__', formattedCount);
+      });
+
+      scope.querySelectorAll('[data-sb-rating-template][data-sb-rating-value]').forEach((node) => {
+        const ratingValue = Number.parseFloat(node.getAttribute('data-sb-rating-value') || '0');
+        const template = node.getAttribute('data-sb-rating-template') || '';
+        const formattedRating = ratingFormatter.format(Number.isFinite(ratingValue) ? ratingValue : 0);
+        node.setAttribute('aria-label', template.replace('__RATING__', formattedRating));
+      });
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => formatLocalizedRatingSummary(document));
+    } else {
+      formatLocalizedRatingSummary(document);
+    }
+
+    document.addEventListener('shopify:section:load', (event) => {
+      if (!event.target) return;
+      formatLocalizedRatingSummary(event.target);
+    });
+  })();
+</script>
 
 {% schema %}
 {
