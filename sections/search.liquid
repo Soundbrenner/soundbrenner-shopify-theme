@@ -37,7 +37,7 @@
               <p>
                 {{ result.title | link_to: result.url }}
                 {% if result.price %}
-                  {{ result.price | money_with_currency }}
+                  {% render 'sb-money-no-decimals', amount: result.price %}
                 {% endif %}
               </p>
             </div>

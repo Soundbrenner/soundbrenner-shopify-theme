@@ -166,7 +166,7 @@
           "type": "accordion_item",
           "settings": {
             "question": "When do I receive my money?",
-            "answer": "<p>There is a standard holding period (30 days) to ensure the order isn't refunded. Once cleared, payouts are processed automatically twice a month, provided your balance exceeds $25 USD.</p>"
+            "answer": "<p>There is a standard holding period (30 days) to ensure the order isn't refunded. Once cleared, payouts are processed automatically twice a month, provided your balance exceeds $25.</p>"
           }
         },
         "accordion_item_UcnyHj": {
