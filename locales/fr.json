@@ -275,6 +275,7 @@
     },
     "value_breakdown": {
       "free": "Gratuit",
+      "money_back_30_day": "Garantie satisfait ou remboursé de 30 jours",
       "total": "Total"
     },
     "data_sharing": {

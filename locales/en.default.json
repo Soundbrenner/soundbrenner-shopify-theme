@@ -276,6 +276,7 @@
     },
     "value_breakdown": {
       "free": "Free",
+      "money_back_30_day": "30-day money-back guarantee",
       "total": "Total"
     },
     "data_sharing": {
