@@ -107,11 +107,13 @@
             return;
           }
 
-          if (viewport.scrollLeft > max - scrollEpsilon) viewport.scrollLeft = max;
-          if (viewport.scrollLeft < scrollEpsilon) viewport.scrollLeft = 0;
+          // Avoid aggressively snapping near 0/max during smooth scroll animations.
+          // Chrome can animate from sub-pixel offsets, and forcing 0 here can cancel movement.
+          if (viewport.scrollLeft > max + scrollEpsilon) viewport.scrollLeft = max;
 
-          prev.disabled = viewport.scrollLeft <= scrollEpsilon;
-          next.disabled = viewport.scrollLeft >= max - scrollEpsilon;
+          const currentOffset = viewport.scrollLeft;
+          prev.disabled = currentOffset <= scrollEpsilon;
+          next.disabled = currentOffset >= max - scrollEpsilon;
         };
 
         const scrollToOffset = (value) => {
