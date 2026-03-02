@@ -9,7 +9,7 @@
     assign resolved_page_title_downcase = resolved_page_title | downcase
     assign seasonal_sale_name_downcase = seasonal_sale_name | downcase
     unless resolved_page_title_downcase contains seasonal_sale_name_downcase
-      assign resolved_page_title = resolved_page_title | append: ' - ' | append: seasonal_sale_name
+      assign resolved_page_title = resolved_page_title | append: ' – ' | append: seasonal_sale_name
     endunless
   endif
 
