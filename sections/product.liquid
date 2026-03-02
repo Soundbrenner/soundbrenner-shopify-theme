@@ -6,6 +6,7 @@
   assign product_has_tagline_override = false
   assign product_variant_explainer_body = blank
   assign product_hide_reviews = false
+  assign product_hide_discounts = false
   assign product_rating = 0
   assign product_reviews_count = 0
   assign product_hide_purchase_guarantees = false
@@ -71,6 +72,10 @@
     assign product_hide_reviews_value = product_settings_ref.hide_reviews.value | default: product_settings_ref.hide_reviews
     if product_hide_reviews_value == true or product_hide_reviews_value == 'true' or product_hide_reviews_value == 1 or product_hide_reviews_value == '1'
       assign product_hide_reviews = true
+    endif
+    assign product_hide_discounts_value = product_settings_ref.hide_discounts.value | default: product_settings_ref.hide_discounts
+    if product_hide_discounts_value == true or product_hide_discounts_value == 'true' or product_hide_discounts_value == 1 or product_hide_discounts_value == '1'
+      assign product_hide_discounts = true
     endif
     assign product_hide_purchase_guarantees_value = product_settings_ref.purchase_guarantees_box.value | default: product_settings_ref.purchase_guarantees_box
     if product_hide_purchase_guarantees_value == true or product_hide_purchase_guarantees_value == 'true' or product_hide_purchase_guarantees_value == 1 or product_hide_purchase_guarantees_value == '1'
@@ -439,7 +444,7 @@
   endif
 
   assign sticky_has_compare_price = false
-  if current_variant.compare_at_price > current_variant.price
+  if current_variant.compare_at_price > current_variant.price and product_hide_discounts == false
     assign sticky_has_compare_price = true
   endif
 %}
@@ -458,6 +463,7 @@
   data-product-id="{{ product.id }}"
   data-product-title="{{ product.title | escape }}"
   data-selector-list-option-position="{{ selector_list_option_position }}"
+  data-hide-discounts="{% if product_hide_discounts %}true{% else %}false{% endif %}"
 >
   <div
     class="sb-product-main__sticky-bar-wrap{% if product_has_page_header %} sb-product-main__sticky-bar-wrap--segmented-controls{% else %} sb-product-main__sticky-bar-wrap--hidden{% endif %}"
@@ -1001,7 +1007,7 @@
                         assign selector_is_selected = true
                       endif
                       assign selector_has_compare = false
-                      if selector_variant.compare_at_price > selector_variant.price
+                      if selector_variant.compare_at_price > selector_variant.price and product_hide_discounts == false
                         assign selector_has_compare = true
                       endif
                     %}
@@ -1034,7 +1040,7 @@
                 {% elsif selector_list_mode == 'multipack' %}
                   {% liquid
                     assign current_product_has_compare = false
-                    if current_variant.compare_at_price > current_variant.price
+                    if current_variant.compare_at_price > current_variant.price and product_hide_discounts == false
                       assign current_product_has_compare = true
                     endif
                   %}
@@ -1085,7 +1091,7 @@
                         assign multipack_is_selected = true
                       endif
                       assign multipack_has_compare = false
-                      if multipack_variant.compare_at_price > multipack_variant.price
+                      if multipack_variant.compare_at_price > multipack_variant.price and product_hide_discounts == false
                         assign multipack_has_compare = true
                       endif
                     %}
@@ -1206,7 +1212,7 @@
           {% liquid
             assign show_compare_price = false
             assign savings_percentage = 0
-            if current_variant.compare_at_price > current_variant.price
+            if current_variant.compare_at_price > current_variant.price and product_hide_discounts == false
               assign show_compare_price = true
               if current_variant.compare_at_price > 0
                 assign savings_percentage = current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | round
@@ -3952,6 +3958,7 @@
       const dynamicCheckoutContainer = root.querySelector('[data-product-dynamic-checkout]');
       const productTitle = root.dataset.productTitle || '';
       const productId = root.dataset.productId || '';
+      const hideDiscounts = root.dataset.hideDiscounts === 'true';
       const selectedById = variants.find((variant) => `${variant.id}` === `${variantSelect.value}`);
       let selectedOptions = Array.isArray(selectedById?.options) ? [...selectedById.options] : [];
       if (!selectedOptions.length && Array.isArray(variants[0]?.options)) {
@@ -4444,6 +4451,12 @@
       const resolveDisplayPrice = (purchaseData, overrideProductId = productId) => {
         const basePriceCents = Number(purchaseData?.price) || 0;
         const baseComparePriceCents = Number(purchaseData?.compare_at_price) || 0;
+        if (hideDiscounts) {
+          return {
+            currentPriceCents: basePriceCents,
+            comparePriceCents: null,
+          };
+        }
 
         if (storefrontPricing && typeof storefrontPricing.resolvePrice === 'function') {
           const resolved = storefrontPricing.resolvePrice({
