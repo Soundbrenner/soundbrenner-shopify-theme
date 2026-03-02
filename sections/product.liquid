@@ -1298,7 +1298,6 @@
               <div
                 class="sb-product-main__dynamic-checkout sb-product-main__dynamic-checkout--proxy"
                 data-product-dynamic-checkout
-                aria-hidden="true"
               >
                 {{ product_dynamic_checkout_markup }}
               </div>
@@ -3710,8 +3709,9 @@
   }
 
   .sb-product-main__dynamic-checkout--proxy {
+    height: 1px;
     margin: 0;
-    max-height: 0;
+    margin-top: -1px;
     opacity: 0;
     overflow: hidden;
     pointer-events: none;
@@ -3915,7 +3915,27 @@
 
       const getDynamicCheckoutButton = () => {
         if (!dynamicCheckoutContainer) return null;
-        return dynamicCheckoutContainer.querySelector('.shopify-payment-button__button');
+        return (
+          dynamicCheckoutContainer.querySelector('.shopify-payment-button__button')
+          || dynamicCheckoutContainer.querySelector('shopify-accelerated-checkout')
+          || dynamicCheckoutContainer.querySelector('.shopify-payment-button')
+          || dynamicCheckoutContainer.querySelector('button')
+        );
+      };
+
+      const triggerDynamicCheckout = () => {
+        const dynamicCheckoutButton = getDynamicCheckoutButton();
+        if (!dynamicCheckoutButton) return false;
+
+        dynamicCheckoutButton.dispatchEvent(new MouseEvent('click', {
+          bubbles: true,
+          cancelable: true,
+          view: window,
+        }));
+        if (typeof dynamicCheckoutButton.click === 'function') {
+          dynamicCheckoutButton.click();
+        }
+        return true;
       };
 
       const syncShopPayButtonState = () => {
@@ -3936,9 +3956,7 @@
         shopPayButton.addEventListener('click', (event) => {
           event.preventDefault();
           if (shopPayButton.disabled) return;
-          const dynamicCheckoutButton = getDynamicCheckoutButton();
-          if (!dynamicCheckoutButton) return;
-          dynamicCheckoutButton.click();
+          triggerDynamicCheckout();
         });
       }
 
