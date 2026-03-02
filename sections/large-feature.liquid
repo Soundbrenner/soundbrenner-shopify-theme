@@ -27,11 +27,13 @@
           assign feature_title_check = feature_entry.title.value | default: feature_entry.title | append: '' | strip
         endif
         assign feature_subtitle_check = feature_entry.subtitle.value | default: feature_entry.subtitle | append: '' | strip
+        assign feature_media_check = feature_entry.media.value | default: feature_entry.media
+        assign feature_video_media_check = feature_entry.video.value | default: feature_entry.video
         assign feature_image_check = feature_entry.image.value | default: feature_entry.image
         assign feature_video_check_field = feature_entry.video_url.value | default: feature_entry.video_url
         assign feature_video_check = feature_video_check_field.url | default: feature_video_check_field.src | default: feature_video_check_field | append: '' | strip
 
-        if feature_title_check != blank or feature_subtitle_check != blank or feature_image_check != blank or feature_video_check != blank
+        if feature_title_check != blank or feature_subtitle_check != blank or feature_media_check != blank or feature_video_media_check != blank or feature_image_check != blank or feature_video_check != blank
           assign meta_has_items = true
           break
         endif
@@ -66,7 +68,17 @@
               assign feature_media_right = true
             endif
 
+            assign feature_media = feature_entry.media.value | default: feature_entry.media
+            assign feature_video_media = feature_entry.video.value | default: feature_entry.video
             assign feature_image = feature_entry.image.value | default: feature_entry.image
+
+            if feature_video_media == blank and feature_media != blank and feature_media.media_type == 'video'
+              assign feature_video_media = feature_media
+            endif
+            if feature_image == blank and feature_media != blank and feature_media.media_type == 'image'
+              assign feature_image = feature_media
+            endif
+
             assign feature_image_request_width = 1240
             if feature_image != blank and feature_image.width != blank
               assign feature_image_request_width = feature_image.width | at_most: 1240
@@ -175,13 +187,26 @@
             assign feature_media_alt = feature_image.alt | default: feature_title_primary | default: large_feature_media_alt_fallback
           %}
 
-          {% if feature_title_primary == blank and feature_title_accent == blank and feature_subtitle == blank and feature_image == blank and feature_video_url == blank %}
+          {% if feature_title_primary == blank and feature_title_accent == blank and feature_subtitle == blank and feature_image == blank and feature_video_media == blank and feature_video_url == blank %}
             {% continue %}
           {% endif %}
 
           <div class="sb-large-feature__layout {% if feature_media_right %}sb-large-feature__layout--media-right{% endif %}">
             <div class="sb-large-feature__media" data-sb-reveal-item>
-              {% if feature_video_url != blank %}
+              {% if feature_video_media != blank %}
+                {{
+                  feature_video_media
+                  | video_tag:
+                    class: 'sb-large-feature__media-video',
+                    controls: false,
+                    autoplay: true,
+                    loop: true,
+                    muted: true,
+                    playsinline: true,
+                    image_size: '1240x',
+                    preload: 'metadata'
+                }}
+              {% elsif feature_video_url != blank %}
                 {% if feature_video_use_iframe and feature_video_embed_url != blank %}
                   <iframe
                     class="sb-large-feature__media-video-iframe"
