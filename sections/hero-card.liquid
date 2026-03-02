@@ -430,13 +430,13 @@
     align-items: center;
     display: inline-flex;
     justify-content: center;
-    width: var(--sb-space-16);
+    width: 16px;
   }
 
   .sb-framing-card__product-button-icon-image {
     display: block;
-    height: var(--sb-space-16);
-    width: var(--sb-space-16);
+    height: 16px;
+    width: 16px;
   }
 
   .sb-framing-card__product-button-copy {
@@ -601,16 +601,24 @@
       const applyVariant = (variant) => {
         if (!variant || !variant.id) return;
         variantIdInput.value = `${variant.id}`;
-        currentPriceElement.textContent = formatMoney(variant.price);
+        const priceValue = Number(variant.price) || 0;
+        currentPriceElement.textContent = formatMoney(priceValue);
 
-        const hasCompare = Number(variant.compare_at_price) > Number(variant.price);
+        const comparePriceValue = Number(variant.compare_at_price) || 0;
+        const hasCompare = comparePriceValue > priceValue;
         if (hasCompare) {
-          comparePriceElement.textContent = formatMoney(variant.compare_at_price);
+          comparePriceElement.textContent = formatMoney(comparePriceValue);
           comparePriceElement.hidden = false;
         } else {
           comparePriceElement.textContent = '';
           comparePriceElement.hidden = true;
         }
+
+        const isAvailable = variant.available !== false;
+        const nextLabel = isAvailable ? 'Add to cart' : 'Sold out';
+        buttonLabel.textContent = nextLabel;
+        submitButton.disabled = !isAvailable;
+        submitButton.setAttribute('aria-label', nextLabel);
       };
 
       applyVariant({
@@ -618,6 +626,43 @@
         price: Number(card.dataset.initialPrice || '0'),
         compare_at_price: Number(card.dataset.initialComparePrice || '0'),
       });
+
+      const productRoot = Array.from(document.querySelectorAll('.sb-product-main')).find(
+        (node) => `${node.dataset.productId || ''}` === `${productId}`
+      ) || null;
+      const productVariantIdInput = productRoot ? productRoot.querySelector('[data-product-variant-id]') : null;
+
+      const syncFromSelectedProductItem = () => {
+        if (!productRoot) return;
+        const selectedSelectorItem = productRoot.querySelector('[data-selector-list-item].is-selected');
+        if (!(selectedSelectorItem instanceof HTMLElement)) return;
+
+        const selectedVariantId = Number(selectedSelectorItem.dataset.variantId || '0');
+        if (!selectedVariantId) return;
+
+        applyVariant({
+          id: selectedVariantId,
+          available: selectedSelectorItem.dataset.variantAvailable === 'true',
+          price: Number(selectedSelectorItem.dataset.variantPrice || '0'),
+          compare_at_price: Number(selectedSelectorItem.dataset.variantComparePrice || '0'),
+        });
+      };
+
+      syncFromSelectedProductItem();
+
+      if (productRoot) {
+        productRoot.addEventListener('click', (event) => {
+          if (!(event.target instanceof Element)) return;
+          if (!event.target.closest('[data-selector-list-item], [data-option-value]')) return;
+          window.requestAnimationFrame(syncFromSelectedProductItem);
+        });
+      }
+
+      if (productVariantIdInput) {
+        productVariantIdInput.addEventListener('change', () => {
+          window.requestAnimationFrame(syncFromSelectedProductItem);
+        });
+      }
 
       document.addEventListener('variant:update', (event) => {
         const variant = event?.detail?.resource;

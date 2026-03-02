@@ -5227,15 +5227,15 @@
   .sb-cart-summary__checkout-icon {
     color: currentColor;
     display: inline-flex;
-    height: var(--sb-space-16);
+    height: 16px;
     line-height: 0;
-    width: var(--sb-space-16);
+    width: 16px;
   }
 
   .sb-cart-summary__checkout-icon svg {
     display: block;
-    height: var(--sb-space-16);
-    width: var(--sb-space-16);
+    height: 16px;
+    width: 16px;
   }
 
   .sb-cart-summary__checkout-icon svg path:not([fill='none']),
@@ -6088,8 +6088,17 @@
     }
 
     const getWindowY = () => window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
-    let lastY = getWindowY();
+    const getMaxScrollableY = () => {
+      const scrollingRoot = document.scrollingElement || document.documentElement;
+      return Math.max(0, (scrollingRoot ? scrollingRoot.scrollHeight : 0) - window.innerHeight);
+    };
+    const normalizeWindowY = (value) => {
+      const maxY = getMaxScrollableY();
+      return Math.min(maxY, Math.max(0, value));
+    };
+    let lastY = normalizeWindowY(getWindowY());
     const topThreshold = 8;
+    const upwardRevealThreshold = 20;
     let upwardTravel = 0;
     let hiddenOffset = 0;
     let topExitMode = lastY <= topThreshold;
@@ -6165,7 +6174,7 @@
         : hiddenOffset < headerHideOffsetLimit();
       upwardTravel = 0;
       applyOffset();
-      lastY = getWindowY();
+      lastY = normalizeWindowY(getWindowY());
     };
     const refreshHeaderScrollMode = ({ forceSync = false } = {}) => {
       const nextShouldHidePrimaryNavigation = hasActiveTopAccessory();
@@ -6180,7 +6189,7 @@
     };
     const setScrollSyncLocked = (locked) => {
       scrollSyncLocked = Boolean(locked);
-      lastY = getWindowY();
+      lastY = normalizeWindowY(getWindowY());
     };
 
     window.SBHeaderNav = {
@@ -6611,15 +6620,16 @@
         topExitMode = hiddenOffset < headerHideOffsetLimit();
       }
 
-      const delta = currentY - lastY;
+      const normalizedY = normalizeWindowY(currentY);
+      const delta = normalizedY - lastY;
       const maxOffset = headerHideOffsetLimit();
 
-      if (force || currentY <= topThreshold) {
+      if (force || normalizedY <= topThreshold) {
         hiddenOffset = 0;
         upwardTravel = 0;
         topExitMode = true;
         applyOffset();
-        lastY = currentY;
+        lastY = normalizedY;
         return;
       }
 
@@ -6627,20 +6637,23 @@
         upwardTravel = 0;
         if (topExitMode) {
           // Only when leaving the top, follow page scroll.
-          hiddenOffset = clamp(currentY, 0, maxOffset);
-          if (hiddenOffset >= maxOffset - 0.5 || currentY > maxOffset) topExitMode = false;
+          hiddenOffset = clamp(normalizedY, 0, maxOffset);
+          if (hiddenOffset >= maxOffset - 0.5 || normalizedY > maxOffset) topExitMode = false;
         } else {
           // Everywhere else, hide instantly on downward scroll.
           hiddenOffset = maxOffset;
         }
         applyOffset();
       } else if (delta < 0) {
-        hiddenOffset = 0;
-        upwardTravel = 0;
-        applyOffset();
+        upwardTravel += Math.abs(delta);
+        if (upwardTravel >= upwardRevealThreshold) {
+          hiddenOffset = 0;
+          upwardTravel = 0;
+          applyOffset();
+        }
       }
 
-      lastY = currentY;
+      lastY = normalizedY;
     };
 
     const onWindowScroll = () => {

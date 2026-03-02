@@ -1281,12 +1281,24 @@
             </button>
 
             {% if product_dynamic_checkout_markup != blank %}
-              <div
-                class="sb-product-main__dynamic-checkout"
-                data-product-dynamic-checkout
+              <button
+                class="sb-product-main__shop-pay-button sb-button-radiant sb-button-radiant--large sb-button-radiant--shop-pay sb-button-radiant--trailing-icon font-caption weight-bold"
+                type="button"
+                data-shop-pay-button
+                aria-label="Buy with Shop Pay"
                 {% unless current_variant.available %}
-                  hidden
+                  disabled
                 {% endunless %}
+              >
+                <span class="sb-button-radiant__label">Buy with</span>
+                <span class="sb-button-radiant__icon" aria-hidden="true">
+                  {{ 'logo-shop-pay.svg' | inline_asset_content }}
+                </span>
+              </button>
+              <div
+                class="sb-product-main__dynamic-checkout sb-product-main__dynamic-checkout--proxy"
+                data-product-dynamic-checkout
+                aria-hidden="true"
               >
                 {{ product_dynamic_checkout_markup }}
               </div>
@@ -2991,6 +3003,32 @@
     width: 100%;
   }
 
+  .sb-product-main__shop-pay-button {
+    width: 100%;
+  }
+
+  .sb-product-main__shop-pay-button.sb-button-radiant--trailing-icon {
+    gap: var(--sb-space-4) !important;
+  }
+
+  .sb-product-main__shop-pay-button .sb-button-radiant__icon {
+    flex: 0 0 auto;
+    height: 16px;
+    padding-top: 2px;
+    width: auto;
+  }
+
+  .sb-product-main__shop-pay-button .sb-button-radiant__icon svg {
+    height: 16px;
+    width: auto;
+    max-width: none;
+  }
+
+  .sb-product-main__shop-pay-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
   .sb-product-main__purchase-guarantees {
     background: var(--sb-color-neutral-200);
     border-radius: 24px;
@@ -3671,6 +3709,14 @@
     width: 100%;
   }
 
+  .sb-product-main__dynamic-checkout--proxy {
+    margin: 0;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
   .sb-product-main__dynamic-checkout[hidden] {
     display: none;
   }
@@ -3855,6 +3901,7 @@
       const currentPriceElement = root.querySelector('[data-product-current-price]');
       const savingsBadgeElement = root.querySelector('[data-product-savings-badge]');
       const monthlyPriceElement = root.querySelector('[data-product-monthly-price]');
+      const shopPayButton = root.querySelector('[data-shop-pay-button]');
       const dynamicCheckoutContainer = root.querySelector('[data-product-dynamic-checkout]');
       const productTitle = root.dataset.productTitle || '';
       const productId = root.dataset.productId || '';
@@ -3865,6 +3912,46 @@
       }
       let currentVariantId = selectedById ? `${selectedById.id}` : `${variantSelect.value}`;
       let hasVariantInitialized = false;
+
+      const getDynamicCheckoutButton = () => {
+        if (!dynamicCheckoutContainer) return null;
+        return dynamicCheckoutContainer.querySelector('.shopify-payment-button__button');
+      };
+
+      const syncShopPayButtonState = () => {
+        if (!shopPayButton) return;
+        const dynamicCheckoutButton = getDynamicCheckoutButton();
+        if (!dynamicCheckoutButton) {
+          shopPayButton.hidden = true;
+          return;
+        }
+
+        shopPayButton.hidden = false;
+        const isUnavailable = addButton ? addButton.disabled : false;
+        shopPayButton.disabled = isUnavailable;
+        shopPayButton.setAttribute('aria-disabled', isUnavailable ? 'true' : 'false');
+      };
+
+      if (shopPayButton) {
+        shopPayButton.addEventListener('click', (event) => {
+          event.preventDefault();
+          if (shopPayButton.disabled) return;
+          const dynamicCheckoutButton = getDynamicCheckoutButton();
+          if (!dynamicCheckoutButton) return;
+          dynamicCheckoutButton.click();
+        });
+      }
+
+      if (dynamicCheckoutContainer && typeof MutationObserver !== 'undefined') {
+        const dynamicCheckoutObserver = new MutationObserver(syncShopPayButtonState);
+        dynamicCheckoutObserver.observe(dynamicCheckoutContainer, {
+          attributes: true,
+          childList: true,
+          subtree: true,
+        });
+      }
+
+      syncShopPayButtonState();
 
       if (stickyAddButton && addButton) {
         stickyAddButton.addEventListener('click', () => {
@@ -5203,8 +5290,9 @@
           addButton.setAttribute('aria-label', nextLabel);
         }
 
-        if (dynamicCheckoutContainer) {
-          dynamicCheckoutContainer.hidden = !purchaseData.available;
+        if (shopPayButton) {
+          shopPayButton.disabled = !purchaseData.available;
+          shopPayButton.setAttribute('aria-disabled', purchaseData.available ? 'false' : 'true');
         }
 
         if (stickyCurrentPriceElement) {
