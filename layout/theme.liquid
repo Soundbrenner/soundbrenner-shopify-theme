@@ -2,7 +2,6 @@
 {% liquid
   assign sb_theme_mode = 'dark'
   assign sb_theme_locked = false
-  assign sb_debug_version = '3.70'
   if request.page_type == 'collection' and collection != blank
     assign collection_settings_ref = collection.metafields.custom.collection_settings.value | default: collection.metafields.custom.collection_settings
     if collection_settings_ref != blank
@@ -40,21 +39,6 @@
         href="{{ settings.favicon | image_url: width: 32, height: 32 }}"
       >
     {%- endif -%}
-
-    <script>
-      (() => {
-        const root = document.documentElement;
-        if (root.hasAttribute('data-theme-locked')) return;
-        try {
-          const savedThemeMode = window.localStorage ? window.localStorage.getItem('sb_theme_debug_mode') : '';
-          if (savedThemeMode === 'light' || savedThemeMode === 'dark') {
-            root.setAttribute('data-theme', savedThemeMode);
-          }
-        } catch (_) {
-          // no-op
-        }
-      })();
-    </script>
 
     {% # Inlined CSS Variables %}
     {% render 'css-variables' %}
@@ -116,92 +100,6 @@
 
     {% sections 'footer-group' %}
 
-    <div class="sb-theme-debug" data-sb-theme-debug>
-      <span class="sb-theme-debug__version font-caption2 weight-semibold" aria-label="Theme version">
-        {{ sb_debug_version }}
-      </span>
-      <button
-        type="button"
-        class="sb-theme-debug__button sb-theme-debug__button--icon"
-        data-sb-theme-debug-toggle
-        aria-label="Switch theme"
-        title="Switch theme"
-      >
-        ◐
-      </button>
-    </div>
-
-    <style>
-      .sb-theme-debug {
-        align-items: center;
-        display: inline-flex;
-        gap: var(--sb-space-8);
-        right: var(--sb-space-16);
-        position: fixed;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 1000;
-      }
-
-      .sb-theme-debug__version {
-        color: var(--sb-color-neutral-900);
-        line-height: 1;
-      }
-
-      .sb-theme-debug__button {
-        align-items: center;
-        background: var(--sb-color-neutral-100);
-        border: 1px solid var(--sb-color-neutral-600);
-        border-radius: var(--sb-space-8);
-        color: var(--sb-color-neutral-900);
-        cursor: pointer;
-        display: inline-flex;
-        justify-content: center;
-        min-height: var(--sb-space-32);
-        padding: 0 var(--sb-space-8);
-      }
-
-      .sb-theme-debug__button--icon {
-        border-radius: 999px;
-        height: var(--sb-space-36);
-        min-height: var(--sb-space-36);
-        min-width: var(--sb-space-36);
-        padding: 0;
-        width: var(--sb-space-36);
-      }
-    </style>
-
-    <script>
-      (() => {
-        const themeDebugToggle = document.querySelector('[data-sb-theme-debug-toggle]');
-        if (themeDebugToggle) {
-          const root = document.documentElement;
-          const storageKey = 'sb_theme_debug_mode';
-          const savedThemeMode = window.localStorage ? window.localStorage.getItem(storageKey) : '';
-          const validModes = ['light', 'dark'];
-          const isThemeLocked = root.hasAttribute('data-theme-locked');
-
-          const setThemeMode = (mode) => {
-            if (!validModes.includes(mode)) return;
-            root.setAttribute('data-theme', mode);
-            root.setAttribute('data-theme-debug-override', 'true');
-            if (window.localStorage) window.localStorage.setItem(storageKey, mode);
-          };
-
-          if (savedThemeMode && validModes.includes(savedThemeMode) && !isThemeLocked) {
-            setThemeMode(savedThemeMode);
-          }
-
-          themeDebugToggle.addEventListener('click', () => {
-            if (isThemeLocked) return;
-            const currentTheme = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-            const nextTheme = currentTheme === 'light' ? 'dark' : 'light';
-            setThemeMode(nextTheme);
-          });
-        }
-
-      })();
-    </script>
     <script>
       (() => {
         const ThemeEvents = {
