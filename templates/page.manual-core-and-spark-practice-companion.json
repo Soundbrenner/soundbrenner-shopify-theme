@@ -110,6 +110,10 @@
             "item_9_text": ""
           }
         },
+        "divider_jQ6mVx": {
+          "type": "divider",
+          "settings": {}
+        },
         "heading_small_Fm2iKk": {
           "type": "subheading",
           "settings": {
@@ -131,6 +135,10 @@
             "item_8_text": "",
             "item_9_text": ""
           }
+        },
+        "divider_zR4pLd": {
+          "type": "divider",
+          "settings": {}
         },
         "heading_small_HQzjNP": {
           "type": "subheading",
@@ -157,12 +165,6 @@
         "divider_3": {
           "type": "divider",
           "settings": {}
-        },
-        "heading_uL3tV7": {
-          "type": "heading",
-          "settings": {
-            "heading": "Tech specs"
-          }
         },
         "subheading_sH2mX4": {
           "type": "subheading",
@@ -247,10 +249,6 @@
           "settings": {
             "source_metaobject_item": "spark-6"
           }
-        },
-        "divider_J5mVn2": {
-          "type": "divider",
-          "settings": {}
         },
         "subheading_fEQfTx": {
           "type": "subheading",
@@ -1124,55 +1122,6 @@
             "answer": "<p>Warning: medical conditions</p><p>If you currently have a medical condition or have a history of medical conditions that may be affected by the Soundbrenner Core/Spark, consult with your physician before using the product. Medical conditions include (but are not limited to):</p><ul><li>White Knuckle Syndrome</li><li>Hand-Arm Vibration Syndrome</li><li>Blackouts</li><li>Epilepsy</li><li>Postural Hypertension</li><li>Allergic Reactions to Silicone</li><li>Any other heart, neurological, or skin conditions</li></ul><p>Warning: medical device interference</p><p>If you use any medical device that may be affected by the Soundbrenner Core/Spark, consult with your physician before using the product. Medical devices include (but are not limited to):</p><ul><li>Coronary Stents</li><li>Defibrillators</li><li>Pacemakers</li><li>Any other implanted medical device</li></ul><p>Stop using the Soundbrenner Core/Spark if you suspect that it is interfering with your medical device or if you experience any discomfort.</p><p>Warning: frequent and prolonged usage</p><p>Frequent and prolonged use of the Soundbrenner Core/Spark may cause skin irritation in some users. If you experience itchiness, redness, and/or swelling while using the Soundbrenner Core/Spark, remove the device immediately and stop using it until your skin returns to normal. Consult your doctor should any of the symptoms persist.</p><p>Caution: electrical equipment</p><p>Your Soundbrenner Core/Spark and its charging cable are electrical devices and should be handled with care. Never use your device in extremely low or high temperatures.</p><p>Substances in this product and battery may harm the environment or cause injury if handled or disposed of improperly.</p><p>Remove your Soundbrenner Core/Spark if it feels warm or hot.</p><p>Caution: magnets</p><p>The Soundbrenner Core/Spark and the charging cable contain magnets. All credit cards, key cards, and any other object containing a magnetic stripe should be stowed safely away from those products.</p><p>Caution: batteries</p><p>Use only an authorized Soundbrenner charging cable to charge your device to avoid any safety or electrical hazards.</p><p>Do not attempt to change the battery on your own. This will void the warranty and could cause injury.</p><p>Always disconnect the charging cable from the electrical socket as soon as your device is fully charged.</p><p>Never charge your device when moisture is present.</p><p>Never put your device or charging cable near any inflammable or explosive materials.</p><p>Caution: water</p><p>Even though your Soundbrenner Core/Spark is sweat proof and partially water-resistant, it should never be submerged in water under any circumstances.</p><p>Do not use your device in the rain or in wet environments for prolonged periods.</p>"
           }
         },
-        "accordion_item_EHWHD7": {
-          "type": "accordion_item",
-          "settings": {
-            "question": "Warning: medical device interference",
-            "answer": "<p>If you use any medical device that may be affected by the Soundbrenner Core/Spark, consult with your physician before using the product. Medical devices include (but are not limited to):</p><ul><li>Coronary Stents</li><li>Defibrillators</li><li>Pacemakers</li><li>Any other implanted medical device</li></ul><p>Stop using the Soundbrenner Core/Spark if you suspect that it is interfering with your medical device or if you experience any discomfort.</p>"
-          }
-        },
-        "accordion_item_RHcGrL": {
-          "type": "accordion_item",
-          "settings": {
-            "question": "Warning: frequent and prolonged usage",
-            "answer": "<p>Frequent and prolonged use of the Soundbrenner Core/Spark may cause skin irritation in some users. If you experience itchiness, redness, and/or swelling while using the Soundbrenner Core/Spark, remove the device immediately and stop using it until your skin returns to normal. Consult your doctor should any of the symptoms persist.</p>"
-          }
-        },
-        "accordion_item_qiMi6H": {
-          "type": "accordion_item",
-          "settings": {
-            "question": "Caution: electrical equipment",
-            "answer": "<p>Your Soundbrenner Core/Spark and its charging cable are electrical devices and should be handled with care. Never use your device in extremely low or high temperatures.</p><p>Substances in this product and battery may harm the environment or cause injury if handled or disposed of improperly.</p><p>Take your Soundbrenner Core/Spark off if it feels warm or hot.</p>"
-          }
-        },
-        "accordion_item_rHqAMQ": {
-          "type": "accordion_item",
-          "settings": {
-            "question": "Caution: magnets",
-            "answer": "<p>The Soundbrenner Core/Spark and its charging cable contain magnets. All credit cards, key cards, and any other object containing a magnetic stripe should be stowed safely away from those products.</p>"
-          }
-        },
-        "accordion_item_RrChAK": {
-          "type": "accordion_item",
-          "settings": {
-            "question": "Caution: batteries",
-            "answer": "<p>Use only an authorized Soundbrenner charging cable to charge your device to avoid any safety or electrical hazards.</p><p>Always disconnect the charging cable from the electrical socket as soon as your device is fully charged.</p><p>Do not attempt to change the battery on your own. This will void the warranty and could cause injury.</p><p>Never charge your device when moisture is present.</p><p>Never put your device or charging cable near any inflammable or explosive materials.</p>"
-          }
-        },
-        "accordion_item_cJrmFb": {
-          "type": "accordion_item",
-          "settings": {
-            "question": "Caution: water",
-            "answer": "<p>Even though your Soundbrenner Core/Spark is sweat proof and partially water-resistant, it should never be submerged in water under any circumstances.</p><p>Do not use your device in the rain or in wet environments for prolonged periods.</p>"
-          }
-        },
-        "accordion_item_DxTmxW": {
-          "type": "accordion_item",
-          "settings": {
-            "question": "Maintaining your Soundbrenner Core/Spark",
-            "answer": "<p>For optimal performance, we recommend that you don’t use your device until it is fully charged.</p><p>Take care when using skincare products, as they may affect the color or usability of the included straps.</p><p>Store your Soundbrenner Core/Spark in a well-ventilated and dry environment when not in use.</p><p>Make sure you regularly clean your device with a damp cloth to maintain good hygiene.</p><p>Never wash your device in the sink.</p><p>Never store your Soundbrenner Core/Spark for extended periods (over 3 months) with a depleted battery, as this can lead to permanent battery damage.</p><p><a href=\"https://support.soundbrenner.com/hc/en-us/articles/19748176623897-Core-battery-maintenance-guide\" target=\"_blank\" title=\"https://support.soundbrenner.com/hc/en-us/articles/19748176623897-Core-battery-maintenance-guide\">Battery maintenance guide</a></p>"
-          }
-        },
         "accordion_item_Q6Gzia": {
           "type": "accordion_item",
           "settings": {
@@ -1214,13 +1163,6 @@
             "question": "FCC compliance",
             "answer": "<p>The product complies with part 15 of the FCC rules. Operation is subject to the following two conditions: They may not cause harmful interference. They must accept any interference received, including interference that may cause undesired operation.</p>"
           }
-        },
-        "accordion_item_6aQ7C7": {
-          "type": "accordion_item",
-          "settings": {
-            "question": "Bluetooth information",
-            "answer": "<p>The Bluetooth® word mark and logos are registered trademarks owned by Bluetooth SIG, Inc. and any use of such marks by Soundbrenner Limited is under license. Other trademarks and trade names are those of their respective owners.</p>"
-          }
         }
       },
       "block_order": [
@@ -1235,12 +1177,13 @@
         "divider_2",
         "subheading_QhB4a6",
         "image_grid_4fY4mP",
+        "divider_jQ6mVx",
         "heading_small_Fm2iKk",
         "image_grid_p9DgQa",
+        "divider_zR4pLd",
         "heading_small_HQzjNP",
         "image_grid_8fFLQn",
         "divider_3",
-        "heading_uL3tV7",
         "subheading_sH2mX4",
         "tech_specs_item_core2_1",
         "tech_specs_item_core2_2",
@@ -1255,7 +1198,6 @@
         "tech_specs_item_spark_4",
         "tech_specs_item_spark_5",
         "tech_specs_item_spark_6",
-        "divider_J5mVn2",
         "subheading_fEQfTx",
         "image_BAXgF7",
         "body_4",
