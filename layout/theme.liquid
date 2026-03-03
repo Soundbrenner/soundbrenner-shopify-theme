@@ -132,11 +132,224 @@
         pointer-events: none;
         position: fixed;
         transition: opacity 180ms ease;
-        z-index: 49;
+        z-index: 79;
       }
 
       html.sb-klaviyo-popup-open .sb-klaviyo-popup-backdrop {
         opacity: 1;
+      }
+
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'] {
+        background-color: var(--sb-color-neutral-200) !important;
+        border-radius: 24px !important;
+        box-shadow: 0 var(--sb-space-48) var(--sb-space-48) 0 var(--sb-color-always-black-25) !important;
+        overflow: hidden !important;
+      }
+
+      [data-testid='POPUP'] [data-testid='form-row']:nth-of-type(2) [data-testid='form-component'] {
+        padding: var(--sb-space-30) var(--sb-space-30) var(--sb-space-24) !important;
+      }
+
+      [data-testid='POPUP'] [data-testid='form-row']:nth-of-type(3) [data-testid='form-component'],
+      [data-testid='POPUP'] [data-testid='form-row']:nth-of-type(4) [data-testid='form-component'],
+      [data-testid='POPUP'] [data-testid='form-row']:nth-of-type(5) [data-testid='form-component'] {
+        padding: 0 var(--sb-space-30) var(--sb-space-24) !important;
+      }
+
+      [data-testid='POPUP'] [data-testid='form-row']:nth-of-type(6) [data-testid='form-component'] {
+        padding: 0 var(--sb-space-30) var(--sb-space-30) !important;
+      }
+
+      [data-testid='POPUP'] [data-testid='form-row']:nth-of-type(2) [id^='rich-text-'],
+      [data-testid='POPUP'] [data-testid='form-row']:nth-of-type(2) [id^='rich-text-'] * {
+        color: var(--sb-color-neutral-900) !important;
+        font-family: var(--font-display--family) !important;
+        font-size: var(--font-size-title) !important;
+        font-weight: 700 !important;
+        line-height: var(--font-title-line-height) !important;
+      }
+
+      [data-testid='POPUP'] [data-testid='form-row']:nth-of-type(2) [id^='rich-text-'] {
+        margin-inline: auto !important;
+        max-inline-size: 18ch !important;
+      }
+
+      [data-testid='POPUP'] [data-testid='form-row']:nth-of-type(2) [id^='rich-text-'] p,
+      [data-testid='POPUP'] [data-testid='form-row']:nth-of-type(2) [id^='rich-text-'] span,
+      [data-testid='POPUP'] [data-testid='form-row']:nth-of-type(2) [id^='rich-text-'] strong {
+        overflow-wrap: normal !important;
+        text-wrap: balance !important;
+        white-space: normal !important;
+        word-break: normal !important;
+      }
+
+      [data-testid='POPUP'] [data-testid='form-row']:nth-of-type(3) [id^='rich-text-'],
+      [data-testid='POPUP'] [data-testid='form-row']:nth-of-type(3) [id^='rich-text-'] * {
+        color: var(--sb-color-neutral-900) !important;
+        font-family: var(--font-primary--family) !important;
+        font-size: var(--font-size-body) !important;
+        font-weight: 400 !important;
+        line-height: 1.4 !important;
+      }
+
+      [data-testid='POPUP'] input[type='email'] {
+        -webkit-appearance: none !important;
+        appearance: none !important;
+        -webkit-text-fill-color: var(--sb-color-neutral-800) !important;
+        box-shadow: 0 0 10px 0 var(--sb-color-always-black-12) !important;
+        caret-color: var(--sb-color-always-black) !important;
+        color: var(--sb-color-neutral-800) !important;
+        font-family: var(--font-primary--family) !important;
+        font-size: var(--font-size-form-input) !important;
+        font-weight: 400 !important;
+        line-height: 1.35 !important;
+        outline: none !important;
+        text-align: center !important;
+      }
+
+      [data-testid='POPUP'] input[type='email']:not(:placeholder-shown) {
+        -webkit-text-fill-color: var(--sb-color-always-black) !important;
+        color: var(--sb-color-always-black) !important;
+      }
+
+      [data-testid='POPUP'] input[type='email']:focus,
+      [data-testid='POPUP'] input[type='email']:focus-visible,
+      [data-testid='POPUP'] input[type='email']:active {
+        border-color: var(--sb-color-always-white) !important;
+        box-shadow: 0 0 10px 0 var(--sb-color-always-black-12) !important;
+        outline: none !important;
+        outline-offset: 0 !important;
+      }
+
+      [data-testid='POPUP'] input[type='email']::placeholder {
+        color: var(--sb-color-neutral-800) !important;
+        opacity: 1 !important;
+        text-align: center !important;
+      }
+
+      [data-testid='POPUP'] [id^='engagement-counter-'],
+      [data-testid='POPUP'] [id^='engagement-counter-'] * {
+        color: var(--sb-color-neutral-900) !important;
+        font-family: var(--font-primary--family) !important;
+        font-size: var(--font-size-caption) !important;
+        font-weight: 400 !important;
+        line-height: 1.35 !important;
+      }
+
+      [data-testid='POPUP'] .klaviyo-close-form {
+        align-items: center !important;
+        background: transparent url('{{ 'icon-cancel.svg' | asset_url }}') center / var(--sb-space-20) var(--sb-space-20) no-repeat !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        color: var(--sb-color-always-white) !important;
+        cursor: pointer !important;
+        display: inline-flex !important;
+        height: var(--sb-space-20) !important;
+        justify-content: center !important;
+        line-height: 0 !important;
+        margin: 0 !important;
+        margin-right: 0 !important;
+        margin-top: 0 !important;
+        min-height: var(--sb-space-20) !important;
+        min-width: var(--sb-space-20) !important;
+        padding: 0 !important;
+        pointer-events: auto !important;
+        position: absolute !important;
+        right: var(--sb-space-30) !important;
+        top: var(--sb-space-30) !important;
+        width: var(--sb-space-20) !important;
+      }
+
+      [data-testid='POPUP'] .klaviyo-close-form:hover,
+      [data-testid='POPUP'] .klaviyo-close-form:focus-visible {
+        cursor: pointer !important;
+      }
+
+      [data-testid='POPUP'] .klaviyo-close-form,
+      [data-testid='POPUP'] .klaviyo-close-form *,
+      [data-testid='POPUP'] .klaviyo-close-form::before,
+      [data-testid='POPUP'] .klaviyo-close-form::after {
+        cursor: pointer !important;
+      }
+
+      [data-testid='POPUP'] .klaviyo-close-form svg {
+        display: none !important;
+      }
+
+      [data-testid='POPUP'] .klaviyo-close-form::before {
+        -webkit-mask-image: url('{{ 'icon-cancel.svg' | asset_url }}');
+        -webkit-mask-position: center;
+        -webkit-mask-repeat: no-repeat;
+        -webkit-mask-size: var(--sb-space-20) var(--sb-space-20);
+        background: var(--sb-color-always-white);
+        content: '';
+        display: block;
+        height: var(--sb-space-20);
+        mask-image: url('{{ 'icon-cancel.svg' | asset_url }}');
+        mask-position: center;
+        mask-repeat: no-repeat;
+        mask-size: var(--sb-space-20) var(--sb-space-20);
+        pointer-events: none;
+        width: var(--sb-space-20);
+      }
+
+      [data-testid='POPUP'] .klaviyo-close-form:hover::before,
+      [data-testid='POPUP'] .klaviyo-close-form:focus-visible::before {
+        background: var(--sb-color-primary-500);
+      }
+
+      [data-testid='POPUP'] .klaviyo-close-form:active::before {
+        background: var(--sb-color-primary-500);
+        transform: none;
+      }
+
+      .sb-theme-debug-toggle {
+        align-items: center;
+        background: var(--sb-color-neutral-900-75);
+        border: 1px solid var(--sb-color-neutral-900-25);
+        border-radius: 10px 0 0 10px;
+        display: grid;
+        gap: 8px;
+        padding: 10px 8px;
+        pointer-events: auto;
+        position: fixed;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 100001;
+      }
+
+      .sb-theme-debug-toggle__label {
+        color: var(--sb-color-neutral-100);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        line-height: 1;
+        text-transform: uppercase;
+      }
+
+      .sb-theme-debug-toggle__button {
+        background: var(--sb-color-neutral-900-50);
+        border: 1px solid var(--sb-color-neutral-900-25);
+        border-radius: 6px;
+        color: var(--sb-color-neutral-100);
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1;
+        min-height: 28px;
+        min-width: 56px;
+        padding: 6px 8px;
+      }
+
+      .sb-theme-debug-toggle__button.is-active {
+        background: var(--sb-color-primary-500-25);
+        border-color: var(--sb-color-primary-500);
+        color: var(--sb-color-primary-500);
+      }
+
+      .sb-theme-debug-toggle__button--klaviyo {
+        min-width: 92px;
       }
     </style>
     <script>
@@ -278,6 +491,39 @@
         const popupOpenClass = 'sb-klaviyo-popup-open';
         const markerSelector =
           '.klaviyo-form, [class*="klaviyo-form-"], [data-testid^="klaviyo-form-"], iframe[src*="klaviyo"]';
+        const numberFormatter = new Intl.NumberFormat(document.documentElement.lang || 'en-US');
+        const popupLocaleCopy = {
+          dialogLabel: {{ 'sb.klaviyo_popup.dialog_label' | t | json }},
+          closeLabel: {{ 'sb.klaviyo_popup.close_label' | t | json }},
+          imageAlt: {{ 'sb.klaviyo_popup.image_alt' | t | json }},
+          titleLineOne: {{ 'sb.klaviyo_popup.title_line_1' | t | json }},
+          titleLineTwo: {{ 'sb.klaviyo_popup.title_line_2' | t | json }},
+          description: {{ 'sb.klaviyo_popup.description' | t | json }},
+          emailPlaceholder: {{ 'sb.klaviyo_popup.email_placeholder' | t | json }},
+          emailLabel: {{ 'sb.klaviyo_popup.email_label' | t | json }},
+          buttonLabel: {{ 'sb.klaviyo_popup.button_label' | t | json }},
+          engagementTemplate: {{ 'sb.klaviyo_popup.engagement_counter' | t: count: '__COUNT__' | json }},
+          errorRequired: {{ 'sb.klaviyo_popup.error_required' | t | json }},
+          errorInvalidEmail: {{ 'sb.klaviyo_popup.error_invalid_email' | t | json }},
+          errorGeneric: {{ 'sb.klaviyo_popup.error_generic' | t | json }},
+          successTitle: {{ 'sb.klaviyo_popup.success_title' | t | json }},
+          successCodeLine: {{ 'sb.klaviyo_popup.success_code_line' | t: code: '__CODE__' | json }},
+          successOfferLine: {{ 'sb.klaviyo_popup.success_offer_line' | t | json }},
+          successReminderLine: {{ 'sb.klaviyo_popup.success_reminder_line' | t | json }},
+          successExpiresIn: {{ 'sb.klaviyo_popup.success_expires_in' | t | json }},
+          timerDays: {{ 'sb.klaviyo_popup.timer_days' | t | json }},
+          timerHours: {{ 'sb.klaviyo_popup.timer_hours' | t | json }},
+          timerMinutes: {{ 'sb.klaviyo_popup.timer_minutes' | t | json }},
+          timerSeconds: {{ 'sb.klaviyo_popup.timer_seconds' | t | json }},
+        };
+        const normalizeText = (value) => `${value || ''}`.replace(/\s+/g, ' ').trim();
+        const setNodeText = (node, value) => {
+          if (!(node instanceof HTMLElement)) return;
+          const nextText = normalizeText(value);
+          if (!nextText) return;
+          if (normalizeText(node.textContent) === nextText) return;
+          node.textContent = nextText;
+        };
 
         const isFooterEmbedContext = (node) =>
           node instanceof HTMLElement && Boolean(node.closest('.sb-footer__newsletter-klaviyo'));
@@ -319,6 +565,288 @@
           return true;
         };
 
+        const extractCounterValue = (text) => {
+          const source = `${text || ''}`;
+          if (!source) return null;
+          const countMatch = source.match(/\d[\d,.]*/);
+          if (!countMatch) return null;
+          const normalizedCount = Number.parseInt(countMatch[0].replace(/[^\d]/g, ''), 10);
+          return Number.isFinite(normalizedCount) ? normalizedCount : null;
+        };
+
+        const extractDiscountCode = (text) => {
+          const source = normalizeText(text);
+          if (!source) return '';
+          const labeledMatch = source.match(/discount code[:\s]+([A-Z0-9-]{4,})/i);
+          if (labeledMatch && labeledMatch[1]) return labeledMatch[1].toUpperCase();
+
+          const fallbackCandidates = source.match(/\b[A-Z0-9-]{6,}\b/g) || [];
+          if (!fallbackCandidates.length) return '';
+          const alphaNumericCandidate = fallbackCandidates.find((candidate) => /[A-Z]/.test(candidate) && /\d/.test(candidate));
+          if (alphaNumericCandidate) return alphaNumericCandidate.toUpperCase();
+          return fallbackCandidates[0].toUpperCase();
+        };
+
+        const getLocalizedPopupErrorText = (sourceText) => {
+          const normalizedSource = normalizeText(sourceText).toLowerCase();
+          if (!normalizedSource) return '';
+          if (normalizedSource.includes('required')) return normalizeText(popupLocaleCopy.errorRequired);
+          if (
+            normalizedSource.includes('email')
+            && (normalizedSource.includes('invalid') || normalizedSource.includes('valid'))
+          ) {
+            return normalizeText(popupLocaleCopy.errorInvalidEmail);
+          }
+          if (
+            normalizedSource.includes('error')
+            || normalizedSource.includes('submitting')
+            || normalizedSource.includes('try again')
+          ) {
+            return normalizeText(popupLocaleCopy.errorGeneric);
+          }
+          return '';
+        };
+
+        const getLocalizedTimerLabel = (sourceText) => {
+          const normalizedSource = normalizeText(sourceText).toLowerCase();
+          if (!normalizedSource || /\d/.test(normalizedSource)) return '';
+          if (normalizedSource === 'day' || normalizedSource === 'days') {
+            return normalizeText(popupLocaleCopy.timerDays);
+          }
+          if (normalizedSource === 'hour' || normalizedSource === 'hours') {
+            return normalizeText(popupLocaleCopy.timerHours);
+          }
+          if (
+            normalizedSource === 'min'
+            || normalizedSource === 'mins'
+            || normalizedSource === 'minute'
+            || normalizedSource === 'minutes'
+          ) {
+            return normalizeText(popupLocaleCopy.timerMinutes);
+          }
+          if (
+            normalizedSource === 'sec'
+            || normalizedSource === 'secs'
+            || normalizedSource === 'second'
+            || normalizedSource === 'seconds'
+          ) {
+            return normalizeText(popupLocaleCopy.timerSeconds);
+          }
+          return '';
+        };
+
+        const applyPopupLocalizedCopy = () => {
+          const popupForms = document.querySelectorAll("[data-testid='POPUP'] form[data-testid^='klaviyo-form-']");
+          popupForms.forEach((popupForm) => {
+            if (!(popupForm instanceof HTMLFormElement)) return;
+
+            const popupDialog = popupForm.closest("[data-testid='POPUP'], [role='dialog'][aria-modal='true']");
+            if (popupDialog instanceof HTMLElement) {
+              const localizedDialogLabel = normalizeText(popupLocaleCopy.dialogLabel);
+              if (localizedDialogLabel) popupDialog.setAttribute('aria-label', localizedDialogLabel);
+
+              const closeButton = popupDialog.querySelector('.klaviyo-close-form');
+              const localizedCloseLabel = normalizeText(popupLocaleCopy.closeLabel);
+              if (closeButton instanceof HTMLButtonElement && localizedCloseLabel) {
+                closeButton.setAttribute('aria-label', localizedCloseLabel);
+              }
+            }
+
+            const popupImage = popupForm.querySelector('img');
+            const localizedImageAlt = normalizeText(popupLocaleCopy.imageAlt);
+            if (popupImage instanceof HTMLImageElement && localizedImageAlt) {
+              popupImage.setAttribute('alt', localizedImageAlt);
+            }
+
+            const emailInput = popupForm.querySelector("input[type='email']");
+            const hasEmailInput = emailInput instanceof HTMLInputElement;
+
+            if (hasEmailInput) {
+              const titleRoot = popupForm.querySelector("[data-testid='form-row']:nth-of-type(2) [id^='rich-text-']");
+              const lineOne = normalizeText(popupLocaleCopy.titleLineOne);
+              const lineTwo = normalizeText(popupLocaleCopy.titleLineTwo);
+              if (titleRoot instanceof HTMLElement && (lineOne || lineTwo)) {
+                titleRoot.replaceChildren();
+                if (lineOne) {
+                  const lineOneNode = document.createElement('p');
+                  lineOneNode.textContent = lineOne;
+                  titleRoot.appendChild(lineOneNode);
+                }
+                if (lineTwo) {
+                  const lineTwoNode = document.createElement('p');
+                  lineTwoNode.textContent = lineTwo;
+                  titleRoot.appendChild(lineTwoNode);
+                }
+              }
+
+              const descriptionRoot = popupForm.querySelector("[data-testid='form-row']:nth-of-type(3) [id^='rich-text-']");
+              const descriptionText = normalizeText(popupLocaleCopy.description);
+              if (descriptionRoot instanceof HTMLElement && descriptionText) {
+                descriptionRoot.replaceChildren();
+                const descriptionNode = document.createElement('div');
+                descriptionNode.textContent = descriptionText;
+                descriptionRoot.appendChild(descriptionNode);
+              }
+
+              const placeholderText = normalizeText(popupLocaleCopy.emailPlaceholder);
+              const labelText = normalizeText(popupLocaleCopy.emailLabel) || placeholderText;
+              if (placeholderText) emailInput.setAttribute('placeholder', placeholderText);
+              if (labelText) emailInput.setAttribute('aria-label', labelText);
+
+              const inputId = `${emailInput.getAttribute('id') || ''}`.trim();
+              if (inputId) {
+                const inputLabel = popupForm.querySelector(`label[for="${inputId}"]`);
+                if (inputLabel instanceof HTMLLabelElement && labelText) {
+                  inputLabel.textContent = labelText;
+                }
+              }
+
+              return;
+            }
+
+            const successRichTextRoots = popupForm.querySelectorAll("[id^='rich-text-']");
+            const successTitleRoot = successRichTextRoots[0];
+            const successBodyRoot = successRichTextRoots[1];
+
+            const successTitleText = normalizeText(popupLocaleCopy.successTitle);
+            if (successTitleRoot instanceof HTMLElement && successTitleText) {
+              successTitleRoot.replaceChildren();
+              const successTitleNode = document.createElement('p');
+              successTitleNode.textContent = successTitleText;
+              successTitleRoot.appendChild(successTitleNode);
+            }
+
+            if (successBodyRoot instanceof HTMLElement) {
+              const existingSuccessBodyText = normalizeText(successBodyRoot.textContent);
+              const discountCode = extractDiscountCode(existingSuccessBodyText);
+
+              const codeTemplate = normalizeText(popupLocaleCopy.successCodeLine);
+              const codeTemplateHasToken = codeTemplate.includes('__CODE__');
+              const localizedCodeLine =
+                codeTemplate && (!codeTemplateHasToken || discountCode)
+                  ? codeTemplate.replace(/__CODE__/g, discountCode)
+                  : '';
+
+              const successLines = [
+                localizedCodeLine,
+                normalizeText(popupLocaleCopy.successOfferLine),
+                normalizeText(popupLocaleCopy.successReminderLine),
+                normalizeText(popupLocaleCopy.successExpiresIn),
+              ].filter(Boolean);
+
+              if (successLines.length) {
+                successBodyRoot.replaceChildren();
+                successLines.forEach((lineText) => {
+                  const lineNode = document.createElement('div');
+                  lineNode.textContent = lineText;
+                  successBodyRoot.appendChild(lineNode);
+                });
+              }
+            }
+          });
+        };
+
+        const localizePopupErrorMessages = () => {
+          const popupForms = document.querySelectorAll("[data-testid='POPUP'] form[data-testid^='klaviyo-form-']");
+          popupForms.forEach((popupForm) => {
+            if (!(popupForm instanceof HTMLFormElement)) return;
+            const hasEmailInput = popupForm.querySelector("input[type='email']") instanceof HTMLInputElement;
+            if (!hasEmailInput) return;
+
+            const errorNodes = popupForm.querySelectorAll(
+              "[data-testid='form-message'], [data-testid='field-message'], [data-testid='error-message'], .error_message, [role='alert'], [aria-live='assertive'], [role='status']"
+            );
+
+            errorNodes.forEach((errorNode) => {
+              if (!(errorNode instanceof HTMLElement)) return;
+              if (errorNode.closest("[id^='engagement-counter-']")) return;
+              const replacementText = getLocalizedPopupErrorText(errorNode.textContent);
+              if (!replacementText) return;
+              setNodeText(errorNode, replacementText);
+            });
+          });
+        };
+
+        const localizePopupCountdownUnits = () => {
+          const popupForms = document.querySelectorAll("[data-testid='POPUP'] form[data-testid^='klaviyo-form-']");
+          popupForms.forEach((popupForm) => {
+            if (!(popupForm instanceof HTMLFormElement)) return;
+            const hasEmailInput = popupForm.querySelector("input[type='email']") instanceof HTMLInputElement;
+            if (hasEmailInput) return;
+
+            const timerLabelNodes = popupForm.querySelectorAll(
+              "[class*='timer'] span, [class*='timer'] div, [data-testid*='timer'] span, [data-testid*='timer'] div"
+            );
+
+            timerLabelNodes.forEach((timerLabelNode) => {
+              if (!(timerLabelNode instanceof HTMLElement)) return;
+              if (timerLabelNode.children.length > 0) return;
+              const localizedTimerLabel = getLocalizedTimerLabel(timerLabelNode.textContent);
+              if (!localizedTimerLabel) return;
+              setNodeText(timerLabelNode, localizedTimerLabel);
+            });
+          });
+        };
+
+        const formatPopupEngagementCounters = () => {
+          const counterRoots = document.querySelectorAll("[data-testid='POPUP'] [id^='engagement-counter-']");
+          counterRoots.forEach((counterRoot) => {
+            if (!(counterRoot instanceof HTMLElement)) return;
+            const currentText = `${counterRoot.textContent || ''}`;
+            const detectedCount = extractCounterValue(currentText);
+            if (!Number.isFinite(detectedCount)) return;
+
+            const formattedCount = numberFormatter.format(detectedCount);
+            const counterTemplate = `${popupLocaleCopy.engagementTemplate || ''}`;
+            if (!counterTemplate.includes('__COUNT__')) return;
+
+            const localizedCounterText = counterTemplate.replace('__COUNT__', formattedCount);
+
+            let paragraphNode = counterRoot.querySelector('p');
+            if (!(paragraphNode instanceof HTMLElement)) {
+              paragraphNode = document.createElement('p');
+              counterRoot.replaceChildren(paragraphNode);
+            }
+
+            let spanNode = paragraphNode.querySelector('span');
+            if (!(spanNode instanceof HTMLElement)) {
+              spanNode = document.createElement('span');
+              paragraphNode.replaceChildren(spanNode);
+            }
+
+            if (spanNode.textContent !== localizedCounterText) {
+              spanNode.textContent = localizedCounterText;
+            }
+          });
+        };
+
+        const applyPopupRadiantButtons = () => {
+          const submitButtons = document.querySelectorAll(
+            "[data-testid='POPUP'] form[data-testid^='klaviyo-form-'] button[type='button']:not(.klaviyo-close-form)"
+          );
+
+          submitButtons.forEach((button) => {
+            if (!(button instanceof HTMLButtonElement)) return;
+
+            button.classList.add('sb-button-radiant', 'sb-button-radiant--large', 'sb-button-radiant--blue', 'font-caption', 'weight-bold');
+
+            const currentLabelText = `${button.textContent || ''}`.trim();
+            const localizedLabelText = `${popupLocaleCopy.buttonLabel || ''}`.trim();
+            const desiredLabelText = localizedLabelText || currentLabelText;
+            let labelNode = button.querySelector('.sb-button-radiant__label');
+
+            if (!labelNode) {
+              labelNode = document.createElement('span');
+              labelNode.className = 'sb-button-radiant__label';
+              labelNode.textContent = desiredLabelText;
+              button.textContent = '';
+              button.appendChild(labelNode);
+            } else if (desiredLabelText && labelNode.textContent !== desiredLabelText) {
+              labelNode.textContent = desiredLabelText;
+            }
+          });
+        };
+
         const updatePopupBackdropState = () => {
           const popupContainers = new Set();
           document.querySelectorAll(markerSelector).forEach((node) => {
@@ -329,6 +857,11 @@
           });
 
           const hasVisiblePopup = Array.from(popupContainers).some((popupContainer) => isVisiblePopup(popupContainer));
+          applyPopupLocalizedCopy();
+          applyPopupRadiantButtons();
+          localizePopupErrorMessages();
+          formatPopupEngagementCounters();
+          localizePopupCountdownUnits();
           document.documentElement.classList.toggle(popupOpenClass, hasVisiblePopup);
         };
 
@@ -1836,6 +2369,83 @@
           childList: true,
           subtree: true,
         });
+      })();
+    </script>
+    <script>
+      (() => {
+        const root = document.documentElement;
+        if (!(root instanceof HTMLElement)) return;
+
+        const host = window.location.hostname.toLowerCase();
+        const isProductionHost = host === 'soundbrenner.com' || host === 'www.soundbrenner.com';
+        const isThemeEditor = Boolean(window.Shopify && window.Shopify.designMode);
+        const canShowDebugToggle = !isProductionHost || isThemeEditor;
+        if (!canShowDebugToggle) return;
+
+        const storageKey = 'sb-debug-theme-mode';
+        const klaviyoFormId = 'V3fYni';
+        const validModes = new Set(['dark', 'light', 'auto']);
+        const readStoredMode = () => {
+          try {
+            return `${window.sessionStorage.getItem(storageKey) || ''}`.trim();
+          } catch (_) {
+            return '';
+          }
+        };
+        const persistMode = (mode) => {
+          try {
+            window.sessionStorage.setItem(storageKey, mode);
+          } catch (_) {
+          }
+        };
+
+        const storedMode = readStoredMode();
+        if (validModes.has(storedMode)) {
+          root.dataset.theme = storedMode;
+        }
+
+        const panel = document.createElement('div');
+        panel.className = 'sb-theme-debug-toggle';
+        panel.setAttribute('aria-label', 'Theme debug toggle');
+        panel.innerHTML = `
+          <span class="sb-theme-debug-toggle__label">Theme</span>
+          <button type="button" class="sb-theme-debug-toggle__button" data-theme-mode="dark">Dark</button>
+          <button type="button" class="sb-theme-debug-toggle__button" data-theme-mode="light">Light</button>
+          <button type="button" class="sb-theme-debug-toggle__button" data-theme-mode="auto">Auto</button>
+          <span class="sb-theme-debug-toggle__label">Debug</span>
+          <button type="button" class="sb-theme-debug-toggle__button sb-theme-debug-toggle__button--klaviyo" data-debug-action="open-klaviyo">Klaviyo popup</button>
+        `;
+
+        const updateActiveState = () => {
+          const activeMode = `${root.dataset.theme || ''}`.trim();
+          panel.querySelectorAll('[data-theme-mode]').forEach((button) => {
+            if (!(button instanceof HTMLElement)) return;
+            const buttonMode = `${button.dataset.themeMode || ''}`.trim();
+            button.classList.toggle('is-active', buttonMode === activeMode);
+          });
+        };
+
+        panel.querySelectorAll('[data-theme-mode]').forEach((button) => {
+          if (!(button instanceof HTMLButtonElement)) return;
+          button.addEventListener('click', () => {
+            const mode = `${button.dataset.themeMode || ''}`.trim();
+            if (!validModes.has(mode)) return;
+            root.dataset.theme = mode;
+            persistMode(mode);
+            updateActiveState();
+          });
+        });
+
+        const klaviyoTriggerButton = panel.querySelector('[data-debug-action="open-klaviyo"]');
+        if (klaviyoTriggerButton instanceof HTMLButtonElement) {
+          klaviyoTriggerButton.addEventListener('click', () => {
+            window._klOnsite = window._klOnsite || [];
+            window._klOnsite.push(['openForm', klaviyoFormId]);
+          });
+        }
+
+        document.body.appendChild(panel);
+        updateActiveState();
       })();
     </script>
   </body>

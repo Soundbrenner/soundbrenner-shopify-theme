@@ -131,6 +131,7 @@
 
     /* Dark theme source tokens */
     --sb-dark-primary-500: #00b59c;
+    --sb-dark-blue-300: #93a5fc;
     --sb-dark-blue-500: #5c7cfa;
     --sb-dark-orange-500: #e67702;
     --sb-dark-reviews: #ea983e;
@@ -164,6 +165,8 @@
     --sb-dark-neutral-900-50: rgba(255, 255, 255, 0.5);
     --sb-dark-neutral-900-75: rgba(255, 255, 255, 0.75);
     --sb-dark-primary-500-0: rgba(0, 181, 156, 0);
+    --sb-dark-blue-500-25: rgba(92, 124, 250, 0.25);
+    --sb-dark-blue-300-25: rgba(147, 165, 252, 0.25);
     --sb-dark-primary-500-25: rgba(0, 181, 156, 0.25);
     --sb-dark-primary-300-25: rgba(92, 207, 193, 0.25);
     --sb-dark-always-white-25: rgba(255, 255, 255, 0.25);
@@ -176,6 +179,7 @@
 
     /* Light theme source tokens */
     --sb-light-primary-500: #00b59c;
+    --sb-light-blue-300: #4f6de0;
     --sb-light-blue-500: #0037c2;
     --sb-light-orange-500: #e67702;
     --sb-light-reviews: #ea983e;
@@ -209,6 +213,8 @@
     --sb-light-neutral-900-50: rgba(0, 0, 0, 0.5);
     --sb-light-neutral-900-75: rgba(0, 0, 0, 0.75);
     --sb-light-primary-500-0: rgba(0, 181, 156, 0);
+    --sb-light-blue-500-25: rgba(0, 55, 194, 0.25);
+    --sb-light-blue-300-25: rgba(79, 109, 224, 0.25);
     --sb-light-primary-500-25: rgba(0, 181, 156, 0.25);
     --sb-light-primary-300-25: rgba(92, 207, 193, 0.25);
     --sb-light-always-white-25: rgba(255, 255, 255, 0.25);
@@ -221,6 +227,7 @@
 
     /* Active theme tokens (default: dark) */
     --sb-color-primary-500: var(--sb-dark-primary-500);
+    --sb-color-blue-300: var(--sb-dark-blue-300);
     --sb-color-blue-500: var(--sb-dark-blue-500);
     --sb-color-orange-500: var(--sb-dark-orange-500);
     --sb-color-reviews: var(--sb-dark-reviews);
@@ -253,6 +260,8 @@
     --sb-color-neutral-900-50: var(--sb-dark-neutral-900-50);
     --sb-color-neutral-900-75: var(--sb-dark-neutral-900-75);
     --sb-color-primary-500-0: var(--sb-dark-primary-500-0);
+    --sb-color-blue-500-25: var(--sb-dark-blue-500-25);
+    --sb-color-blue-300-25: var(--sb-dark-blue-300-25);
     --sb-color-primary-500-25: var(--sb-dark-primary-500-25);
     --sb-color-shop-pay-500-25: var(--sb-dark-shop-pay-500-25);
     --sb-color-primary-300-25: var(--sb-dark-primary-300-25);
@@ -303,6 +312,7 @@
 
   html[data-theme='light'] {
     --sb-color-primary-500: var(--sb-light-primary-500);
+    --sb-color-blue-300: var(--sb-light-blue-300);
     --sb-color-blue-500: var(--sb-light-blue-500);
     --sb-color-orange-500: var(--sb-light-orange-500);
     --sb-color-reviews: var(--sb-light-reviews);
@@ -335,6 +345,8 @@
     --sb-color-neutral-900-50: var(--sb-light-neutral-900-50);
     --sb-color-neutral-900-75: var(--sb-light-neutral-900-75);
     --sb-color-primary-500-0: var(--sb-light-primary-500-0);
+    --sb-color-blue-500-25: var(--sb-light-blue-500-25);
+    --sb-color-blue-300-25: var(--sb-light-blue-300-25);
     --sb-color-primary-500-25: var(--sb-light-primary-500-25);
     --sb-color-shop-pay-500-25: var(--sb-light-shop-pay-500-25);
     --sb-color-primary-300-25: var(--sb-light-primary-300-25);
@@ -349,6 +361,7 @@
 
   html[data-theme='dark'] {
     --sb-color-primary-500: var(--sb-dark-primary-500);
+    --sb-color-blue-300: var(--sb-dark-blue-300);
     --sb-color-blue-500: var(--sb-dark-blue-500);
     --sb-color-orange-500: var(--sb-dark-orange-500);
     --sb-color-reviews: var(--sb-dark-reviews);
@@ -381,6 +394,8 @@
     --sb-color-neutral-900-50: var(--sb-dark-neutral-900-50);
     --sb-color-neutral-900-75: var(--sb-dark-neutral-900-75);
     --sb-color-primary-500-0: var(--sb-dark-primary-500-0);
+    --sb-color-blue-500-25: var(--sb-dark-blue-500-25);
+    --sb-color-blue-300-25: var(--sb-dark-blue-300-25);
     --sb-color-primary-500-25: var(--sb-dark-primary-500-25);
     --sb-color-shop-pay-500-25: var(--sb-dark-shop-pay-500-25);
     --sb-color-primary-300-25: var(--sb-dark-primary-300-25);
@@ -396,6 +411,7 @@
   @media (prefers-color-scheme: light) {
     html[data-theme='auto'] {
       --sb-color-primary-500: var(--sb-light-primary-500);
+      --sb-color-blue-300: var(--sb-light-blue-300);
       --sb-color-blue-500: var(--sb-light-blue-500);
       --sb-color-orange-500: var(--sb-light-orange-500);
       --sb-color-reviews: var(--sb-light-reviews);
@@ -425,6 +441,8 @@
       --sb-color-neutral-900-50: var(--sb-light-neutral-900-50);
       --sb-color-neutral-900-75: var(--sb-light-neutral-900-75);
       --sb-color-primary-500-0: var(--sb-light-primary-500-0);
+      --sb-color-blue-500-25: var(--sb-light-blue-500-25);
+      --sb-color-blue-300-25: var(--sb-light-blue-300-25);
       --sb-color-primary-500-25: var(--sb-light-primary-500-25);
       --sb-color-shop-pay-500-25: var(--sb-light-shop-pay-500-25);
       --sb-color-primary-300-25: var(--sb-light-primary-300-25);
