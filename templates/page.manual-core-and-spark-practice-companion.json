@@ -518,7 +518,7 @@
         "text_VAA3iK": {
           "type": "text",
           "settings": {
-            "text": "<p>The Core/Spark features a capacitive touch surface. To ensure it can reliably detect your inputs, make sure that you use two fingers flat across the surface. Don’t just use your fingertips!</p><p><strong>Start or pause a feature</strong></p><p>Tap the soundwave twice quickly to start or pause certain features. Works in \"Metronome\" app, \"Timer\" app, \"Stopwatch\" app and the \"Smartphone music remote\".</p>"
+            "text": "<p>The Core / Spark features a capacitive touch surface. To ensure reliable input detection, place two fingers flat across the surface. Do not use only your fingertips.</p><p><strong>Start or pause a feature</strong></p><p>Tap the soundwave icon twice quickly to start or pause certain features. This gesture works in the <strong>Metronome</strong>, <strong>Timer</strong>, <strong>Stopwatch</strong>, and <strong>Smartphone Music Remote</strong> apps.</p>"
           }
         },
         "image_mgU7ky": {
