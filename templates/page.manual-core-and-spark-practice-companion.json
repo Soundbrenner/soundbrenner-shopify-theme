@@ -442,7 +442,7 @@
         "image_rxgnT8": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/Product_Core_2_Order_5.jpg"
+            "image": "shopify://shop_images/Product_Core_2_Order_5_d959743c-400a-49a7-b5f7-26c0c5d3053a.jpg"
           }
         },
         "divider_xADNhy": {
@@ -475,12 +475,6 @@
           "type": "text",
           "settings": {
             "text": "<p><strong>Power on</strong><br/>Hold the top button for 1 second to turn on the device.</p>"
-          }
-        },
-        "image_Dzc8kq": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/Product_Core_2_Order_6.jpg"
           }
         },
         "text_9cDw6H": {
@@ -1242,7 +1236,6 @@
         "divider_8GrH8j",
         "subheading_iL8Qey",
         "text_mkJcQC",
-        "image_Dzc8kq",
         "text_9cDw6H",
         "image_fnMLty",
         "divider_xrGQeX",
