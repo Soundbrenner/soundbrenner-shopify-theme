@@ -429,21 +429,9 @@
                   {% continue %}
                 {% endif %}
 
-                <article class="sb-manual-chapters__accordion">
-                  <button
-                    type="button"
-                    class="sb-manual-chapters__accordion-trigger"
-                    aria-expanded="false"
-                    data-manual-accordion-trigger
-                    data-sb-reveal-item
-                  >
-                    <span class="sb-manual-chapters__accordion-question font-body weight-bold">{{ tech_specs_group_title }}</span>
-                    <span class="sb-manual-chapters__accordion-icon" aria-hidden="true">
-                      <span class="sb-manual-chapters__accordion-icon-plus">{{ 'icon-accordion-add.svg' | inline_asset_content }}</span>
-                      <span class="sb-manual-chapters__accordion-icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
-                    </span>
-                  </button>
-                  <div class="sb-manual-chapters__accordion-answer sb-manual-chapters__accordion-answer--tech-specs" data-manual-accordion-answer data-sb-reveal-item>
+                <section class="sb-manual-chapters__tech-specs-group" data-sb-reveal-item>
+                  <h3 class="sb-manual-chapters__tech-specs-title font-body weight-bold">{{ tech_specs_group_title }}</h3>
+                  <div class="sb-manual-chapters__tech-specs-rows">
                     {% for tech_specs_line_raw in tech_specs_group_items %}
                       {% liquid
                         assign tech_specs_line_entry = tech_specs_line_raw.value | default: tech_specs_line_raw.reference.value | default: tech_specs_line_raw.reference | default: tech_specs_line_raw
@@ -464,29 +452,16 @@
                       </div>
                     {% endfor %}
                   </div>
-                  <hr class="sb-manual-chapters__accordion-divider" data-sb-reveal-item>
-                </article>
+                </section>
               {% endfor %}
             {% else %}
               {% liquid
                 assign tech_specs_title = tech_specs_root.tech_specs_title.value | default: tech_specs_root.tech_specs_title | default: 'Tech specs'
                 assign tech_specs_title = tech_specs_title | append: '' | strip
               %}
-              <article class="sb-manual-chapters__accordion">
-                <button
-                  type="button"
-                  class="sb-manual-chapters__accordion-trigger"
-                  aria-expanded="false"
-                  data-manual-accordion-trigger
-                  data-sb-reveal-item
-                >
-                  <span class="sb-manual-chapters__accordion-question font-body weight-bold">{{ tech_specs_title }}</span>
-                  <span class="sb-manual-chapters__accordion-icon" aria-hidden="true">
-                    <span class="sb-manual-chapters__accordion-icon-plus">{{ 'icon-accordion-add.svg' | inline_asset_content }}</span>
-                    <span class="sb-manual-chapters__accordion-icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
-                  </span>
-                </button>
-                <div class="sb-manual-chapters__accordion-answer sb-manual-chapters__accordion-answer--tech-specs" data-manual-accordion-answer data-sb-reveal-item>
+              <section class="sb-manual-chapters__tech-specs-group" data-sb-reveal-item>
+                <h3 class="sb-manual-chapters__tech-specs-title font-body weight-bold">{{ tech_specs_title }}</h3>
+                <div class="sb-manual-chapters__tech-specs-rows">
                   {% for tech_specs_line_raw in tech_specs_groups %}
                     {% liquid
                       assign tech_specs_line_entry = tech_specs_line_raw.value | default: tech_specs_line_raw.reference.value | default: tech_specs_line_raw.reference | default: tech_specs_line_raw
@@ -507,8 +482,7 @@
                     </div>
                   {% endfor %}
                 </div>
-                <hr class="sb-manual-chapters__accordion-divider" data-sb-reveal-item>
-              </article>
+              </section>
             {% endif %}
           </div>
         {% endif %}
@@ -789,8 +763,26 @@
     margin-top: var(--sb-space-24);
   }
 
-  .sb-manual-chapters__accordion-answer--tech-specs {
-    display: none;
+  .sb-manual-chapters__tech-specs {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .sb-manual-chapters__tech-specs-group {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .sb-manual-chapters__tech-specs-group + .sb-manual-chapters__tech-specs-group {
+    border-top: 1px solid var(--sb-color-neutral-600);
+    padding-top: 24px;
+  }
+
+  .sb-manual-chapters__tech-specs-title {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
   }
 
   .sb-manual-chapters__spec-row {
