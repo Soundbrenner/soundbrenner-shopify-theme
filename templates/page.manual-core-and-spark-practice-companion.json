@@ -97,6 +97,8 @@
           "type": "image_grid",
           "settings": {
             "fetch_whats_in_the_box_from_product": true,
+            "hide_accordion_and_title": true,
+            "accordion_title": "In the box",
             "source_metaobject": "core-2-stone-gray",
             "item_1_text": "Item 1",
             "item_2_text": "Item 2",
@@ -123,6 +125,8 @@
           "type": "image_grid",
           "settings": {
             "fetch_whats_in_the_box_from_product": true,
+            "hide_accordion_and_title": true,
+            "accordion_title": "In the box",
             "source_metaobject": "core-steel-2-jet-black",
             "item_1_text": "Item 1",
             "item_2_text": "Item 2",
@@ -149,6 +153,8 @@
           "type": "image_grid",
           "settings": {
             "fetch_whats_in_the_box_from_product": true,
+            "hide_accordion_and_title": true,
+            "accordion_title": "In the box",
             "source_metaobject": "spark-berry-blue",
             "item_1_text": "Item 1",
             "item_2_text": "Item 2",
@@ -348,7 +354,7 @@
         "accordion_item_P6NyaD": {
           "type": "accordion_item",
           "settings": {
-            "question": "Core battery maintenance guide",
+            "question": "Battery maintenance guide",
             "answer": "<p>When not in use, the battery in your wearable will slowly discharge. If the device remains unused for an extended period (for example, 3 months or longer), the battery may become over-discharged. This can cause permanent damage to the battery’s internal components. In severe cases, the battery and the device may no longer function. This behavior is common to all modern lithium batteries.</p><p>To prevent this, charge and discharge your wearable at least once every three months to maintain battery health. If you use your device regularly, such as at least once per week, no additional precautions are necessary.</p><h4>What happens if the battery is permanently damaged?</h4><p>Currently, the battery in our wearables cannot be replaced. This is due to the use of adhesives to improve water resistance. Opening the device may damage internal mechanical components, preventing reassembly.</p><p>We aim to make batteries replaceable in future products. However, achieving this in a compact and tightly integrated form factor presents significant engineering challenges.</p><p>For this reason, it is especially important to take proper care of your wearable’s battery.</p><p>If you suspect that your device’s battery has been damaged, please contact our support team. We will do our best to assist you: <a href=\"https://support.soundbrenner.com/hc/en-us/requests/new\" target=\"_blank\">contact support</a></p>"
           }
         },
@@ -553,6 +559,8 @@
           "type": "image_grid",
           "settings": {
             "fetch_whats_in_the_box_from_product": false,
+            "hide_accordion_and_title": true,
+            "accordion_title": "In the box",
             "source_metaobject": "",
             "item_1_image": "shopify://shop_images/Property_1_Battery_level.png",
             "item_1_text": "Battery level",
