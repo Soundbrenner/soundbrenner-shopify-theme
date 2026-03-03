@@ -102,6 +102,26 @@
       html.sb-affiliate-announcement-active .header.has-announcement {
         --sb-announcement-background: linear-gradient(90deg, #67E8F9 0%, #1E293B 33%, #1E293B 66%, #67E8F9 100%) !important;
       }
+
+      html.sb-affiliate-klaviyo-suppressed .klaviyo-form,
+      html.sb-affiliate-klaviyo-suppressed [data-testid^='klaviyo-form-'],
+      html.sb-affiliate-klaviyo-suppressed [class*='klaviyo-form-'],
+      html.sb-affiliate-klaviyo-suppressed iframe[src*='klaviyo'] {
+        display: none !important;
+      }
+
+      html.sb-affiliate-klaviyo-suppressed .sb-footer__newsletter-klaviyo [class*='klaviyo-form-'],
+      html.sb-affiliate-klaviyo-suppressed .sb-footer__newsletter-klaviyo [data-testid^='klaviyo-form-'] {
+        display: block !important;
+      }
+
+      html.sb-affiliate-klaviyo-suppressed .sb-footer__newsletter-klaviyo iframe[src*='klaviyo'] {
+        display: block !important;
+      }
+
+      html.sb-affiliate-klaviyo-suppressed .sb-footer__newsletter-klaviyo .klaviyo-form {
+        display: flex !important;
+      }
     </style>
     <script>
       (() => {
@@ -124,6 +144,9 @@
           return Array.from(ids);
         };
 
+        const isFooterEmbedContext = (node) =>
+          node instanceof HTMLElement && Boolean(node.closest('.sb-footer__newsletter-klaviyo'));
+
         const getAllowedEmbedFormIds = () => {
           const allowedIds = new Set();
           document
@@ -134,43 +157,70 @@
           return allowedIds;
         };
 
-        const isAllowedEmbedForm = (formNode, allowedEmbedIds) => {
-          if (!(formNode instanceof HTMLElement)) return false;
-          if (formNode.closest('.sb-footer__newsletter-klaviyo')) return true;
-          const formIds = getNodeFormIds(formNode);
-          return formIds.some((id) => allowedEmbedIds.has(id));
-        };
+        const isAllowedEmbedForm = (node, allowedEmbedIds) => {
+          if (!(node instanceof HTMLElement)) return false;
+          if (isFooterEmbedContext(node)) return true;
 
-        const hidePopupContainer = (node, allowedEmbedIds) => {
           let currentNode = node;
           while (currentNode && currentNode !== document.body) {
             if (!(currentNode instanceof HTMLElement)) break;
-            if (isAllowedEmbedForm(currentNode, allowedEmbedIds)) return;
-            currentNode.style.setProperty('display', 'none', 'important');
+            const currentIds = getNodeFormIds(currentNode);
+            if (currentIds.some((id) => allowedEmbedIds.has(id))) return true;
             currentNode = currentNode.parentElement;
           }
+
+          return false;
         };
+
+        const findPopupContainer = (node) => {
+          if (!(node instanceof HTMLElement)) return null;
+
+          let currentNode = node;
+          while (currentNode && currentNode !== document.body) {
+            if (!(currentNode instanceof HTMLElement)) break;
+            if (isFooterEmbedContext(currentNode)) return null;
+
+            const computedStyle = window.getComputedStyle(currentNode);
+            const zIndex = Number.parseInt(computedStyle.zIndex || '0', 10);
+            const isDialog = currentNode.getAttribute('role') === 'dialog' || currentNode.getAttribute('aria-modal') === 'true';
+            const isPopupLike = computedStyle.position === 'fixed' || (computedStyle.position === 'absolute' && zIndex >= 1000) || isDialog;
+            if (isPopupLike) return currentNode;
+
+            currentNode = currentNode.parentElement;
+          }
+
+          return node;
+        };
+
+        const hidePopupContainer = (node, allowedEmbedIds) => {
+          if (!(node instanceof HTMLElement)) return;
+          if (isAllowedEmbedForm(node, allowedEmbedIds)) return;
+
+          const popupContainer = findPopupContainer(node);
+          if (!(popupContainer instanceof HTMLElement)) return;
+          popupContainer.style.setProperty('display', 'none', 'important');
+        };
+
+        const markerSelector =
+          '.klaviyo-form, [class*="klaviyo-form-"], [data-testid^="klaviyo-form-"], [class*="kl-private-reset-css"], iframe[src*="klaviyo"]';
 
         const suppressKlaviyoPopups = (scope = document) => {
           if (!(scope instanceof Document || scope instanceof HTMLElement)) return;
           const allowedEmbedIds = getAllowedEmbedFormIds();
-          const forms = scope.querySelectorAll('.klaviyo-form');
-          forms.forEach((formNode) => {
-            if (!(formNode instanceof HTMLElement)) return;
-            if (isAllowedEmbedForm(formNode, allowedEmbedIds)) return;
-            hidePopupContainer(formNode, allowedEmbedIds);
+
+          const nodes = scope.querySelectorAll(markerSelector);
+          nodes.forEach((node) => {
+            if (node instanceof HTMLIFrameElement) {
+              if (isAllowedEmbedForm(node, allowedEmbedIds)) return;
+              node.style.setProperty('display', 'none', 'important');
+              return;
+            }
+            hidePopupContainer(node, allowedEmbedIds);
           });
         };
 
         const processAddedNode = (node) => {
           if (!(node instanceof HTMLElement)) return;
-          const allowedEmbedIds = getAllowedEmbedFormIds();
-          if (node.classList.contains('klaviyo-form')) {
-            if (!isAllowedEmbedForm(node, allowedEmbedIds)) {
-              hidePopupContainer(node, allowedEmbedIds);
-            }
-            return;
-          }
           suppressKlaviyoPopups(node);
         };
 
@@ -188,11 +238,23 @@
         const observer = new MutationObserver((mutations) => {
           mutations.forEach((mutation) => {
             mutation.addedNodes.forEach((addedNode) => {
+              if (addedNode instanceof HTMLIFrameElement) {
+                suppressKlaviyoPopups(document);
+                return;
+              }
               processAddedNode(addedNode);
             });
           });
         });
         observer.observe(document.documentElement, { childList: true, subtree: true });
+
+        const startedAt = Date.now();
+        const resuppressTimer = window.setInterval(() => {
+          suppressKlaviyoPopups(document);
+          if (Date.now() - startedAt > 5000) {
+            window.clearInterval(resuppressTimer);
+          }
+        }, 250);
       })();
     </script>
 
