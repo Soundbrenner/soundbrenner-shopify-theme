@@ -88,19 +88,20 @@
             "heading": "In the box"
           }
         },
-        "body_3": {
-          "type": "text",
+        "image_grid_iMBf8K": {
+          "type": "image_grid",
           "settings": {
-            "text": "<p>View the full list of packaging contents on the product page.</p>"
-          }
-        },
-        "button_rF6dEJ": {
-          "type": "button",
-          "settings": {
-            "label": "View in the box",
-            "button_size": "large",
-            "icon_position": "none",
-            "link": "shopify://products/wave-in-ear-monitors"
+            "fetch_whats_in_the_box_from_product": true,
+            "source_metaobject": "pulse",
+            "item_1_text": "Item 1",
+            "item_2_text": "Item 2",
+            "item_3_text": "Item 3",
+            "item_4_text": "Item 4",
+            "item_5_text": "",
+            "item_6_text": "",
+            "item_7_text": "",
+            "item_8_text": "",
+            "item_9_text": ""
           }
         },
         "divider_3": {
@@ -549,8 +550,7 @@
         "vimeo_video_4xgCB6",
         "divider_2",
         "subheading_MKxtgn",
-        "body_3",
-        "button_rF6dEJ",
+        "image_grid_iMBf8K",
         "divider_3",
         "subheading_nfVETd",
         "body_4",

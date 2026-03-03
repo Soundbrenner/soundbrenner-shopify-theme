@@ -12,16 +12,24 @@
     "main": {
       "type": "hero-card",
       "settings": {
+        "use_seasonal_hero_card": false,
+        "use_affiliate_metaobject": false,
         "use_resource_title_description": true,
-"background_image_desktop": "shopify://shop_images/Footer_flow_desktop.jpg",
+        "use_product_page_metaobjects": false,
+        "background_image_desktop": "shopify://shop_images/Footer_flow_desktop.jpg",
         "background_image_mobile": "shopify://shop_images/Footer_flow_mobile.jpg",
         "kicker": "Manual Flow microphone",
         "headline": "Understand every detail.",
+        "subheadline": "",
         "show_button": false,
         "button_label": "Placeholder",
         "button_size": "large",
         "icon_position": "none",
-        "button_link": ""
+        "button_link": "",
+        "show_app_download_qr": false,
+        "show_app_download_app_store": false,
+        "show_app_download_google_play": false,
+        "show_app_download_china": false
       }
     },
     "chapters": {
@@ -90,17 +98,20 @@
             "heading": "In the box"
           }
         },
-        "body_3": {
-          "type": "text",
-          "settings": {
-            "text": "<p>View the full list of packaging contents on the product page.</p>"
-          }
-        },
         "button_rF6dEJ": {
           "type": "image_grid",
           "settings": {
             "fetch_whats_in_the_box_from_product": true,
-            "source_metaobject": "gid://shopify/Metaobject/148126335227"
+            "source_metaobject": "flow-microphone",
+            "item_1_text": "Item 1",
+            "item_2_text": "Item 2",
+            "item_3_text": "Item 3",
+            "item_4_text": "Item 4",
+            "item_5_text": "",
+            "item_6_text": "",
+            "item_7_text": "",
+            "item_8_text": "",
+            "item_9_text": ""
           }
         },
         "divider_3": {
@@ -237,16 +248,24 @@
     "hero_card_wRrHA8": {
       "type": "hero-card",
       "settings": {
+        "use_seasonal_hero_card": false,
+        "use_affiliate_metaobject": false,
         "use_resource_title_description": true,
+        "use_product_page_metaobjects": false,
         "background_image_desktop": "shopify://shop_images/Property_1_Contact_us_0ce733bb-15cd-498c-a133-043d9039f8af.jpg",
         "background_image_mobile": "shopify://shop_images/Property_1_Contact_us_mobile.jpg",
         "kicker": "Contact us",
         "headline": "We're here to help.",
+        "subheadline": "",
         "show_button": true,
         "button_label": "Send us a message",
         "button_size": "large",
         "icon_position": "none",
-        "button_link": "shopify://pages/contact-us"
+        "button_link": "shopify://pages/contact-us",
+        "show_app_download_qr": false,
+        "show_app_download_app_store": false,
+        "show_app_download_google_play": false,
+        "show_app_download_china": false
       }
     }
   },

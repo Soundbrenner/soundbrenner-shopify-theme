@@ -104,20 +104,16 @@
           "type": "image_grid",
           "settings": {
             "fetch_whats_in_the_box_from_product": true,
-            "source_metaobject": "gid://shopify/Metaobject/142705623291"
-          }
-        },
-        "heading_small_HQzjNP": {
-          "type": "heading_small",
-          "settings": {
-            "heading": "Spark"
-          }
-        },
-        "image_grid_8fFLQn": {
-          "type": "image_grid",
-          "settings": {
-            "fetch_whats_in_the_box_from_product": true,
-            "source_metaobject": "gid://shopify/Metaobject/142704738555"
+            "source_metaobject": "core-2-stone-gray",
+            "item_1_text": "Item 1",
+            "item_2_text": "Item 2",
+            "item_3_text": "Item 3",
+            "item_4_text": "Item 4",
+            "item_5_text": "",
+            "item_6_text": "",
+            "item_7_text": "",
+            "item_8_text": "",
+            "item_9_text": ""
           }
         },
         "heading_small_Fm2iKk": {
@@ -130,7 +126,38 @@
           "type": "image_grid",
           "settings": {
             "fetch_whats_in_the_box_from_product": true,
-            "source_metaobject": "gid://shopify/Metaobject/142706835707"
+            "source_metaobject": "core-steel-2-jet-black",
+            "item_1_text": "Item 1",
+            "item_2_text": "Item 2",
+            "item_3_text": "Item 3",
+            "item_4_text": "Item 4",
+            "item_5_text": "",
+            "item_6_text": "",
+            "item_7_text": "",
+            "item_8_text": "",
+            "item_9_text": ""
+          }
+        },
+        "heading_small_HQzjNP": {
+          "type": "heading_small",
+          "settings": {
+            "heading": "Spark"
+          }
+        },
+        "image_grid_8fFLQn": {
+          "type": "image_grid",
+          "settings": {
+            "fetch_whats_in_the_box_from_product": true,
+            "source_metaobject": "spark-berry-blue",
+            "item_1_text": "Item 1",
+            "item_2_text": "Item 2",
+            "item_3_text": "Item 3",
+            "item_4_text": "Item 4",
+            "item_5_text": "",
+            "item_6_text": "",
+            "item_7_text": "",
+            "item_8_text": "",
+            "item_9_text": ""
           }
         },
         "divider_3": {
@@ -452,6 +479,8 @@
         "image_grid_wyW8Qm": {
           "type": "image_grid",
           "settings": {
+            "fetch_whats_in_the_box_from_product": false,
+            "source_metaobject": "",
             "item_1_image": "shopify://shop_images/Property_1_Battery_level.png",
             "item_1_text": "Battery level",
             "item_2_image": "shopify://shop_images/Property_1_Battery_charging.png",
