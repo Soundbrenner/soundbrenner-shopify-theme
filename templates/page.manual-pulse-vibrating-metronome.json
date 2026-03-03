@@ -118,6 +118,7 @@
           "type": "tech_specs_accordions",
           "settings": {
             "source_metaobject": "pulse-vibrating-metronome",
+            "source_metaobject_id": "148115783931",
             "hide_accordion_and_title": false
           }
         },

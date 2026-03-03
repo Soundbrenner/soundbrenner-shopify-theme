@@ -319,9 +319,30 @@
         {% endif %}
       {% elsif block.type == 'tech_specs_accordions' %}
         {% liquid
+          assign source_metaobject_id = block.settings.source_metaobject_id | append: '' | strip
           assign tech_specs_source = blank
           if block.settings.source_metaobject != blank
             assign tech_specs_source = block.settings.source_metaobject.value | default: block.settings.source_metaobject.reference.value | default: block.settings.source_metaobject.reference | default: block.settings.source_metaobject
+          endif
+
+          assign tech_specs_source_has_groups = false
+          if tech_specs_source != blank
+            assign tech_specs_source_groups = tech_specs_source.items_tech_specs.value | default: tech_specs_source.items_tech_specs.references | default: tech_specs_source.items_tech_specs
+            if tech_specs_source_groups != blank
+              assign tech_specs_source_has_groups = true
+            endif
+          endif
+
+          if source_metaobject_id != blank
+            if tech_specs_source == blank or tech_specs_source_has_groups == false
+              for source_candidate in metaobjects.sbv2_tech_specs_faqs.values
+                assign source_candidate_id = source_candidate.system.id | append: '' | strip
+                if source_candidate_id == source_metaobject_id
+                  assign tech_specs_source = source_candidate
+                  break
+                endif
+              endfor
+            endif
           endif
 
           assign tech_specs_root = blank
@@ -2130,6 +2151,12 @@
           "id": "source_metaobject",
           "label": "Tech specs metaobject",
           "metaobject_type": "sbv2_tech_specs_faqs"
+        },
+        {
+          "type": "text",
+          "id": "source_metaobject_id",
+          "label": "Tech specs metaobject ID",
+          "info": "Optional fallback if handle changes."
         },
         {
           "type": "checkbox",
