@@ -937,7 +937,7 @@
         "text_nVhP36": {
           "type": "text",
           "settings": {
-            "text": "<p><strong>Phone calls</strong></p><p>If you get a phone call, the Core/Spark will start vibrating and give you the option to accept or decline the call. Since the Core/Spark has no speaker, you’ll need to use Bluetooth headphones or your phone itself to take the call.</p>"
+            "text": "<p><strong>Phone calls</strong></p><p>When you receive a phone call, the Core / Spark will vibrate and display the option to accept or decline the call.</p><p>As the Core / Spark does not have a built-in speaker or microphone, you will need to use your phone or connected Bluetooth headphones to conduct the call.</p>"
           }
         },
         "divider_BmnLkM": {
