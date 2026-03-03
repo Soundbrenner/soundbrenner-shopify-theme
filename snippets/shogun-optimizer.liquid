@@ -29,7 +29,7 @@ This file can be re-written at any time.
   CONSENT TRACKING & OPTIMIZER SCRIPT
   =====================================================
 {%- endcomment -%}
-<script src="/cdn/shopifycloud/consent-tracking-api/v0.1/consent-tracking-api.js" defer></script>
+<script src="/cdn/shopifycloud/consent-tracking-api/v0.1/consent-tracking-api.js"></script>
 
 <script type="text/javascript">
   {% raw %}
@@ -796,7 +796,7 @@ This file can be re-written at any time.
 
               <div class="shg-preview__product">
                 <div class="shg-preview__product-header">
-                  <img class="shg-preview__product-image" src="{{ shg_preview_product.featured_image | image_url: width: 64 }}" alt="{{ shg_preview_product.title }}" width="36" height="36" />
+                  <img class="shg-preview__product-image" src="{{ shg_preview_product.featured_image | image_url: width: 64 }}" alt="{{ shg_preview_product.title }}" />
                   <span class="shg-preview__product-title">{{ shg_preview_product.title }}</span>
                   <a href="{{ shg_preview_product.url }}?shgpvid={{ shogun_variant_id }}" class="shg-preview__product-link" title="View product page">
                     {{ eye_symbol }}
@@ -854,10 +854,10 @@ This file can be re-written at any time.
                           <div class="shg-preview__variant-images">
                             {% if variant_a_data.media and variant_a_data.media.size > 0 %}
                               {% for media_item in variant_a_data.media %}
-                                <img src="{{ media_item.preview_url }}" alt="{{ media_item.alt | default: variant_a_data.title | default: shg_preview_product.title }}" width="44" height="44" />
+                                <img src="{{ media_item.preview_url }}" alt="{{ media_item.alt | default: variant_a_data.title | default: shg_preview_product.title }}" />
                               {% endfor %}
                             {% else %}
-                              <img src="{{ shg_preview_product.featured_image | image_url: width: 80 }}" alt="{{ shg_preview_product.title }}" width="44" height="44" />
+                              <img src="{{ shg_preview_product.featured_image | image_url: width: 80 }}" alt="{{ shg_preview_product.title }}" />
                             {% endif %}
                           </div>
                         {% endif %}
@@ -891,7 +891,7 @@ This file can be re-written at any time.
                             <div class="shg-preview__variant-images">
                               {% if variant_b_data.media and variant_b_data.media.size > 0 %}
                                 {% for media_item in variant_b_data.media %}
-                                  <img src="{{ media_item.preview_url }}" alt="{{ media_item.alt | default: variant_b_data.title | default: shg_preview_product.title }}" width="44" height="44" />
+                                  <img src="{{ media_item.preview_url }}" alt="{{ media_item.alt | default: variant_b_data.title | default: shg_preview_product.title }}" />
                                 {% endfor %}
                               {% else %}
                                 <span class="shg-preview__variant-image-placeholder" aria-hidden="true"></span>
@@ -924,10 +924,10 @@ This file can be re-written at any time.
                           <div class="shg-preview__variant-images">
                             {% if variant_a_data.media and variant_a_data.media.size > 0 %}
                               {% for media_item in variant_a_data.media %}
-                                <img src="{{ media_item.preview_url }}" alt="{{ media_item.alt | default: variant_a_data.title | default: shg_preview_product.title }}" width="44" height="44" />
+                                <img src="{{ media_item.preview_url }}" alt="{{ media_item.alt | default: variant_a_data.title | default: shg_preview_product.title }}" />
                               {% endfor %}
                             {% else %}
-                              <img src="{{ shg_preview_product.featured_image | image_url: width: 80 }}" alt="{{ shg_preview_product.title }}" width="44" height="44" />
+                              <img src="{{ shg_preview_product.featured_image | image_url: width: 80 }}" alt="{{ shg_preview_product.title }}" />
                             {% endif %}
                           </div>
                         {% endif %}
@@ -942,11 +942,11 @@ This file can be re-written at any time.
                                 {{ variant_arrow_symbol }}
                                 {% if shg_is_product_details %}
                                   {% if variant_original.media and variant_original.media.preview_url %}
-                                    <img class="shg-preview__variant-option-image" src="{{ variant_original.media.preview_url }}" alt="{{ variant_original.media.alt | default: variant.title }}" width="32" height="32" />
+                                    <img class="shg-preview__variant-option-image" src="{{ variant_original.media.preview_url }}" alt="{{ variant_original.media.alt | default: variant.title }}" />
                                   {% else %}
                                     {% assign variant_a_fallback_media = variant_a_data.media | first %}
                                     {% if variant_a_fallback_media and variant_a_fallback_media.preview_url %}
-                                      <img class="shg-preview__variant-option-image" src="{{ variant_a_fallback_media.preview_url }}" alt="{{ variant_a_fallback_media.alt | default: variant.title }}" width="32" height="32" />
+                                      <img class="shg-preview__variant-option-image" src="{{ variant_a_fallback_media.preview_url }}" alt="{{ variant_a_fallback_media.alt | default: variant.title }}" />
                                     {% else %}
                                       <span class="shg-preview__variant-option-image-placeholder" aria-hidden="true"></span>
                                     {% endif %}
@@ -981,7 +981,7 @@ This file can be re-written at any time.
                             <div class="shg-preview__variant-images">
                               {% if variant_b_data.media and variant_b_data.media.size > 0 %}
                                 {% for media_item in variant_b_data.media %}
-                                  <img src="{{ media_item.preview_url }}" alt="{{ media_item.alt | default: variant_b_data.title | default: shg_preview_product.title }}" width="44" height="44" />
+                                  <img src="{{ media_item.preview_url }}" alt="{{ media_item.alt | default: variant_b_data.title | default: shg_preview_product.title }}" />
                                 {% endfor %}
                               {% else %}
                                 <span class="shg-preview__variant-image-placeholder" aria-hidden="true"></span>
@@ -999,11 +999,11 @@ This file can be re-written at any time.
                                   {{ variant_arrow_symbol }}
                                   {% if shg_is_product_details %}
                                     {% if variant_test.media and variant_test.media.preview_url %}
-                                      <img class="shg-preview__variant-option-image" src="{{ variant_test.media.preview_url }}" alt="{{ variant_test.media.alt | default: variant.title }}" width="32" height="32" />
+                                      <img class="shg-preview__variant-option-image" src="{{ variant_test.media.preview_url }}" alt="{{ variant_test.media.alt | default: variant.title }}" />
                                     {% else %}
                                       {% assign variant_b_fallback_media = variant_b_data.media | first %}
                                       {% if variant_b_fallback_media and variant_b_fallback_media.preview_url %}
-                                        <img class="shg-preview__variant-option-image" src="{{ variant_b_fallback_media.preview_url }}" alt="{{ variant_b_fallback_media.alt | default: variant.title }}" width="32" height="32" />
+                                        <img class="shg-preview__variant-option-image" src="{{ variant_b_fallback_media.preview_url }}" alt="{{ variant_b_fallback_media.alt | default: variant.title }}" />
                                       {% else %}
                                         <span class="shg-preview__variant-option-image-placeholder" aria-hidden="true"></span>
                                       {% endif %}
