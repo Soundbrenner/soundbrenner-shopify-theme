@@ -13,7 +13,7 @@
       "type": "hero-card",
       "settings": {
         "use_resource_title_description": true,
-"background_image_desktop": "shopify://shop_images/Property_1_App_1_6ff69b0f-a787-456a-8986-2636d4ddafe0.jpg",
+        "background_image_desktop": "shopify://shop_images/Property_1_App_1_6ff69b0f-a787-456a-8986-2636d4ddafe0.jpg",
         "background_image_mobile": "shopify://shop_images/Property_1_App_1_mobile.jpg",
         "kicker": "Manual The Metronome app",
         "headline": "Understand every detail.",
@@ -95,7 +95,7 @@
             "label": "View Core and Spark manual",
             "button_size": "large",
             "icon_position": "none",
-            "link": "shopify://pages/manual-core-and-spark"
+            "link": "shopify://pages/manual-core-and-spark-practice-companion"
           }
         },
         "divider_3": {
