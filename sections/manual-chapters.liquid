@@ -667,7 +667,6 @@
             referrerpolicy="strict-origin-when-cross-origin"
             data-manual-vimeo-frame
           ></iframe>
-          <div class="sb-manual-chapters__video-placeholder" aria-hidden="true" data-sb-reveal-item></div>
         </figure>
       {% elsif block.type == 'accordion_item' %}
         <article class="sb-manual-chapters__accordion" data-sb-reveal {{ block.shopify_attributes }}>
@@ -822,32 +821,16 @@
 
   .sb-manual-chapters__video {
     margin: 0;
-    max-width: min(100%, 400px);
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
     width: 100%;
   }
 
   .sb-manual-chapters__video iframe {
     border: 0;
     border-radius: 0;
-    display: none;
-    height: auto;
-    width: 100%;
-  }
-
-  .sb-manual-chapters__video.is-ready iframe {
     display: block;
-  }
-
-  .sb-manual-chapters__video.is-ready .sb-manual-chapters__video-placeholder {
-    display: none;
-  }
-
-  .sb-manual-chapters__video-placeholder {
-    background: var(--sb-color-neutral-200);
-    border: 1px solid var(--sb-color-neutral-600);
-    display: block;
-    aspect-ratio: 16 / 9;
-    min-height: 220px;
+    height: 100%;
     width: 100%;
   }
 
@@ -1884,7 +1867,6 @@
       const applyFrameSrc = (videoId) => {
         if (!videoId) return;
         frame.src = `https://player.vimeo.com/video/${videoId}?title=0&byline=0&portrait=0`;
-        video.classList.add('is-ready');
       };
 
       const applyAspectRatio = (width, height) => {
@@ -1892,10 +1874,13 @@
         const w = Number(width);
         const h = Number(height);
         if (!Number.isFinite(w) || !Number.isFinite(h) || w <= 0 || h <= 0) return;
-        frame.style.aspectRatio = `${w} / ${h}`;
+        video.style.aspectRatio = `${w} / ${h}`;
       };
 
       const directId = extractVimeoId(source);
+      if (directId) {
+        applyFrameSrc(directId);
+      }
 
       fetch(`https://vimeo.com/api/oembed.json?url=${encodeURIComponent(source)}`)
         .then((response) => {
@@ -1909,7 +1894,7 @@
           applyAspectRatio(data?.width, data?.height);
         })
         .catch(() => {
-          if (directId) applyFrameSrc(directId);
+          if (directId && !frame.src) applyFrameSrc(directId);
         });
     });
 
