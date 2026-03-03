@@ -524,7 +524,7 @@
         "text_4aafcq": {
           "type": "text",
           "settings": {
-            "text": "<p><strong>Tap tempo</strong></p><p>Tap the soundwave three times or more at a steady pace. The Core/Spark will set a new tempo that matches the average pace of your taps. Works in \"Metronome\" app only.</p>"
+            "text": "<p><strong>Tap tempo</strong></p><p>Tap the soundwave three times or more at a steady pace. The Core/Spark will set a new tempo that matches the average pace of your taps. Works in <strong>Metronome</strong> app only.</p>"
           }
         },
         "image_UGq7br": {
@@ -815,7 +815,7 @@
         "text_r7gJrb": {
           "type": "text",
           "settings": {
-            "text": "<p>Open the <strong>Microphone Tuner</strong> app and play a note. The device will detect the closest pitch and display its deviation in cents. As you adjust the pitch, the LED ring will change from red to green to indicate when the note is in tune.</p><p>To adjust the tuning reference (A4), press the bottom button and rotate the wheel to set your preferred frequency (default: 440 Hz).</p>"
+            "text": "<p>Open the <strong>Microphone tuner</strong> app and play a note. The device will detect the closest pitch and display its deviation in cents. As you adjust the pitch, the LED ring will change from red to green to indicate when the note is in tune.</p><p>To adjust the tuning reference (A4), press the bottom button and rotate the wheel to set your preferred frequency (default: 440 Hz).</p>"
           }
         },
         "image_D7bYPy": {
