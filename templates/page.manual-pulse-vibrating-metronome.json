@@ -117,7 +117,7 @@
         "tech_specs_accordions_dj3sQ": {
           "type": "tech_specs_accordions",
           "settings": {
-            "source_metaobject": "pulse",
+            "source_metaobject": "pulse-vibrating-metronome",
             "hide_accordion_and_title": false
           }
         },
