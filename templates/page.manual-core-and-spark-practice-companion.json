@@ -801,13 +801,13 @@
         "subheading_bE3ihU": {
           "type": "subheading",
           "settings": {
-            "heading": "Microphone tuner (Core 2/Spark only)"
+            "heading": "Microphone tuner (Core 2 / Spark only)"
           }
         },
         "text_r7gJrb": {
           "type": "text",
           "settings": {
-            "text": "<p>Launch the \"Microphone Tuner\" app and play a note - your device will detect the closest note and the cent deviation to it. As you tune, the LED ring changes from red to green to signal that the note is perfectly tuned.</p><p>Customize the tuning reference from 440 Hz to your preference by pressing the bottom button and twisting the wheel.</p>"
+            "text": "<p>Open the <strong>Microphone Tuner</strong> app and play a note. The device will detect the closest pitch and display its deviation in cents. As you adjust the pitch, the LED ring will change from red to green to indicate when the note is in tune.</p><p>To adjust the tuning reference (A4), press the bottom button and rotate the wheel to set your preferred frequency (default: 440 Hz).</p>"
           }
         },
         "image_D7bYPy": {
