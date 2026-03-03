@@ -74,7 +74,7 @@
         "body_2": {
           "type": "text",
           "settings": {
-            "text": "<p>This video is the ultimate crash course to learn everything you need to know about how to use your Core/Spark in the shortest time possible.</p>"
+            "text": "<p>This video provides a comprehensive introduction to your Core / Spark. It covers everything you need to know to start using your device effectively in the shortest time possible.</p>"
           }
         },
         "vimeo_video_YefAQq": {
@@ -264,7 +264,7 @@
         "body_4": {
           "type": "text",
           "settings": {
-            "text": "<p>Upgrade your practice with Plus, our optional premium service that unlocks the full capabilities of our app. While the Core itself provides a complete experience on its own, Plus offers extras such as cloud storage of your songs and setlists, among other features. Our subscription model supports the rollout of multiple significant app updates annually, so get ready for a continuous stream of exciting new features!</p><p>Your Core/Spark comes with a free 3-month trial that you can redeem by following the in-app instructions after connecting your wearable!</p>"
+            "text": "<p>Upgrade your practice with Plus, our optional premium service that unlocks the full capabilities of the Soundbrenner app. While your Core / Spark provides a complete experience on its own, Plus adds features such as cloud storage for your songs and setlists, along with additional exclusive tools.</p><p>Your subscription directly supports the release of multiple major app updates each year, ensuring a continuous stream of new features and improvements.</p><p>Your Core / Spark includes a free 3-month Plus trial. You can redeem it by following the in-app instructions after connecting your wearable.</p>"
           }
         },
         "divider_4": {
@@ -1128,18 +1128,18 @@
             "answer": "<p>Our warranty terms are available <a href=\"/pages/terms-of-warranty\" title=\"Terms of warranty\">here</a>.</p>"
           }
         },
-        "accordion_item_jEVqLT": {
-          "type": "accordion_item",
-          "settings": {
-            "question": "Terms of service",
-            "answer": "<p>Our app's terms of service are available <a href=\"/pages/terms-of-service-the-metronome-app\" title=\"Terms of service The Metronome app\">here</a>.</p>"
-          }
-        },
         "accordion_item_x6nkte": {
           "type": "accordion_item",
           "settings": {
             "question": "Privacy policy",
             "answer": "<p>Our app's privacy policy is available <a href=\"/pages/terms-of-warranty\" title=\"Terms of warranty\">here</a>.</p>"
+          }
+        },
+        "accordion_item_jEVqLT": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Terms of service",
+            "answer": "<p>Our app's terms of service are available <a href=\"/pages/terms-of-service-the-metronome-app\" title=\"Terms of service The Metronome app\">here</a>.</p>"
           }
         },
         "accordion_item_ebWN9y": {
