@@ -91,13 +91,7 @@
         "subheading_QhB4a6": {
           "type": "subheading",
           "settings": {
-            "heading": "What's in the box"
-          }
-        },
-        "heading_small_Z3NbU4": {
-          "type": "heading_small",
-          "settings": {
-            "heading": "Core 2"
+            "heading": "In the box Core 2"
           }
         },
         "image_grid_4fY4mP": {
@@ -117,9 +111,9 @@
           }
         },
         "heading_small_Fm2iKk": {
-          "type": "heading_small",
+          "type": "subheading",
           "settings": {
-            "heading": "Core Steel 2"
+            "heading": "In the box Core Steel 2"
           }
         },
         "image_grid_p9DgQa": {
@@ -139,9 +133,9 @@
           }
         },
         "heading_small_HQzjNP": {
-          "type": "heading_small",
+          "type": "subheading",
           "settings": {
-            "heading": "Spark"
+            "heading": "In the box Spark"
           }
         },
         "image_grid_8fFLQn": {
@@ -1146,7 +1140,6 @@
         "vimeo_video_YefAQq",
         "divider_2",
         "subheading_QhB4a6",
-        "heading_small_Z3NbU4",
         "image_grid_4fY4mP",
         "heading_small_Fm2iKk",
         "image_grid_p9DgQa",
