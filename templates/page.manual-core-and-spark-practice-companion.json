@@ -464,7 +464,7 @@
         "text_dydTbg": {
           "type": "text",
           "settings": {
-            "text": "<p><strong>Top button</strong></p><ul><li>Go backward</li><li>Stop editing selection</li><li>Power on & power off (long press)</li></ul><p><strong>Bottom button</strong></p><ul><li>Go forward</li><li>Start editing selection</li><li>Open app dock</li></ul><p><strong>Wheel</strong></p><ul><li>Navigate the app dock</li><li>Change values while editing a selection</li></ul><p><strong>Touch surface</strong></p><ul><li>Tap the soundwave twice quickly to start or pause a feature while inside an app</li><li>Tap the soundwave three or more times to tap tempo while inside the \"Metronome\" app</li></ul>"
+            "text": "<p><strong>Top button</strong></p><ul><li>Go backward</li><li>Stop editing selection</li><li>Power on & power off (long press)</li></ul><p><strong>Bottom button</strong></p><ul><li>Go forward</li><li>Start editing selection</li><li>Open app dock</li></ul><p><strong>Wheel</strong></p><ul><li>Navigate the app dock</li><li>Change values while editing a selection</li></ul><p><strong>Touch surface</strong></p><ul><li>Tap the soundwave twice quickly to start or pause a feature while inside an app</li><li>Tap the soundwave three or more times to tap tempo while inside the <strong>Metronome</strong> app</li></ul>"
           }
         },
         "divider_8GrH8j": {
