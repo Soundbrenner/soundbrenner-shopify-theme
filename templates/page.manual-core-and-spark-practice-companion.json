@@ -75,7 +75,7 @@
         "body_2": {
           "type": "text",
           "settings": {
-            "text": "<p>This video is the ultimate crash course to learn everything you need to know about how to use your Core/Spark in the shortest time possible.</p>"
+            "text": "<p>This video provides a comprehensive introduction to your Core / Spark. It covers everything you need to know to start using your device effectively in the shortest time possible.</p>"
           }
         },
         "vimeo_video_YefAQq": {
@@ -1129,18 +1129,18 @@
             "answer": "<p>Our warranty terms are available <a href=\"/pages/terms-of-warranty\" title=\"Terms of warranty\">here</a>.</p>"
           }
         },
-        "accordion_item_jEVqLT": {
-          "type": "accordion_item",
-          "settings": {
-            "question": "Terms of service",
-            "answer": "<p>Our app's terms of service are available <a href=\"/pages/terms-of-service-the-metronome-app\" title=\"Terms of service The Metronome app\">here</a>.</p>"
-          }
-        },
         "accordion_item_x6nkte": {
           "type": "accordion_item",
           "settings": {
             "question": "Privacy policy",
             "answer": "<p>Our app's privacy policy is available <a href=\"/pages/terms-of-warranty\" title=\"Terms of warranty\">here</a>.</p>"
+          }
+        },
+        "accordion_item_jEVqLT": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Terms of service",
+            "answer": "<p>Our app's terms of service are available <a href=\"/pages/terms-of-service-the-metronome-app\" title=\"Terms of service The Metronome app\">here</a>.</p>"
           }
         },
         "accordion_item_ebWN9y": {
