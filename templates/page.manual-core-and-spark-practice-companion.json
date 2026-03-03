@@ -158,6 +158,112 @@
           "type": "divider",
           "settings": {}
         },
+        "heading_uL3tV7": {
+          "type": "heading",
+          "settings": {
+            "heading": "Tech specs"
+          }
+        },
+        "subheading_sH2mX4": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Tech specs Core 2"
+          }
+        },
+        "tech_specs_item_core2_1": {
+          "type": "tech_specs_item_accordion",
+          "settings": {
+            "source_metaobject_item": "core-2-1",
+            "source_metaobject_item_id": "149708112123"
+          }
+        },
+        "tech_specs_item_core2_2": {
+          "type": "tech_specs_item_accordion",
+          "settings": {
+            "source_metaobject_item": "core-2-2",
+            "source_metaobject_item_id": "149274362107"
+          }
+        },
+        "tech_specs_item_core2_3": {
+          "type": "tech_specs_item_accordion",
+          "settings": {
+            "source_metaobject_item": "core-2-3",
+            "source_metaobject_item_id": "149269217531"
+          }
+        },
+        "tech_specs_item_core2_4": {
+          "type": "tech_specs_item_accordion",
+          "settings": {
+            "source_metaobject_item": "core-2-4",
+            "source_metaobject_item_id": "149266923771"
+          }
+        },
+        "tech_specs_item_core2_5": {
+          "type": "tech_specs_item_accordion",
+          "settings": {
+            "source_metaobject_item": "core-2-5",
+            "source_metaobject_item_id": "149267906811"
+          }
+        },
+        "tech_specs_item_core2_6": {
+          "type": "tech_specs_item_accordion",
+          "settings": {
+            "source_metaobject_item": "core-2-6",
+            "source_metaobject_item_id": "149707292923"
+          }
+        },
+        "subheading_pD8kF6": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Tech specs Spark"
+          }
+        },
+        "tech_specs_item_spark_1": {
+          "type": "tech_specs_item_accordion",
+          "settings": {
+            "source_metaobject_item": "spark-1",
+            "source_metaobject_item_id": "149268136187"
+          }
+        },
+        "tech_specs_item_spark_2": {
+          "type": "tech_specs_item_accordion",
+          "settings": {
+            "source_metaobject_item": "spark-2",
+            "source_metaobject_item_id": "149274919163"
+          }
+        },
+        "tech_specs_item_spark_3": {
+          "type": "tech_specs_item_accordion",
+          "settings": {
+            "source_metaobject_item": "spark-3",
+            "source_metaobject_item_id": "149709979899"
+          }
+        },
+        "tech_specs_item_spark_4": {
+          "type": "tech_specs_item_accordion",
+          "settings": {
+            "source_metaobject_item": "spark-4",
+            "source_metaobject_item_id": "149706703099"
+          }
+        },
+        "tech_specs_item_spark_5": {
+          "type": "tech_specs_item_accordion",
+          "settings": {
+            "source_metaobject_item": "spark-5",
+            "source_metaobject_item_id": "149709357307"
+          }
+        },
+        "tech_specs_item_spark_6": {
+          "type": "tech_specs_item_accordion",
+          "settings": {
+            "source_metaobject_item": "spark-6",
+            "source_metaobject_item_id": "149707587835"
+          }
+        },
+        "divider_J5mVn2": {
+          "type": "divider",
+          "settings": {}
+        },
         "subheading_fEQfTx": {
           "type": "subheading",
           "settings": {
@@ -1146,6 +1252,22 @@
         "heading_small_HQzjNP",
         "image_grid_8fFLQn",
         "divider_3",
+        "heading_uL3tV7",
+        "subheading_sH2mX4",
+        "tech_specs_item_core2_1",
+        "tech_specs_item_core2_2",
+        "tech_specs_item_core2_3",
+        "tech_specs_item_core2_4",
+        "tech_specs_item_core2_5",
+        "tech_specs_item_core2_6",
+        "subheading_pD8kF6",
+        "tech_specs_item_spark_1",
+        "tech_specs_item_spark_2",
+        "tech_specs_item_spark_3",
+        "tech_specs_item_spark_4",
+        "tech_specs_item_spark_5",
+        "tech_specs_item_spark_6",
+        "divider_J5mVn2",
         "subheading_fEQfTx",
         "image_BAXgF7",
         "body_4",
