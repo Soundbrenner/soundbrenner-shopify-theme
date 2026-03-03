@@ -1132,8 +1132,8 @@
         "accordion_item_YML4rP": {
           "type": "accordion_item",
           "settings": {
-            "question": "Warning: medical conditions",
-            "answer": "<p>If you currently have a medical condition or have a history of medical conditions that may be affected by the Soundbrenner Core/Spark, consult with your physician before using the product. Medical conditions include (but are not limited to):</p><ul><li>White Knuckle Syndrome</li><li>Hand-Arm Vibration Syndrome</li><li>Blackouts</li><li>Epilepsy</li><li>Postural Hypertension</li><li>Allergic Reactions to Silicone</li><li>Any other heart, neurological, or skin conditions</li></ul>"
+            "question": "Safety",
+            "answer": "<p>Warning: medical conditions</p><p>If you currently have a medical condition or have a history of medical conditions that may be affected by the Soundbrenner Core/Spark, consult with your physician before using the product. Medical conditions include (but are not limited to):</p><ul><li>White Knuckle Syndrome</li><li>Hand-Arm Vibration Syndrome</li><li>Blackouts</li><li>Epilepsy</li><li>Postural Hypertension</li><li>Allergic Reactions to Silicone</li><li>Any other heart, neurological, or skin conditions</li></ul><p>Warning: medical device interference</p><p>If you use any medical device that may be affected by the Soundbrenner Core/Spark, consult with your physician before using the product. Medical devices include (but are not limited to):</p><ul><li>Coronary Stents</li><li>Defibrillators</li><li>Pacemakers</li><li>Any other implanted medical device</li></ul><p>Stop using the Soundbrenner Core/Spark if you suspect that it is interfering with your medical device or if you experience any discomfort.</p><p>Warning: frequent and prolonged usage</p><p>Frequent and prolonged use of the Soundbrenner Core/Spark may cause skin irritation in some users. If you experience itchiness, redness, and/or swelling while using the Soundbrenner Core/Spark, remove the device immediately and stop using it until your skin returns to normal. Consult your doctor should any of the symptoms persist.</p><p>Caution: electrical equipment</p><p>Your Soundbrenner Core/Spark and its charging cable are electrical devices and should be handled with care. Never use your device in extremely low or high temperatures.</p><p>Substances in this product and battery may harm the environment or cause injury if handled or disposed of improperly.</p><p>Remove your Soundbrenner Core/Spark if it feels warm or hot.</p><p>Caution: magnets</p><p>The Soundbrenner Core/Spark and the charging cable contain magnets. All credit cards, key cards, and any other object containing a magnetic stripe should be stowed safely away from those products.</p><p>Caution: batteries</p><p>Use only an authorized Soundbrenner charging cable to charge your device to avoid any safety or electrical hazards.</p><p>Do not attempt to change the battery on your own. This will void the warranty and could cause injury.</p><p>Always disconnect the charging cable from the electrical socket as soon as your device is fully charged.</p><p>Never charge your device when moisture is present.</p><p>Never put your device or charging cable near any inflammable or explosive materials.</p><p>Caution: water</p><p>Even though your Soundbrenner Core/Spark is sweat proof and partially water-resistant, it should never be submerged in water under any circumstances.</p><p>Do not use your device in the rain or in wet environments for prolonged periods.</p>"
           }
         },
         "accordion_item_EHWHD7": {
@@ -1189,42 +1189,42 @@
           "type": "accordion_item",
           "settings": {
             "question": "Warranty",
-            "answer": "<p><a href=\"https://support.soundbrenner.com/hc/en-us/articles/900001269586-Terms-of-warranty\" target=\"_blank\" title=\"https://support.soundbrenner.com/hc/en-us/articles/900001269586-Terms-of-warranty\">Our terms of warranty can be viewed here.</a></p>"
+            "answer": "<p>Our warranty terms are available <a href=\"/pages/terms-of-warranty\" title=\"Terms of warranty\">here</a>.</p>"
           }
         },
         "accordion_item_jEVqLT": {
           "type": "accordion_item",
           "settings": {
-            "question": "Terms of use",
-            "answer": "<p><a href=\"https://support.soundbrenner.com/hc/en-us/articles/900001248683-Terms-of-use-mobile-app\" target=\"_blank\" title=\"https://support.soundbrenner.com/hc/en-us/articles/900001248683-Terms-of-use-mobile-app\">Our mobile app's terms of use can be viewed here.</a></p>"
+            "question": "Terms of service",
+            "answer": "<p>Our app's terms of service are available <a href=\"/pages/terms-of-service-the-metronome-app\" title=\"Terms of service The Metronome app\">here</a>.</p>"
           }
         },
         "accordion_item_x6nkte": {
           "type": "accordion_item",
           "settings": {
             "question": "Privacy policy",
-            "answer": "<p><a href=\"https://support.soundbrenner.com/hc/en-us/articles/900001248483-Privacy-policy-mobile-app\" target=\"_blank\" title=\"https://support.soundbrenner.com/hc/en-us/articles/900001248483-Privacy-policy-mobile-app\">Our mobile app's privacy policy can be viewed here.</a></p>"
+            "answer": "<p>Our app's privacy policy is available <a href=\"/pages/terms-of-warranty\" title=\"Terms of warranty\">here</a>.</p>"
           }
         },
         "accordion_item_ebWN9y": {
           "type": "accordion_item",
           "settings": {
-            "question": "Disposal and recycling information",
-            "answer": "<p>Your Soundbrenner Core/Spark should be disposed at a recycling center due to the device’s electronic nature in order to encourage sustainable reuse and conservation of resources.</p>"
+            "question": "Recycling",
+            "answer": "<p>Dispose of this product at an appropriate electronics recycling center to support sustainable reuse and resource conservation.</p>"
           }
         },
         "accordion_item_9qnJwy": {
           "type": "accordion_item",
           "settings": {
-            "question": "EU compliance statement",
-            "answer": "<p>Soundbrenner Limited hereby declares that the Soundbrenner Core/Spark is in compliance with the essential requirements and other relevant provisions of Directive 1995/5/EC.</p>"
+            "question": "EU declaration",
+            "answer": "<p>Soundbrenner Limited hereby declares that this product complies with the essential requirements and all relevant provisions of Directive 1995/5/EC.</p>"
           }
         },
         "accordion_item_cBk3Ra": {
           "type": "accordion_item",
           "settings": {
-            "question": "FCC compliance statement",
-            "answer": "<p>The device complies with part 15 of the FCC rules. Operation is subject to the following two conditions:</p><ul><li>This device may not cause harmful interference</li><li>This device must accept any interference received, including interference that may cause undesired operation</li></ul>"
+            "question": "FCC compliance",
+            "answer": "<p>The product complies with part 15 of the FCC rules. Operation is subject to the following two conditions: They may not cause harmful interference. They must accept any interference received, including interference that may cause undesired operation.</p>"
           }
         },
         "accordion_item_6aQ7C7": {
@@ -1416,20 +1416,12 @@
         "divider_89iXCF",
         "heading_jbn8mk",
         "accordion_item_YML4rP",
-        "accordion_item_EHWHD7",
-        "accordion_item_RHcGrL",
-        "accordion_item_qiMi6H",
-        "accordion_item_rHqAMQ",
-        "accordion_item_RrChAK",
-        "accordion_item_cJrmFb",
-        "accordion_item_DxTmxW",
         "accordion_item_Q6Gzia",
-        "accordion_item_jEVqLT",
         "accordion_item_x6nkte",
+        "accordion_item_jEVqLT",
         "accordion_item_ebWN9y",
         "accordion_item_9qnJwy",
-        "accordion_item_cBk3Ra",
-        "accordion_item_6aQ7C7"
+        "accordion_item_cBk3Ra"
       ],
       "settings": {}
     },
