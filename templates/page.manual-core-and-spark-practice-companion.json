@@ -599,7 +599,7 @@
         "text_TLzjQj": {
           "type": "text",
           "settings": {
-            "text": "<p>Inside the \"Track\" app, set your practice session duration and choose the instrument you'll use. To modify instrument choices on your device, use our mobile app and go to: \"Settings\" → \"User profile\" → \"Instruments\". To start your session, tap the soundwave twice quickly.</p>"
+            "text": "<p>In the <strong>Track</strong> app, set the duration of your practice session and select the instrument you will be using.</p><p>To modify the list of instruments available on your device, open the mobile app and navigate to:</p><p><strong>Settings → User Profile → Instruments</strong></p><p>To begin your session, tap the soundwave icon twice quickly.</p>"
           }
         },
         "image_FfyzYr": {
