@@ -987,7 +987,7 @@
         "text_8awQtz": {
           "type": "text",
           "settings": {
-            "text": "<p>Press the bottom button to select if you want to edit the hours, minutes or seconds. Once selected, use the wheel to edit the time. Tap the soundwave twice quickly to start or pause the timer.</p>"
+            "text": "<p>Press the bottom button to select whether you want to adjust the hours, minutes, or seconds. Once selected, rotate the wheel to set the desired time.</p><p>Tap the soundwave icon twice quickly to start or pause the timer.</p>"
           }
         },
         "subheading_wqcpNK": {
