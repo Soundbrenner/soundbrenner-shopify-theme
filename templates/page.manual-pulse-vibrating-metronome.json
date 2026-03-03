@@ -69,7 +69,7 @@
         "body_2": {
           "type": "text",
           "settings": {
-            "text": "<p>This video is the ultimate crash course to learn everything you need to know about how to use the Pulse in the shortest time possible. It’s the best way to get started, so we highly recommend you to watch this video!</p>"
+            "text": "<p>This video is the ultimate crash course to learn everything you need to know about how to use the Pulse in the shortest time possible.</p>"
           }
         },
         "vimeo_video_4xgCB6": {
@@ -377,13 +377,19 @@
         "text_TGD86k": {
           "type": "text",
           "settings": {
-            "text": "<p>Where you place the Pulse on your body can have a big impact on your experience. What works best is different for each musician.</p><p>The included short and long band allow you to wear the Pulse on your wrist, arm or ankle. For your first few sessions, try out different locations to see which one works best.</p><p>Remember to keep the band tight – the tighter the band, the stronger the feeling of the vibrations.</p><p>The hooks on the long band allow you to easily slide it over your arm.</p><p>Did you know we make a body strap for the chest, shoulder and thigh, that allows you to feel the beat even better? It's available here:</p>"
+            "text": "<p>Where you place the Pulse on your body can have a big impact on your experience. What works best is different for each musician.</p><p>The included short and long band allow you to wear the Pulse on your wrist, arm or ankle. For your first few sessions, try out different locations to see which one works best.</p><p>Remember to keep the band tight – the tighter the band, the stronger the feeling of the vibrations.</p><p>The hooks on the long band allow you to easily slide it over your arm.</p>"
           }
         },
         "image_qgC4HK": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/Product_Pulse_Order_10.jpg"
+            "image": "shopify://shop_images/Product_Pulse_Order_10.png"
+          }
+        },
+        "text_GK4Gkx": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Did you know we make a body strap for the chest, shoulder and thigh, that allows you to feel the beat even better? It's available here:</p>"
           }
         },
         "button_UaWhag": {
@@ -599,6 +605,7 @@
         "image_FAEFwi",
         "text_TGD86k",
         "image_qgC4HK",
+        "text_GK4Gkx",
         "button_UaWhag",
         "divider_Fhk86Q",
         "heading_pbekez",
