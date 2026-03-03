@@ -1011,7 +1011,7 @@
         "text_hdLRXH": {
           "type": "text",
           "settings": {
-            "text": "<p>To create an alarm, select \"New alarm\" with the wheel and press the bottom button. Use the wheel to set the time of your alarm. With the bottom button, select which days the alarm should be active and turn each on by twisting the wheel right. The alarm will be active on days that are underlined. If no days are underlined, the alarm will be by default active on all days. </p><p>Change the state of the alarm by selecting \"On\" with the bottom button. Twist the wheel to the right to select \"Off\" or \"Delete\". Confirm your selection by pressing the bottom button.</p>"
+            "text": "<p>To create an alarm, rotate the wheel to select <strong>New alarm</strong>, then press the bottom button to confirm.</p><p>Use the wheel to set the desired time. Press the bottom button to select the days on which the alarm should be active. Rotate the wheel to the right to enable a specific day. Active days are indicated by an underline. If no days are underlined, the alarm is active every day by default.</p><p>To change the alarm status, select <strong>On</strong> using the bottom button. Rotate the wheel to choose <strong>Off</strong> or <strong>Delete</strong>, then press the bottom button to confirm your selection.</p>"
           }
         },
         "subheading_8T3AUg": {
