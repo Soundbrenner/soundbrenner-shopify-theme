@@ -323,7 +323,7 @@
             "label": "Soundbrenner shop",
             "button_size": "large",
             "icon_position": "none",
-            "link": "https://www.soundbrenner.com/shop"
+            "link": "shopify://collections/all"
           }
         },
         "image_66DxtJ": {
