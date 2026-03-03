@@ -22,6 +22,7 @@
 {% assign hero_card_seasonal_headline_template = '' %}
 {% assign hero_card_seasonal_subheadline_template = '' %}
 {% assign hero_card_seasonal_button_label_template = '' %}
+{% assign hero_card_affiliate_headline_template = 'sb.hero_card.affiliate_headline' | t %}
 {% assign hero_card_affiliate_metaobject = blank %}
 {% if request.page_type == 'page' and page != blank %}
   {% assign hero_card_affiliate_metaobject = page.metafields.custom.affiliate.value | default: page.metafields.custom.affiliate %}
@@ -227,6 +228,7 @@
         data-affiliate-discount-depth="{{ sitewide_affiliate_discount_depth | escape }}"
         data-shipping-country-name="{{ hero_card_shipping_country_name | escape }}"
         data-free-shipping-threshold-display="{{ hero_card_free_shipping_threshold_display | escape }}"
+        data-affiliate-headline-template="{{ hero_card_affiliate_headline_template | escape }}"
         data-seasonal-kicker-template="{{ hero_card_seasonal_kicker_template | escape }}"
         data-seasonal-headline-template="{{ hero_card_seasonal_headline_template | escape }}"
         data-seasonal-subheadline-template="{{ hero_card_seasonal_subheadline_template | escape }}"
@@ -614,6 +616,7 @@
       const affiliateDiscountDepth = `${card.dataset.affiliateDiscountDepth || ''}`;
       const shippingCountryName = `${card.dataset.shippingCountryName || ''}`;
       const freeShippingThresholdDisplay = `${card.dataset.freeShippingThresholdDisplay || ''}`;
+      const affiliateHeadlineTemplate = `${card.dataset.affiliateHeadlineTemplate || ''}`;
 
       const resolveTemplate = (templateValue) => {
         let resolved = `${templateValue || ''}`;
@@ -638,6 +641,28 @@
       if (headlineElement) {
         const headlineText = resolveTemplate(card.dataset.seasonalHeadlineTemplate);
         if (headlineText) headlineElement.textContent = headlineText;
+      }
+
+      const forcedAffiliateHeadline = resolveTemplate(affiliateHeadlineTemplate);
+      if (forcedAffiliateHeadline) {
+        if (headlineElement) {
+          headlineElement.textContent = forcedAffiliateHeadline;
+        } else {
+          const contentElement = card.querySelector('.sb-framing-card__content');
+          if (contentElement) {
+            const injectedHeadlineElement = document.createElement('h2');
+            injectedHeadlineElement.className = 'sb-framing-card__headline font-title weight-bold';
+            injectedHeadlineElement.textContent = forcedAffiliateHeadline;
+
+            if (subheadlineElement && subheadlineElement.parentElement === contentElement) {
+              contentElement.insertBefore(injectedHeadlineElement, subheadlineElement);
+            } else if (kickerElement && kickerElement.parentElement === contentElement) {
+              kickerElement.insertAdjacentElement('afterend', injectedHeadlineElement);
+            } else {
+              contentElement.prepend(injectedHeadlineElement);
+            }
+          }
+        }
       }
 
       if (subheadlineElement) {

@@ -64,12 +64,24 @@
     assign header_affiliate_collabs_id = header_affiliate_metaobject.collabs_id.value | default: header_affiliate_metaobject.collabs_id | strip
 
     assign header_affiliate_image_desktop_source = header_affiliate_metaobject.image_desktop.value | default: header_affiliate_metaobject.image_desktop
+    if header_affiliate_image_desktop_source == blank
+      assign header_affiliate_image_desktop_source = header_affiliate_metaobject.background_image_desktop.value | default: header_affiliate_metaobject.background_image_desktop
+    endif
+    if header_affiliate_image_desktop_source == blank
+      assign header_affiliate_image_desktop_source = header_affiliate_metaobject.hero_image_desktop.value | default: header_affiliate_metaobject.hero_image_desktop
+    endif
     if header_affiliate_image_desktop_source != blank
       assign header_affiliate_image_desktop_width = header_affiliate_image_desktop_source.width | default: 2480 | at_most: 2480
       assign header_affiliate_image_desktop_url = header_affiliate_image_desktop_source | image_url: width: header_affiliate_image_desktop_width
     endif
 
     assign header_affiliate_image_mobile_source = header_affiliate_metaobject.image_mobile.value | default: header_affiliate_metaobject.image_mobile
+    if header_affiliate_image_mobile_source == blank
+      assign header_affiliate_image_mobile_source = header_affiliate_metaobject.background_image_mobile.value | default: header_affiliate_metaobject.background_image_mobile
+    endif
+    if header_affiliate_image_mobile_source == blank
+      assign header_affiliate_image_mobile_source = header_affiliate_metaobject.hero_image_mobile.value | default: header_affiliate_metaobject.hero_image_mobile
+    endif
     if header_affiliate_image_mobile_source != blank
       assign header_affiliate_image_mobile_width = header_affiliate_image_mobile_source.width | default: 1206 | at_most: 1206
       assign header_affiliate_image_mobile_url = header_affiliate_image_mobile_source | image_url: width: header_affiliate_image_mobile_width
@@ -276,35 +288,52 @@
   <script>
     (() => {
       const code = {{ header_affiliate_discount_code | json }};
+      const affiliateNameRaw = {{ header_affiliate_name | json }};
+      const affiliateImageDesktopRaw = {{ header_affiliate_image_desktop_url | json }};
+      const affiliateImageMobileRaw = {{ header_affiliate_image_mobile_url | json }};
       const collabsIdRaw = {{ header_affiliate_collabs_id | json }};
+      const cookieDurationHoursRaw = Number.parseInt({{ affiliate_discount_cookie_duration_hours | json }}, 10);
+      const cookieDurationHours = Number.isFinite(cookieDurationHoursRaw) && cookieDurationHoursRaw > 0 ? cookieDurationHoursRaw : 336;
+      const cookieDurationMs = cookieDurationHours * 60 * 60 * 1000;
+      const homeRedirectPath = {{ routes.root_url | json }} || '/';
+      const affiliateCookieName = 'sb_affiliate_announcement_state';
       const collabsId = `${collabsIdRaw || ''}`.trim();
+      const affiliateName = `${affiliateNameRaw || code}`.trim();
+      const affiliateImageDesktop = `${affiliateImageDesktopRaw || ''}`.trim();
+      const affiliateImageMobile = `${affiliateImageMobileRaw || ''}`.trim();
       if (!code) return;
       const keySuffix = collabsId ? `${code}-${collabsId}` : code;
       const appliedKey = `sb-affiliate-discount-applied-${keySuffix}`;
-      const pendingKey = `sb-affiliate-discount-pending-${keySuffix}`;
 
       try {
-        if (window.sessionStorage.getItem(appliedKey) === '1') return;
-        if (window.sessionStorage.getItem(pendingKey) === '1') {
-          window.sessionStorage.removeItem(pendingKey);
-          window.sessionStorage.setItem(appliedKey, '1');
+        if (window.sessionStorage.getItem(appliedKey) === '1') {
+          window.location.replace(homeRedirectPath);
           return;
         }
       } catch (_) {
         return;
       }
 
-      const currentUrl = new URL(window.location.href);
-      const redirectUrl = `${currentUrl.pathname}${currentUrl.search}${currentUrl.hash}`;
+      const expiresAt = Date.now() + cookieDurationMs;
+      const announcementState = {
+        discountCode: code,
+        affiliateName: affiliateName || code,
+        heroDesktopImage: affiliateImageDesktop,
+        heroMobileImage: affiliateImageMobile,
+        expiresAt,
+      };
 
       try {
-        window.sessionStorage.setItem(pendingKey, '1');
+        window.sessionStorage.setItem(appliedKey, '1');
+        const maxAgeSeconds = Math.max(1, Math.floor((expiresAt - Date.now()) / 1000));
+        const serializedState = encodeURIComponent(JSON.stringify(announcementState));
+        document.cookie = `${affiliateCookieName}=${serializedState}; path=/; max-age=${maxAgeSeconds}; SameSite=Lax`;
       } catch (_) {
-        return;
+        // no-op
       }
 
       const discountUrl = new URL(`/discount/${encodeURIComponent(code)}`, window.location.origin);
-      discountUrl.searchParams.set('redirect', redirectUrl);
+      discountUrl.searchParams.set('redirect', homeRedirectPath);
       if (collabsId) {
         discountUrl.searchParams.set('dt_id', collabsId);
       }
@@ -5346,19 +5375,10 @@
     header.dataset.headerInit = 'true';
 
     const affiliateAnnouncementCookieName = 'sb_affiliate_announcement_state';
-    const affiliatePageDiscountCode = `${header.dataset.affiliateDiscountCode || ''}`.trim();
-    const affiliatePageName = `${header.dataset.affiliateName || ''}`.trim();
-    const affiliatePageImageDesktop = `${header.dataset.affiliateImageDesktop || ''}`.trim();
-    const affiliatePageImageMobile = `${header.dataset.affiliateImageMobile || ''}`.trim();
     const affiliateNameToken = `${header.dataset.affiliateNameToken || ''}`;
     const affiliateAnnouncementTemplate = `${header.dataset.affiliateAnnouncementTemplate || ''}`;
     const affiliateAnnouncementGradient = `${header.dataset.affiliateAnnouncementGradient || ''}`;
     const affiliateAnnouncementEmoji = `${header.dataset.affiliateAnnouncementEmoji || ''}`;
-    const affiliateDurationHoursRaw = Number.parseInt(`${header.dataset.affiliateCookieDurationHours || ''}`, 10);
-    const affiliateAnnouncementDurationHours = Number.isFinite(affiliateDurationHoursRaw) && affiliateDurationHoursRaw > 0
-      ? affiliateDurationHoursRaw
-      : 336;
-    const affiliateAnnouncementDurationMs = affiliateAnnouncementDurationHours * 60 * 60 * 1000;
     const announcementTextElement = header.querySelector('.header__announcement-text');
     const announcementTextDefault = announcementTextElement ? announcementTextElement.textContent || '' : '';
     const announcementBackgroundDefault = header.style.getPropertyValue('--sb-announcement-background');
@@ -5419,30 +5439,6 @@
         heroMobileImage,
         expiresAt
       };
-    };
-
-    const writeAffiliateAnnouncementState = (state) => {
-      if (!state || typeof state !== 'object') {
-        clearAffiliateAnnouncementState();
-        return null;
-      }
-
-      const nextState = {
-        discountCode: `${state.discountCode || ''}`.trim(),
-        affiliateName: `${state.affiliateName || state.discountCode || ''}`.trim(),
-        heroDesktopImage: `${state.heroDesktopImage || ''}`.trim(),
-        heroMobileImage: `${state.heroMobileImage || ''}`.trim(),
-        expiresAt: Number.parseInt(`${state.expiresAt || ''}`, 10)
-      };
-      if (!nextState.discountCode || !nextState.affiliateName || !Number.isFinite(nextState.expiresAt) || nextState.expiresAt <= Date.now()) {
-        clearAffiliateAnnouncementState();
-        return null;
-      }
-
-      const maxAgeSeconds = Math.max(1, Math.floor((nextState.expiresAt - Date.now()) / 1000));
-      const serializedState = encodeURIComponent(JSON.stringify(nextState));
-      document.cookie = `${affiliateAnnouncementCookieName}=${serializedState}; path=/; max-age=${maxAgeSeconds}; SameSite=Lax`;
-      return nextState;
     };
 
     const replaceToken = (input, token, replacement) => {
@@ -5518,21 +5514,7 @@
       return state;
     };
 
-    if (affiliatePageDiscountCode) {
-      writeAffiliateAnnouncementState({
-        discountCode: affiliatePageDiscountCode,
-        affiliateName: affiliatePageName || affiliatePageDiscountCode,
-        heroDesktopImage: affiliatePageImageDesktop,
-        heroMobileImage: affiliatePageImageMobile,
-        expiresAt: Date.now() + affiliateAnnouncementDurationMs
-      });
-    }
-
     syncAffiliateAnnouncementState();
-
-    window.setInterval(() => {
-      syncAffiliateAnnouncementState();
-    }, 1000);
 
     const mobileMenuDrawer = document.querySelector('[data-mobile-menu-drawer]');
     const mobileMenuToggle = header.querySelector('[data-mobile-menu-toggle]');
