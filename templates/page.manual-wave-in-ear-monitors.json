@@ -150,19 +150,10 @@
             "heading": "Tech specs"
           }
         },
-        "body_4": {
-          "type": "text",
+        "tech_specs_accordions_gBhQif": {
+          "type": "tech_specs_accordions",
           "settings": {
-            "text": "<p>View the full specifications on the product page.</p>"
-          }
-        },
-        "button_CN7gAg": {
-          "type": "button",
-          "settings": {
-            "label": "View tech specs",
-            "button_size": "large",
-            "icon_position": "none",
-            "link": "shopify://products/wave-in-ear-monitors"
+            "source_metaobject": "wave-in-ear-monitors"
           }
         },
         "divider_4": {
@@ -246,8 +237,7 @@
         "button_rF6dEJ",
         "divider_3",
         "chapter_4",
-        "body_4",
-        "button_CN7gAg",
+        "tech_specs_accordions_gBhQif",
         "divider_4",
         "chapter_5",
         "body_5",

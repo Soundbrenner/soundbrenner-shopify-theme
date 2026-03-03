@@ -317,6 +317,201 @@
             {% endif %}
           </div>
         {% endif %}
+      {% elsif block.type == 'tech_specs_accordions' %}
+        {% liquid
+          assign tech_specs_source = blank
+          if block.settings.source_metaobject != blank
+            assign tech_specs_source = block.settings.source_metaobject.value | default: block.settings.source_metaobject.reference.value | default: block.settings.source_metaobject.reference | default: block.settings.source_metaobject
+          endif
+
+          assign tech_specs_root = blank
+          for tech_specs_candidate in tech_specs_source limit: 1
+            assign tech_specs_root = tech_specs_candidate
+          endfor
+          if tech_specs_root == blank
+            assign tech_specs_root = tech_specs_source
+          endif
+
+          assign tech_specs_groups = blank
+          if tech_specs_root != blank
+            assign tech_specs_groups = tech_specs_root.items_tech_specs.value | default: tech_specs_root.items_tech_specs.references | default: tech_specs_root.items_tech_specs
+          endif
+
+          assign tech_specs_has_content = false
+          assign tech_specs_is_grouped = false
+          if tech_specs_groups != blank
+            assign tech_specs_first_entry = tech_specs_groups | first
+            assign tech_specs_first_entry = tech_specs_first_entry.value | default: tech_specs_first_entry.reference.value | default: tech_specs_first_entry.reference | default: tech_specs_first_entry
+            assign tech_specs_first_group_items = tech_specs_first_entry.tech_specs_item.value | default: tech_specs_first_entry.tech_specs_item.references | default: tech_specs_first_entry.tech_specs_item
+            if tech_specs_first_group_items != blank
+              assign tech_specs_is_grouped = true
+            endif
+
+            if tech_specs_is_grouped
+              for tech_specs_group_raw in tech_specs_groups
+                assign tech_specs_group_entry = tech_specs_group_raw.value | default: tech_specs_group_raw.reference.value | default: tech_specs_group_raw.reference | default: tech_specs_group_raw
+                assign tech_specs_group_items = tech_specs_group_entry.tech_specs_item.value | default: tech_specs_group_entry.tech_specs_item.references | default: tech_specs_group_entry.tech_specs_item
+                if tech_specs_group_items == blank
+                  continue
+                endif
+
+                for tech_specs_line_raw in tech_specs_group_items
+                  assign tech_specs_line_entry = tech_specs_line_raw.value | default: tech_specs_line_raw.reference.value | default: tech_specs_line_raw.reference | default: tech_specs_line_raw
+                  assign tech_specs_line_title = tech_specs_line_entry.tech_specs_line_title.value | default: tech_specs_line_entry.tech_specs_line_title
+                  assign tech_specs_line_text = tech_specs_line_entry.tech_specs_line_text | metafield_tag
+                  if tech_specs_line_text == blank
+                    assign tech_specs_line_text = tech_specs_line_entry.tech_specs_line_text.value | default: tech_specs_line_entry.tech_specs_line_text
+                  endif
+                  assign tech_specs_line_title = tech_specs_line_title | append: '' | strip
+                  assign tech_specs_line_text = tech_specs_line_text | append: '' | strip
+                  if tech_specs_line_title != blank or tech_specs_line_text != blank
+                    assign tech_specs_has_content = true
+                    break
+                  endif
+                endfor
+
+                if tech_specs_has_content
+                  break
+                endif
+              endfor
+            else
+              for tech_specs_line_raw in tech_specs_groups
+                assign tech_specs_line_entry = tech_specs_line_raw.value | default: tech_specs_line_raw.reference.value | default: tech_specs_line_raw.reference | default: tech_specs_line_raw
+                assign tech_specs_line_title = tech_specs_line_entry.tech_specs_line_title.value | default: tech_specs_line_entry.tech_specs_line_title
+                assign tech_specs_line_text = tech_specs_line_entry.tech_specs_line_text | metafield_tag
+                if tech_specs_line_text == blank
+                  assign tech_specs_line_text = tech_specs_line_entry.tech_specs_line_text.value | default: tech_specs_line_entry.tech_specs_line_text
+                endif
+                assign tech_specs_line_title = tech_specs_line_title | append: '' | strip
+                assign tech_specs_line_text = tech_specs_line_text | append: '' | strip
+                if tech_specs_line_title != blank or tech_specs_line_text != blank
+                  assign tech_specs_has_content = true
+                  break
+                endif
+              endfor
+            endif
+          endif
+        %}
+
+        {% if tech_specs_has_content %}
+          <div class="sb-manual-chapters__tech-specs" data-sb-reveal {{ block.shopify_attributes }}>
+            {% if tech_specs_is_grouped %}
+              {% for tech_specs_group_raw in tech_specs_groups %}
+                {% liquid
+                  assign tech_specs_group_entry = tech_specs_group_raw.value | default: tech_specs_group_raw.reference.value | default: tech_specs_group_raw.reference | default: tech_specs_group_raw
+                  assign tech_specs_group_title = tech_specs_group_entry.tech_specs_title.value | default: tech_specs_group_entry.tech_specs_title | default: tech_specs_group_entry.title.value | default: tech_specs_group_entry.title | default: 'Tech specs'
+                  assign tech_specs_group_title = tech_specs_group_title | append: '' | strip
+                  assign tech_specs_group_items = tech_specs_group_entry.tech_specs_item.value | default: tech_specs_group_entry.tech_specs_item.references | default: tech_specs_group_entry.tech_specs_item
+                  assign tech_specs_group_has_rows = false
+                %}
+                {% if tech_specs_group_items == blank %}
+                  {% continue %}
+                {% endif %}
+
+                {% for tech_specs_line_raw in tech_specs_group_items %}
+                  {% liquid
+                    assign tech_specs_line_entry = tech_specs_line_raw.value | default: tech_specs_line_raw.reference.value | default: tech_specs_line_raw.reference | default: tech_specs_line_raw
+                    assign tech_specs_line_title = tech_specs_line_entry.tech_specs_line_title.value | default: tech_specs_line_entry.tech_specs_line_title
+                    assign tech_specs_line_text = tech_specs_line_entry.tech_specs_line_text | metafield_tag
+                    if tech_specs_line_text == blank
+                      assign tech_specs_line_text = tech_specs_line_entry.tech_specs_line_text.value | default: tech_specs_line_entry.tech_specs_line_text
+                    endif
+                    assign tech_specs_line_title = tech_specs_line_title | append: '' | strip
+                    assign tech_specs_line_text = tech_specs_line_text | append: '' | strip
+                  %}
+                  {% if tech_specs_line_title != blank or tech_specs_line_text != blank %}
+                    {% assign tech_specs_group_has_rows = true %}
+                    {% break %}
+                  {% endif %}
+                {% endfor %}
+
+                {% if tech_specs_group_has_rows == false %}
+                  {% continue %}
+                {% endif %}
+
+                <article class="sb-manual-chapters__accordion">
+                  <button
+                    type="button"
+                    class="sb-manual-chapters__accordion-trigger"
+                    aria-expanded="false"
+                    data-manual-accordion-trigger
+                    data-sb-reveal-item
+                  >
+                    <span class="sb-manual-chapters__accordion-question font-body weight-bold">{{ tech_specs_group_title }}</span>
+                    <span class="sb-manual-chapters__accordion-icon" aria-hidden="true">
+                      <span class="sb-manual-chapters__accordion-icon-plus">{{ 'icon-accordion-add.svg' | inline_asset_content }}</span>
+                      <span class="sb-manual-chapters__accordion-icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
+                    </span>
+                  </button>
+                  <div class="sb-manual-chapters__accordion-answer sb-manual-chapters__accordion-answer--tech-specs" data-manual-accordion-answer data-sb-reveal-item>
+                    {% for tech_specs_line_raw in tech_specs_group_items %}
+                      {% liquid
+                        assign tech_specs_line_entry = tech_specs_line_raw.value | default: tech_specs_line_raw.reference.value | default: tech_specs_line_raw.reference | default: tech_specs_line_raw
+                        assign tech_specs_line_title = tech_specs_line_entry.tech_specs_line_title.value | default: tech_specs_line_entry.tech_specs_line_title
+                        assign tech_specs_line_text = tech_specs_line_entry.tech_specs_line_text | metafield_tag
+                        if tech_specs_line_text == blank
+                          assign tech_specs_line_text = tech_specs_line_entry.tech_specs_line_text.value | default: tech_specs_line_entry.tech_specs_line_text
+                        endif
+                        assign tech_specs_line_title = tech_specs_line_title | append: '' | strip
+                        assign tech_specs_line_text = tech_specs_line_text | append: '' | strip
+                      %}
+                      {% if tech_specs_line_title == blank and tech_specs_line_text == blank %}
+                        {% continue %}
+                      {% endif %}
+                      <div class="sb-manual-chapters__spec-row">
+                        <p class="sb-manual-chapters__spec-label font-caption weight-bold">{{ tech_specs_line_title }}</p>
+                        <div class="sb-manual-chapters__spec-value font-caption weight-regular">{{ tech_specs_line_text }}</div>
+                      </div>
+                    {% endfor %}
+                  </div>
+                  <hr class="sb-manual-chapters__accordion-divider" data-sb-reveal-item>
+                </article>
+              {% endfor %}
+            {% else %}
+              {% liquid
+                assign tech_specs_title = tech_specs_root.tech_specs_title.value | default: tech_specs_root.tech_specs_title | default: 'Tech specs'
+                assign tech_specs_title = tech_specs_title | append: '' | strip
+              %}
+              <article class="sb-manual-chapters__accordion">
+                <button
+                  type="button"
+                  class="sb-manual-chapters__accordion-trigger"
+                  aria-expanded="false"
+                  data-manual-accordion-trigger
+                  data-sb-reveal-item
+                >
+                  <span class="sb-manual-chapters__accordion-question font-body weight-bold">{{ tech_specs_title }}</span>
+                  <span class="sb-manual-chapters__accordion-icon" aria-hidden="true">
+                    <span class="sb-manual-chapters__accordion-icon-plus">{{ 'icon-accordion-add.svg' | inline_asset_content }}</span>
+                    <span class="sb-manual-chapters__accordion-icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
+                  </span>
+                </button>
+                <div class="sb-manual-chapters__accordion-answer sb-manual-chapters__accordion-answer--tech-specs" data-manual-accordion-answer data-sb-reveal-item>
+                  {% for tech_specs_line_raw in tech_specs_groups %}
+                    {% liquid
+                      assign tech_specs_line_entry = tech_specs_line_raw.value | default: tech_specs_line_raw.reference.value | default: tech_specs_line_raw.reference | default: tech_specs_line_raw
+                      assign tech_specs_line_title = tech_specs_line_entry.tech_specs_line_title.value | default: tech_specs_line_entry.tech_specs_line_title
+                      assign tech_specs_line_text = tech_specs_line_entry.tech_specs_line_text | metafield_tag
+                      if tech_specs_line_text == blank
+                        assign tech_specs_line_text = tech_specs_line_entry.tech_specs_line_text.value | default: tech_specs_line_entry.tech_specs_line_text
+                      endif
+                      assign tech_specs_line_title = tech_specs_line_title | append: '' | strip
+                      assign tech_specs_line_text = tech_specs_line_text | append: '' | strip
+                    %}
+                    {% if tech_specs_line_title == blank and tech_specs_line_text == blank %}
+                      {% continue %}
+                    {% endif %}
+                    <div class="sb-manual-chapters__spec-row">
+                      <p class="sb-manual-chapters__spec-label font-caption weight-bold">{{ tech_specs_line_title }}</p>
+                      <div class="sb-manual-chapters__spec-value font-caption weight-regular">{{ tech_specs_line_text }}</div>
+                    </div>
+                  {% endfor %}
+                </div>
+                <hr class="sb-manual-chapters__accordion-divider" data-sb-reveal-item>
+              </article>
+            {% endif %}
+          </div>
+        {% endif %}
       {% elsif block.type == 'button' %}
         <div class="sb-manual-chapters__button-wrap" data-sb-reveal {{ block.shopify_attributes }}>
           {% render 'radiant-button',
@@ -592,6 +787,45 @@
     color: var(--sb-color-neutral-900);
     display: none;
     margin-top: var(--sb-space-24);
+  }
+
+  .sb-manual-chapters__accordion-answer--tech-specs {
+    display: none;
+  }
+
+  .sb-manual-chapters__spec-row {
+    align-items: start;
+    column-gap: 16px;
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    width: 100%;
+  }
+
+  .sb-manual-chapters__spec-row + .sb-manual-chapters__spec-row {
+    margin-top: 20px;
+  }
+
+  .sb-manual-chapters__spec-label,
+  .sb-manual-chapters__spec-value {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+  }
+
+  .sb-manual-chapters__spec-value p {
+    margin: 0;
+  }
+
+  .sb-manual-chapters__spec-value a,
+  .sb-manual-chapters__spec-value a:visited {
+    color: var(--sb-color-primary-500);
+    text-decoration: none;
+  }
+
+  .sb-manual-chapters__spec-value a:hover,
+  .sb-manual-chapters__spec-value a:focus-visible,
+  .sb-manual-chapters__spec-value a:active {
+    color: var(--sb-color-primary-500);
+    text-decoration: underline;
   }
 
   .sb-manual-chapters__accordion.is-open .sb-manual-chapters__accordion-answer {
@@ -990,6 +1224,13 @@
   @media (max-width: 749px) {
     .sb-manual-chapters__sticky-nav-wrap--mobile {
       --sb-supplementary-sticky-inline-margin: var(--sb-supplementary-sticky-inline-margin-mobile);
+    }
+  }
+
+  @media (max-width: 749px) {
+    .sb-manual-chapters__spec-row {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: 8px;
     }
   }
 {% endstylesheet %}
@@ -1798,6 +2039,18 @@
           "id": "item_9_text",
           "label": "Item 9 text",
           "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
+        }
+      ]
+    },
+    {
+      "type": "tech_specs_accordions",
+      "name": "Tech specs accordions",
+      "settings": [
+        {
+          "type": "metaobject",
+          "id": "source_metaobject",
+          "label": "Tech specs metaobject",
+          "metaobject_type": "sbv2_tech_specs_faqs"
         }
       ]
     },
