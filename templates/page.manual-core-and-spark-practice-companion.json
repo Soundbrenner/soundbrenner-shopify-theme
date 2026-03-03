@@ -965,7 +965,7 @@
         "text_p6RUM9": {
           "type": "text",
           "settings": {
-            "text": "<p>3. Press the bottom button to select the current media you're playing. Twist the wheel forward for next, backward for previous.<br/></p><p>4. Press the bottom button again to select the volume. Twist the wheel forward to increase, backward to decrease.</p>"
+            "text": "<p>3. Press the bottom button to select the current media playing. Twist the wheel forward for next, backward for previous.</p><p>4. Press the bottom button again to select the volume. Twist the wheel forward to increase, backward to decrease.</p>"
           }
         },
         "image_ctxrVb": {
