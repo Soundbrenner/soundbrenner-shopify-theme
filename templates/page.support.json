@@ -12,11 +12,24 @@
     "main": {
       "type": "hero-card",
       "settings": {
+        "use_seasonal_hero_card": false,
+        "use_affiliate_metaobject": false,
         "use_resource_title_description": true,
+        "use_product_page_metaobjects": false,
         "background_image_desktop": "shopify://shop_images/Property_1_Support_5e08c22d-2f71-4797-b52a-70946c388613.jpg",
         "background_image_mobile": "shopify://shop_images/Property_1_Support_mobile_5c2f9bb6-8a92-437b-8eba-a70fd4f5583f.jpg",
         "kicker": "Support",
-        "headline": "Everything you need, in one place."
+        "headline": "Everything you need, in one place.",
+        "subheadline": "",
+        "show_button": false,
+        "button_label": "Placeholder",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": "",
+        "show_app_download_qr": false,
+        "show_app_download_app_store": false,
+        "show_app_download_google_play": false,
+        "show_app_download_china": false
       }
     },
     "tiles_1": {
@@ -59,7 +72,7 @@
           "settings": {
             "image": "shopify://shop_images/Property_1_Core_and_Spark.jpg",
             "label": "Core and Spark",
-            "link": "shopify://pages/manual-core-and-spark-practice-companion"
+            "link": "shopify://pages/manual-core-and-spark"
           }
         },
         "tile_3": {
@@ -67,7 +80,7 @@
           "settings": {
             "image": "shopify://shop_images/Property_1_Flow_6296b5b3-aecc-4a07-a9dd-7dd9acd50c05.jpg",
             "label": "Flow",
-            "link": "shopify://pages/manual-flow"
+            "link": "shopify://pages/manual-flow-microphone"
           }
         }
       },
