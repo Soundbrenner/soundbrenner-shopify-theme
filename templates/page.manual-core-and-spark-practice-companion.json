@@ -779,7 +779,7 @@
         "text_fE43Up": {
           "type": "text",
           "settings": {
-            "text": "<p>The Core/Spark can be synced to other Soundbrenner wearables by connecting all of them to the same mobile device. You can sync up to a total of five devices, allowing you to feel the beat together.</p><p>If you want to connect a Core/Spark to a different mobile device, you need to unpair it from the existing mobile device first. To bring up the unpairing prompt, open the \"Settings\" app on your device, navigate to \"Bluetooth\" and press the bottom button.</p><p>Once the Core/Spark is ready to pair, open the Soundbrenner app on the mobile device you want to use to sync the wearables. Inside the app navigate to: \"Settings\" → \"Add a Soundbrenner wearable\" → now select a Soundbrenner wearable you want to sync.</p>"
+            "text": "<p>The Core / Spark can be synchronized with other Soundbrenner wearables by connecting all devices to the same mobile device. You can sync up to five devices simultaneously, allowing everyone to feel the beat together.</p><p>If you would like to connect your Core / Spark to a different mobile device, you must first unpair it from the current device. To access the unpairing prompt, open the <strong>Settings</strong> app on your Core / Spark, navigate to <strong>Bluetooth</strong>, and press the bottom button.</p><p>Once the device is ready to pair, open the Soundbrenner app on the new mobile device. Then navigate to:</p><p><strong>Settings → Add a Soundbrenner wearable</strong></p><p>Select the wearable you would like to connect and follow the on-screen instructions.</p>"
           }
         },
         "image_wWCNAW": {
@@ -801,13 +801,13 @@
         "subheading_bE3ihU": {
           "type": "subheading",
           "settings": {
-            "heading": "Microphone tuner (Core 2/Spark only)"
+            "heading": "Microphone tuner (Core 2 / Spark only)"
           }
         },
         "text_r7gJrb": {
           "type": "text",
           "settings": {
-            "text": "<p>Launch the \"Microphone Tuner\" app and play a note - your device will detect the closest note and the cent deviation to it. As you tune, the LED ring changes from red to green to signal that the note is perfectly tuned.</p><p>Customize the tuning reference from 440 Hz to your preference by pressing the bottom button and twisting the wheel.</p>"
+            "text": "<p>Open the <strong>Microphone Tuner</strong> app and play a note. The device will detect the closest pitch and display its deviation in cents. As you adjust the pitch, the LED ring will change from red to green to indicate when the note is in tune.</p><p>To adjust the tuning reference (A4), press the bottom button and rotate the wheel to set your preferred frequency (default: 440 Hz).</p>"
           }
         },
         "image_D7bYPy": {
