@@ -517,8 +517,8 @@
         "accordion_item_TxM6fP": {
           "type": "accordion_item",
           "settings": {
-            "question": "Placeholder question",
-            "answer": "<p>Placeholder answer.</p>"
+            "question": "How to charge the Pulse in the shortest time possible?",
+            "answer": "<p>The Pulse's charging voltage is 5V. To maximize the charging speed you need a current of 0.2A (Ampere)/200mA (Milliampere). </p><p>Almost every computer USB port provides a voltage of 5V and a current of at least 0.5A. Later USB designs bring the current up to 0.9A. If you use a wall charger, most of them will provide at least 1A or more. As you can see, it's pretty easy to reach the maximum charging speed for Pulse and pretty much any USB charger you can use will accomplish this.</p><p><strong>Want to know more? See below for a detailed explanation</strong></p><p>Most USB power adapters are advertising their charging speed in Watts, for example, one of Apple's standard chargers is advertised as \"20W USB-C Power Adapter\". Similar descriptions are used for power adapters from other brands. So how to translate these advertised Watts to Ampere? The formula goes as follows:</p><p>Watts = Volt * Ampere</p><p>or</p><p>Ampere = Watts/Volt</p><p>The standard specification for USB charging is a voltage of 5V, so for example the Ampere for Apple's 20W charger is 20W/5V = 4A. In other words, with 4A it provides 20x the needed Ampere to charge a Pulse at its full speed of 0.2A. </p><p><strong>What if my charger provides more Ampere? Can this damage my device?</strong></p><p>It is absolutely safe to charge a device with a charger that has more current capacity than needed. Since the voltage is held constant (5V), the only factor that determines current draw is what the device places on the charger. Thus, the device will only draw as much current as it needs and no more.</p>"
           }
         }
       },
