@@ -51,6 +51,12 @@
         "default": 15
       },
       {
+        "type": "number",
+        "id": "storefront_affiliate_order_discount_depth",
+        "label": "Storefront affiliate order discount depth",
+        "default": 20
+      },
+      {
         "type": "product",
         "id": "storefront_price_override_product_id_1",
         "label": "Override product 1"

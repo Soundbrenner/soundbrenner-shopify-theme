@@ -1477,13 +1477,26 @@
           return Math.min(1, Math.max(0, value));
         };
 
-        const globalDiscountRate = clampDiscountRate(
-          Number({{ settings.storefront_default_order_discount_depth | default: 15 | json }}) / 100
+        const seasonalDiscountRate = clampDiscountRate(
+          Number({{ settings.storefront_default_order_discount_depth | json }}) / 100
+        );
+        const affiliateDiscountRate = clampDiscountRate(
+          Number({{ settings.storefront_affiliate_order_discount_depth | json }}) / 100
         );
         const cartDiscountRate = clampDiscountRate(
-          Number({{ storefront_cart_discount_depth | default: 0 | json }}) / 100
+          Number({{ storefront_cart_discount_depth | json }}) / 100
         );
-        const effectiveGlobalDiscountRate = clampDiscountRate(Math.max(globalDiscountRate, cartDiscountRate));
+        const hasAffiliateSaleCookie = (() => {
+          const affiliateState = window.SBAffiliateAnnouncementState;
+          if (!affiliateState || typeof affiliateState !== 'object') return false;
+          const expiresAt = Number.parseInt(`${affiliateState.expiresAt || ''}`, 10);
+          return Number.isFinite(expiresAt) && expiresAt > Date.now();
+        })();
+        const effectiveGlobalDiscountRate = (() => {
+          if (cartDiscountRate > 0) return cartDiscountRate;
+          if (hasAffiliateSaleCookie) return affiliateDiscountRate;
+          return seasonalDiscountRate;
+        })();
 
         const productOverrideEntries = [
           {
@@ -1641,15 +1654,26 @@
           return Math.min(1, Math.max(0, value));
         };
 
-        const thumbnailFallbackGlobalRate = clampDiscountRate(
-          Number({{ settings.storefront_default_order_discount_depth | default: 15 | json }}) / 100
+        const thumbnailSeasonalDiscountRate = clampDiscountRate(
+          Number({{ settings.storefront_default_order_discount_depth | json }}) / 100
+        );
+        const thumbnailAffiliateDiscountRate = clampDiscountRate(
+          Number({{ settings.storefront_affiliate_order_discount_depth | json }}) / 100
         );
         const thumbnailCartDiscountRate = clampDiscountRate(
-          Number({{ storefront_cart_discount_depth | default: 0 | json }}) / 100
+          Number({{ storefront_cart_discount_depth | json }}) / 100
         );
-        const thumbnailEffectiveGlobalRate = clampDiscountRate(
-          Math.max(thumbnailFallbackGlobalRate, thumbnailCartDiscountRate)
-        );
+        const thumbnailHasAffiliateSaleCookie = (() => {
+          const affiliateState = window.SBAffiliateAnnouncementState;
+          if (!affiliateState || typeof affiliateState !== 'object') return false;
+          const expiresAt = Number.parseInt(`${affiliateState.expiresAt || ''}`, 10);
+          return Number.isFinite(expiresAt) && expiresAt > Date.now();
+        })();
+        const thumbnailEffectiveGlobalRate = (() => {
+          if (thumbnailCartDiscountRate > 0) return thumbnailCartDiscountRate;
+          if (thumbnailHasAffiliateSaleCookie) return thumbnailAffiliateDiscountRate;
+          return thumbnailSeasonalDiscountRate;
+        })();
 
         const thumbnailProductOverrideEntries = [
           {
