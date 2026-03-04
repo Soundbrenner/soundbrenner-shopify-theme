@@ -314,7 +314,7 @@
       }
 
       [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success button[aria-label='Copy coupon code'] > div {
-        color: var(--sb-color-neutral-900) !important;
+        color: var(--sb-color-always-white) !important;
         cursor: pointer !important;
         flex: 0 0 auto !important;
         font-family: var(--font-primary--family) !important;
@@ -325,7 +325,7 @@
       }
 
       [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success button[aria-label='Copy coupon code'] > svg {
-        background: var(--sb-color-neutral-900) !important;
+        background: var(--sb-color-always-white) !important;
         color: transparent !important;
         cursor: pointer !important;
         display: block !important;
@@ -346,6 +346,8 @@
       }
 
       [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading {
+        background-image: none !important;
+        color: var(--sb-color-always-white) !important;
         position: relative !important;
       }
 
@@ -354,11 +356,30 @@
         visibility: hidden !important;
       }
 
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading [role='progressbar'],
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading progress,
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading [class*='spinner' i],
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading [class*='loading' i],
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading [class*='progress' i] {
+        display: none !important;
+      }
+
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading *::before,
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading *::after {
+        content: none !important;
+        display: none !important;
+      }
+
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading::before {
+        content: none !important;
+        display: none !important;
+      }
+
       [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading::after {
         animation: sb-klaviyo-popup-spinner-spin 720ms linear infinite;
-        border: 2px solid var(--sb-color-neutral-900);
+        border: 2px solid var(--sb-color-always-white);
         border-radius: 50%;
-        border-right-color: transparent;
+        border-right-color: var(--sb-color-always-white-50);
         content: '';
         display: block;
         height: 20px;
