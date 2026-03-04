@@ -13,10 +13,6 @@
   assign hide_often_bought_together = false
 
   if product != blank
-    if product.gift_card?
-      assign hide_often_bought_together = true
-    endif
-
     assign product_settings_ref = product.metafields.custom.sbv2_product_settings.value | default: product.metafields.custom.sbv2_product_settings
     if product_settings_ref != blank
       assign hide_often_bought_together_value = product_settings_ref.hide_often_bught_together.value | default: product_settings_ref.hide_often_bught_together

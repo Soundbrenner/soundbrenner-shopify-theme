@@ -127,8 +127,9 @@
         visibility: hidden;
       }
 
-      html.sb-affiliate-klaviyo-popup-suppressed [role='dialog'][aria-modal='true']:has([data-testid='POPUP']) {
-        visibility: hidden !important;
+      html.sb-affiliate-klaviyo-popup-suppressed [role='dialog'][aria-modal='true'][class*='kl-private-reset-css'],
+      html.sb-affiliate-klaviyo-popup-suppressed [data-testid='POPUP'] {
+        display: none !important;
         pointer-events: none !important;
       }
 
@@ -614,8 +615,6 @@
         const markerSelector =
           '.klaviyo-form, [class*="klaviyo-form-"], [data-testid^="klaviyo-form-"], iframe[src*="klaviyo"]';
         const numberFormatter = new Intl.NumberFormat(document.documentElement.lang || undefined);
-        const closedPopupContainers = new WeakSet();
-        let lastSuppressionAttemptAt = 0;
         const popupLocaleCopy = {
           dialogLabel: {{ 'sb.klaviyo_popup.dialog_label' | t | json }},
           closeLabel: {{ 'sb.klaviyo_popup.close_label' | t | json }},
@@ -702,38 +701,8 @@
           return rootNode instanceof HTMLElement && rootNode.classList.contains(affiliateKlaviyoPopupSuppressedClass);
         };
 
-        const closeKlaviyoPopup = (popupContainer) => {
-          if (!(popupContainer instanceof HTMLElement)) return;
-          if (closedPopupContainers.has(popupContainer)) return;
-          closedPopupContainers.add(popupContainer);
-          lastSuppressionAttemptAt = Date.now();
-
-          popupContainer.style.setProperty('opacity', '0', 'important');
-          popupContainer.style.setProperty('pointer-events', 'none', 'important');
-
-          const closeButton = popupContainer.querySelector('.klaviyo-close-form');
-          if (closeButton instanceof HTMLButtonElement) {
-            window.requestAnimationFrame(() => {
-              closeButton.click();
-            });
-            return;
-          }
-
-          const escapeEvent = new KeyboardEvent('keydown', {
-            key: 'Escape',
-            code: 'Escape',
-            keyCode: 27,
-            which: 27,
-            bubbles: true,
-            cancelable: true,
-          });
-          document.dispatchEvent(escapeEvent);
-        };
-
-        const maybeReleaseSuppressedPopupScrollLock = (hasVisiblePopup) => {
-          if (hasVisiblePopup || !isAffiliateKlaviyoSuppressed()) return;
-          if (Date.now() - lastSuppressionAttemptAt > 2500) return;
-
+        const maybeReleaseSuppressedPopupScrollLock = () => {
+          if (!isAffiliateKlaviyoSuppressed()) return;
           const rootNode = document.documentElement;
           const bodyNode = document.body;
           if (!(rootNode instanceof HTMLElement) || !(bodyNode instanceof HTMLElement)) return;
@@ -1263,9 +1232,6 @@
           });
 
           const shouldSuppressAffiliatePopup = isAffiliateKlaviyoSuppressed();
-          if (shouldSuppressAffiliatePopup) {
-            popupContainers.forEach((popupContainer) => closeKlaviyoPopup(popupContainer));
-          }
 
           const hasVisiblePopup = shouldSuppressAffiliatePopup
             ? false
@@ -1279,7 +1245,9 @@
           if (rootNode instanceof HTMLElement) {
             rootNode.classList.toggle(popupOpenClass, hasVisiblePopup);
           }
-          maybeReleaseSuppressedPopupScrollLock(hasVisiblePopup);
+          if (shouldSuppressAffiliatePopup) {
+            maybeReleaseSuppressedPopupScrollLock();
+          }
         };
 
         let frameId = 0;
