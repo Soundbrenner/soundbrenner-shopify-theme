@@ -732,45 +732,35 @@
         }, 250);
       })();
     </script>
-    {% section 'klaviyo-popup-copy' %}
     <script>
       (() => {
         const popupOpenClass = 'sb-klaviyo-popup-open';
         const markerSelector =
           '.klaviyo-form, [class*="klaviyo-form-"], [data-testid^="klaviyo-form-"], iframe[src*="klaviyo"]';
         const numberFormatter = new Intl.NumberFormat(document.documentElement.lang || 'en-US');
-        const popupCopyDataNode = document.getElementById('sb-klaviyo-popup-copy-data');
-        let popupCopyData = {};
-        if (popupCopyDataNode instanceof HTMLScriptElement) {
-          try {
-            popupCopyData = JSON.parse(popupCopyDataNode.textContent || '{}');
-          } catch (_error) {
-            popupCopyData = {};
-          }
-        }
         const popupLocaleCopy = {
-          dialogLabel: `${popupCopyData.dialogLabel || ''}`,
-          closeLabel: `${popupCopyData.closeLabel || ''}`,
-          imageAlt: `${popupCopyData.imageAlt || ''}`,
-          titleLineOne: `${popupCopyData.titleLineOne || ''}`,
-          titleLineTwo: `${popupCopyData.titleLineTwo || ''}`,
-          description: `${popupCopyData.description || ''}`,
-          emailPlaceholder: `${popupCopyData.emailPlaceholder || ''}`,
-          emailLabel: `${popupCopyData.emailLabel || ''}`,
-          buttonLabel: `${popupCopyData.buttonLabel || ''}`,
-          engagementTemplate: `${popupCopyData.engagementTemplate || ''}`,
-          errorRequired: `${popupCopyData.errorRequired || ''}`,
-          errorInvalidEmail: `${popupCopyData.errorInvalidEmail || ''}`,
-          errorGeneric: `${popupCopyData.errorGeneric || ''}`,
-          successTitle: `${popupCopyData.successTitle || ''}`,
-          successCodeLine: `${popupCopyData.successCodeLine || ''}`,
-          successOfferLine: `${popupCopyData.successOfferLine || ''}`,
-          successReminderLine: `${popupCopyData.successReminderLine || ''}`,
-          successExpiresIn: `${popupCopyData.successExpiresIn || ''}`,
-          timerDays: `${popupCopyData.timerDays || ''}`,
-          timerHours: `${popupCopyData.timerHours || ''}`,
-          timerMinutes: `${popupCopyData.timerMinutes || ''}`,
-          timerSeconds: `${popupCopyData.timerSeconds || ''}`,
+          dialogLabel: {{ 'sb.klaviyo_popup.dialog_label' | t | json }},
+          closeLabel: {{ 'sb.klaviyo_popup.close_label' | t | json }},
+          imageAlt: {{ 'sb.klaviyo_popup.image_alt' | t | json }},
+          titleLineOne: {{ 'sb.klaviyo_popup.title_line_1' | t | json }},
+          titleLineTwo: {{ 'sb.klaviyo_popup.title_line_2' | t | json }},
+          description: {{ 'sb.klaviyo_popup.description' | t | json }},
+          emailPlaceholder: {{ 'sb.klaviyo_popup.email_placeholder' | t | json }},
+          emailLabel: {{ 'sb.klaviyo_popup.email_label' | t | json }},
+          buttonLabel: {{ 'sb.klaviyo_popup.button_label' | t | json }},
+          engagementTemplate: {{ 'sb.klaviyo_popup.engagement_counter' | t: count: '__COUNT__' | json }},
+          errorRequired: {{ 'sb.klaviyo_popup.error_required' | t | json }},
+          errorInvalidEmail: {{ 'sb.klaviyo_popup.error_invalid_email' | t | json }},
+          errorGeneric: {{ 'sb.klaviyo_popup.error_generic' | t | json }},
+          successTitle: {{ 'sb.klaviyo_popup.success_title' | t | json }},
+          successCodeLine: {{ 'sb.klaviyo_popup.success_code_line' | t: code: '__CODE__' | json }},
+          successOfferLine: {{ 'sb.klaviyo_popup.success_offer_line' | t | json }},
+          successReminderLine: {{ 'sb.klaviyo_popup.success_reminder_line' | t | json }},
+          successExpiresIn: {{ 'sb.klaviyo_popup.success_expires_in' | t | json }},
+          timerDays: {{ 'sb.klaviyo_popup.timer_days' | t | json }},
+          timerHours: {{ 'sb.klaviyo_popup.timer_hours' | t | json }},
+          timerMinutes: {{ 'sb.klaviyo_popup.timer_minutes' | t | json }},
+          timerSeconds: {{ 'sb.klaviyo_popup.timer_seconds' | t | json }},
         };
         const decodeHtmlEntities = (value) => {
           const source = `${value || ''}`;
