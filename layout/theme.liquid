@@ -330,6 +330,11 @@
         display: none !important;
       }
 
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading .sb-button-radiant__label {
+        opacity: 0 !important;
+        visibility: hidden !important;
+      }
+
       [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [data-testid='form-row']:nth-of-type(4) [id^='rich-text-'] {
         color: var(--sb-color-neutral-900) !important;
         font-family: var(--font-primary--family) !important;
@@ -1097,6 +1102,36 @@
         };
 
         const applyPopupRadiantButtons = () => {
+          const isButtonLoading = (button) => {
+            if (!(button instanceof HTMLButtonElement)) return false;
+
+            const hasTruthyState = (value) => {
+              const normalized = `${value || ''}`.trim().toLowerCase();
+              return normalized === 'true'
+                || normalized === '1'
+                || normalized === 'loading'
+                || normalized === 'pending'
+                || normalized === 'submitting';
+            };
+
+            if (hasTruthyState(button.getAttribute('aria-busy'))) return true;
+            if (hasTruthyState(button.getAttribute('data-loading'))) return true;
+            if (hasTruthyState(button.getAttribute('data-state'))) return true;
+            if (hasTruthyState(button.getAttribute('aria-disabled'))) return true;
+
+            const classNames = Array.from(button.classList).join(' ').toLowerCase();
+            if (/(loading|spinner|progress|submitting|pending)/.test(classNames)) return true;
+
+            const loadingNode = button.querySelector(
+              "[role='progressbar'], progress, [class*='loading' i], [class*='spinner' i], [class*='progress' i]"
+            );
+            if (loadingNode) return true;
+
+            if (button.disabled && button.closest(".sb-klaviyo-popup-form--initial")) return true;
+
+            return false;
+          };
+
           const submitButtons = document.querySelectorAll(
             "[data-testid='POPUP'] form[data-testid^='klaviyo-form-'] button[type='button']:not(.klaviyo-close-form)"
           );
@@ -1120,6 +1155,8 @@
             } else if (desiredLabelText && labelNode.textContent !== desiredLabelText) {
               labelNode.textContent = desiredLabelText;
             }
+
+            button.classList.toggle('sb-klaviyo-button-loading', isButtonLoading(button));
           });
         };
 
@@ -1162,7 +1199,18 @@
           childList: true,
           subtree: true,
           attributes: true,
-          attributeFilter: ['class', 'style', 'hidden', 'aria-hidden', 'data-testid'],
+          attributeFilter: [
+            'class',
+            'style',
+            'hidden',
+            'aria-hidden',
+            'data-testid',
+            'aria-busy',
+            'aria-disabled',
+            'data-loading',
+            'data-state',
+            'disabled',
+          ],
         });
 
         window.addEventListener('resize', queueUpdate, { passive: true });
