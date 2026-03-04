@@ -139,18 +139,48 @@
         opacity: 1;
       }
 
+      html.sb-klaviyo-popup-open,
+      html.sb-klaviyo-popup-open body {
+        overflow: hidden !important;
+        overscroll-behavior: none !important;
+      }
+
       [data-testid='POPUP'],
       [role='dialog'][aria-modal='true'] {
         --sb-klaviyo-popup-edge-padding: var(--sb-space-30);
         --sb-klaviyo-popup-element-gap: var(--sb-space-24);
         --sb-klaviyo-popup-close-size: 20px;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+        overscroll-behavior-x: none !important;
+        overscroll-behavior-y: contain !important;
+      }
+
+      [data-testid='POPUP'],
+      [role='dialog'][aria-modal='true'] {
+        touch-action: pan-y !important;
+      }
+
+      [data-testid='POPUP'] > div,
+      [data-testid='POPUP'] > div > div {
+        box-sizing: border-box !important;
+        max-width: calc(100vw - (2 * var(--sb-klaviyo-popup-edge-padding))) !important;
+        width: 100% !important;
       }
 
       [data-testid='POPUP'] form[data-testid^='klaviyo-form-'] {
         background-color: var(--sb-color-neutral-200) !important;
         border-radius: 24px !important;
         box-shadow: 0 var(--sb-space-48) var(--sb-space-48) 0 var(--sb-color-always-black-25) !important;
+        max-width: calc(100vw - (2 * var(--sb-klaviyo-popup-edge-padding))) !important;
+        min-width: 0 !important;
         overflow: hidden !important;
+        width: min(450px, calc(100vw - (2 * var(--sb-klaviyo-popup-edge-padding)))) !important;
+      }
+
+      [data-testid='POPUP'] img {
+        -webkit-user-drag: none !important;
+        user-drag: none !important;
       }
 
       [data-testid='POPUP'] [data-testid='form-row']:nth-of-type(2) [data-testid='form-component'] {
@@ -732,35 +762,45 @@
         }, 250);
       })();
     </script>
+    {% section 'klaviyo-popup-copy' %}
     <script>
       (() => {
         const popupOpenClass = 'sb-klaviyo-popup-open';
         const markerSelector =
           '.klaviyo-form, [class*="klaviyo-form-"], [data-testid^="klaviyo-form-"], iframe[src*="klaviyo"]';
         const numberFormatter = new Intl.NumberFormat(document.documentElement.lang || 'en-US');
+        const popupCopyDataNode = document.getElementById('sb-klaviyo-popup-copy-data');
+        let popupCopyData = {};
+        if (popupCopyDataNode instanceof HTMLScriptElement) {
+          try {
+            popupCopyData = JSON.parse(popupCopyDataNode.textContent || '{}');
+          } catch (_error) {
+            popupCopyData = {};
+          }
+        }
         const popupLocaleCopy = {
-          dialogLabel: {{ settings.klaviyo_popup_dialog_label | json }},
-          closeLabel: {{ settings.klaviyo_popup_close_label | json }},
-          imageAlt: {{ settings.klaviyo_popup_image_alt | json }},
-          titleLineOne: {{ settings.klaviyo_popup_title_line_1 | json }},
-          titleLineTwo: {{ settings.klaviyo_popup_title_line_2 | json }},
-          description: {{ settings.klaviyo_popup_description | json }},
-          emailPlaceholder: {{ settings.klaviyo_popup_email_placeholder | json }},
-          emailLabel: {{ settings.klaviyo_popup_email_label | json }},
-          buttonLabel: {{ settings.klaviyo_popup_button_label | json }},
-          engagementTemplate: {{ settings.klaviyo_popup_engagement_counter | json }},
-          errorRequired: {{ settings.klaviyo_popup_error_required | json }},
-          errorInvalidEmail: {{ settings.klaviyo_popup_error_invalid_email | json }},
-          errorGeneric: {{ settings.klaviyo_popup_error_generic | json }},
-          successTitle: {{ settings.klaviyo_popup_success_title | json }},
-          successCodeLine: {{ settings.klaviyo_popup_success_code_line | json }},
-          successOfferLine: {{ settings.klaviyo_popup_success_offer_line | json }},
-          successReminderLine: {{ settings.klaviyo_popup_success_reminder_line | json }},
-          successExpiresIn: {{ settings.klaviyo_popup_success_expires_in | json }},
-          timerDays: {{ settings.klaviyo_popup_timer_days | json }},
-          timerHours: {{ settings.klaviyo_popup_timer_hours | json }},
-          timerMinutes: {{ settings.klaviyo_popup_timer_minutes | json }},
-          timerSeconds: {{ settings.klaviyo_popup_timer_seconds | json }},
+          dialogLabel: popupCopyData.dialogLabel ?? 'Popup form',
+          closeLabel: popupCopyData.closeLabel ?? 'Close dialog',
+          imageAlt: popupCopyData.imageAlt ?? 'Soundbrenner Wave in a forest',
+          titleLineOne: popupCopyData.titleLineOne ?? 'Welcome offer:',
+          titleLineTwo: popupCopyData.titleLineTwo ?? 'Unlock 20% off',
+          description: popupCopyData.description ?? 'Claim your Welcome Offer and stay updated on new products and special deals.',
+          emailPlaceholder: popupCopyData.emailPlaceholder ?? 'Enter your email...',
+          emailLabel: popupCopyData.emailLabel ?? 'Enter your email',
+          buttonLabel: popupCopyData.buttonLabel ?? 'Unlock Welcome Offer',
+          engagementTemplate: popupCopyData.engagementTemplate ?? '🔥 Unlocked by __COUNT__ musicians in the last 30 days!',
+          errorRequired: popupCopyData.errorRequired ?? 'This field is required',
+          errorInvalidEmail: popupCopyData.errorInvalidEmail ?? 'This email is invalid',
+          errorGeneric: popupCopyData.errorGeneric ?? 'An error occurred when submitting. Please try again later.',
+          successTitle: popupCopyData.successTitle ?? 'Congratulations - Welcome Offer unlocked!',
+          successCodeLine: popupCopyData.successCodeLine ?? 'Your discount code: __CODE__.',
+          successOfferLine: popupCopyData.successOfferLine ?? 'Enjoy 20% off your first order, plus free shipping on qualifying purchases.',
+          successReminderLine: popupCopyData.successReminderLine ?? "Don't forget to save this code - you'll need it at checkout!",
+          successExpiresIn: popupCopyData.successExpiresIn ?? 'Expires in:',
+          timerDays: popupCopyData.timerDays ?? 'Days',
+          timerHours: popupCopyData.timerHours ?? 'Hours',
+          timerMinutes: popupCopyData.timerMinutes ?? 'Minutes',
+          timerSeconds: popupCopyData.timerSeconds ?? 'Seconds',
         };
         const decodeHtmlEntities = (value) => {
           const source = `${value || ''}`;
@@ -777,6 +817,54 @@
           if (!nextText) return;
           if (normalizeText(node.textContent) === nextText) return;
           node.textContent = nextText;
+        };
+
+        const popupScrollLockState = {
+          bodyLeft: '',
+          bodyOverflow: '',
+          bodyPosition: '',
+          bodyRight: '',
+          bodyTop: '',
+          bodyWidth: '',
+          isLocked: false,
+          scrollY: 0,
+        };
+
+        const lockPopupBackgroundScroll = () => {
+          if (popupScrollLockState.isLocked) return;
+          const bodyNode = document.body;
+          if (!(bodyNode instanceof HTMLElement)) return;
+
+          popupScrollLockState.scrollY = window.scrollY || window.pageYOffset || 0;
+          popupScrollLockState.bodyPosition = bodyNode.style.position;
+          popupScrollLockState.bodyTop = bodyNode.style.top;
+          popupScrollLockState.bodyLeft = bodyNode.style.left;
+          popupScrollLockState.bodyRight = bodyNode.style.right;
+          popupScrollLockState.bodyWidth = bodyNode.style.width;
+          popupScrollLockState.bodyOverflow = bodyNode.style.overflow;
+
+          bodyNode.style.left = '0';
+          bodyNode.style.overflow = 'hidden';
+          bodyNode.style.position = 'fixed';
+          bodyNode.style.right = '0';
+          bodyNode.style.top = `-${popupScrollLockState.scrollY}px`;
+          bodyNode.style.width = '100%';
+          popupScrollLockState.isLocked = true;
+        };
+
+        const unlockPopupBackgroundScroll = () => {
+          if (!popupScrollLockState.isLocked) return;
+          const bodyNode = document.body;
+          if (!(bodyNode instanceof HTMLElement)) return;
+
+          bodyNode.style.left = popupScrollLockState.bodyLeft;
+          bodyNode.style.overflow = popupScrollLockState.bodyOverflow;
+          bodyNode.style.position = popupScrollLockState.bodyPosition;
+          bodyNode.style.right = popupScrollLockState.bodyRight;
+          bodyNode.style.top = popupScrollLockState.bodyTop;
+          bodyNode.style.width = popupScrollLockState.bodyWidth;
+          window.scrollTo(0, popupScrollLockState.scrollY);
+          popupScrollLockState.isLocked = false;
         };
 
         const isFooterEmbedContext = (node) =>
@@ -1321,13 +1409,31 @@
             popupContainers.add(popupContainer);
           });
 
-          const hasVisiblePopup = Array.from(popupContainers).some((popupContainer) => isVisiblePopup(popupContainer));
+          popupContainers.forEach((popupContainer) => {
+            if (!(popupContainer instanceof HTMLElement)) return;
+            if (popupContainer.scrollLeft !== 0) popupContainer.scrollLeft = 0;
+          });
+
+          const popupContainersArray = Array.from(popupContainers);
+          const hasVisiblePopup = popupContainersArray.some((popupContainer) => isVisiblePopup(popupContainer));
+          const activeElement = document.activeElement;
+          const hasFocusedElementInPopup =
+            activeElement instanceof HTMLElement
+            && popupContainersArray.some((popupContainer) => popupContainer.contains(activeElement));
+          const shouldTreatPopupAsOpen = hasVisiblePopup || hasFocusedElementInPopup;
+
+          if (shouldTreatPopupAsOpen) {
+            lockPopupBackgroundScroll();
+          } else {
+            unlockPopupBackgroundScroll();
+          }
+
           applyPopupLocalizedCopy();
           applyPopupRadiantButtons();
           localizePopupErrorMessages();
           formatPopupEngagementCounters();
           localizePopupCountdownUnits();
-          document.documentElement.classList.toggle(popupOpenClass, hasVisiblePopup);
+          document.documentElement.classList.toggle(popupOpenClass, shouldTreatPopupAsOpen);
         };
 
         let frameId = 0;
@@ -1365,6 +1471,9 @@
           ],
         });
 
+        document.addEventListener('focusin', queueUpdate, true);
+        document.addEventListener('focusout', queueUpdate, true);
+        window.addEventListener('pagehide', unlockPopupBackgroundScroll);
         window.addEventListener('resize', queueUpdate, { passive: true });
         window.addEventListener('orientationchange', queueUpdate);
       })();

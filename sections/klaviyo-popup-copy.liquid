@@ -1,0 +1,180 @@
+<script id="sb-klaviyo-popup-copy-data" type="application/json">
+  {
+    "dialogLabel": {{ section.settings.dialog_label | json }},
+    "closeLabel": {{ section.settings.close_label | json }},
+    "imageAlt": {{ section.settings.image_alt | json }},
+    "titleLineOne": {{ section.settings.title_line_1 | json }},
+    "titleLineTwo": {{ section.settings.title_line_2 | json }},
+    "description": {{ section.settings.description | json }},
+    "emailPlaceholder": {{ section.settings.email_placeholder | json }},
+    "emailLabel": {{ section.settings.email_label | json }},
+    "buttonLabel": {{ section.settings.button_label | json }},
+    "engagementTemplate": {{ section.settings.engagement_counter | json }},
+    "errorRequired": {{ section.settings.error_required | json }},
+    "errorInvalidEmail": {{ section.settings.error_invalid_email | json }},
+    "errorGeneric": {{ section.settings.error_generic | json }},
+    "successTitle": {{ section.settings.success_title | json }},
+    "successCodeLine": {{ section.settings.success_code_line | json }},
+    "successOfferLine": {{ section.settings.success_offer_line | json }},
+    "successReminderLine": {{ section.settings.success_reminder_line | json }},
+    "successExpiresIn": {{ section.settings.success_expires_in | json }},
+    "timerDays": {{ section.settings.timer_days | json }},
+    "timerHours": {{ section.settings.timer_hours | json }},
+    "timerMinutes": {{ section.settings.timer_minutes | json }},
+    "timerSeconds": {{ section.settings.timer_seconds | json }}
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Klaviyo popup copy",
+  "settings": [
+    {
+      "type": "text",
+      "id": "dialog_label",
+      "label": "Dialog label",
+      "default": "Popup form"
+    },
+    {
+      "type": "text",
+      "id": "close_label",
+      "label": "Close label",
+      "default": "Close dialog"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image alt text",
+      "default": "Soundbrenner Wave in a forest"
+    },
+    {
+      "type": "header",
+      "content": "Initial state"
+    },
+    {
+      "type": "text",
+      "id": "title_line_1",
+      "label": "Title line 1",
+      "default": "Welcome offer:"
+    },
+    {
+      "type": "text",
+      "id": "title_line_2",
+      "label": "Title line 2",
+      "default": "Unlock 20% off"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Claim your Welcome Offer and stay updated on new products and special deals."
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email placeholder",
+      "default": "Enter your email..."
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Email label",
+      "default": "Enter your email"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Unlock Welcome Offer"
+    },
+    {
+      "type": "text",
+      "id": "engagement_counter",
+      "label": "Engagement counter",
+      "default": "🔥 Unlocked by {{ count }} musicians in the last 30 days!",
+      "info": "Use {{ count }} for the number."
+    },
+    {
+      "type": "header",
+      "content": "Errors"
+    },
+    {
+      "type": "text",
+      "id": "error_required",
+      "label": "Required field",
+      "default": "This field is required"
+    },
+    {
+      "type": "text",
+      "id": "error_invalid_email",
+      "label": "Invalid email",
+      "default": "This email is invalid"
+    },
+    {
+      "type": "text",
+      "id": "error_generic",
+      "label": "Generic error",
+      "default": "An error occurred when submitting. Please try again later."
+    },
+    {
+      "type": "header",
+      "content": "Success state"
+    },
+    {
+      "type": "text",
+      "id": "success_title",
+      "label": "Title",
+      "default": "Congratulations - Welcome Offer unlocked!"
+    },
+    {
+      "type": "text",
+      "id": "success_code_line",
+      "label": "Code line",
+      "default": "Your discount code: {{ code }}.",
+      "info": "Use {{ code }} for the discount code."
+    },
+    {
+      "type": "textarea",
+      "id": "success_offer_line",
+      "label": "Offer line",
+      "default": "Enjoy 20% off your first order, plus free shipping on qualifying purchases."
+    },
+    {
+      "type": "textarea",
+      "id": "success_reminder_line",
+      "label": "Reminder line",
+      "default": "Don't forget to save this code - you'll need it at checkout!"
+    },
+    {
+      "type": "text",
+      "id": "success_expires_in",
+      "label": "Expires label",
+      "default": "Expires in:"
+    },
+    {
+      "type": "text",
+      "id": "timer_days",
+      "label": "Timer days",
+      "default": "Days"
+    },
+    {
+      "type": "text",
+      "id": "timer_hours",
+      "label": "Timer hours",
+      "default": "Hours"
+    },
+    {
+      "type": "text",
+      "id": "timer_minutes",
+      "label": "Timer minutes",
+      "default": "Minutes"
+    },
+    {
+      "type": "text",
+      "id": "timer_seconds",
+      "label": "Timer seconds",
+      "default": "Seconds"
+    }
+  ]
+}
+{% endschema %}
