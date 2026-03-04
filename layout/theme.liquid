@@ -1419,6 +1419,31 @@
     {% # Social, title, etc. %}
     {% render 'meta-tags' %}
 
+    {% liquid
+      assign storefront_cart_discount_depth = 0
+
+      for discount_application in cart.cart_level_discount_applications
+        if discount_application.type == 'discount_code' and discount_application.value_type == 'percentage'
+          assign next_discount_depth = discount_application.value | plus: 0
+          if next_discount_depth > storefront_cart_discount_depth
+            assign storefront_cart_discount_depth = next_discount_depth
+          endif
+        endif
+      endfor
+
+      for cart_item in cart.items
+        for line_discount_allocation in cart_item.line_level_discount_allocations
+          assign line_discount_application = line_discount_allocation.discount_application
+          if line_discount_application and line_discount_application.type == 'discount_code' and line_discount_application.value_type == 'percentage'
+            assign next_discount_depth = line_discount_application.value | plus: 0
+            if next_discount_depth > storefront_cart_discount_depth
+              assign storefront_cart_discount_depth = next_discount_depth
+            endif
+          endif
+        endfor
+      endfor
+    %}
+
     <script>
       (() => {
         const url = new URL(window.location.href);
@@ -1455,6 +1480,10 @@
         const globalDiscountRate = clampDiscountRate(
           Number({{ settings.storefront_default_order_discount_depth | default: 15 | json }}) / 100
         );
+        const cartDiscountRate = clampDiscountRate(
+          Number({{ storefront_cart_discount_depth | default: 0 | json }}) / 100
+        );
+        const effectiveGlobalDiscountRate = clampDiscountRate(Math.max(globalDiscountRate, cartDiscountRate));
 
         const productOverrideEntries = [
           {
@@ -1489,11 +1518,11 @@
             ? Number(productOverrideRateById.get(normalizedProductId) || 0)
             : 0;
 
-          if (globalDiscountRate > 0 && productRate > 0) {
-            return clampDiscountRate(1 - ((1 - globalDiscountRate) * (1 - productRate)));
+          if (effectiveGlobalDiscountRate > 0 && productRate > 0) {
+            return clampDiscountRate(1 - ((1 - effectiveGlobalDiscountRate) * (1 - productRate)));
           }
 
-          return clampDiscountRate(Math.max(globalDiscountRate, productRate));
+          return clampDiscountRate(Math.max(effectiveGlobalDiscountRate, productRate));
         };
 
         const fallbackCurrency = {{ cart.currency.iso_code | default: shop.currency | json }};
@@ -1615,6 +1644,12 @@
         const thumbnailFallbackGlobalRate = clampDiscountRate(
           Number({{ settings.storefront_default_order_discount_depth | default: 15 | json }}) / 100
         );
+        const thumbnailCartDiscountRate = clampDiscountRate(
+          Number({{ storefront_cart_discount_depth | default: 0 | json }}) / 100
+        );
+        const thumbnailEffectiveGlobalRate = clampDiscountRate(
+          Math.max(thumbnailFallbackGlobalRate, thumbnailCartDiscountRate)
+        );
 
         const thumbnailProductOverrideEntries = [
           {
@@ -1677,7 +1712,7 @@
         });
 
         const thumbnailDiscountState = {
-          globalRate: thumbnailFallbackGlobalRate,
+          globalRate: thumbnailEffectiveGlobalRate,
           productRateById: thumbnailProductOverrideRateById,
         };
 
