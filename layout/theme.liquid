@@ -123,8 +123,6 @@
         display: flex !important;
       }
 
-      {%- comment -%} Temporarily disabled Klaviyo popup customization block {%- endcomment -%}
-      {%- comment -%}
       .sb-klaviyo-popup-backdrop {
         -webkit-backdrop-filter: blur(var(--sb-space-8));
         backdrop-filter: blur(var(--sb-space-8));
@@ -429,7 +427,6 @@
         background: var(--sb-color-neutral-900);
         transform: none;
       }
-      {%- endcomment -%}
 
       .sb-theme-debug-toggle {
         align-items: center;
@@ -614,8 +611,6 @@
         }, 250);
       })();
     </script>
-    {%- comment -%} Temporarily disabled Klaviyo popup customization script {%- endcomment -%}
-    {%- comment -%}
     <script>
       (() => {
         const popupOpenClass = 'sb-klaviyo-popup-open';
@@ -1080,7 +1075,6 @@
         window.addEventListener('orientationchange', queueUpdate);
       })();
     </script>
-    {%- endcomment -%}
 
     {%- if settings.favicon != blank -%}
       <link
