@@ -190,6 +190,10 @@
         z-index: 1 !important;
       }
 
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success .sb-klaviyo-popup-success-title-component {
+        padding: 0 var(--sb-klaviyo-popup-edge-padding) var(--sb-klaviyo-popup-element-gap) !important;
+      }
+
       [data-testid='POPUP'] [data-testid='form-row']:nth-of-type(2) [id^='rich-text-'],
       [data-testid='POPUP'] [data-testid='form-row']:nth-of-type(2) [id^='rich-text-'] * {
         color: var(--sb-color-neutral-900) !important;
@@ -345,6 +349,43 @@
         visibility: hidden !important;
       }
 
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading {
+        position: relative !important;
+      }
+
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading::after {
+        animation: sb-klaviyo-popup-spinner-spin 720ms linear infinite;
+        border: 2px solid var(--sb-color-neutral-900);
+        border-radius: 50%;
+        border-right-color: transparent;
+        content: '';
+        display: block;
+        height: 20px;
+        left: 50%;
+        margin-left: -10px;
+        margin-top: -10px;
+        pointer-events: none;
+        position: absolute;
+        top: 50%;
+        width: 20px;
+        z-index: 6;
+      }
+
+      @keyframes sb-klaviyo-popup-spinner-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial.sb-klaviyo-popup-submit-loading [role='progressbar'],
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial.sb-klaviyo-popup-submit-loading progress,
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial.sb-klaviyo-popup-submit-loading [class*='spinner' i],
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial.sb-klaviyo-popup-submit-loading [class*='loading' i],
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial.sb-klaviyo-popup-submit-loading [class*='progress' i] {
+        display: none !important;
+        opacity: 0 !important;
+      }
+
       [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading,
       [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading [role='progressbar'],
       [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading progress,
@@ -363,17 +404,24 @@
         stroke: var(--sb-color-neutral-900) !important;
       }
 
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [data-testid='form-row']:nth-of-type(4) [id^='rich-text-'] {
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success .sb-klaviyo-popup-success-body-component {
+        padding: 0 var(--sb-klaviyo-popup-edge-padding) var(--sb-klaviyo-popup-element-gap) !important;
+      }
+
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success .sb-klaviyo-popup-success-body-richtext {
         color: var(--sb-color-neutral-900) !important;
+        display: flex !important;
+        flex-direction: column !important;
         font-family: var(--font-primary--family) !important;
         font-size: var(--font-size-body) !important;
         font-style: normal !important;
         font-weight: 400 !important;
+        gap: var(--sb-klaviyo-popup-element-gap) !important;
         line-height: 1.4 !important;
         text-align: center !important;
       }
 
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [data-testid='form-row']:nth-of-type(4) [id^='rich-text-'] * {
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success .sb-klaviyo-popup-success-body-richtext * {
         color: var(--sb-color-neutral-900) !important;
         font-family: var(--font-primary--family) !important;
         font-size: var(--font-size-body) !important;
@@ -387,13 +435,7 @@
         color: var(--sb-color-neutral-900) !important;
       }
 
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [data-testid='form-row']:nth-of-type(4) [id^='rich-text-'] {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: var(--sb-klaviyo-popup-element-gap) !important;
-      }
-
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [data-testid='form-row']:nth-of-type(4) [id^='rich-text-'] > * {
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success .sb-klaviyo-popup-success-body-richtext > * {
         margin: 0 !important;
       }
 
@@ -403,12 +445,12 @@
         text-align: center !important;
       }
 
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [data-testid='form-row']:nth-of-type(4) [id^='rich-text-'] strong,
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [data-testid='form-row']:nth-of-type(4) [id^='rich-text-'] b,
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [data-testid='form-row']:nth-of-type(4) [id^='rich-text-'] [style*='font-weight: bold'],
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [data-testid='form-row']:nth-of-type(4) [id^='rich-text-'] [style*='font-weight:bold'],
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [data-testid='form-row']:nth-of-type(4) [id^='rich-text-'] [style*='font-weight:700'],
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [data-testid='form-row']:nth-of-type(4) [id^='rich-text-'] [style*='font-weight: 700'] {
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success .sb-klaviyo-popup-success-body-richtext strong,
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success .sb-klaviyo-popup-success-body-richtext b,
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success .sb-klaviyo-popup-success-body-richtext [style*='font-weight: bold'],
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success .sb-klaviyo-popup-success-body-richtext [style*='font-weight:bold'],
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success .sb-klaviyo-popup-success-body-richtext [style*='font-weight:700'],
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success .sb-klaviyo-popup-success-body-richtext [style*='font-weight: 700'] {
         font-weight: 700 !important;
       }
 
@@ -471,7 +513,7 @@
         -webkit-mask-position: center;
         -webkit-mask-repeat: no-repeat;
         -webkit-mask-size: var(--sb-klaviyo-popup-close-size, 20px) var(--sb-klaviyo-popup-close-size, 20px);
-        background: var(--sb-color-primary-500);
+        background: var(--sb-color-orange-500);
         content: '';
         display: block;
         height: var(--sb-klaviyo-popup-close-size, 20px);
@@ -923,6 +965,15 @@
             popupForm
               .querySelectorAll('.sb-klaviyo-popup-copy-code-component')
               .forEach((node) => node.classList.remove('sb-klaviyo-popup-copy-code-component'));
+            popupForm
+              .querySelectorAll('.sb-klaviyo-popup-success-title-component')
+              .forEach((node) => node.classList.remove('sb-klaviyo-popup-success-title-component'));
+            popupForm
+              .querySelectorAll('.sb-klaviyo-popup-success-body-component')
+              .forEach((node) => node.classList.remove('sb-klaviyo-popup-success-body-component'));
+            popupForm
+              .querySelectorAll('.sb-klaviyo-popup-success-body-richtext')
+              .forEach((node) => node.classList.remove('sb-klaviyo-popup-success-body-richtext'));
 
             if (hasEmailInput) {
               const titleRoot = popupForm.querySelector("[data-testid='form-row']:nth-of-type(2) [id^='rich-text-']");
@@ -973,6 +1024,12 @@
             const successRichTextRoots = popupForm.querySelectorAll("[id^='rich-text-']");
             const successTitleRoot = successRichTextRoots[0];
             const successBodyRoot = successRichTextRoots[1];
+            const successTitleComponent = successTitleRoot instanceof HTMLElement
+              ? successTitleRoot.closest("[data-testid='form-component']")
+              : null;
+            const successBodyComponent = successBodyRoot instanceof HTMLElement
+              ? successBodyRoot.closest("[data-testid='form-component']")
+              : null;
             const successActionButton = Array.from(popupForm.querySelectorAll('button')).find(
               (button) => button instanceof HTMLButtonElement && !button.classList.contains('klaviyo-close-form')
             );
@@ -981,6 +1038,15 @@
               : null;
             if (successActionComponent instanceof HTMLElement) {
               successActionComponent.classList.add('sb-klaviyo-popup-copy-code-component');
+            }
+            if (successTitleComponent instanceof HTMLElement) {
+              successTitleComponent.classList.add('sb-klaviyo-popup-success-title-component');
+            }
+            if (successBodyComponent instanceof HTMLElement) {
+              successBodyComponent.classList.add('sb-klaviyo-popup-success-body-component');
+            }
+            if (successBodyRoot instanceof HTMLElement) {
+              successBodyRoot.classList.add('sb-klaviyo-popup-success-body-richtext');
             }
 
             const successTitleText = normalizeText(popupLocaleCopy.successTitle);
@@ -1009,8 +1075,17 @@
                 normalizeText(popupLocaleCopy.successReminderLine),
                 normalizeText(popupLocaleCopy.successExpiresIn),
               ];
+              const successBodySignature = [
+                localizedCodeLine,
+                successLines[0],
+                successLines[1],
+                successLines[2],
+              ].join('||');
 
-              if (localizedCodeLine || successLines.some(Boolean)) {
+              if (
+                (localizedCodeLine || successLines.some(Boolean))
+                && successBodyRoot.dataset.sbLocalizedSignature !== successBodySignature
+              ) {
                 successBodyRoot.replaceChildren();
 
                 if (localizedCodeLine) {
@@ -1056,6 +1131,8 @@
                   expiresLineNode.textContent = expiresText;
                   successBodyRoot.appendChild(expiresLineNode);
                 }
+
+                successBodyRoot.dataset.sbLocalizedSignature = successBodySignature;
               }
             }
           });
@@ -1166,31 +1243,41 @@
             return false;
           };
 
-          const submitButtons = document.querySelectorAll(
-            "[data-testid='POPUP'] form[data-testid^='klaviyo-form-'] button[type='button']:not(.klaviyo-close-form)"
-          );
+          const popupForms = document.querySelectorAll("[data-testid='POPUP'] form[data-testid^='klaviyo-form-']");
+          popupForms.forEach((popupForm) => {
+            if (!(popupForm instanceof HTMLFormElement)) return;
 
-          submitButtons.forEach((button) => {
-            if (!(button instanceof HTMLButtonElement)) return;
+            const submitButtons = popupForm.querySelectorAll("button[type='button']:not(.klaviyo-close-form)");
+            let hasLoadingInitialSubmit = false;
 
-            button.classList.add('sb-button-radiant', 'sb-button-radiant--large', 'sb-button-radiant--blue', 'font-caption', 'weight-bold');
+            submitButtons.forEach((button) => {
+              if (!(button instanceof HTMLButtonElement)) return;
 
-            const currentLabelText = `${button.textContent || ''}`.trim();
-            const localizedLabelText = `${popupLocaleCopy.buttonLabel || ''}`.trim();
-            const desiredLabelText = localizedLabelText || currentLabelText;
-            let labelNode = button.querySelector('.sb-button-radiant__label');
+              button.classList.add('sb-button-radiant', 'sb-button-radiant--large', 'sb-button-radiant--blue', 'font-caption', 'weight-bold');
 
-            if (!labelNode) {
-              labelNode = document.createElement('span');
-              labelNode.className = 'sb-button-radiant__label';
-              labelNode.textContent = desiredLabelText;
-              button.textContent = '';
-              button.appendChild(labelNode);
-            } else if (desiredLabelText && labelNode.textContent !== desiredLabelText) {
-              labelNode.textContent = desiredLabelText;
-            }
+              const currentLabelText = `${button.textContent || ''}`.trim();
+              const localizedLabelText = `${popupLocaleCopy.buttonLabel || ''}`.trim();
+              const desiredLabelText = localizedLabelText || currentLabelText;
+              let labelNode = button.querySelector('.sb-button-radiant__label');
 
-            button.classList.toggle('sb-klaviyo-button-loading', isButtonLoading(button));
+              if (!labelNode) {
+                labelNode = document.createElement('span');
+                labelNode.className = 'sb-button-radiant__label';
+                labelNode.textContent = desiredLabelText;
+                button.textContent = '';
+                button.appendChild(labelNode);
+              } else if (desiredLabelText && labelNode.textContent !== desiredLabelText) {
+                labelNode.textContent = desiredLabelText;
+              }
+
+              const isLoading = isButtonLoading(button);
+              button.classList.toggle('sb-klaviyo-button-loading', isLoading);
+              if (isLoading && popupForm.classList.contains('sb-klaviyo-popup-form--initial')) {
+                hasLoadingInitialSubmit = true;
+              }
+            });
+
+            popupForm.classList.toggle('sb-klaviyo-popup-submit-loading', hasLoadingInitialSubmit);
           });
         };
 
