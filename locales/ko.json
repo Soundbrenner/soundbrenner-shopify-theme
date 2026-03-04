@@ -296,7 +296,7 @@
       "email_placeholder": "이메일을 입력하세요...",
       "email_label": "이메일을 입력하세요",
       "button_label": "웰컴 오퍼 받기",
-      "engagement_counter": "🔥 최근 30일 동안 {{ count }}명의 뮤지션이 이 혜택을 받았습니다!",
+      "engagement_counter": "🔥 {{ count }}명의 뮤지션이 최근 30일 동안 이 혜택을 받았습니다!",
       "error_required": "필수 입력 항목입니다",
       "error_invalid_email": "유효하지 않은 이메일입니다",
       "error_generic": "제출 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.",

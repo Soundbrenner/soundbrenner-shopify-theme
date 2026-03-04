@@ -296,7 +296,7 @@
       "email_placeholder": "メールアドレスを入力...",
       "email_label": "メールアドレスを入力",
       "button_label": "ウェルカムオファーをアンロック",
-      "engagement_counter": "🔥 過去30日間で{{ count }}人のミュージシャンがこの特典をアンロックしました！",
+      "engagement_counter": "🔥 {{ count }}人のミュージシャンが過去30日間でこの特典をアンロックしました！",
       "error_required": "この項目は必須です",
       "error_invalid_email": "このメールアドレスは無効です",
       "error_generic": "送信中にエラーが発生しました。後でもう一度お試しください。",

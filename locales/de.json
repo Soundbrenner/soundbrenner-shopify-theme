@@ -296,7 +296,7 @@
       "email_placeholder": "E-Mail-Adresse eingeben...",
       "email_label": "E-Mail-Adresse eingeben",
       "button_label": "Willkommensangebot freischalten",
-      "engagement_counter": "🔥 In den letzten 30 Tagen von {{ count }} Musiker:innen freigeschaltet!",
+      "engagement_counter": "🔥 {{ count }} Musiker haben dieses Angebot in den letzten 30 Tagen freigeschaltet!",
       "error_required": "Dieses Feld ist erforderlich",
       "error_invalid_email": "Diese E-Mail-Adresse ist ungültig",
       "error_generic": "Beim Senden ist ein Fehler aufgetreten. Bitte versuche es später erneut.",
