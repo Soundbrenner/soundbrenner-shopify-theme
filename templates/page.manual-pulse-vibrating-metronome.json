@@ -91,6 +91,8 @@
           "type": "image_grid",
           "settings": {
             "fetch_whats_in_the_box_from_product": true,
+            "hide_accordion_and_title": true,
+            "accordion_title": "In the box",
             "source_metaobject": "pulse",
             "item_1_text": "Item 1",
             "item_2_text": "Item 2",
@@ -129,7 +131,7 @@
         "body_5": {
           "type": "text",
           "settings": {
-            "text": "<p>After you take the Pulse out of the box, charge it for at least 30 minutes. A full charge can take up to 2.5 hours and gives you an average of 6 hours metronome playback time.</p><p>Plug the charger into any computer USB port or use a USB wall adapter, including those that ship with a smartphone or tablet. Then align the cable’s magnets with the charging port on the Pulse.</p>"
+            "text": "<p>After taking the Pulse out of the box, charge it for at least 30 minutes before first use. A full charge takes up to 2.5 hours and provides an average of 6 hours of metronome playback.</p><p>Plug the charger into any computer USB port or use a USB wall adapter, including those supplied with a smartphone or tablet. Then align the cable’s magnets with the charging port on the Pulse.</p>"
           }
         },
         "image_K3PQ6p": {
