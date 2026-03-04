@@ -555,6 +555,13 @@
             "question": "How to improve the reliability of Pulse?",
             "answer": "<p>Here are some tips to use your Soundbrenner Pulse most reliably:</p><ul><li>Before usage, make sure it is charged. A full charge takes about 2.5 hours. The LEDs pulse in orange color when charging and glows in green when fully charged.</li><li>Make sure your Soundbrenner Pulse is in touch with your skin when you use the touch surface. For example it works most reliably when you wear it on your wrist. </li></ul><p>Get familiar with the way touch commands work. Take a look at the <a href=\"https://youtu.be/KKBHW9k90wY\" target=\"_blank\" title=\"https://youtu.be/KKBHW9k90wY\">instructions video</a>.</p><ul><li>Activate the interaction lock while playing with the Soundbrenner Pulse. You can lock your touch surface and BPM wheel to avoid unintentional changes.  </li><li>You can activate the interaction lock from your Settings -&gt; Your Soundbrenner Pulse. </li></ul>"
           }
+        },
+        "accordion_item_qEHMfd": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "What's the right charging solution for my Pulse?",
+            "answer": "<p>When we released the Soundbrenner Pulse in 2016, we shipped it with a charging station, that is powered by an included black micro USB cable. We manufactured Pulse that were compatible with this charging solution between 2016-2018.</p><p>Once we started the development of our second generation device called Soundbrenner Core, it became clear we wanted to have a universal cable for all Soundbrenner devices. We updated the Pulse to be compatible with this new cable, that can now also be shared with the Core. We will try to make all future Soundbrenner devices compatible with this charging cable.</p><p><strong>Which charging solution should you purchase for your Pulse?</strong></p><p>The Pulse is only compatible with the charging solution it shipped with! Hence, if your Pulse came with a charging station and a black micro USB cable, then purchase that one. If your Pulse came with a charging cable, then purchase that one. If you're not sure which Pulse version you have, take a look at the photos below:</p><p>Note: In 2024 we launched a white USB-C version of the charging cable. All devices that are compatible with the teal cable, are also compatible with the white cable.</p>"
+          }
         }
       },
       "block_order": [
@@ -642,7 +649,8 @@
         "accordion_item_zHxCRR",
         "accordion_item_EzReFW",
         "accordion_item_Jtgfh8",
-        "accordion_item_nn76X8"
+        "accordion_item_nn76X8",
+        "accordion_item_qEHMfd"
       ],
       "settings": {}
     },
