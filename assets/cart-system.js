@@ -374,28 +374,21 @@
     });
   }
 
-  const formatMoney = (cents, currency = 'USD') => {
+  const formatMoney = (cents, currency = '') => {
     const amount = Number.isFinite(Number(cents)) ? Math.round(Number(cents)) : 0;
+    const currencyCode = `${currency || ''}`.trim().toUpperCase();
+
     try {
-      if (window.Shopify && typeof window.Shopify.formatMoney === 'function') {
-        const shopifyFormatted = window.Shopify.formatMoney(amount, '${{amount}}');
-        if (`${shopifyFormatted || ''}`.trim() !== '') {
-          return shopifyFormatted;
-        }
+      const storefrontPricing = window.SBStorefrontPricing;
+      if (storefrontPricing && typeof storefrontPricing.formatMoney === 'function') {
+        const formatted = storefrontPricing.formatMoney(amount, currencyCode, { context: 'cart' });
+        if (`${formatted || ''}`.trim() !== '') return formatted;
       }
     } catch (_) {
       // no-op
     }
 
-    try {
-      const formatted = new Intl.NumberFormat(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      }).format(amount / 100);
-      return `$${formatted}`;
-    } catch (_) {
-      return `$${(amount / 100).toFixed(2)}`;
-    }
+    return `${amount / 100}`;
   };
 
   const escapeHtml = (value) => {
@@ -541,7 +534,7 @@
     return withTitle || summaries[0];
   };
 
-  const getCartDiscountSummary = (cart, currency = 'USD') => {
+  const getCartDiscountSummary = (cart, currency = '') => {
     const primarySummary = selectPrimaryCartLevelDiscountApplicationSummary(cart);
     const primaryApplication = primarySummary && primarySummary.application ? primarySummary.application : null;
     const discountAmountCents =
@@ -1822,7 +1815,7 @@
         hasServerRows;
       const isEmpty = preserveNonEmptyServerState ? false : itemCount === 0;
       const cartCurrency = `${cart && cart.currency ? cart.currency : ''}`.trim().toUpperCase();
-      const currency = (this.displayCurrency || cartCurrency || 'USD').trim().toUpperCase();
+      const currency = (this.displayCurrency || cartCurrency || '').trim().toUpperCase();
       if (!this.displayCurrency && cartCurrency) {
         this.displayCurrency = cartCurrency;
       }
@@ -1903,7 +1896,7 @@
           }
         });
 
-        if (this.subtotalNode && !skipInitialValueMutation) {
+        if (this.subtotalNode) {
           const subtotalCents = Number.isFinite(Number(cart && cart.items_subtotal_price))
             ? Number(cart.items_subtotal_price)
             : Number.isFinite(Number(cart && cart.total_price))
@@ -1917,7 +1910,7 @@
           setShimmerValue(this.subtotalNode, subtotalText);
         }
 
-        if (this.totalNode && !skipInitialValueMutation) {
+        if (this.totalNode) {
           const totalText = formatMoney(
             cart && cart.total_price ? cart.total_price : 0,
             currency
@@ -1926,9 +1919,7 @@
           setShimmerValue(this.totalNode, totalText);
         }
 
-        if (!skipInitialValueMutation) {
-          this.renderFreeShipping(cart || {}, currency, isEmpty);
-        }
+        this.renderFreeShipping(cart || {}, currency, isEmpty);
         this.renderDiscounts(cart || {}, currency, { source, preserveInitialMarkup });
         this.renderItems(cart || {}, currency, { source, preserveInitialMarkup });
 
@@ -1947,7 +1938,7 @@
       applyRenderState();
     }
 
-    renderDiscounts(cart, currency = 'USD', { source = '', preserveInitialMarkup = false } = {}) {
+    renderDiscounts(cart, currency = '', { source = '', preserveInitialMarkup = false } = {}) {
       const summary = getCartDiscountSummary(cart || {}, currency);
 
       if (this.autoDiscountRowNode) {
@@ -1958,11 +1949,11 @@
         this.autoDiscountDividerNode.hidden = !summary.hasDiscount;
       }
 
-      if (this.autoDiscountTextNode && !preserveInitialMarkup) {
+      if (this.autoDiscountTextNode) {
         this.autoDiscountTextNode.textContent = summary.text;
       }
 
-      if (this.autoDiscountAmountNode && !preserveInitialMarkup) {
+      if (this.autoDiscountAmountNode) {
         this.autoDiscountAmountNode.textContent = summary.amountText;
         setShimmerValue(this.autoDiscountAmountNode, summary.amountText);
       }
@@ -2019,16 +2010,7 @@
       });
       const nextItemsSignature = buildItemsSignatureFromCart(items);
 
-      if (preserveInitialMarkup && `${this.lastRenderedItemsSignature || ''}`.trim() !== '') {
-        return;
-      }
-
-      // Prevent unnecessary full list re-renders (image flash) when only price state changes.
-      // For discount changes we patch line-item prices in place.
-      if (nextItemsSignature === this.lastRenderedItemsSignature) {
-        if (preserveInitialMarkup || source === 'drawer-open') {
-          return;
-        }
+      const syncLineItemPrices = () => {
         items.forEach((item, index) => {
           const line = index + 1;
           const row = this.itemListNode.querySelector(`[data-cart-line="${line}"]`);
@@ -2066,6 +2048,20 @@
             }
           `;
         });
+      };
+
+      if (preserveInitialMarkup && `${this.lastRenderedItemsSignature || ''}`.trim() !== '') {
+        syncLineItemPrices();
+        return;
+      }
+
+      // Prevent unnecessary full list re-renders (image flash) when only price state changes.
+      // For discount changes we patch line-item prices in place.
+      if (nextItemsSignature === this.lastRenderedItemsSignature) {
+        if (source === 'drawer-open') {
+          return;
+        }
+        syncLineItemPrices();
         return;
       }
 

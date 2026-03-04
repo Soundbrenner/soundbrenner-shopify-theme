@@ -281,6 +281,7 @@
     endif
 
     assign hero_selected_variant = product.selected_or_first_available_variant
+    assign hero_currency_code = cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency | upcase
     if hero_selected_variant == blank and product.variants != blank
       assign hero_selected_variant = product.variants.first
     endif
@@ -509,7 +510,7 @@
         data-product-hero-price-root
         data-product-id="{{ product.id }}"
         data-product-variant-ids="{% for variant in product.variants %}{% unless forloop.first %},{% endunless %}{{ variant.id }}{% endfor %}"
-        data-currency="{{ cart.currency.iso_code | default: shop.currency }}"
+        data-currency="{{ hero_currency_code }}"
         data-initial-variant-id="{{ hero_selected_variant.id }}"
         data-initial-price="{{ hero_selected_variant.price | default: 0 }}"
         data-initial-compare-price="{{ hero_selected_variant.compare_at_price | default: 0 }}"
@@ -522,10 +523,10 @@
             hidden
           {% endunless %}
         >
-          {% render 'sb-money-no-decimals', amount: hero_selected_variant.compare_at_price %}
+          {% render 'sb-money-no-decimals', amount: hero_selected_variant.compare_at_price, currency: hero_currency_code, context: 'storefront' %}
         </p>
         <p class="sb-product-page-hero__price sb-product-page-hero__price--current font-body weight-regular" data-product-hero-current-price>
-          {% render 'sb-money-no-decimals', amount: hero_selected_variant.price %}
+          {% render 'sb-money-no-decimals', amount: hero_selected_variant.price, currency: hero_currency_code, context: 'storefront' %}
         </p>
       </div>
 
@@ -556,8 +557,7 @@
       const comparePriceElement = heroRoot.querySelector('[data-product-hero-compare-price]');
       const currentPriceElement = heroRoot.querySelector('[data-product-hero-current-price]');
       const watchVideoButton = heroRoot.querySelector('.sb-product-page-hero__watch-video-button');
-      const currencyCode = priceRoot?.dataset.currency || 'USD';
-      const normalizedCurrencyCode = `${currencyCode}`.trim().toUpperCase();
+      const currencyCode = `${priceRoot?.dataset.currency || ''}`.trim().toUpperCase();
       const productId = priceRoot?.dataset.productId || '';
       const variantIds = String(priceRoot?.dataset.productVariantIds || '')
         .split(',')
@@ -566,30 +566,13 @@
       const variantIdSet = new Set(variantIds);
 
       const storefrontPricing = window.SBStorefrontPricing || null;
-      const fallbackMoneyFormatter = new Intl.NumberFormat(undefined, {
-        style: 'currency',
-        currency: currencyCode,
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      });
-      const usdNoDecimalsFormatter = new Intl.NumberFormat('en-US', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      });
-      const initialPriceSample = (currentPriceElement?.textContent || '').trim();
-      const shouldAppendCurrencyCode = normalizedCurrencyCode !== 'USD' && new RegExp(`\\b${currencyCode}\\b`, 'i').test(initialPriceSample);
-      const formatUsdNoDecimals = (amountInCents) => {
-        const normalizedCents = Number(amountInCents || 0);
-        return `$${usdNoDecimalsFormatter.format(Math.round(normalizedCents / 100))}`;
-      };
 
       const formatMoney = (amountInCents) => {
-        if (normalizedCurrencyCode === 'USD') return formatUsdNoDecimals(amountInCents);
         const normalizedCents = Number(amountInCents || 0);
-        const formatted = storefrontPricing && typeof storefrontPricing.formatMoney === 'function'
-          ? storefrontPricing.formatMoney(normalizedCents, currencyCode)
-          : fallbackMoneyFormatter.format(normalizedCents / 100);
-        return shouldAppendCurrencyCode ? `${formatted} ${currencyCode}` : formatted;
+        if (storefrontPricing && typeof storefrontPricing.formatMoney === 'function') {
+          return storefrontPricing.formatMoney(normalizedCents, currencyCode, { context: 'storefront' });
+        }
+        return `${Math.round(normalizedCents / 100)}`;
       };
 
       const parseMoneyCents = (value) => {

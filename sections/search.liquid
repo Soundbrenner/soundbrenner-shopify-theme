@@ -7,6 +7,8 @@
 
 <h1>{{ 'search.title' | t }}</h1>
 
+{% assign search_currency_code = cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency | upcase %}
+
 <form action="{{ routes.search_url }}" method="get" role="search">
   <input
     type="search"
@@ -37,7 +39,7 @@
               <p>
                 {{ result.title | link_to: result.url }}
                 {% if result.price %}
-                  {% render 'sb-money-no-decimals', amount: result.price %}
+                  {% render 'sb-money-no-decimals', amount: result.price, currency: search_currency_code, context: 'storefront' %}
                 {% endif %}
               </p>
             </div>

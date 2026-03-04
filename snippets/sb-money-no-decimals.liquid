@@ -1,48 +1,12 @@
 {%- liquid
+  assign sb_money_context = context | default: 'storefront' | downcase | strip
   assign sb_money_cents = amount | plus: 0
-  assign sb_money_currency = currency | default: cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency | upcase
+  assign sb_money_display_cents = sb_money_cents
+
+  if sb_money_context != 'cart'
+    assign sb_money_display_major = sb_money_cents | divided_by: 100.0 | round: 0
+    assign sb_money_display_cents = sb_money_display_major | times: 100
+  endif
+
+  echo sb_money_display_cents | money_without_trailing_zeros
 -%}
-{%- if sb_money_currency == 'USD' -%}
-  {%- liquid
-    assign sb_money_amount = sb_money_cents | divided_by: 100.0 | round: 0
-    assign sb_money_negative = false
-    if sb_money_amount < 0
-      assign sb_money_negative = true
-      assign sb_money_amount = sb_money_amount | abs
-    endif
-
-    assign sb_money_digits = sb_money_amount | append: ''
-    assign sb_money_length = sb_money_digits.size
-    assign sb_money_grouped = sb_money_digits
-
-    if sb_money_length > 3
-      assign sb_money_first_group_size = sb_money_length | modulo: 3
-      if sb_money_first_group_size == 0
-        assign sb_money_first_group_size = 3
-      endif
-
-      capture sb_money_grouped
-        echo sb_money_digits | slice: 0, sb_money_first_group_size
-      endcapture
-
-      assign sb_money_consumed = sb_money_first_group_size
-      assign sb_money_trailing_digits = sb_money_length | minus: sb_money_first_group_size
-      assign sb_money_trailing_groups = sb_money_trailing_digits | divided_by: 3
-
-      if sb_money_trailing_groups > 0
-        for sb_money_group_index in (1..sb_money_trailing_groups)
-          assign sb_money_segment = sb_money_digits | slice: sb_money_consumed, 3
-          capture sb_money_grouped
-            echo sb_money_grouped
-            echo ','
-            echo sb_money_segment
-          endcapture
-          assign sb_money_consumed = sb_money_consumed | plus: 3
-        endfor
-      endif
-    endif
-  -%}
-  {%- if sb_money_negative -%}-{% endif -%}${{ sb_money_grouped -}}
-{%- else -%}
-  {{- sb_money_cents | money_without_trailing_zeros -}}
-{%- endif -%}

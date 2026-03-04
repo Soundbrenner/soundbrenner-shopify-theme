@@ -59,7 +59,7 @@
   {% if hero_card_entry_threshold != blank %}
     {% assign hero_card_entry_threshold_cents = hero_card_entry_threshold | times: 100 %}
     {% capture hero_card_free_shipping_threshold_display %}
-      {% render 'sb-money-no-decimals', amount: hero_card_entry_threshold_cents %}
+      {% render 'sb-money-no-decimals', amount: hero_card_entry_threshold_cents, currency: cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency, context: 'storefront' %}
     {% endcapture %}
     {% assign hero_card_free_shipping_threshold_display = hero_card_free_shipping_threshold_display | strip %}
   {% endif %}
@@ -213,7 +213,7 @@
       {% if hero_card_product_mode %}
         data-hero-card-product-mode
         data-product-id="{{ product.id }}"
-        data-currency="{{ cart.currency.iso_code | default: shop.currency }}"
+        data-currency="{{ cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency }}"
         data-initial-variant-id="{{ hero_card_selected_variant.id }}"
         data-initial-price="{{ hero_card_selected_variant.price | default: 0 }}"
         data-initial-compare-price="{{ hero_card_selected_variant.compare_at_price | default: 0 }}"
@@ -224,6 +224,7 @@
         data-sitewide-discount-token="{{ sitewide_discount_depth_token | escape }}"
         data-shipping-country-token="{{ shipping_country_token | escape }}"
         data-free-shipping-threshold-token="{{ free_shipping_threshold_token | escape }}"
+        data-free-shipping-threshold-cents="{{ hero_card_entry_threshold_cents | default: 0 }}"
         data-affiliate-name-token="{{ affiliate_name_token | escape }}"
         data-affiliate-discount-depth="{{ sitewide_affiliate_discount_depth | escape }}"
         data-shipping-country-name="{{ hero_card_shipping_country_name | escape }}"
@@ -233,6 +234,7 @@
         data-seasonal-headline-template="{{ hero_card_seasonal_headline_template | escape }}"
         data-seasonal-subheadline-template="{{ hero_card_seasonal_subheadline_template | escape }}"
         data-seasonal-button-label-template="{{ hero_card_seasonal_button_label_template | escape }}"
+        data-currency="{{ cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency }}"
       {% endif %}
       style="--sb-hero-card-bg-mobile: url('{{ hero_card_mobile_image }}'); --sb-hero-card-bg-desktop: url('{{ hero_card_desktop_image }}');"
     >
@@ -244,7 +246,57 @@
           <h2 class="sb-framing-card__headline font-title weight-bold">{{ hero_card_headline }}</h2>
         {% endif %}
         {% if hero_card_subheadline != blank %}
-          <p class="sb-framing-card__subheadline font-body weight-semibold">{{ hero_card_subheadline }}</p>
+          <p class="sb-framing-card__subheadline font-body weight-semibold">
+            {{ hero_card_subheadline }}
+          </p>
+          {% if hero_card_use_seasonal %}
+            <script>
+              (() => {
+                const card = document.currentScript && document.currentScript.closest('[data-hero-card-seasonal="true"]');
+                const subheadlineElement = card && card.querySelector('.sb-framing-card__subheadline');
+                if (!(card instanceof HTMLElement) || !(subheadlineElement instanceof HTMLElement)) return;
+
+                const thresholdToken = `${card.dataset.freeShippingThresholdToken || ''}`;
+                const fallbackThresholdDisplay = `${card.dataset.freeShippingThresholdDisplay || ''}`;
+                const thresholdCents = Number.parseInt(`${card.dataset.freeShippingThresholdCents || ''}`, 10);
+                const currencyCode = `${card.dataset.currency || ''}`.trim().toUpperCase();
+
+                let thresholdDisplay = fallbackThresholdDisplay;
+                const storefrontPricing = window.SBStorefrontPricing || null;
+                if (
+                  Number.isFinite(thresholdCents)
+                  && thresholdCents > 0
+                  && storefrontPricing
+                  && typeof storefrontPricing.formatMoney === 'function'
+                ) {
+                  const formattedThreshold = storefrontPricing.formatMoney(thresholdCents, currencyCode, { context: 'storefront' });
+                  if (`${formattedThreshold || ''}`.trim() !== '') {
+                    thresholdDisplay = formattedThreshold;
+                  }
+                }
+
+                if (!thresholdDisplay) return;
+                card.dataset.freeShippingThresholdDisplay = thresholdDisplay;
+
+                const currentText = `${subheadlineElement.textContent || ''}`;
+                if (
+                  thresholdToken
+                  && currentText.includes(thresholdToken)
+                ) {
+                  subheadlineElement.textContent = currentText.split(thresholdToken).join(thresholdDisplay);
+                  return;
+                }
+
+                if (
+                  fallbackThresholdDisplay
+                  && fallbackThresholdDisplay !== thresholdDisplay
+                  && currentText.includes(fallbackThresholdDisplay)
+                ) {
+                  subheadlineElement.textContent = currentText.split(fallbackThresholdDisplay).join(thresholdDisplay);
+                }
+              })();
+            </script>
+          {% endif %}
         {% endif %}
         {% if hero_card_show_button and hero_card_product_mode %}
           <form method="post" action="{{ routes.cart_add_url }}" class="sb-framing-card__product-form" data-hero-card-product-form>
@@ -616,6 +668,40 @@
       return source.split(target).join(`${replacement || ''}`);
     };
 
+    const resolveFreeShippingThresholdDisplay = (card) => {
+      if (!(card instanceof HTMLElement)) return '';
+
+      const fallbackDisplay = `${card.dataset.freeShippingThresholdDisplay || ''}`;
+      const thresholdCents = Number.parseInt(`${card.dataset.freeShippingThresholdCents || ''}`, 10);
+      const currencyCode = `${card.dataset.currency || ''}`.trim().toUpperCase();
+      if (!Number.isFinite(thresholdCents) || thresholdCents <= 0) return fallbackDisplay;
+
+      const storefrontPricing = window.SBStorefrontPricing || null;
+      if (storefrontPricing && typeof storefrontPricing.formatMoney === 'function') {
+        const formatted = storefrontPricing.formatMoney(thresholdCents, currencyCode, { context: 'storefront' });
+        if (`${formatted || ''}`.trim() !== '') {
+          card.dataset.freeShippingThresholdDisplay = formatted;
+          return formatted;
+        }
+      }
+
+      return fallbackDisplay;
+    };
+
+    const syncSeasonalHeroThresholdDisplay = (card) => {
+      if (!(card instanceof HTMLElement)) return;
+      const subheadlineElement = card.querySelector('.sb-framing-card__subheadline');
+      if (!(subheadlineElement instanceof HTMLElement)) return;
+
+      const currentThresholdDisplay = `${card.dataset.freeShippingThresholdDisplay || ''}`;
+      const formattedThresholdDisplay = resolveFreeShippingThresholdDisplay(card);
+      if (!currentThresholdDisplay || !formattedThresholdDisplay || currentThresholdDisplay === formattedThresholdDisplay) return;
+
+      const currentText = `${subheadlineElement.textContent || ''}`;
+      if (!currentText.includes(currentThresholdDisplay)) return;
+      subheadlineElement.textContent = currentText.split(currentThresholdDisplay).join(formattedThresholdDisplay);
+    };
+
     const escapeCssUrl = (value) => `${value || ''}`.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 
     const applyAffiliateModeToSeasonalHeroCard = (card, state) => {
@@ -633,7 +719,7 @@
       const freeShippingThresholdToken = `${card.dataset.freeShippingThresholdToken || ''}`;
       const affiliateDiscountDepth = `${card.dataset.affiliateDiscountDepth || ''}`;
       const shippingCountryName = `${card.dataset.shippingCountryName || ''}`;
-      const freeShippingThresholdDisplay = `${card.dataset.freeShippingThresholdDisplay || ''}`;
+      const freeShippingThresholdDisplay = resolveFreeShippingThresholdDisplay(card);
       const affiliateHeadlineTemplate = `${card.dataset.affiliateHeadlineTemplate || ''}`;
 
       const resolveTemplate = (templateValue) => {
@@ -720,6 +806,10 @@
     const rootNode = document.documentElement;
     const resolveAffiliateHeroState = () => {
       const affiliateState = getActiveAffiliateAnnouncementState();
+      const seasonalCards = Array.from(document.querySelectorAll('[data-hero-card-seasonal="true"]'));
+      seasonalCards.forEach((card) => {
+        syncSeasonalHeroThresholdDisplay(card);
+      });
       if (!affiliateState) {
         if (rootNode instanceof HTMLElement) {
           rootNode.classList.remove(affiliateHeroPendingClass);
@@ -769,7 +859,7 @@
     };
 
     const affiliateState = getActiveAffiliateAnnouncementState();
-    const hasResolvedAffiliateHeroState = resolveAffiliateHeroState();
+      const hasResolvedAffiliateHeroState = resolveAffiliateHeroState();
 
     if (affiliateState) {
       window.addEventListener('load', () => {
@@ -780,9 +870,9 @@
       }, { once: true });
     }
 
-    if (!hasResolvedAffiliateHeroState && affiliateState) {
-      bindAffiliateHeroRecovery();
-    }
+      if (!hasResolvedAffiliateHeroState && affiliateState) {
+        bindAffiliateHeroRecovery();
+      }
 
     const cards = Array.from(document.querySelectorAll('[data-hero-card-product-mode]'));
     if (!cards.length) return;
@@ -797,31 +887,17 @@
       const form = card.querySelector('[data-hero-card-product-form]');
       const submitButton = card.querySelector('[data-hero-card-submit]');
       const buttonLabel = card.querySelector('[data-hero-card-button-label]');
-      const currencyCode = card.dataset.currency || 'USD';
-      const normalizedCurrencyCode = `${currencyCode}`.trim().toUpperCase();
+      const currencyCode = `${card.dataset.currency || ''}`.trim().toUpperCase();
       const productId = card.dataset.productId || '';
       if (!variantIdInput || !currentPriceElement || !comparePriceElement || !form || !submitButton || !buttonLabel) return;
 
       const storefrontPricing = window.SBStorefrontPricing || null;
-      const fallbackMoneyFormatter = new Intl.NumberFormat(undefined, {
-        style: 'currency',
-        currency: currencyCode,
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      });
-      const usdNoDecimalsFormatter = new Intl.NumberFormat('en-US', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      });
 
       const formatMoney = (centsValue) => {
         const amountInCents = Number(centsValue) || 0;
-        if (normalizedCurrencyCode === 'USD') {
-          return `$${usdNoDecimalsFormatter.format(Math.round(amountInCents / 100))}`;
-        }
         return storefrontPricing && typeof storefrontPricing.formatMoney === 'function'
-          ? storefrontPricing.formatMoney(amountInCents, currencyCode)
-          : fallbackMoneyFormatter.format(amountInCents / 100);
+          ? storefrontPricing.formatMoney(amountInCents, currencyCode, { context: 'storefront' })
+          : `${Math.round(amountInCents / 100)}`;
       };
 
       const resolveDisplayPrice = (priceCents, comparePriceCents, overrideProductId = productId) => {

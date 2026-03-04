@@ -27,9 +27,33 @@
 {% endif %}
 
 {% assign current_variant = product.selected_or_first_available_variant %}
+{% assign value_breakdown_currency_code = cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency | upcase %}
 {% assign current_price_cents = current_variant.price | default: 0 | plus: 0 %}
 {% assign current_compare_price_cents = current_variant.compare_at_price | default: 0 | plus: 0 %}
+{% assign storefront_cart_discount_percent = 0 %}
+{% for discount_application in cart.cart_level_discount_applications %}
+  {% if discount_application.type == 'discount_code' and discount_application.value_type == 'percentage' %}
+    {% assign storefront_next_discount_percent = discount_application.value | plus: 0 %}
+    {% if storefront_next_discount_percent > storefront_cart_discount_percent %}
+      {% assign storefront_cart_discount_percent = storefront_next_discount_percent %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+{% for cart_item in cart.items %}
+  {% for line_discount_allocation in cart_item.line_level_discount_allocations %}
+    {% assign line_discount_application = line_discount_allocation.discount_application %}
+    {% if line_discount_application and line_discount_application.type == 'discount_code' and line_discount_application.value_type == 'percentage' %}
+      {% assign storefront_next_discount_percent = line_discount_application.value | plus: 0 %}
+      {% if storefront_next_discount_percent > storefront_cart_discount_percent %}
+        {% assign storefront_cart_discount_percent = storefront_next_discount_percent %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+{% endfor %}
 {% assign storefront_global_discount_percent = settings.sitewide_seasonal_discount_depth | default: 48 | plus: 0 %}
+{% if storefront_cart_discount_percent > storefront_global_discount_percent %}
+  {% assign storefront_global_discount_percent = storefront_cart_discount_percent %}
+{% endif %}
 {% if storefront_global_discount_percent < 0 %}
   {% assign storefront_global_discount_percent = 0 %}
 {% elsif storefront_global_discount_percent > 100 %}
@@ -115,7 +139,7 @@
     class="sb-value-breakdown"
     data-value-breakdown
     data-product-id="{{ product.id }}"
-    data-currency="{{ cart.currency.iso_code | default: shop.currency }}"
+    data-currency="{{ value_breakdown_currency_code }}"
     data-initial-variant-id="{{ current_variant.id }}"
     data-extra-compare-sum-cents="{{ extra_compare_sum_cents }}"
     data-sb-reveal
@@ -156,10 +180,10 @@
             <p class="sb-value-breakdown__line-item-title font-body weight-bold">{{ product.title }}</p>
             <div class="sb-value-breakdown__line-item-prices">
               <span class="sb-value-breakdown__line-item-price-compare font-body weight-regular" data-value-breakdown-first-compare>
-                {% render 'sb-money-no-decimals', amount: first_compare_price_cents %}
+                {% render 'sb-money-no-decimals', amount: first_compare_price_cents, currency: value_breakdown_currency_code, context: 'storefront' %}
               </span>
               <span class="sb-value-breakdown__line-item-price-current font-body weight-regular" data-value-breakdown-first-current>
-                {% render 'sb-money-no-decimals', amount: first_current_price_cents %}
+                {% render 'sb-money-no-decimals', amount: first_current_price_cents, currency: value_breakdown_currency_code, context: 'storefront' %}
               </span>
             </div>
           </div>
@@ -206,8 +230,12 @@
                 <p class="sb-value-breakdown__line-item-title font-body weight-bold">{{ item_title }}</p>
                 {% if item_show_price %}
                   <div class="sb-value-breakdown__line-item-prices">
-                    <span class="sb-value-breakdown__line-item-price-compare font-body weight-regular">
-                      {% render 'sb-money-no-decimals', amount: item_compare_price_cents %}
+                    <span
+                      class="sb-value-breakdown__line-item-price-compare font-body weight-regular"
+                      data-value-breakdown-item-compare
+                      data-price-cents="{{ item_compare_price_cents }}"
+                    >
+                      {% render 'sb-money-no-decimals', amount: item_compare_price_cents, currency: value_breakdown_currency_code, context: 'storefront' %}
                     </span>
                     <span class="sb-value-breakdown__line-item-price-current font-body weight-regular">{{ 'sb.value_breakdown.free' | t }}</span>
                   </div>
@@ -227,10 +255,10 @@
           <p class="sb-value-breakdown__total-title font-body weight-bold">{{ 'sb.value_breakdown.total' | t }}</p>
           <div class="sb-value-breakdown__line-item-prices">
             <span class="sb-value-breakdown__line-item-price-compare font-body weight-regular" data-value-breakdown-total-compare>
-              {% render 'sb-money-no-decimals', amount: total_compare_price_cents %}
+              {% render 'sb-money-no-decimals', amount: total_compare_price_cents, currency: value_breakdown_currency_code, context: 'storefront' %}
             </span>
             <span class="sb-value-breakdown__line-item-price-current font-body weight-regular" data-value-breakdown-total-current>
-              {% render 'sb-money-no-decimals', amount: total_current_price_cents %}
+              {% render 'sb-money-no-decimals', amount: total_current_price_cents, currency: value_breakdown_currency_code, context: 'storefront' %}
             </span>
           </div>
         </div>
@@ -451,13 +479,13 @@
       const firstCurrentElement = root.querySelector('[data-value-breakdown-first-current]');
       const totalCompareElement = root.querySelector('[data-value-breakdown-total-compare]');
       const totalCurrentElement = root.querySelector('[data-value-breakdown-total-current]');
+      const staticItemCompareElements = Array.from(root.querySelectorAll('[data-value-breakdown-item-compare]'));
       const addButton = root.querySelector('[data-value-breakdown-add-button]');
       const addButtonLabel = root.querySelector('[data-value-breakdown-add-button-label]');
       const productRoot = document.querySelector('.sb-product-main');
       const variantSelect = productRoot ? productRoot.querySelector('[data-product-variant-id]') : null;
       const extraCompareSumCents = Number.parseInt(root.dataset.extraCompareSumCents || '0', 10) || 0;
-      const currencyCode = root.dataset.currency || 'USD';
-      const normalizedCurrencyCode = `${currencyCode}`.trim().toUpperCase();
+      const currencyCode = `${root.dataset.currency || ''}`.trim().toUpperCase();
       const productId = root.dataset.productId || '';
       const storefrontPricing = window.SBStorefrontPricing || null;
 
@@ -470,31 +498,21 @@
         variantsById = {};
       }
 
-      const initialPriceSample = (firstCurrentElement.textContent || '').trim();
-      const shouldAppendCurrencyCode = normalizedCurrencyCode !== 'USD' && new RegExp(`\\b${currencyCode}\\b`, 'i').test(initialPriceSample);
-      const fallbackMoneyFormatter = new Intl.NumberFormat(undefined, {
-        style: 'currency',
-        currency: currencyCode,
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      });
-      const usdNoDecimalsFormatter = new Intl.NumberFormat('en-US', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      });
-      const formatUsdNoDecimals = (centsValue) => {
+      const formatMoney = (centsValue) => {
         const amount = Number(centsValue) || 0;
-        return `$${usdNoDecimalsFormatter.format(Math.round(amount / 100))}`;
+        if (storefrontPricing && typeof storefrontPricing.formatMoney === 'function') {
+          return storefrontPricing.formatMoney(amount, currencyCode, { context: 'storefront' });
+        }
+        return `${Math.round(amount / 100)}`;
       };
 
-      const formatMoney = (centsValue) => {
-        if (normalizedCurrencyCode === 'USD') return formatUsdNoDecimals(centsValue);
-        const amount = Number(centsValue) || 0;
-        const formatted = storefrontPricing && typeof storefrontPricing.formatMoney === 'function'
-          ? storefrontPricing.formatMoney(amount, currencyCode)
-          : fallbackMoneyFormatter.format(amount / 100);
-        if (!shouldAppendCurrencyCode) return formatted;
-        return `${formatted} ${currencyCode}`;
+      const syncStaticItemComparePrices = () => {
+        staticItemCompareElements.forEach((priceElement) => {
+          if (!(priceElement instanceof HTMLElement)) return;
+          const priceCents = Number.parseInt(`${priceElement.dataset.priceCents || ''}`, 10);
+          if (!Number.isFinite(priceCents) || priceCents <= 0) return;
+          priceElement.textContent = formatMoney(priceCents);
+        });
       };
 
       const resolveDisplayPrice = (priceCents, comparePriceCents) => {
@@ -590,6 +608,7 @@
         syncVariantPricing(getCurrentVariantId());
       };
 
+      syncStaticItemComparePrices();
       syncFromSelectedVariant();
 
       if (variantSelect) {

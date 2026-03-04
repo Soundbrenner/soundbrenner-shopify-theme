@@ -47,6 +47,7 @@
   assign product_label_sold_out = 'sb.product.sold_out' | t
   assign product_label_add = 'sb.product.add' | t
   assign product_label_learn_more = 'sb.product.learn_more' | t
+  assign product_currency_code = cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency | upcase
 
   if product_page_header != blank
     assign product_has_page_header = true
@@ -279,7 +280,7 @@
     if shopper_country_free_shipping_threshold != blank
       assign shopper_country_free_shipping_threshold_cents = shopper_country_free_shipping_threshold | times: 100
       capture shopper_country_free_shipping_threshold_display
-        render 'sb-money-no-decimals', amount: shopper_country_free_shipping_threshold_cents
+        render 'sb-money-no-decimals', amount: shopper_country_free_shipping_threshold_cents, currency: product_currency_code, context: 'storefront'
       endcapture
       assign shopper_country_free_shipping_threshold_display = shopper_country_free_shipping_threshold_display | strip
     endif
@@ -471,6 +472,9 @@
   data-product-title="{{ product.title | escape }}"
   data-selector-list-option-position="{{ selector_list_option_position }}"
   data-hide-discounts="{% if product_hide_discounts %}true{% else %}false{% endif %}"
+  data-free-shipping-threshold-display="{{ shopper_country_free_shipping_threshold_display | escape }}"
+  data-free-shipping-threshold-cents="{{ shopper_country_free_shipping_threshold_cents | default: 0 }}"
+  data-product-currency="{{ product_currency_code }}"
 >
   <div
     class="sb-product-main__sticky-bar-wrap{% if product_has_page_header %} sb-product-main__sticky-bar-wrap--segmented-controls{% else %} sb-product-main__sticky-bar-wrap--hidden{% endif %}"
@@ -506,10 +510,10 @@
                 hidden
               {% endunless %}
             >
-              {% render 'sb-money-no-decimals', amount: current_variant.compare_at_price %}
+              {% render 'sb-money-no-decimals', amount: current_variant.compare_at_price, currency: product_currency_code, context: 'storefront' %}
             </span>
             <span class="sb-product-main__sticky-current-price font-caption weight-regular" data-sticky-current-price>
-              {% render 'sb-money-no-decimals', amount: current_variant.price %}
+              {% render 'sb-money-no-decimals', amount: current_variant.price, currency: product_currency_code, context: 'storefront' %}
             </span>
           </div>
 
@@ -652,10 +656,10 @@
                 hidden
               {% endunless %}
             >
-              {% render 'sb-money-no-decimals', amount: current_variant.compare_at_price %}
+              {% render 'sb-money-no-decimals', amount: current_variant.compare_at_price, currency: product_currency_code, context: 'storefront' %}
             </span>
             <span class="sb-product-main__sticky-bottom-current-price font-caption weight-regular" data-sticky-bottom-current-price>
-              {% render 'sb-money-no-decimals', amount: current_variant.price %}
+              {% render 'sb-money-no-decimals', amount: current_variant.price, currency: product_currency_code, context: 'storefront' %}
             </span>
           </div>
 
@@ -1039,11 +1043,11 @@
                       <span class="sb-product-main__selector-list-item-price-row">
                         {% if selector_has_compare %}
                           <span class="sb-product-main__price sb-product-main__price--compare font-body weight-regular">
-                            {% render 'sb-money-no-decimals', amount: selector_variant.compare_at_price %}
+                            {% render 'sb-money-no-decimals', amount: selector_variant.compare_at_price, currency: product_currency_code, context: 'storefront' %}
                           </span>
                         {% endif %}
                         <span class="sb-product-main__price sb-product-main__price--current font-body weight-regular">
-                          {% render 'sb-money-no-decimals', amount: selector_variant.price %}
+                          {% render 'sb-money-no-decimals', amount: selector_variant.price, currency: product_currency_code, context: 'storefront' %}
                         </span>
                       </span>
                     </button>
@@ -1073,11 +1077,11 @@
                     <span class="sb-product-main__selector-list-item-price-row">
                       {% if current_product_has_compare %}
                         <span class="sb-product-main__price sb-product-main__price--compare font-body weight-regular">
-                          {% render 'sb-money-no-decimals', amount: current_variant.compare_at_price %}
+                          {% render 'sb-money-no-decimals', amount: current_variant.compare_at_price, currency: product_currency_code, context: 'storefront' %}
                         </span>
                       {% endif %}
                       <span class="sb-product-main__price sb-product-main__price--current font-body weight-regular">
-                        {% render 'sb-money-no-decimals', amount: current_variant.price %}
+                        {% render 'sb-money-no-decimals', amount: current_variant.price, currency: product_currency_code, context: 'storefront' %}
                       </span>
                     </span>
                   </button>
@@ -1124,11 +1128,11 @@
                       <span class="sb-product-main__selector-list-item-price-row">
                         {% if multipack_has_compare %}
                           <span class="sb-product-main__price sb-product-main__price--compare font-body weight-regular">
-                            {% render 'sb-money-no-decimals', amount: multipack_variant.compare_at_price %}
+                            {% render 'sb-money-no-decimals', amount: multipack_variant.compare_at_price, currency: product_currency_code, context: 'storefront' %}
                           </span>
                         {% endif %}
                         <span class="sb-product-main__price sb-product-main__price--current font-body weight-regular">
-                          {% render 'sb-money-no-decimals', amount: multipack_variant.price %}
+                          {% render 'sb-money-no-decimals', amount: multipack_variant.price, currency: product_currency_code, context: 'storefront' %}
                         </span>
                       </span>
                     </button>
@@ -1231,7 +1235,7 @@
             endif
           %}
           {% if selector_list_mode == 'none' %}
-            <div class="sb-product-main__price-row" data-product-price-row data-currency="{{ cart.currency.iso_code | default: shop.currency }}">
+            <div class="sb-product-main__price-row" data-product-price-row data-currency="{{ product_currency_code }}">
               <div class="sb-product-main__price-values">
                 <p
                   class="sb-product-main__price sb-product-main__price--compare font-body weight-regular"
@@ -1240,10 +1244,10 @@
                     hidden
                   {% endunless %}
                 >
-                  {% render 'sb-money-no-decimals', amount: current_variant.compare_at_price %}
+                  {% render 'sb-money-no-decimals', amount: current_variant.compare_at_price, currency: product_currency_code, context: 'storefront' %}
                 </p>
                 <p class="sb-product-main__price sb-product-main__price--current font-body weight-regular" data-product-current-price>
-                  {% render 'sb-money-no-decimals', amount: current_variant.price %}
+                  {% render 'sb-money-no-decimals', amount: current_variant.price, currency: product_currency_code, context: 'storefront' %}
                 </p>
               </div>
               <span
@@ -1367,7 +1371,7 @@
                       {{ 'icon-purchase-guarantee-pie-chart.svg' | inline_asset_content }}
                     </span>
                     <span class="sb-product-main__purchase-guarantee-text font-body weight-regular">
-                      {{ 'sb.product.shop_pay_installments_from' | t }}&nbsp;<span data-product-monthly-price>{% render 'sb-money-no-decimals', amount: current_variant_monthly_price_cents %}</span>
+                      {{ 'sb.product.shop_pay_installments_from' | t }}&nbsp;<span data-product-monthly-price>{% render 'sb-money-no-decimals', amount: current_variant_monthly_price_cents, currency: product_currency_code, context: 'storefront' %}</span>
                     </span>
                   </li>
                 {% endif %}
@@ -1421,10 +1425,10 @@
 
                   <div class="sb-product-main__addon-price-row" data-addon-price-row>
                     <p class="sb-product-main__addon-price sb-product-main__addon-price--compare font-body weight-regular" data-addon-compare-price{% unless addon_has_compare_price %} hidden{% endunless %}>
-                      {% render 'sb-money-no-decimals', amount: addon_selected_variant.compare_at_price %}
+                      {% render 'sb-money-no-decimals', amount: addon_selected_variant.compare_at_price, currency: product_currency_code, context: 'storefront' %}
                     </p>
                     <p class="sb-product-main__addon-price sb-product-main__addon-price--current font-body weight-regular" data-addon-current-price>
-                      {% render 'sb-money-no-decimals', amount: addon_selected_variant.price %}
+                      {% render 'sb-money-no-decimals', amount: addon_selected_variant.price, currency: product_currency_code, context: 'storefront' %}
                     </p>
                   </div>
 
@@ -4052,25 +4056,8 @@
           .replace(/"/g, '&quot;')
           .replace(/'/g, '&#39;');
 
-      const currencyCode = priceRow?.dataset.currency || 'USD';
-      const normalizedCurrencyCode = `${currencyCode}`.trim().toUpperCase();
+      const currencyCode = `${priceRow?.dataset.currency || root.dataset.productCurrency || ''}`.trim().toUpperCase();
       const storefrontPricing = window.SBStorefrontPricing || null;
-      const fallbackMoneyFormatter = new Intl.NumberFormat(undefined, {
-        style: 'currency',
-        currency: currencyCode,
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      });
-      const usdNoDecimalsFormatter = new Intl.NumberFormat('en-US', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      });
-      const monthlyMoneyFormatter = new Intl.NumberFormat(undefined, {
-        style: 'currency',
-        currency: currencyCode,
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      });
       const reviewCountFormatter = new Intl.NumberFormat(undefined, {
         maximumFractionDigits: 0,
       });
@@ -4079,15 +4066,34 @@
       const addToCartLabel = {{ product_label_add_to_cart | json }};
       const soldOutLabel = {{ product_label_sold_out | json }};
       const addLabel = {{ product_label_add | json }};
-      const initialPriceSample = (
-        stickyCurrentPriceElement?.textContent ||
-        currentPriceElement?.textContent ||
-        ''
-      ).trim();
-      const shouldAppendCurrencyCode = normalizedCurrencyCode !== 'USD' && new RegExp(`\\b${currencyCode}\\b`, 'i').test(initialPriceSample);
-      const formatUsdNoDecimals = (centsValue) => {
-        const amount = Number(centsValue) || 0;
-        return `$${usdNoDecimalsFormatter.format(Math.round(amount / 100))}`;
+      const resolveFreeShippingThresholdDisplay = () => {
+        const fallbackDisplay = `${root.dataset.freeShippingThresholdDisplay || ''}`;
+        const thresholdCents = Number.parseInt(`${root.dataset.freeShippingThresholdCents || ''}`, 10);
+        const thresholdCurrencyCode = `${root.dataset.productCurrency || currencyCode || ''}`.trim().toUpperCase();
+        if (!Number.isFinite(thresholdCents) || thresholdCents <= 0) return fallbackDisplay;
+
+        if (storefrontPricing && typeof storefrontPricing.formatMoney === 'function') {
+          const formatted = storefrontPricing.formatMoney(thresholdCents, thresholdCurrencyCode, { context: 'storefront' });
+          if (`${formatted || ''}`.trim() !== '') {
+            root.dataset.freeShippingThresholdDisplay = formatted;
+            return formatted;
+          }
+        }
+
+        return fallbackDisplay;
+      };
+
+      const syncFreeShippingThresholdCopy = () => {
+        const currentThresholdDisplay = `${root.dataset.freeShippingThresholdDisplay || ''}`;
+        const formattedThresholdDisplay = resolveFreeShippingThresholdDisplay();
+        if (!currentThresholdDisplay || !formattedThresholdDisplay || currentThresholdDisplay === formattedThresholdDisplay) return;
+
+        root.querySelectorAll('.sb-product-main__purchase-guarantee-text').forEach((textElement) => {
+          if (!(textElement instanceof HTMLElement)) return;
+          const currentText = `${textElement.textContent || ''}`;
+          if (!currentText.includes(currentThresholdDisplay)) return;
+          textElement.textContent = currentText.split(currentThresholdDisplay).join(formattedThresholdDisplay);
+        });
       };
 
       const syncStickyReviewCount = () => {
@@ -4098,6 +4104,8 @@
           element.textContent = reviewsCountTemplate.replace('__COUNT__', formattedCount);
         });
       };
+
+      syncFreeShippingThresholdCopy();
 
       const syncMobileSegmentedHeaderState = () => {
         const shouldActivateMobileSegmentedHeader = hasStickySegmentedControls && mobileSegmentedMediaQuery.matches;
@@ -4480,19 +4488,18 @@
       }
 
       const formatMoney = (centsValue) => {
-        if (normalizedCurrencyCode === 'USD') return formatUsdNoDecimals(centsValue);
         const amount = Number(centsValue) || 0;
-        const formatted = storefrontPricing && typeof storefrontPricing.formatMoney === 'function'
-          ? storefrontPricing.formatMoney(amount, currencyCode)
-          : fallbackMoneyFormatter.format(amount / 100);
-        if (!shouldAppendCurrencyCode) return formatted;
-        return `${formatted} ${currencyCode}`;
+        if (storefrontPricing && typeof storefrontPricing.formatMoney === 'function') {
+          return storefrontPricing.formatMoney(amount, currencyCode, { context: 'storefront' });
+        }
+        return `${Math.round(amount / 100)}`;
       };
       const formatMonthlyMoney = (centsValue) => {
         const amount = Number(centsValue) || 0;
         const monthlyCents = Math.round(amount / 4);
-        if (normalizedCurrencyCode === 'USD') return formatUsdNoDecimals(monthlyCents);
-        return monthlyMoneyFormatter.format(monthlyCents / 100);
+        return storefrontPricing && typeof storefrontPricing.formatMoney === 'function'
+          ? storefrontPricing.formatMoney(monthlyCents, currencyCode, { context: 'storefront' })
+          : `${Math.round(monthlyCents / 100)}`;
       };
 
       const resolveDisplayPrice = (purchaseData, overrideProductId = productId) => {

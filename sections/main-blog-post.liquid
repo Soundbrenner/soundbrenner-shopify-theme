@@ -79,7 +79,7 @@
     if sidebar_entry_threshold != blank
       assign sidebar_entry_threshold_cents = sidebar_entry_threshold | times: 100
       capture sidebar_free_shipping_threshold_display
-        render 'sb-money-no-decimals', amount: sidebar_entry_threshold_cents
+        render 'sb-money-no-decimals', amount: sidebar_entry_threshold_cents, currency: cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency, context: 'storefront'
       endcapture
       assign sidebar_free_shipping_threshold_display = sidebar_free_shipping_threshold_display | strip
     endif
@@ -442,17 +442,70 @@
           data-sitewide-discount-token="{{ sitewide_discount_depth_token | escape }}"
           data-shipping-country-token="{{ shipping_country_token | escape }}"
           data-free-shipping-threshold-token="{{ free_shipping_threshold_token | escape }}"
+          data-free-shipping-threshold-cents="{{ sidebar_entry_threshold_cents | default: 0 }}"
           data-affiliate-name-token="{{ affiliate_name_token | escape }}"
           data-affiliate-discount-depth="{{ sitewide_affiliate_discount_depth | escape }}"
           data-shipping-country-name="{{ sidebar_shipping_country_name | escape }}"
           data-free-shipping-threshold-display="{{ sidebar_free_shipping_threshold_display | escape }}"
+          data-currency="{{ cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency }}"
         >
           {% if sidebar_promo_title != blank %}
             <h3 class="sb-blog-sidebar-box__promo-title font-callout weight-bold" data-sidebar-promo-title>{{ sidebar_promo_title }}</h3>
           {% endif %}
 
           {% if sidebar_promo_text != blank %}
-            <p class="sb-blog-sidebar-box__promo-text font-body weight-regular" data-sidebar-promo-text>{{ sidebar_promo_text }}</p>
+            <p
+              class="sb-blog-sidebar-box__promo-text font-body weight-regular"
+              data-sidebar-promo-text
+            >
+              {{ sidebar_promo_text }}
+            </p>
+            <script>
+              (() => {
+                const promoBox = document.currentScript && document.currentScript.closest('[data-sidebar-promo-affiliate="true"]');
+                const textElement = promoBox && promoBox.querySelector('[data-sidebar-promo-text]');
+                if (!(promoBox instanceof HTMLElement) || !(textElement instanceof HTMLElement)) return;
+
+                const thresholdToken = `${promoBox.dataset.freeShippingThresholdToken || ''}`;
+                const fallbackThresholdDisplay = `${promoBox.dataset.freeShippingThresholdDisplay || ''}`;
+                const thresholdCents = Number.parseInt(`${promoBox.dataset.freeShippingThresholdCents || ''}`, 10);
+                const currencyCode = `${promoBox.dataset.currency || ''}`.trim().toUpperCase();
+
+                let thresholdDisplay = fallbackThresholdDisplay;
+                const storefrontPricing = window.SBStorefrontPricing || null;
+                if (
+                  Number.isFinite(thresholdCents)
+                  && thresholdCents > 0
+                  && storefrontPricing
+                  && typeof storefrontPricing.formatMoney === 'function'
+                ) {
+                  const formattedThreshold = storefrontPricing.formatMoney(thresholdCents, currencyCode, { context: 'storefront' });
+                  if (`${formattedThreshold || ''}`.trim() !== '') {
+                    thresholdDisplay = formattedThreshold;
+                  }
+                }
+
+                if (!thresholdDisplay) return;
+                promoBox.dataset.freeShippingThresholdDisplay = thresholdDisplay;
+
+                const currentText = `${textElement.textContent || ''}`;
+                if (
+                  thresholdToken
+                  && currentText.includes(thresholdToken)
+                ) {
+                  textElement.textContent = currentText.split(thresholdToken).join(thresholdDisplay);
+                  return;
+                }
+
+                if (
+                  fallbackThresholdDisplay
+                  && fallbackThresholdDisplay !== thresholdDisplay
+                  && currentText.includes(fallbackThresholdDisplay)
+                ) {
+                  textElement.textContent = currentText.split(fallbackThresholdDisplay).join(thresholdDisplay);
+                }
+              })();
+            </script>
           {% endif %}
 
           {% if sidebar_promo_button_label != blank and sidebar_promo_button_link != blank %}
@@ -1617,14 +1670,53 @@
       return source.split(target).join(`${replacement || ''}`);
     };
 
+    const resolvePromoFreeShippingThresholdDisplay = (promoBox) => {
+      if (!(promoBox instanceof HTMLElement)) return '';
+      const fallbackDisplay = `${promoBox.dataset.freeShippingThresholdDisplay || ''}`;
+      const thresholdCents = Number.parseInt(`${promoBox.dataset.freeShippingThresholdCents || ''}`, 10);
+      const currencyCode = `${promoBox.dataset.currency || ''}`.trim().toUpperCase();
+      if (!Number.isFinite(thresholdCents) || thresholdCents <= 0) return fallbackDisplay;
+
+      const storefrontPricing = window.SBStorefrontPricing || null;
+      if (storefrontPricing && typeof storefrontPricing.formatMoney === 'function') {
+        const formatted = storefrontPricing.formatMoney(thresholdCents, currencyCode, { context: 'storefront' });
+        if (`${formatted || ''}`.trim() !== '') {
+          promoBox.dataset.freeShippingThresholdDisplay = formatted;
+          return formatted;
+        }
+      }
+
+      return fallbackDisplay;
+    };
+
     const resolvePromoTemplate = (promoBox, templateValue, state) => {
       let resolved = `${templateValue || ''}`;
       resolved = replaceToken(resolved, promoBox.dataset.affiliateNameToken || '', state.affiliateName);
       resolved = replaceToken(resolved, promoBox.dataset.saleNameToken || '', state.affiliateName);
       resolved = replaceToken(resolved, promoBox.dataset.sitewideDiscountToken || '', promoBox.dataset.affiliateDiscountDepth || '');
       resolved = replaceToken(resolved, promoBox.dataset.shippingCountryToken || '', promoBox.dataset.shippingCountryName || '');
-      resolved = replaceToken(resolved, promoBox.dataset.freeShippingThresholdToken || '', promoBox.dataset.freeShippingThresholdDisplay || '');
+      resolved = replaceToken(
+        resolved,
+        promoBox.dataset.freeShippingThresholdToken || '',
+        resolvePromoFreeShippingThresholdDisplay(promoBox)
+      );
       return resolved.trim();
+    };
+
+    const syncDefaultPromoThresholdDisplay = () => {
+      affiliatePromoBoxes.forEach((promoBox) => {
+        if (!(promoBox instanceof HTMLElement)) return;
+        const textElement = promoBox.querySelector('[data-sidebar-promo-text]');
+        if (!(textElement instanceof HTMLElement)) return;
+
+        const currentThresholdDisplay = `${promoBox.dataset.freeShippingThresholdDisplay || ''}`;
+        const formattedThresholdDisplay = resolvePromoFreeShippingThresholdDisplay(promoBox);
+        if (!currentThresholdDisplay || !formattedThresholdDisplay || currentThresholdDisplay === formattedThresholdDisplay) return;
+
+        const currentText = `${textElement.textContent || ''}`;
+        if (!currentText.includes(currentThresholdDisplay)) return;
+        textElement.textContent = currentText.split(currentThresholdDisplay).join(formattedThresholdDisplay);
+      });
     };
 
     const applyAffiliatePromoState = (state) => {
@@ -1658,6 +1750,7 @@
       });
     };
 
+    syncDefaultPromoThresholdDisplay();
     applyAffiliatePromoState(getAffiliateState());
 
     const closeFilterDropdown = (dropdown, { returnFocus = false } = {}) => {

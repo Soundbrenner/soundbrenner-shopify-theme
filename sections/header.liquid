@@ -123,7 +123,7 @@
     if seasonal_entry_threshold != blank
       assign seasonal_entry_threshold_cents = seasonal_entry_threshold | times: 100
       capture seasonal_free_shipping_threshold_display
-        render 'sb-money-no-decimals', amount: seasonal_entry_threshold_cents
+        render 'sb-money-no-decimals', amount: seasonal_entry_threshold_cents, currency: cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency, context: 'storefront'
       endcapture
       assign seasonal_free_shipping_threshold_display = seasonal_free_shipping_threshold_display | strip
     endif
@@ -170,11 +170,12 @@
     assign resolved_discount_depth = sitewide_seasonal_discount_depth
     assign announcement_gradient = settings.seasonal_announcement_gradient | default: 'linear-gradient(90deg, #E9CC92 0%, #92734F 33%, #92734F 66%, #E9CC92 100%)'
   endif
-  assign announcement_text = announcement_text | replace: sale_name_token, resolved_sale_name
-  assign announcement_text = announcement_text | replace: sitewide_discount_depth_token, resolved_discount_depth
-  assign announcement_text = announcement_text | replace: shipping_country_token, seasonal_shipping_country_name
-  assign announcement_text = announcement_text | replace: free_shipping_threshold_token, seasonal_free_shipping_threshold_display
-  assign announcement_text = announcement_text | replace: affiliate_name_token, resolved_sale_name
+  assign announcement_text_template = announcement_text
+  assign announcement_text_template = announcement_text_template | replace: sale_name_token, resolved_sale_name
+  assign announcement_text_template = announcement_text_template | replace: sitewide_discount_depth_token, resolved_discount_depth
+  assign announcement_text_template = announcement_text_template | replace: shipping_country_token, seasonal_shipping_country_name
+  assign announcement_text_template = announcement_text_template | replace: affiliate_name_token, resolved_sale_name
+  assign announcement_text = announcement_text_template | replace: free_shipping_threshold_token, seasonal_free_shipping_threshold_display
   if seasonal_shipping_is_blocked
     assign affiliate_announcement_text_template = announcement_text_blocked
   elsif seasonal_shipping_has_free_shipping
@@ -185,7 +186,6 @@
   assign affiliate_announcement_text_template = affiliate_announcement_text_template | replace: sale_name_token, affiliate_name_token
   assign affiliate_announcement_text_template = affiliate_announcement_text_template | replace: sitewide_discount_depth_token, sitewide_affiliate_discount_depth
   assign affiliate_announcement_text_template = affiliate_announcement_text_template | replace: shipping_country_token, seasonal_shipping_country_name
-  assign affiliate_announcement_text_template = affiliate_announcement_text_template | replace: free_shipping_threshold_token, seasonal_free_shipping_threshold_display
   assign show_announcement = false
   if announcement_text != blank
     assign show_announcement = true
@@ -344,10 +344,15 @@
 
 <header
   class="header full-width{% if show_announcement %} has-announcement{% endif %}"
+  data-announcement-template="{{ announcement_text_template | escape }}"
   data-affiliate-announcement-template="{{ affiliate_announcement_text_template | escape }}"
   data-affiliate-announcement-gradient="{{ affiliate_announcement_gradient_value | escape }}"
   data-affiliate-announcement-emoji="{{ affiliate_announcement_emoji_asset_url | escape }}"
   data-affiliate-name-token="{{ affiliate_name_token | escape }}"
+  data-free-shipping-threshold-token="{{ free_shipping_threshold_token | escape }}"
+  data-free-shipping-threshold-display="{{ seasonal_free_shipping_threshold_display | escape }}"
+  data-free-shipping-threshold-cents="{{ seasonal_entry_threshold_cents | default: 0 }}"
+  data-currency="{{ cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency }}"
   data-affiliate-discount-code="{{ header_affiliate_discount_code | escape }}"
   data-affiliate-name="{{ header_affiliate_name | escape }}"
   data-affiliate-image-desktop="{{ header_affiliate_image_desktop_url | escape }}"
@@ -371,6 +376,61 @@
 
         <div class="header__announcement-top">
           <p class="header__announcement-text font-caption weight-semibold">{{ announcement_text | escape | newline_to_br }}</p>
+          <script>
+            (() => {
+              const headerRoot = document.currentScript && document.currentScript.closest('.header');
+              const textElement = headerRoot && headerRoot.querySelector('.header__announcement-text');
+              if (!(headerRoot instanceof HTMLElement) || !(textElement instanceof HTMLElement)) return;
+
+              const template = `${headerRoot.dataset.announcementTemplate || ''}`.trim();
+              const thresholdToken = `${headerRoot.dataset.freeShippingThresholdToken || ''}`;
+              const fallbackThresholdDisplay = `${headerRoot.dataset.freeShippingThresholdDisplay || ''}`;
+              const thresholdCents = Number.parseInt(`${headerRoot.dataset.freeShippingThresholdCents || ''}`, 10);
+              const currencyCode = `${headerRoot.dataset.currency || ''}`.trim().toUpperCase();
+
+              let thresholdDisplay = fallbackThresholdDisplay;
+              const storefrontPricing = window.SBStorefrontPricing || null;
+              if (
+                Number.isFinite(thresholdCents)
+                && thresholdCents > 0
+                && storefrontPricing
+                && typeof storefrontPricing.formatMoney === 'function'
+              ) {
+                const formattedThreshold = storefrontPricing.formatMoney(thresholdCents, currencyCode, { context: 'storefront' });
+                if (`${formattedThreshold || ''}`.trim() !== '') {
+                  thresholdDisplay = formattedThreshold;
+                }
+              }
+
+              if (!thresholdDisplay) return;
+
+              const setMultilineText = (node, value) => {
+                const lines = `${value || ''}`.split('\n');
+                node.textContent = '';
+                lines.forEach((line, index) => {
+                  if (index > 0) node.appendChild(document.createElement('br'));
+                  node.appendChild(document.createTextNode(line));
+                });
+              };
+
+              if (template && thresholdToken) {
+                const resolved = template.split(thresholdToken).join(thresholdDisplay).trim();
+                if (resolved) {
+                  setMultilineText(textElement, resolved);
+                  return;
+                }
+              }
+
+              const currentText = `${textElement.textContent || ''}`;
+              if (
+                fallbackThresholdDisplay
+                && fallbackThresholdDisplay !== thresholdDisplay
+                && currentText.includes(fallbackThresholdDisplay)
+              ) {
+                setMultilineText(textElement, currentText.split(fallbackThresholdDisplay).join(thresholdDisplay));
+              }
+            })();
+          </script>
         </div>
 
         {% if show_announcement_countdown %}
@@ -1452,7 +1512,7 @@
       <cart-items-component
         class="sb-cart-items"
         data-context="drawer"
-        data-currency="{{ localization.country.currency.iso_code | default: cart.currency.iso_code }}"
+        data-currency="{{ cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency }}"
         data-placeholder-image="{{ cart_placeholder_image }}"
       >
         <div class="header__cart-drawer-content">
@@ -5377,9 +5437,14 @@
     const affiliateAnnouncementCookieName = 'sb_affiliate_announcement_state';
     const affiliateHeroPendingClass = 'sb-affiliate-hero-pending';
     const affiliateNameToken = `${header.dataset.affiliateNameToken || ''}`;
+    const freeShippingThresholdToken = `${header.dataset.freeShippingThresholdToken || ''}`;
     const affiliateAnnouncementTemplate = `${header.dataset.affiliateAnnouncementTemplate || ''}`;
+    const seasonalAnnouncementTemplate = `${header.dataset.announcementTemplate || ''}`;
     const affiliateAnnouncementGradient = `${header.dataset.affiliateAnnouncementGradient || ''}`;
     const affiliateAnnouncementEmoji = `${header.dataset.affiliateAnnouncementEmoji || ''}`;
+    const currencyCode = `${header.dataset.currency || ''}`.trim().toUpperCase();
+    const freeShippingThresholdCents = Number.parseInt(`${header.dataset.freeShippingThresholdCents || ''}`, 10);
+    const fallbackFreeShippingThresholdDisplay = `${header.dataset.freeShippingThresholdDisplay || ''}`;
     const announcementTextElement = header.querySelector('.header__announcement-text');
     const announcementTextDefault = announcementTextElement ? announcementTextElement.textContent || '' : '';
     const announcementBackgroundDefault = header.style.getPropertyValue('--sb-announcement-background');
@@ -5476,12 +5541,54 @@
       });
     };
 
+    const resolveFreeShippingThresholdDisplay = () => {
+      if (!Number.isFinite(freeShippingThresholdCents) || freeShippingThresholdCents <= 0) {
+        return fallbackFreeShippingThresholdDisplay;
+      }
+
+      const storefrontPricing = window.SBStorefrontPricing;
+      if (storefrontPricing && typeof storefrontPricing.formatMoney === 'function') {
+        const formatted = storefrontPricing.formatMoney(freeShippingThresholdCents, currencyCode, { context: 'storefront' });
+        if (`${formatted || ''}`.trim() !== '') return formatted;
+      }
+
+      return fallbackFreeShippingThresholdDisplay;
+    };
+
+    const resolveAnnouncementTemplate = (templateText) => {
+      const sourceText = `${templateText || ''}`;
+      if (!sourceText) return '';
+      const freeShippingThresholdDisplay = resolveFreeShippingThresholdDisplay();
+      return replaceToken(sourceText, freeShippingThresholdToken, freeShippingThresholdDisplay);
+    };
+
+    const getSeasonalAnnouncementText = () => {
+      const defaultRenderedText = `${announcementTextDefault || ''}`.trim();
+      if (defaultRenderedText) {
+        const currentThresholdDisplay = `${fallbackFreeShippingThresholdDisplay || ''}`.trim();
+        const formattedThresholdDisplay = `${resolveFreeShippingThresholdDisplay() || ''}`.trim();
+        if (
+          currentThresholdDisplay
+          && formattedThresholdDisplay
+          && currentThresholdDisplay !== formattedThresholdDisplay
+          && defaultRenderedText.includes(currentThresholdDisplay)
+        ) {
+          return defaultRenderedText.split(currentThresholdDisplay).join(formattedThresholdDisplay);
+        }
+        return defaultRenderedText;
+      }
+
+      const resolvedText = resolveAnnouncementTemplate(seasonalAnnouncementTemplate).trim();
+      return resolvedText || announcementTextDefault;
+    };
+
     const getAffiliateAnnouncementText = (state) => {
-      if (!state) return announcementTextDefault;
+      if (!state) return getSeasonalAnnouncementText();
       const sourceText = affiliateAnnouncementTemplate.trim();
-      if (!sourceText) return announcementTextDefault;
-      const announcementText = replaceToken(sourceText, affiliateNameToken, state.affiliateName);
-      return announcementText.trim() || announcementTextDefault;
+      if (!sourceText) return getSeasonalAnnouncementText();
+      let announcementText = replaceToken(sourceText, affiliateNameToken, state.affiliateName);
+      announcementText = resolveAnnouncementTemplate(announcementText);
+      return announcementText.trim() || getSeasonalAnnouncementText();
     };
 
     const applyAffiliateAnnouncement = (state) => {
@@ -5516,7 +5623,7 @@
         if (!defaultSource) return;
         imageNode.setAttribute('src', defaultSource);
       });
-      setAnnouncementText(announcementTextDefault);
+      setAnnouncementText(getSeasonalAnnouncementText());
     };
 
     const syncAffiliateAnnouncementState = () => {

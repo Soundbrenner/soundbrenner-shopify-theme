@@ -21,6 +21,7 @@
   endif
   assign thumbnail_url_parts = thumbnail_url | split: '?'
   assign thumbnail_url = thumbnail_url_parts | first
+  assign thumbnail_currency_code = cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency | upcase
 
   assign thumbnail_reviews_count_number = reviews_count_number | default: blank
   if thumbnail_reviews_count_number == blank and product != blank
@@ -131,13 +132,13 @@
             if variant_color_value == option_value.name
               assign option_swatch_variant_id = product_variant.id
               capture option_swatch_price_text
-                render 'sb-money-no-decimals', amount: product_variant.price
+                render 'sb-money-no-decimals', amount: product_variant.price, currency: thumbnail_currency_code, context: 'storefront'
               endcapture
               assign option_swatch_price_text = option_swatch_price_text | strip
               assign option_swatch_price_cents = product_variant.price | plus: 0
               if product_variant.compare_at_price > product_variant.price
                 capture option_swatch_compare_price_text
-                  render 'sb-money-no-decimals', amount: product_variant.compare_at_price
+                  render 'sb-money-no-decimals', amount: product_variant.compare_at_price, currency: thumbnail_currency_code, context: 'storefront'
                 endcapture
                 assign option_swatch_compare_price_text = option_swatch_compare_price_text | strip
                 assign option_swatch_compare_price_cents = product_variant.compare_at_price | plus: 0
@@ -163,13 +164,13 @@
                 assign option_swatch_gallery = 'image::' | append: option_swatch_image
                 assign option_swatch_variant_id = product_variant.id
                 capture option_swatch_price_text
-                  render 'sb-money-no-decimals', amount: product_variant.price
+                  render 'sb-money-no-decimals', amount: product_variant.price, currency: thumbnail_currency_code, context: 'storefront'
                 endcapture
                 assign option_swatch_price_text = option_swatch_price_text | strip
                 assign option_swatch_price_cents = product_variant.price | plus: 0
                 if product_variant.compare_at_price > product_variant.price
                   capture option_swatch_compare_price_text
-                    render 'sb-money-no-decimals', amount: product_variant.compare_at_price
+                    render 'sb-money-no-decimals', amount: product_variant.compare_at_price, currency: thumbnail_currency_code, context: 'storefront'
                   endcapture
                   assign option_swatch_compare_price_text = option_swatch_compare_price_text | strip
                   assign option_swatch_compare_price_cents = product_variant.compare_at_price | plus: 0
@@ -364,13 +365,13 @@
     endif
     if thumbnail_price == blank and selected_variant != blank
       capture thumbnail_price
-        render 'sb-money-no-decimals', amount: selected_variant.price
+        render 'sb-money-no-decimals', amount: selected_variant.price, currency: thumbnail_currency_code, context: 'storefront'
       endcapture
       assign thumbnail_price = thumbnail_price | strip
     endif
     if thumbnail_compare_price == blank and selected_variant != blank and selected_variant.compare_at_price > selected_variant.price
       capture thumbnail_compare_price
-        render 'sb-money-no-decimals', amount: selected_variant.compare_at_price
+        render 'sb-money-no-decimals', amount: selected_variant.compare_at_price, currency: thumbnail_currency_code, context: 'storefront'
       endcapture
       assign thumbnail_compare_price = thumbnail_compare_price | strip
     endif

@@ -16,6 +16,7 @@
   assign sb_cart_summary_class = summary_class | default: 'sb-cart-summary'
   assign sb_cart_payment_list_class = payment_list_class | default: 'sb-cart-summary__payment-list'
   assign sb_cart_payment_item_class = payment_item_class | default: 'sb-cart-summary__payment-item'
+  assign sb_cart_currency_code = cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency | upcase
 
   assign sb_cart_subtotal_cents = cart.items_subtotal_price | default: cart.total_price | default: cart.original_total_price | plus: 0
   assign sb_cart_primary_discount_title = ''
@@ -162,8 +163,18 @@
   if sb_cart_discount_percent != blank
     assign sb_cart_auto_discount_text = 'sb.cart.discount_with_percent' | t: code: sb_cart_discount_code, percent: sb_cart_discount_percent
   endif
-  assign sb_cart_auto_discount_amount = sb_cart_discount_amount_cents | money
-  assign sb_cart_subtotal_display = sb_cart_subtotal_cents | money
+  capture sb_cart_auto_discount_amount
+    render 'sb-money-no-decimals', amount: sb_cart_discount_amount_cents, currency: sb_cart_currency_code, context: 'cart'
+  endcapture
+  assign sb_cart_auto_discount_amount = sb_cart_auto_discount_amount | strip
+  capture sb_cart_subtotal_display
+    render 'sb-money-no-decimals', amount: sb_cart_subtotal_cents, currency: sb_cart_currency_code, context: 'cart'
+  endcapture
+  assign sb_cart_subtotal_display = sb_cart_subtotal_display | strip
+  capture sb_cart_total_display
+    render 'sb-money-no-decimals', amount: cart.total_price, currency: sb_cart_currency_code, context: 'cart'
+  endcapture
+  assign sb_cart_total_display = sb_cart_total_display | strip
 %}
 
 <div class="{{ sb_cart_summary_class }}">
@@ -284,8 +295,8 @@
 
   <p class="sb-cart-summary__row sb-cart-summary__row--total font-caption weight-bold">
     <span>{{ 'sb.cart.total' | t }}</span>
-    <span class="sb-cart-shimmer-text" data-cart-total data-shimmer-value="{{ cart.total_price | money | escape }}">
-      {{ cart.total_price | money }}
+    <span class="sb-cart-shimmer-text" data-cart-total data-shimmer-value="{{ sb_cart_total_display | escape }}">
+      {{ sb_cart_total_display }}
     </span>
   </p>
 

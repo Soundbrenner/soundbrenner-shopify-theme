@@ -23,7 +23,10 @@
     if free_shipping_reached
       assign free_shipping_message = 'sb.cart.free_shipping_unlocked_html' | t
     elsif free_shipping_threshold_cents > 0
-      assign free_shipping_remaining_formatted = free_shipping_remaining_cents | money
+      capture free_shipping_remaining_formatted
+        render 'sb-money-no-decimals', amount: free_shipping_remaining_cents, currency: currency | default: cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency, context: 'cart'
+      endcapture
+      assign free_shipping_remaining_formatted = free_shipping_remaining_formatted | strip
       assign free_shipping_message = 'sb.cart.free_shipping_remaining_html' | t: amount: free_shipping_remaining_formatted
     endif
   endif

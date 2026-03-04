@@ -1,6 +1,7 @@
 {% liquid
   assign sb_cart_list_class = list_class | default: 'sb-cart-line-list'
   assign sb_cart_placeholder_image = placeholder_image
+  assign sb_cart_currency_code = cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency | upcase
   if sb_cart_placeholder_image == blank
     assign sb_cart_placeholder_image = 'icon-square-placeholder.svg' | asset_url
   endif
@@ -38,6 +39,14 @@
       if item.original_line_price > item.final_line_price
         assign item_has_discount = true
       endif
+      capture item_original_line_price_formatted
+        render 'sb-money-no-decimals', amount: item.original_line_price, currency: sb_cart_currency_code, context: 'cart'
+      endcapture
+      assign item_original_line_price_formatted = item_original_line_price_formatted | strip
+      capture item_final_line_price_formatted
+        render 'sb-money-no-decimals', amount: item.final_line_price, currency: sb_cart_currency_code, context: 'cart'
+      endcapture
+      assign item_final_line_price_formatted = item_final_line_price_formatted | strip
     %}
     <li
       class="sb-cart-line"
@@ -93,24 +102,24 @@
               <p
                 class="sb-cart-line__price sb-cart-shimmer-text font-caption weight-regular"
                 data-cart-line-price
-                data-shimmer-value="{{ item.original_line_price | money | escape }}"
+                data-shimmer-value="{{ item_original_line_price_formatted | escape }}"
               >
-                {{ item.original_line_price | money }}
+                {{ item_original_line_price_formatted }}
               </p>
               <p
                 class="sb-cart-line__discount-price sb-cart-shimmer-text font-caption weight-regular"
                 data-cart-line-discount-price
-                data-shimmer-value="{{ item.final_line_price | money | escape }}"
+                data-shimmer-value="{{ item_final_line_price_formatted | escape }}"
               >
-                {{ item.final_line_price | money }}
+                {{ item_final_line_price_formatted }}
               </p>
             {% else %}
               <p
                 class="sb-cart-line__price sb-cart-shimmer-text font-caption weight-regular"
                 data-cart-line-price
-                data-shimmer-value="{{ item.final_line_price | money | escape }}"
+                data-shimmer-value="{{ item_final_line_price_formatted | escape }}"
               >
-                {{ item.final_line_price | money }}
+                {{ item_final_line_price_formatted }}
               </p>
             {% endif %}
           </div>

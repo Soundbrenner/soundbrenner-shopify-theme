@@ -7,6 +7,8 @@
 
 <h1>{{ collection.title }}</h1>
 
+{% assign collection_currency_code = cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency | upcase %}
+
 <div class="collection-products">
   {% paginate collection.products by 20 %}
     {% for product in collection.products %}
@@ -23,7 +25,7 @@
         {% endif %}
         <div class="collection-product__content">
           <p>{{ product.title | escape | link_to: product.url }}</p>
-          <p>{% render 'sb-money-no-decimals', amount: product.price %}</p>
+          <p>{% render 'sb-money-no-decimals', amount: product.price, currency: collection_currency_code, context: 'storefront' %}</p>
         </div>
       </div>
     {% endfor %}

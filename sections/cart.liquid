@@ -57,7 +57,7 @@
   <cart-items-component
     class="sb-cart-items sb-cart-items--page{% if cart.empty? %} is-empty{% endif %}"
     data-context="page"
-    data-currency="{{ localization.country.currency.iso_code | default: cart.currency.iso_code }}"
+    data-currency="{{ cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency }}"
     data-placeholder-image="{{ cart_placeholder_image }}"
   >
     <div class="sb-cart-page">
@@ -74,7 +74,7 @@
               available: cart_free_shipping_available,
               threshold_cents: cart_free_shipping_threshold_cents,
               subtotal_cents: cart.total_price,
-              currency: cart.currency.iso_code,
+              currency: cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency,
               has_items: cart.item_count > 0,
               filled_message: true,
               extra_class: 'sb-cart-page__filled-free-shipping'
