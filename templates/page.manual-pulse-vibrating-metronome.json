@@ -268,7 +268,7 @@
         "image_hPgcxR": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/Product_Pulse_Order_5.jpg"
+            "image": "shopify://shop_images/Product_Pulse_Order_5_b00c077e-ed5f-4720-9e92-23e5990d60e2.jpg"
           }
         },
         "divider_L6b7wJ": {
@@ -296,7 +296,7 @@
         "text_pD9eRG": {
           "type": "text",
           "settings": {
-            "text": "<p><strong>Tap tempo</strong></p><p>Tap the soundwave three times or more at a steady pace. The Pulse will set a new tempo that matches the average pace of your taps.</p>"
+            "text": "<p><strong>Tap tempo</strong></p><p>Tap the soundwave three times or more at a steady pace. Pulse will set a new tempo that matches the average speed of your taps.</p>"
           }
         },
         "image_mXDBAY": {
