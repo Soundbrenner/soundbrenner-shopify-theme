@@ -520,12 +520,12 @@
         background: var(--sb-color-neutral-900);
       }
 
-      [data-testid='POPUP'] .klaviyo-close-form:hover::before,
-      [data-testid='POPUP'] .klaviyo-close-form:focus-visible::before {
+      :is([data-testid='POPUP'], [role='dialog'][aria-modal='true']) .klaviyo-close-form:hover::before,
+      :is([data-testid='POPUP'], [role='dialog'][aria-modal='true']) .klaviyo-close-form:focus-visible::before {
         background: var(--sb-color-blue-500);
       }
 
-      [data-testid='POPUP'] .klaviyo-close-form:active::before {
+      :is([data-testid='POPUP'], [role='dialog'][aria-modal='true']) .klaviyo-close-form:active::before {
         background: var(--sb-color-blue-500);
         transform: none;
       }
@@ -1001,10 +1001,13 @@
               const descriptionRoot = popupForm.querySelector("[data-testid='form-row']:nth-of-type(3) [id^='rich-text-']");
               const descriptionText = normalizeText(popupLocaleCopy.description);
               if (descriptionRoot instanceof HTMLElement && descriptionText) {
-                descriptionRoot.replaceChildren();
-                const descriptionNode = document.createElement('div');
-                descriptionNode.textContent = descriptionText;
-                descriptionRoot.appendChild(descriptionNode);
+                if (descriptionRoot.dataset.sbLocalizedDescriptionSignature !== descriptionText) {
+                  descriptionRoot.replaceChildren();
+                  const descriptionNode = document.createElement('div');
+                  descriptionNode.textContent = descriptionText;
+                  descriptionRoot.appendChild(descriptionNode);
+                  descriptionRoot.dataset.sbLocalizedDescriptionSignature = descriptionText;
+                }
               }
 
               const placeholderText = normalizeText(popupLocaleCopy.emailPlaceholder);
