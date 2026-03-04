@@ -1165,10 +1165,6 @@
             "answer": "<p>The product complies with part 15 of the FCC rules. Operation is subject to the following two conditions: They may not cause harmful interference. They must accept any interference received, including interference that may cause undesired operation.</p>"
           }
         },
-        "divider_NaCK7a": {
-          "type": "divider",
-          "settings": {}
-        },
         "heading_xRAPtb": {
           "type": "heading",
           "settings": {
@@ -1194,13 +1190,6 @@
           "settings": {
             "question": "Is the Core waterproof?",
             "answer": "<p>The Core is splash resistant (IP65). This means it can withstand light rain or water splashes, for example while washing your hands. However, it can not withstand heavy rain, showers or water immersion.</p>"
-          }
-        },
-        "accordion_item_wbfexy": {
-          "type": "accordion_item",
-          "settings": {
-            "question": "How long does the battery of the Core last?",
-            "answer": "<p>The Soundbrenner Core's battery has 4+ days battery life in watch mode, or 3+ hours of metronome playback.</p><p>The settings for brightness ad color of the LEDs, vibration intensity and BPM all have an impact on battery life during metronome usage. 3 hours can be achieved with an average, reasonable setting. </p><p>The Soundbrenner Core has a rechargeable battery and it takes about 1.5 hours to fully charge.</p>"
           }
         },
         "accordion_item_QdNUrT": {
@@ -1418,12 +1407,10 @@
         "accordion_item_ebWN9y",
         "accordion_item_9qnJwy",
         "accordion_item_cBk3Ra",
-        "divider_NaCK7a",
         "heading_xRAPtb",
         "accordion_item_6gYW4q",
         "accordion_item_tfgafG",
         "accordion_item_ACTtRE",
-        "accordion_item_wbfexy",
         "accordion_item_QdNUrT",
         "accordion_item_RQetYJ",
         "accordion_item_GFAWML",
