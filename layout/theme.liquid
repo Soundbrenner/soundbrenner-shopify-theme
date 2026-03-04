@@ -739,28 +739,28 @@
           '.klaviyo-form, [class*="klaviyo-form-"], [data-testid^="klaviyo-form-"], iframe[src*="klaviyo"]';
         const numberFormatter = new Intl.NumberFormat(document.documentElement.lang || 'en-US');
         const popupLocaleCopy = {
-          dialogLabel: {{ 'sb.klaviyo_popup.dialog_label' | t | json }},
-          closeLabel: {{ 'sb.klaviyo_popup.close_label' | t | json }},
-          imageAlt: {{ 'sb.klaviyo_popup.image_alt' | t | json }},
-          titleLineOne: {{ 'sb.klaviyo_popup.title_line_1' | t | json }},
-          titleLineTwo: {{ 'sb.klaviyo_popup.title_line_2' | t | json }},
-          description: {{ 'sb.klaviyo_popup.description' | t | json }},
-          emailPlaceholder: {{ 'sb.klaviyo_popup.email_placeholder' | t | json }},
-          emailLabel: {{ 'sb.klaviyo_popup.email_label' | t | json }},
-          buttonLabel: {{ 'sb.klaviyo_popup.button_label' | t | json }},
-          engagementTemplate: {{ 'sb.klaviyo_popup.engagement_counter' | t: count: '__COUNT__' | json }},
-          errorRequired: {{ 'sb.klaviyo_popup.error_required' | t | json }},
-          errorInvalidEmail: {{ 'sb.klaviyo_popup.error_invalid_email' | t | json }},
-          errorGeneric: {{ 'sb.klaviyo_popup.error_generic' | t | json }},
-          successTitle: {{ 'sb.klaviyo_popup.success_title' | t | json }},
-          successCodeLine: {{ 'sb.klaviyo_popup.success_code_line' | t: code: '__CODE__' | json }},
-          successOfferLine: {{ 'sb.klaviyo_popup.success_offer_line' | t | json }},
-          successReminderLine: {{ 'sb.klaviyo_popup.success_reminder_line' | t | json }},
-          successExpiresIn: {{ 'sb.klaviyo_popup.success_expires_in' | t | json }},
-          timerDays: {{ 'sb.klaviyo_popup.timer_days' | t | json }},
-          timerHours: {{ 'sb.klaviyo_popup.timer_hours' | t | json }},
-          timerMinutes: {{ 'sb.klaviyo_popup.timer_minutes' | t | json }},
-          timerSeconds: {{ 'sb.klaviyo_popup.timer_seconds' | t | json }},
+          dialogLabel: {{ settings.klaviyo_popup_dialog_label | json }},
+          closeLabel: {{ settings.klaviyo_popup_close_label | json }},
+          imageAlt: {{ settings.klaviyo_popup_image_alt | json }},
+          titleLineOne: {{ settings.klaviyo_popup_title_line_1 | json }},
+          titleLineTwo: {{ settings.klaviyo_popup_title_line_2 | json }},
+          description: {{ settings.klaviyo_popup_description | json }},
+          emailPlaceholder: {{ settings.klaviyo_popup_email_placeholder | json }},
+          emailLabel: {{ settings.klaviyo_popup_email_label | json }},
+          buttonLabel: {{ settings.klaviyo_popup_button_label | json }},
+          engagementTemplate: {{ settings.klaviyo_popup_engagement_counter | json }},
+          errorRequired: {{ settings.klaviyo_popup_error_required | json }},
+          errorInvalidEmail: {{ settings.klaviyo_popup_error_invalid_email | json }},
+          errorGeneric: {{ settings.klaviyo_popup_error_generic | json }},
+          successTitle: {{ settings.klaviyo_popup_success_title | json }},
+          successCodeLine: {{ settings.klaviyo_popup_success_code_line | json }},
+          successOfferLine: {{ settings.klaviyo_popup_success_offer_line | json }},
+          successReminderLine: {{ settings.klaviyo_popup_success_reminder_line | json }},
+          successExpiresIn: {{ settings.klaviyo_popup_success_expires_in | json }},
+          timerDays: {{ settings.klaviyo_popup_timer_days | json }},
+          timerHours: {{ settings.klaviyo_popup_timer_hours | json }},
+          timerMinutes: {{ settings.klaviyo_popup_timer_minutes | json }},
+          timerSeconds: {{ settings.klaviyo_popup_timer_seconds | json }},
         };
         const decodeHtmlEntities = (value) => {
           const source = `${value || ''}`;
@@ -1098,10 +1098,11 @@
               const discountCode = extractDiscountCode(existingSuccessBodyText);
 
               const codeTemplate = normalizeText(popupLocaleCopy.successCodeLine);
-              const codeTemplateHasToken = codeTemplate.includes('__CODE__');
+              const normalizedCodeTemplate = codeTemplate.replace(/\{\{\s*code\s*\}\}/gi, '__CODE__');
+              const codeTemplateHasToken = normalizedCodeTemplate.includes('__CODE__');
               const localizedCodeLine =
-                codeTemplate && (!codeTemplateHasToken || discountCode)
-                  ? codeTemplate.replace(/__CODE__/g, discountCode)
+                normalizedCodeTemplate && (!codeTemplateHasToken || discountCode)
+                  ? normalizedCodeTemplate.replace(/__CODE__/g, discountCode)
                   : '';
 
               const successLines = [
@@ -1125,7 +1126,7 @@
                 if (localizedCodeLine) {
                   const codeLineNode = document.createElement('div');
                   if (codeTemplateHasToken && discountCode) {
-                    const templateSegments = codeTemplate.split('__CODE__');
+                    const templateSegments = normalizedCodeTemplate.split('__CODE__');
                     const prefixText = templateSegments[0] || '';
                     const suffixText = templateSegments.slice(1).join('__CODE__');
                     if (prefixText) {
@@ -1225,7 +1226,7 @@
             if (!Number.isFinite(detectedCount)) return;
 
             const formattedCount = numberFormatter.format(detectedCount);
-            const counterTemplate = `${popupLocaleCopy.engagementTemplate || ''}`;
+            const counterTemplate = `${popupLocaleCopy.engagementTemplate || ''}`.replace(/\{\{\s*count\s*\}\}/gi, '__COUNT__');
             if (!counterTemplate.includes('__COUNT__')) return;
 
             const localizedCounterText = counterTemplate.replace('__COUNT__', formattedCount);
