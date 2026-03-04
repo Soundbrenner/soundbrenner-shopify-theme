@@ -59,6 +59,28 @@
           "type": "divider",
           "settings": {}
         },
+        "heading_LMfQWU": {
+          "type": "heading",
+          "settings": {
+            "heading": "The best way to get started"
+          }
+        },
+        "text_m4HzUD": {
+          "type": "text",
+          "settings": {
+            "text": "<p>This video is the ultimate crash course to learn everything you need to know about how to use the Wave in-ear monitors in the shortest time possible.</p>"
+          }
+        },
+        "vimeo_video_qGqGyf": {
+          "type": "vimeo_video",
+          "settings": {
+            "video_source": "https://vimeo.com/1170163978"
+          }
+        },
+        "divider_HEV8jF": {
+          "type": "divider",
+          "settings": {}
+        },
         "chapter_2": {
           "type": "heading",
           "settings": {
@@ -115,6 +137,8 @@
           "type": "image_grid",
           "settings": {
             "fetch_whats_in_the_box_from_product": true,
+            "hide_accordion_and_title": true,
+            "accordion_title": "In the box",
             "source_metaobject": "wave-in-ear-monitors",
             "item_1_text": "Item 1",
             "item_2_text": "Item 2",
@@ -211,6 +235,10 @@
         "body_1",
         "button_1",
         "divider_1",
+        "heading_LMfQWU",
+        "text_m4HzUD",
+        "vimeo_video_qGqGyf",
+        "divider_HEV8jF",
         "chapter_2",
         "body_2",
         "image_QD8E9d",
