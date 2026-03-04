@@ -1209,6 +1209,13 @@
             "question": "How to update the firmware of Core?",
             "answer": "<p>The Soundbrenner Core has an internal software which is called firmware. It is recommended to keep the firmware up to date to receive all new features, improvements, and bug fixes. It can be updated via our mobile app \"The Metronome by Soundbrenner\".</p><p><strong>How to update the firmware</strong></p><ol><li>Open our app and log in to your Soundbrenner account.</li><li>Connect to your Soundbrenner Core by tapping \"Add a Soundbrenner wearable\" in the Settings. </li><li>Tap on the Core to open the device settings. If a firmware update is available, you'll see a teal banner \"Firmware Update Available\". <strong>If no banner is visible, you have the latest version.</strong></li><li>Press the banner and simply follow the on-screen instructions and wait for the firmware update to complete. You will need an internet connection to download the firmware file. </li><li>Congratulations! Your firmware has been successfully updated. Note: if you use iOS, your Core will be unpaired after the firmware update. Hence, you have to pair it again via the Soundbrenner app after the firmware update is complete.</li></ol><p><strong>Troubleshooting iPhone 11</strong></p><p>After a firmware update using an iPhone 11, there may be issues to pair your Core. In this case go to iOS Settings (outside the Soundbrenner app) -&gt; Bluetooth -&gt; Tap on (i) next to your Core -&gt; Tap on \"Forget This Device\" and \"Forget Device\". Now come back to the Soundbrenner app and try connecting again and you will successfully pair and connect your Core.</p>"
           }
+        },
+        "accordion_item_RQetYJ": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "How to use the Core's body strap?",
+            "answer": "<p>The Soundbrenner Core’s vibrating metronome is 7 times stronger than the vibrations on a smartphone. While wearing the Core on your wrist works for most people, some prefer to place the Core on their chest, ankle or shoulder. This is especially true for drummers, since this makes it easier for them to feel the beat.</p><p>Both the Core and Core Steel come with included body straps that allow you to wear them on other parts of your body. To begin, start by removing your Core from its rig. Do this by twisting counter-clockwise and gently lifting it upwards. </p><p></p><p>Next, locate the included body strap, extension and body strap rig. The body strap rig can be differentiated by its magnets which are on the left and right sides of the rig instead of the top and bottom.</p><p></p><p>Attach the body strap to its rig. Make sure to add the extension if necessary. </p><p> </p><p>Place the Core onto the body strap. It should magnetically snap into place. Many musicians prefer navigating to the metronome app and starting it before doing this.</p><p></p><p>And there you have it! You are now ready to start playing with the body strap. Experiment with different locations on your body to find the optimal spot for you.</p>"
+          }
         }
       },
       "block_order": [
@@ -1403,7 +1410,8 @@
         "accordion_item_tfgafG",
         "accordion_item_ACTtRE",
         "accordion_item_wbfexy",
-        "accordion_item_QdNUrT"
+        "accordion_item_QdNUrT",
+        "accordion_item_RQetYJ"
       ],
       "settings": {}
     },
