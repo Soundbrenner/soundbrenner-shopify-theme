@@ -504,10 +504,6 @@
             "answer": "<p>The product complies with part 15 of the FCC rules. Operation is subject to the following two conditions: They may not cause harmful interference. They must accept any interference received, including interference that may cause undesired operation.</p>"
           }
         },
-        "divider_8P9EHA": {
-          "type": "divider",
-          "settings": {}
-        },
         "heading_YCjcWn": {
           "type": "heading",
           "settings": {
@@ -526,13 +522,6 @@
           "settings": {
             "question": "Is the Pulse waterproof?",
             "answer": "<p>The Soundbrenner Pulse is designed to be sweat proof. However, please note that your Pulse is not designed to be waterproof so any exposure to water, especially submersion, will likely damage it.</p>"
-          }
-        },
-        "accordion_item_zHxCRR": {
-          "type": "accordion_item",
-          "settings": {
-            "question": "How long does the battery of the Pulse last?",
-            "answer": "<p>The Pulse has on average 6 hours of metronome playback time.</p>"
           }
         },
         "accordion_item_EzReFW": {
@@ -635,11 +624,9 @@
         "accordion_item_3",
         "accordion_item_4",
         "accordion_item_5",
-        "divider_8P9EHA",
         "heading_YCjcWn",
         "accordion_item_TxM6fP",
         "accordion_item_RKQQTf",
-        "accordion_item_zHxCRR",
         "accordion_item_EzReFW",
         "accordion_item_Jtgfh8",
         "accordion_item_nn76X8"
