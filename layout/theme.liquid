@@ -180,6 +180,7 @@
         display: flex;
         justify-content: flex-end;
         padding: var(--sb-klaviyo-popup-edge-padding) var(--sb-klaviyo-popup-edge-padding) var(--sb-klaviyo-popup-element-gap) !important;
+        width: 100%;
       }
 
       [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success .sb-klaviyo-popup-close-row .klaviyo-close-form {
@@ -297,17 +298,25 @@
         background: var(--sb-color-blue-500) !important;
         background-color: var(--sb-color-blue-500) !important;
         border-color: var(--sb-color-neutral-200) !important;
+        cursor: pointer !important;
         gap: var(--sb-space-16) !important;
         justify-content: center !important;
       }
 
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success button[aria-label='Copy coupon code']:hover,
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success button[aria-label='Copy coupon code']:focus-visible {
+        opacity: 0.75 !important;
+      }
+
       [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success button[aria-label='Copy coupon code'] > div {
         color: var(--sb-color-neutral-900) !important;
+        cursor: pointer !important;
         flex: 0 0 auto !important;
         font-family: var(--font-primary--family) !important;
         font-size: var(--font-size-body) !important;
         font-weight: 700 !important;
         line-height: 1.35 !important;
+        pointer-events: none !important;
       }
 
       [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success button[aria-label='Copy coupon code'] > svg {
@@ -321,6 +330,7 @@
         min-height: 20px !important;
         min-width: 20px !important;
         padding: 0 !important;
+        pointer-events: none !important;
         width: 20px !important;
         -webkit-mask: center / 20px 20px no-repeat url('{{ 'icon-content-copy.svg' | asset_url }}') !important;
         mask: center / 20px 20px no-repeat url('{{ 'icon-content-copy.svg' | asset_url }}') !important;
@@ -333,6 +343,24 @@
       [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading .sb-button-radiant__label {
         opacity: 0 !important;
         visibility: hidden !important;
+      }
+
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading,
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading [role='progressbar'],
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading progress,
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading [class*='spinner' i],
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading [class*='loading' i],
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading [class*='progress' i] {
+        color: var(--sb-color-neutral-900) !important;
+      }
+
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading svg,
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading svg *,
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading circle,
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading path,
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading rect {
+        fill: var(--sb-color-neutral-900) !important;
+        stroke: var(--sb-color-neutral-900) !important;
       }
 
       [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [data-testid='form-row']:nth-of-type(4) [id^='rich-text-'] {
@@ -443,7 +471,7 @@
         -webkit-mask-position: center;
         -webkit-mask-repeat: no-repeat;
         -webkit-mask-size: var(--sb-klaviyo-popup-close-size, 20px) var(--sb-klaviyo-popup-close-size, 20px);
-        background: var(--sb-color-red-500);
+        background: var(--sb-color-primary-500);
         content: '';
         display: block;
         height: var(--sb-klaviyo-popup-close-size, 20px);
@@ -823,11 +851,17 @@
           }
 
           if (!hasEmailInput) {
+            const formStack =
+              popupForm.firstElementChild instanceof HTMLElement
+                ? popupForm.firstElementChild
+                : popupForm;
             let closeRow = popupForm.querySelector('.sb-klaviyo-popup-close-row');
             if (!(closeRow instanceof HTMLElement)) {
               closeRow = document.createElement('section');
               closeRow.className = 'sb-klaviyo-popup-close-row';
-              popupForm.insertBefore(closeRow, popupForm.firstElementChild);
+              formStack.insertBefore(closeRow, formStack.firstElementChild);
+            } else if (closeRow.parentElement !== formStack) {
+              formStack.insertBefore(closeRow, formStack.firstElementChild);
             }
             if (closeButton.parentElement !== closeRow) closeRow.appendChild(closeButton);
             return;
