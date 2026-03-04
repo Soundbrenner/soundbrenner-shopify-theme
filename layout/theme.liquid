@@ -345,13 +345,13 @@
         display: none !important;
       }
 
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading .sb-button-radiant__label {
-        opacity: 0 !important;
-        visibility: hidden !important;
-      }
-
       [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading {
         position: relative !important;
+      }
+
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading > * {
+        opacity: 0 !important;
+        visibility: hidden !important;
       }
 
       [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading::after {
@@ -376,15 +376,6 @@
         to {
           transform: rotate(360deg);
         }
-      }
-
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial.sb-klaviyo-popup-submit-loading button[type='button']:not(.klaviyo-close-form) [role='progressbar'],
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial.sb-klaviyo-popup-submit-loading button[type='button']:not(.klaviyo-close-form) progress,
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial.sb-klaviyo-popup-submit-loading button[type='button']:not(.klaviyo-close-form) [class*='spinner' i],
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial.sb-klaviyo-popup-submit-loading button[type='button']:not(.klaviyo-close-form) [class*='loading' i],
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial.sb-klaviyo-popup-submit-loading button[type='button']:not(.klaviyo-close-form) [class*='progress' i] {
-        display: none !important;
-        opacity: 0 !important;
       }
 
       [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success .sb-klaviyo-popup-success-body-component {
@@ -523,6 +514,13 @@
       :is([data-testid='POPUP'], [role='dialog'][aria-modal='true']) .klaviyo-close-form:hover::before,
       :is([data-testid='POPUP'], [role='dialog'][aria-modal='true']) .klaviyo-close-form:focus-visible::before {
         background: var(--sb-color-blue-500);
+      }
+
+      :is([data-testid='POPUP'], [role='dialog'][aria-modal='true']).sb-klaviyo-popup--initial .klaviyo-close-form:hover::before,
+      :is([data-testid='POPUP'], [role='dialog'][aria-modal='true']).sb-klaviyo-popup--initial .klaviyo-close-form:focus-visible::before,
+      :is([data-testid='POPUP'], [role='dialog'][aria-modal='true']).sb-klaviyo-popup--success .klaviyo-close-form:hover::before,
+      :is([data-testid='POPUP'], [role='dialog'][aria-modal='true']).sb-klaviyo-popup--success .klaviyo-close-form:focus-visible::before {
+        background: var(--sb-color-blue-500) !important;
       }
 
       :is([data-testid='POPUP'], [role='dialog'][aria-modal='true']) .klaviyo-close-form:active::before {
@@ -1265,7 +1263,6 @@
             if (!(popupForm instanceof HTMLFormElement)) return;
 
             const submitButtons = popupForm.querySelectorAll("button[type='button']:not(.klaviyo-close-form)");
-            let hasLoadingInitialSubmit = false;
 
             submitButtons.forEach((button) => {
               if (!(button instanceof HTMLButtonElement)) return;
@@ -1289,12 +1286,7 @@
 
               const isLoading = isButtonLoading(button);
               button.classList.toggle('sb-klaviyo-button-loading', isLoading);
-              if (isLoading && popupForm.classList.contains('sb-klaviyo-popup-form--initial')) {
-                hasLoadingInitialSubmit = true;
-              }
             });
-
-            popupForm.classList.toggle('sb-klaviyo-popup-submit-loading', hasLoadingInitialSubmit);
           });
         };
 
