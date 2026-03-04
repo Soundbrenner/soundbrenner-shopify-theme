@@ -735,6 +735,7 @@
     <script>
       (() => {
         const popupOpenClass = 'sb-klaviyo-popup-open';
+        const affiliateKlaviyoSuppressionClass = 'sb-affiliate-klaviyo-suppressed';
         const markerSelector =
           '.klaviyo-form, [class*="klaviyo-form-"], [data-testid^="klaviyo-form-"], iframe[src*="klaviyo"]';
         const numberFormatter = new Intl.NumberFormat(document.documentElement.lang || 'en-US');
@@ -1312,7 +1313,42 @@
           });
         };
 
+        const isMobileMenuOpen = () => {
+          const mobileMenuDrawer = document.querySelector('[data-mobile-menu-drawer]');
+          return Boolean(mobileMenuDrawer && mobileMenuDrawer.classList.contains('menu-open'));
+        };
+
+        const isCartDrawerOpen = () => {
+          const cartDrawer = document.querySelector('[data-cart-drawer]');
+          return Boolean(
+            cartDrawer
+            && !cartDrawer.hasAttribute('hidden')
+            && cartDrawer.classList.contains('is-open')
+          );
+        };
+
+        const releaseResidualKlaviyoScrollLock = () => {
+          const rootNode = document.documentElement;
+          const bodyNode = document.body;
+          if (!(rootNode instanceof HTMLElement) || !(bodyNode instanceof HTMLBodyElement)) return;
+          if (document.body.dataset.sbScrollLocked === 'true') return;
+          if (rootNode.classList.contains('sb-scroll-locked') || bodyNode.classList.contains('sb-scroll-locked')) return;
+          if (isMobileMenuOpen() || isCartDrawerOpen()) return;
+
+          rootNode.style.overflow = '';
+          rootNode.style.overscrollBehavior = '';
+          bodyNode.style.overflow = '';
+          bodyNode.style.overscrollBehavior = '';
+          bodyNode.style.position = '';
+          bodyNode.style.top = '';
+          bodyNode.style.left = '';
+          bodyNode.style.right = '';
+          bodyNode.style.width = '';
+          bodyNode.style.touchAction = '';
+        };
+
         const updatePopupBackdropState = () => {
+          const rootNode = document.documentElement;
           const popupContainers = new Set();
           document.querySelectorAll(markerSelector).forEach((node) => {
             if (!(node instanceof HTMLElement)) return;
@@ -1321,14 +1357,23 @@
             popupContainers.add(popupContainer);
           });
 
-          const hasVisiblePopup = Array.from(popupContainers).some((popupContainer) => isVisiblePopup(popupContainer));
+          const suppressionActive = rootNode instanceof HTMLElement
+            && rootNode.classList.contains(affiliateKlaviyoSuppressionClass);
+          const hasVisiblePopup = !suppressionActive
+            && Array.from(popupContainers).some((popupContainer) => isVisiblePopup(popupContainer));
+          const hasSuppressedPopupAttempt = suppressionActive && popupContainers.size > 0;
 
           applyPopupLocalizedCopy();
           applyPopupRadiantButtons();
           localizePopupErrorMessages();
           formatPopupEngagementCounters();
           localizePopupCountdownUnits();
-          document.documentElement.classList.toggle(popupOpenClass, hasVisiblePopup);
+          if (rootNode instanceof HTMLElement) {
+            rootNode.classList.toggle(popupOpenClass, hasVisiblePopup);
+          }
+          if (!hasVisiblePopup && hasSuppressedPopupAttempt) {
+            releaseResidualKlaviyoScrollLock();
+          }
         };
 
         let frameId = 0;
