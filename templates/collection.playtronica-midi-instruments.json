@@ -14,7 +14,17 @@
       "settings": {
         "use_seasonal_hero_card": false,
         "use_resource_title_description": true,
+        "use_product_page_metaobjects": false,
+        "background_image_desktop": "shopify://shop_images/Property_1_Playtronica_27ff329a-d259-496b-ba03-38830ad614a4.jpg",
+        "background_image_mobile": "shopify://shop_images/Property_1_Playtronica_mobile.jpg",
+        "kicker": "",
+        "headline": "",
+        "subheadline": "",
         "show_button": false,
+        "button_label": "Placeholder",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": "",
         "show_app_download_qr": false,
         "show_app_download_app_store": false,
         "show_app_download_google_play": false,
@@ -23,8 +33,7 @@
     },
     "products": {
       "type": "collection-product-grid",
-      "settings": {
-      }
+      "settings": {}
     }
   },
   "order": [
