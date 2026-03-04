@@ -132,7 +132,7 @@
         pointer-events: none;
         position: fixed;
         transition: opacity 180ms ease;
-        z-index: 79;
+        z-index: 89999;
       }
 
       html.sb-klaviyo-popup-open .sb-klaviyo-popup-backdrop {
@@ -143,7 +143,7 @@
       [role='dialog'][aria-modal='true'] {
         --sb-klaviyo-popup-edge-padding: var(--sb-space-30);
         --sb-klaviyo-popup-element-gap: var(--sb-space-24);
-        --sb-klaviyo-popup-close-size: var(--sb-space-20);
+        --sb-klaviyo-popup-close-size: 20px;
       }
 
       [data-testid='POPUP'] form[data-testid^='klaviyo-form-'] {
@@ -168,11 +168,25 @@
       }
 
       [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [data-testid='form-row']:nth-of-type(2) [data-testid='form-component'] {
-        padding-top: calc(
-          var(--sb-klaviyo-popup-edge-padding)
-          + var(--sb-klaviyo-popup-close-size)
-          + var(--sb-space-4)
-        ) !important;
+        padding-top: 0 !important;
+      }
+
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'] .sb-klaviyo-popup-close-row {
+        display: none;
+      }
+
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success .sb-klaviyo-popup-close-row {
+        align-items: flex-start;
+        display: flex;
+        justify-content: flex-end;
+        padding: var(--sb-klaviyo-popup-edge-padding) var(--sb-klaviyo-popup-edge-padding) var(--sb-klaviyo-popup-element-gap) !important;
+      }
+
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success .sb-klaviyo-popup-close-row .klaviyo-close-form {
+        position: static !important;
+        right: auto !important;
+        top: auto !important;
+        z-index: 1 !important;
       }
 
       [data-testid='POPUP'] [data-testid='form-row']:nth-of-type(2) [id^='rich-text-'],
@@ -363,26 +377,26 @@
 
       [data-testid='POPUP'] .klaviyo-close-form {
         align-items: center !important;
-        background: transparent url('{{ 'icon-cancel.svg' | asset_url }}') center / var(--sb-klaviyo-popup-close-size, var(--sb-space-20)) var(--sb-klaviyo-popup-close-size, var(--sb-space-20)) no-repeat !important;
+        background: transparent url('{{ 'icon-cancel.svg' | asset_url }}') center / var(--sb-klaviyo-popup-close-size, 20px) var(--sb-klaviyo-popup-close-size, 20px) no-repeat !important;
         border: 0 !important;
         border-radius: 0 !important;
         color: var(--sb-color-always-white) !important;
         cursor: pointer !important;
         display: inline-flex !important;
-        height: var(--sb-klaviyo-popup-close-size, var(--sb-space-20)) !important;
+        height: var(--sb-klaviyo-popup-close-size, 20px) !important;
         justify-content: center !important;
         line-height: 0 !important;
         margin: 0 !important;
         margin-right: 0 !important;
         margin-top: 0 !important;
-        min-height: var(--sb-klaviyo-popup-close-size, var(--sb-space-20)) !important;
-        min-width: var(--sb-klaviyo-popup-close-size, var(--sb-space-20)) !important;
+        min-height: var(--sb-klaviyo-popup-close-size, 20px) !important;
+        min-width: var(--sb-klaviyo-popup-close-size, 20px) !important;
         padding: 0 !important;
         pointer-events: auto !important;
         position: absolute !important;
         right: var(--sb-klaviyo-popup-edge-padding, var(--sb-space-30)) !important;
         top: var(--sb-klaviyo-popup-edge-padding, var(--sb-space-30)) !important;
-        width: var(--sb-klaviyo-popup-close-size, var(--sb-space-20)) !important;
+        width: var(--sb-klaviyo-popup-close-size, 20px) !important;
         z-index: 8 !important;
       }
 
@@ -406,17 +420,17 @@
         -webkit-mask-image: url('{{ 'icon-cancel.svg' | asset_url }}');
         -webkit-mask-position: center;
         -webkit-mask-repeat: no-repeat;
-        -webkit-mask-size: var(--sb-klaviyo-popup-close-size, var(--sb-space-20)) var(--sb-klaviyo-popup-close-size, var(--sb-space-20));
-        background: var(--sb-color-blue-500);
+        -webkit-mask-size: var(--sb-klaviyo-popup-close-size, 20px) var(--sb-klaviyo-popup-close-size, 20px);
+        background: var(--sb-color-red-500);
         content: '';
         display: block;
-        height: var(--sb-klaviyo-popup-close-size, var(--sb-space-20));
+        height: var(--sb-klaviyo-popup-close-size, 20px);
         mask-image: url('{{ 'icon-cancel.svg' | asset_url }}');
         mask-position: center;
         mask-repeat: no-repeat;
-        mask-size: var(--sb-klaviyo-popup-close-size, var(--sb-space-20)) var(--sb-klaviyo-popup-close-size, var(--sb-space-20));
+        mask-size: var(--sb-klaviyo-popup-close-size, 20px) var(--sb-klaviyo-popup-close-size, 20px);
         pointer-events: none;
-        width: var(--sb-klaviyo-popup-close-size, var(--sb-space-20));
+        width: var(--sb-klaviyo-popup-close-size, 20px);
       }
 
       [data-testid='POPUP'] .klaviyo-close-form:hover::before,
@@ -769,6 +783,54 @@
           return '';
         };
 
+        const popupCloseButtonPlacements = new WeakMap();
+
+        const syncPopupCloseButtonPlacement = (popupForm, popupDialog, hasEmailInput) => {
+          if (!(popupForm instanceof HTMLFormElement) || !(popupDialog instanceof HTMLElement)) return;
+
+          const closeButton = popupDialog.querySelector('.klaviyo-close-form');
+          if (!(closeButton instanceof HTMLButtonElement)) return;
+
+          let originalPlacement = popupCloseButtonPlacements.get(closeButton);
+          if (!originalPlacement) {
+            originalPlacement = {
+              parent: closeButton.parentElement,
+              nextSibling: closeButton.nextSibling,
+            };
+            popupCloseButtonPlacements.set(closeButton, originalPlacement);
+          }
+
+          if (!hasEmailInput) {
+            let closeRow = popupForm.querySelector('.sb-klaviyo-popup-close-row');
+            if (!(closeRow instanceof HTMLElement)) {
+              closeRow = document.createElement('div');
+              closeRow.className = 'sb-klaviyo-popup-close-row';
+              popupForm.insertBefore(closeRow, popupForm.firstElementChild);
+            }
+            if (closeButton.parentElement !== closeRow) closeRow.appendChild(closeButton);
+            return;
+          }
+
+          const activeCloseRow = popupForm.querySelector('.sb-klaviyo-popup-close-row');
+          if (
+            originalPlacement.parent instanceof HTMLElement
+            && closeButton.parentElement !== originalPlacement.parent
+          ) {
+            if (
+              originalPlacement.nextSibling
+              && originalPlacement.nextSibling.parentNode === originalPlacement.parent
+            ) {
+              originalPlacement.parent.insertBefore(closeButton, originalPlacement.nextSibling);
+            } else {
+              originalPlacement.parent.appendChild(closeButton);
+            }
+          }
+
+          if (activeCloseRow instanceof HTMLElement && activeCloseRow.childElementCount === 0) {
+            activeCloseRow.remove();
+          }
+        };
+
         const applyPopupLocalizedCopy = () => {
           const popupForms = document.querySelectorAll("[data-testid='POPUP'] form[data-testid^='klaviyo-form-']");
           popupForms.forEach((popupForm) => {
@@ -799,6 +861,7 @@
             if (popupDialog instanceof HTMLElement) {
               popupDialog.classList.toggle('sb-klaviyo-popup--initial', hasEmailInput);
               popupDialog.classList.toggle('sb-klaviyo-popup--success', !hasEmailInput);
+              syncPopupCloseButtonPlacement(popupForm, popupDialog, hasEmailInput);
             }
 
             if (hasEmailInput) {
