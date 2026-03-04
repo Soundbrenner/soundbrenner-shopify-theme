@@ -224,13 +224,7 @@
         "image_AMXGYM": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/Product_Pulse_Order_2.jpg"
-          }
-        },
-        "image_DTTAHQ": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/Product_Pulse_Order_3.jpg"
+            "image": "shopify://shop_images/Product_Pulse_Order_2_1cbbd11a-3ee9-4e41-b390-5fe4e34ea46c.jpg"
           }
         },
         "divider_epqbmW": {
@@ -246,13 +240,13 @@
         "text_JA9R9B": {
           "type": "text",
           "settings": {
-            "text": "<p>The Pulse uses a capacitive touch surface to register your inputs for interactions. Some tips for maximum reliability:</p><ul><li>Always use two fingers flat across the surface. Don’t just use your fingertips!</li><li>Make sure that you touch the surface only for a brief moment for each tap.</li><li>Always make sure you wear the device when using the touch surface. Our sensor is designed to work best when it’s in contact with your skin.</li></ul>"
+            "text": "<p>The Pulse uses a capacitive touch surface to register your inputs. For best reliability, follow these tips:</p><ul><li>Always use two fingers placed flat across the surface. Do not use just your fingertips.</li><li>Touch the surface briefly for each tap.</li><li>Make sure you are wearing the device when using the touch surface. The sensor works best when it is in contact with your skin.</li></ul>"
           }
         },
         "image_7Y7ixP": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/Product_Pulse_Order_4.jpg"
+            "image": "shopify://shop_images/Product_Pulse_Order_4_ac48260d-15ec-422f-bce3-0e1683293932.jpg"
           }
         },
         "divider_N6Tqzk": {
@@ -268,13 +262,13 @@
         "text_qQwfnp": {
           "type": "text",
           "settings": {
-            "text": "<p>To power your Pulse on or off twist the ring at least 1/4 turn – in either direction – and then hold the touch surface with two fingers for two seconds. Don’t forget to wear the device first before powering it on!</p><p>The light of the soundwave will stay lit until you power the device off. Make sure to power your Pulse off using the same procedure after you’re finished playing.</p>"
+            "text": "<p>To power your Pulse on or off, twist the ring at least 1/4 turn in either direction, then hold the touch surface with two fingers for two seconds. Make sure you are wearing the device before powering it on.</p><p>The soundwave light stays on while the device is powered. After you finish playing, power off your Pulse using the same procedure.</p>"
           }
         },
         "image_hPgcxR": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/Product_Pulse_Order_5.jpg"
+            "image": "shopify://shop_images/Product_Pulse_Order_5_b00c077e-ed5f-4720-9e92-23e5990d60e2.jpg"
           }
         },
         "divider_L6b7wJ": {
@@ -302,7 +296,7 @@
         "text_pD9eRG": {
           "type": "text",
           "settings": {
-            "text": "<p><strong>Tap tempo</strong></p><p>Tap the soundwave three times or more at a steady pace. The Pulse will set a new tempo that matches the average pace of your taps.</p>"
+            "text": "<p><strong>Tap tempo</strong></p><p>Tap the soundwave three times or more at a steady pace. Pulse will set a new tempo that matches the average speed of your taps.</p>"
           }
         },
         "image_mXDBAY": {
@@ -342,7 +336,7 @@
         "text_TGD86k": {
           "type": "text",
           "settings": {
-            "text": "<p>Where you place the Pulse on your body can have a big impact on your experience. What works best is different for each musician.</p><p>The included short and long band allow you to wear the Pulse on your wrist, arm or ankle. For your first few sessions, try out different locations to see which one works best.</p><p>Remember to keep the band tight – the tighter the band, the stronger the feeling of the vibrations.</p><p>The hooks on the long band allow you to easily slide it over your arm.</p>"
+            "text": "<p>Where you wear the Pulse on your body can have a big impact on your experience, and the best position can vary for each musician.</p><p>The included short and long bands allow you to wear the Pulse on your wrist, arm, or ankle. During your first few sessions, try different positions to find what works best for you.</p><p>Make sure to keep the band snug. A tighter fit will make the vibrations feel stronger.</p><p>The hooks on the long band allow you to easily slide it over your arm.</p>"
           }
         },
         "image_qgC4HK": {
@@ -354,7 +348,7 @@
         "text_GK4Gkx": {
           "type": "text",
           "settings": {
-            "text": "<p>Did you know we make a body strap for the chest, shoulder and thigh, that allows you to feel the beat even better? It's available here:</p>"
+            "text": "<p>Did you know we also offer a body strap for the chest, shoulder, or thigh? It allows you to feel the beat even more clearly. You can find it here:</p>"
           }
         },
         "button_UaWhag": {
@@ -379,7 +373,7 @@
         "text_EAFjAi": {
           "type": "text",
           "settings": {
-            "text": "<p>Using a vibrational metronome is different. When you first start using the Pulse, you need to get used to it first. Don’t give up - you’ll get better over time. It’s just like learning to practice with a traditional metronome!</p><p>Over time, the vibration can even become a subconscious feeling that helps you keep the beat without thinking about it.</p>"
+            "text": "<p>Using a vibrational metronome feels different at first. When you start using Pulse, give yourself some time to get used to it. Don’t give up. You will improve with practice, just like when learning to use a traditional metronome.</p><p>Over time, the vibration can become a subconscious cue that helps you keep the beat without thinking about it.</p>"
           }
         },
         "divider_tjcndY": {
@@ -395,7 +389,7 @@
         "text_3dDnyy": {
           "type": "text",
           "settings": {
-            "text": "<p>Because we know every musician is different, you can customize the Pulse to your own liking with our app.</p><p>To customize or turn off the lights and vibrations, open our mobile app and go to: \"Settings\" → \"Pulse settings\" → \"Lights\" or \"Vibrations\". We recommend to experiment with different vibration intensities and durations to find out what works best for you!</p><p>For more info how to use it, view the app's manual.</p>"
+            "text": "<p>Because every musician is different, you can customize Pulse to your preferences using our app.</p><p>To customize or turn off the lights and vibrations, open the mobile app and go to <strong>Settings → Pulse settings → Lights</strong> or <strong>Vibrations</strong>. Try different vibration intensities and durations to find what works best for you.</p><p>For more information on how to use the app, refer to the app manual.</p>"
           }
         },
         "button_NGjw3K": {
@@ -426,7 +420,7 @@
         "text_fPAj8t": {
           "type": "text",
           "settings": {
-            "text": "<p>The Pulse can be synced to other wearables by connecting all of them to the same mobile device. You can sync up to a total of five devices, allowing you to feel the beat together.</p><p>Open the Soundbrenner app on the mobile device you want to use to sync the wearables. Inside the app navigate to: \"Settings\" → \"Add a wearable\".</p>"
+            "text": "<p>The Pulse can be synced with other wearables by connecting them to the same mobile device. You can sync up to five devices, allowing everyone to feel the beat together.</p><p>Open the Soundbrenner app on the mobile device you want to use for syncing. Then navigate to <strong>Settings → Add a wearable</strong>.</p>"
           }
         },
         "divider_r9CiCP": {
@@ -542,7 +536,6 @@
         "subheading_pTGeGh",
         "text_HtN3ri",
         "image_AMXGYM",
-        "image_DTTAHQ",
         "divider_epqbmW",
         "subheading_CpjCgq",
         "text_JA9R9B",
