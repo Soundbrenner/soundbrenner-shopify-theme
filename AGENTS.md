@@ -18,3 +18,4 @@
 - For newly created sections with a title setting, always provide a placeholder default title.
 - Do not add hover easing transitions by default. Hover state changes should be instant unless explicitly requested.
 - All user-facing strings must be translatable. Do not hardcode literal UI copy in Liquid, JSON templates, or JavaScript; use locale keys and the translation system by default.
+- Never seed English copy into non-English locale files. Add new source strings to `locales/en.default.json` and leave non-English locale keys untranslated until real translations are provided.
