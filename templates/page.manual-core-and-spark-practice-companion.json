@@ -1216,6 +1216,13 @@
             "question": "How to use the Core's body strap?",
             "answer": "<p>The Soundbrenner Core’s vibrating metronome is 7 times stronger than the vibrations on a smartphone. While wearing the Core on your wrist works for most people, some prefer to place the Core on their chest, ankle or shoulder. This is especially true for drummers, since this makes it easier for them to feel the beat.</p><p>Both the Core and Core Steel come with included body straps that allow you to wear them on other parts of your body. To begin, start by removing your Core from its rig. Do this by twisting counter-clockwise and gently lifting it upwards. </p><p></p><p>Next, locate the included body strap, extension and body strap rig. The body strap rig can be differentiated by its magnets which are on the left and right sides of the rig instead of the top and bottom.</p><p></p><p>Attach the body strap to its rig. Make sure to add the extension if necessary. </p><p> </p><p>Place the Core onto the body strap. It should magnetically snap into place. Many musicians prefer navigating to the metronome app and starting it before doing this.</p><p></p><p>And there you have it! You are now ready to start playing with the body strap. Experiment with different locations on your body to find the optimal spot for you.</p>"
           }
+        },
+        "accordion_item_GFAWML": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "How to factory reset the Core?",
+            "answer": "<p>There are several reasons to factory reset your Core. For example, we recommend to factory reset the Core before reselling it, or as a last resort if you're experiencing issues and other troubleshooting steps don't work.</p><p><strong>How to factory reset the Core</strong></p><p>Simple navigate to \"Settings\" on your Core device. From there head to \"Factory reset?\", press the bottom button and select \"Yes\" by pressing the bottom button again. Your Core was now reset to its factory settings! </p>"
+          }
         }
       },
       "block_order": [
@@ -1411,7 +1418,8 @@
         "accordion_item_ACTtRE",
         "accordion_item_wbfexy",
         "accordion_item_QdNUrT",
-        "accordion_item_RQetYJ"
+        "accordion_item_RQetYJ",
+        "accordion_item_GFAWML"
       ],
       "settings": {}
     },
