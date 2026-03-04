@@ -527,6 +527,27 @@
             "question": "Is the Pulse waterproof?",
             "answer": "<p>The Soundbrenner Pulse is designed to be sweat proof. However, please note that your Pulse is not designed to be waterproof so any exposure to water, especially submersion, will likely damage it.</p>"
           }
+        },
+        "accordion_item_zHxCRR": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "How long does the battery of the Pulse last?",
+            "answer": "<p>The Pulse has on average 6 hours of metronome playback time.</p>"
+          }
+        },
+        "accordion_item_EzReFW": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "How to update the firmware of Pulse?",
+            "answer": "<p>The Soundbrenner Pulse has an internal software which is called firmware. It can be updated via our mobile app \"The Metronome by Soundbrenner\".</p><p><strong>Step 1:</strong><br/><strong>Download our app on the iOS App Store or Google Play</strong></p><p><strong>Step 2:</strong><br/><strong>Open our app and login to your Soundbrenner account.</strong></p><p><strong>Step 3:</strong><br/><strong>Connect your Soundbrenner Pulse and tap on your Pulse in the Settings </strong></p><p><strong>Step 4:</strong><br/><strong>In the device settings tap on “Software Updates” or \"Firmware Update\"</strong></p><p><strong>Step 5:</strong><br/><strong>Simply follow the on-screen instructions and wait for the firmware update to complete. It may take up to 15 minutes of waiting to complete this update.</strong></p><p><strong>Step 6:</strong><br/><strong>Congratulations! Your firmware has been successfully updated</strong></p>"
+          }
+        },
+        "accordion_item_Jtgfh8": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "How to switch songs in setlists with the Pulse?",
+            "answer": "<p>You can change the songs inside of a setlist directly from the Soundbrenner Pulse. This feature is useful when you don't want to use the app to skip to the next or previous song during practice or live performance. <br/><br/><strong>1.</strong> Load a setlist to your metronome. <br/><br/><strong>2. </strong>To skip to the next song, turn the BPM Wheel of the Soundbrenner Pulse:</p><ul><li>Right </li><li>Left </li><li>Right</li></ul><p>Once the next song is selected, you will see the green light and feel a short vibration. </p><p><strong>3.</strong> To skip to the previous song, turn the BPM wheel of the Soundbrenner Pulse: </p><ul><li>Left </li><li>Right </li><li>Left </li></ul><p>Once the previous song is selected, you will see the yellow light and feel a short vibration. </p>"
+          }
         }
       },
       "block_order": [
@@ -610,7 +631,10 @@
         "divider_8P9EHA",
         "heading_YCjcWn",
         "accordion_item_TxM6fP",
-        "accordion_item_RKQQTf"
+        "accordion_item_RKQQTf",
+        "accordion_item_zHxCRR",
+        "accordion_item_EzReFW",
+        "accordion_item_Jtgfh8"
       ],
       "settings": {}
     },
