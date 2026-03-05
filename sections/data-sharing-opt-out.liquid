@@ -1,15 +1,6 @@
-{% liquid
-  assign opt_out_title = page.title | default: '' | strip
-  assign opt_out_title_words = opt_out_title | split: ' '
-  assign opt_out_title_first_word = opt_out_title_words | first | strip
-  assign opt_out_title_remaining = opt_out_title | remove_first: opt_out_title_first_word | strip
-%}
-
 <section class="sb-data-sharing-opt-out" data-sb-reveal>
   <div class="sb-data-sharing-opt-out__title" data-sb-reveal-item>
-    <h1 class="font-title weight-bold">
-      <span>{{ opt_out_title_first_word }}</span>{% if opt_out_title_remaining != blank %} <span class="sb-data-sharing-opt-out__title-smallcaps">{{ opt_out_title_remaining }}</span>{% endif %}
-    </h1>
+    <h1 class="font-title weight-bold">{{ page.title | default: '' | strip | downcase | capitalize }}</h1>
   </div>
 
   <div class="sb-data-sharing-opt-out__content rte font-body weight-regular sb-flow-24" data-sb-reveal-item>
@@ -28,15 +19,6 @@
 
   .sb-data-sharing-opt-out__title h1 {
     margin: 0;
-  }
-
-  .sb-data-sharing-opt-out__title-smallcaps {
-    font-variant: small-caps;
-    font-variant-caps: all-small-caps;
-    font-feature-settings: 'smcp' 1, 'c2sc' 1;
-    font-size: 0.88em;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
   }
 
   .sb-data-sharing-opt-out__content {
