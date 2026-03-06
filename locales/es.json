@@ -319,5 +319,12 @@
       "subheadline_free_shipping": "Ahorra hasta un {{ Sitewide discount depth }}% y consigue envío gratis a {{ Shipping country }} en pedidos superiores a {{ Free shipping threshold }}.",
       "subheadline_no_free_shipping": "Ahorra hasta un {{ Sitewide discount depth }}% en {{ Shipping country }}."
     }
+  },
+  "shopify": {
+    "checkout": {
+      "split_delivery": {
+        "items_for_shipping": "Artículos para envío"
+      }
+    }
   }
 }
