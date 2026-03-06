@@ -319,5 +319,12 @@
       "subheadline_free_shipping": "최대 {{ Sitewide discount depth }}% 할인 받고, {{ Free shipping threshold }} 이상 주문 시 {{ Shipping country }}에서 무료 배송을 받아봐.",
       "subheadline_no_free_shipping": "{{ Shipping country }}에서 최대 {{ Sitewide discount depth }}%까지 할인받아."
     }
+  },
+  "shopify": {
+    "checkout": {
+      "split_delivery": {
+        "items_for_shipping": "배송 품목"
+      }
+    }
   }
 }
