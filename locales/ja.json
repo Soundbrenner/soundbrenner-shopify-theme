@@ -51,7 +51,12 @@
   "password": {
     "title": "このショップは非公開です",
     "password": "パスワード",
-    "enter": "入力"
+    "enter": "入力",
+    "page_title": "パスワード保護",
+    "enter_using_password": "パスワードで入る",
+    "log_in_here": "ここからログイン",
+    "enter_password": "パスワードを入力",
+    "close_dialog": "パスワードダイアログを閉じる"
   },
   "search": {
     "title": "検索",

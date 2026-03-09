@@ -51,7 +51,12 @@
   "password": {
     "title": "This shop is private",
     "password": "Password",
-    "enter": "Enter"
+    "enter": "Enter",
+    "page_title": "Password protected",
+    "enter_using_password": "Enter using password",
+    "log_in_here": "Log in here",
+    "enter_password": "Enter password",
+    "close_dialog": "Close password dialog"
   },
   "search": {
     "title": "Search",

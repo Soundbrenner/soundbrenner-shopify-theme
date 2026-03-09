@@ -51,7 +51,12 @@
   "password": {
     "title": "Dieser Laden ist privat",
     "password": "Passwort",
-    "enter": "Eingeben"
+    "enter": "Eingeben",
+    "page_title": "Passwortgeschützt",
+    "enter_using_password": "Mit Passwort betreten",
+    "log_in_here": "Hier einloggen",
+    "enter_password": "Passwort eingeben",
+    "close_dialog": "Passwortdialog schließen"
   },
   "search": {
     "title": "Suche",

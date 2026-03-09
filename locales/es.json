@@ -51,7 +51,12 @@
   "password": {
     "title": "Esta tienda es privada",
     "password": "Contraseña",
-    "enter": "Entrar"
+    "enter": "Entrar",
+    "page_title": "Protegido con contraseña",
+    "enter_using_password": "Entrar con contraseña",
+    "log_in_here": "Inicia sesión aquí",
+    "enter_password": "Introducir contraseña",
+    "close_dialog": "Cerrar diálogo de contraseña"
   },
   "search": {
     "title": "Buscar",

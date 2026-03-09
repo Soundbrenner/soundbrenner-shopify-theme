@@ -51,7 +51,12 @@
   "password": {
     "title": "此商店为私人商店",
     "password": "密码",
-    "enter": "进入"
+    "enter": "进入",
+    "page_title": "受密码保护",
+    "enter_using_password": "使用密码进入",
+    "log_in_here": "在此登录",
+    "enter_password": "输入密码",
+    "close_dialog": "关闭密码对话框"
   },
   "search": {
     "title": "搜索",

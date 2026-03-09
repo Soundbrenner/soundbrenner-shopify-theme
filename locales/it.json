@@ -51,7 +51,12 @@
   "password": {
     "title": "Questo negozio è privato",
     "password": "Password",
-    "enter": "Entra"
+    "enter": "Entra",
+    "page_title": "Protetto da password",
+    "enter_using_password": "Entra con password",
+    "log_in_here": "Accedi qui",
+    "enter_password": "Inserisci la password",
+    "close_dialog": "Chiudi finestra password"
   },
   "search": {
     "title": "Cerca",
