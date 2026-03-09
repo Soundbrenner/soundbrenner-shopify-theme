@@ -1,7 +1,7 @@
 {% layout none %}
 
 <!doctype html>
-<html lang="{{ request.locale.iso_code }}" data-theme="light">
+<html lang="{{ request.locale.iso_code }}" data-theme="dark">
   <head>
     {% assign page_title = 'gift_card.card' | t %}
     {% assign page_description = 'gift_card.use_at_checkout' | t %}
@@ -65,9 +65,13 @@
       {% assign gift_card_copy_success_label = 'gift_card.copy_code_success' | t %}
       {% assign gift_card_shop_label = 'gift_card.shop_link' | t %}
       <div class="shopify-section sb-gift-card__panel">
-        <span class="sb-gift-card__logo" aria-hidden="true">
+        <a
+          class="sb-gift-card__logo"
+          href="https://www.soundbrenner.com/"
+          aria-label="{{ shop.name | escape }}"
+        >
           {{ 'logo-soundbrenner-wordmark.svg' | inline_asset_content }}
-        </span>
+        </a>
 
         <div class="sb-gift-card__media-frame{% if gift_card_product_hover_image_url != blank %} sb-gift-card__media-frame--has-hover{% endif %}">
           {% if gift_card_product_image != blank %}

@@ -30,9 +30,11 @@
 }
 
 .sb-gift-card__logo {
+  color: inherit;
   display: block;
   height: var(--sb-space-64);
   margin-bottom: var(--sb-space-48);
+  text-decoration: none;
   width: auto;
 }
 
@@ -40,6 +42,11 @@
   display: block;
   height: var(--sb-space-64);
   width: auto;
+}
+
+.sb-gift-card__logo:focus-visible,
+.sb-gift-card__logo:active {
+  color: var(--sb-color-primary-500);
 }
 
 .sb-gift-card__media-frame {
@@ -185,6 +192,10 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .sb-gift-card__logo:hover {
+    color: var(--sb-color-primary-500);
+  }
+
   .sb-gift-card__media-frame--has-hover:hover .sb-gift-card__media-image--primary {
     opacity: 0;
   }
