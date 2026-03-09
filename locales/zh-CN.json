@@ -91,7 +91,8 @@
       "download_app_store": "在 App Store 下载",
       "download_china": "中国大陆下载",
       "download_google_play": "在 Google Play 下载",
-      "google_play": "Google Play"
+      "google_play": "Google Play",
+      "try_free_now": "立即免费试用"
     },
     "blog": {
       "about_soundbrenner": "关于 Soundbrenner",
@@ -145,7 +146,8 @@
         "ukulele": "尤克里里",
         "vocals": "人声",
         "woodwind": "木管乐器"
-      }
+      },
+      "about_box_default_html": "<p><strong>关于 Soundbrenner</strong></p><p>我们的使命是让音乐练习变得让人上瘾。</p><p>请在主题编辑器中添加你的链接和文案。</p>"
     },
     "cart": {
       "accepted_payment_methods": "可接受的付款方式",
@@ -206,7 +208,10 @@
       "region_selector": "地区选择器",
       "search": "搜索",
       "secs": "秒",
-      "verified_buyer": "已验证买家"
+      "verified_buyer": "已验证买家",
+      "cookie_preferences": "Cookie 偏好设置",
+      "in_the_box": "包装内含",
+      "tech_specs": "技术规格"
     },
     "contact": {
       "email": "电子邮件",
@@ -365,6 +370,16 @@
       "subheadline_blocked": "我们无法运送到{{ Shipping country }}。请选择其他国家。",
       "subheadline_free_shipping": "全场最高可享{{ Sitewide discount depth }}%优惠，订单满{{ Free shipping threshold }}元，寄往{{ Shipping country }}可享免费送货。",
       "subheadline_no_free_shipping": "在{{ Shipping country }}，最高可享{{ Sitewide discount depth }}%优惠。"
+    },
+    "debug": {
+      "panel_aria_label": "主题调试切换",
+      "theme": "主题",
+      "debug": "调试",
+      "dark": "深色",
+      "light": "灯光",
+      "auto": "自动",
+      "klaviyo_popup": "Klaviyo 弹窗",
+      "product_sticky": "产品置顶"
     }
   },
   "shopify": {
