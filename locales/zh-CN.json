@@ -389,6 +389,21 @@
       "auto": "自动",
       "klaviyo_popup": "Klaviyo 弹窗",
       "product_sticky": "产品置顶"
+    },
+    "gift_card": {
+      "copy_code": "复制礼品卡代码",
+      "copy_code_success": "礼品卡代码已复制。",
+      "qr_code_label": "礼品卡二维码",
+      "shop_link": "访问在线商店"
+    },
+    "password": {
+      "close": "关闭密码对话框",
+      "enter_password": "输入密码",
+      "enter_using_password": "使用密码进入",
+      "log_in_here": "在这里登录",
+      "page_title": "受密码保护",
+      "message_fallback": "请输入密码以继续访问商店。",
+      "store_owner_html": "店主？<a href=\"{{ link }}\">在这里登录</a>"
     }
   },
   "shopify": {
