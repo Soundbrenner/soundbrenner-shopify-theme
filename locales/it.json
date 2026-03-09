@@ -100,7 +100,8 @@
       "download_app_store": "Scarica su App Store",
       "download_china": "Scarica in Cina",
       "download_google_play": "Scarica su Google Play",
-      "google_play": "Google Play"
+      "google_play": "Google Play",
+      "try_free_now": "Provalo gratis ora"
     },
     "blog": {
       "about_soundbrenner": "Informazioni su Soundbrenner",
@@ -154,7 +155,8 @@
         "ukulele": "Ukulele",
         "vocals": "Voce",
         "woodwind": "Strumenti a fiato in legno"
-      }
+      },
+      "about_box_default_html": "<p><strong>Chi è Soundbrenner</strong></p><p>La nostra missione è rendere la pratica musicale irresistibile.</p><p>Aggiungi i tuoi link e i tuoi testi nell’editor del tema.</p>"
     },
     "cart": {
       "accepted_payment_methods": "Metodi di pagamento accettati",
@@ -215,7 +217,10 @@
       "region_selector": "Selettore regione",
       "search": "Cerca",
       "secs": "sec",
-      "verified_buyer": "Acquirente verificato"
+      "verified_buyer": "Acquirente verificato",
+      "cookie_preferences": "Preferenze cookie",
+      "in_the_box": "Nella confezione",
+      "tech_specs": "Specifiche tecniche"
     },
     "contact": {
       "email": "Email",
@@ -374,6 +379,38 @@
       "subheadline_blocked": "Non spediamo in {{ Shipping country }}. Seleziona un altro paese.",
       "subheadline_free_shipping": "Risparmia fino al {{ Sitewide discount depth }}% e ricevi la spedizione gratuita in {{ Shipping country }} per ordini superiori a {{ Free shipping threshold }}.",
       "subheadline_no_free_shipping": "Risparmia fino al {{ Sitewide discount depth }}% in {{ Shipping country }}."
+    },
+    "gift_card": {
+      "copy_code": "Copia il codice della gift card",
+      "copy_code_success": "Codice della gift card copiato.",
+      "qr_code_label": "Codice QR della gift card",
+      "shop_link": "Visita lo store online"
+    },
+    "debug": {
+      "panel_aria_label": "Attiva/disattiva debug tema",
+      "theme": "Tema",
+      "debug": "Debug",
+      "dark": "Scuro",
+      "light": "Luce",
+      "auto": "Auto",
+      "klaviyo_popup": "Popup Klaviyo",
+      "product_sticky": "Prodotto in evidenza"
+    },
+    "password": {
+      "close": "Chiudi finestra password",
+      "enter_password": "Inserisci la password",
+      "enter_using_password": "Accedi usando la password",
+      "log_in_here": "Accedi qui",
+      "page_title": "Protetto da password",
+      "message_fallback": "Inserisci la password per continuare al negozio.",
+      "store_owner_html": "Proprietario di un negozio? <a href=\"{{ link }}\">Accedi qui</a>"
+    }
+  },
+  "shopify": {
+    "checkout": {
+      "split_delivery": {
+        "items_for_shipping": "Articoli per la spedizione"
+      }
     }
   }
 }

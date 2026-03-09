@@ -100,7 +100,8 @@
       "download_app_store": "Télécharger sur l’App Store",
       "download_china": "Télécharger en Chine",
       "download_google_play": "Télécharger sur Google Play",
-      "google_play": "Google Play"
+      "google_play": "Google Play",
+      "try_free_now": "Essaie-le gratuitement maintenant"
     },
     "blog": {
       "about_soundbrenner": "À propos de Soundbrenner",
@@ -154,7 +155,8 @@
         "ukulele": "Ukulélé",
         "vocals": "Chant",
         "woodwind": "Bois"
-      }
+      },
+      "about_box_default_html": "<p><strong>À propos de Soundbrenner</strong></p><p>Notre mission, c’est de rendre la pratique musicale addictive.</p><p>Ajoute tes liens et ton texte dans l’éditeur de thème.</p>"
     },
     "cart": {
       "accepted_payment_methods": "Moyens de paiement acceptés",
@@ -215,7 +217,10 @@
       "region_selector": "Sélecteur de région",
       "search": "Rechercher",
       "secs": "sec",
-      "verified_buyer": "Acheteur vérifié"
+      "verified_buyer": "Acheteur vérifié",
+      "cookie_preferences": "Préférences de cookies",
+      "in_the_box": "Dans la boîte",
+      "tech_specs": "Caractéristiques techniques"
     },
     "contact": {
       "email": "E-mail",
@@ -374,6 +379,31 @@
       "subheadline_blocked": "Nous ne livrons pas vers {{ Shipping country }}. Choisis un autre pays.",
       "subheadline_free_shipping": "Économise jusqu'à {{ Sitewide discount depth }} % et profite de la livraison gratuite en {{ Shipping country }} pour toute commande supérieure à {{ Free shipping threshold }}.",
       "subheadline_no_free_shipping": "Économise jusqu'à {{ Sitewide discount depth }} % en {{ Shipping country }}."
+    },
+    "gift_card": {
+      "copy_code": "Copie le code de la carte cadeau",
+      "copy_code_success": "Code de la carte cadeau copié.",
+      "qr_code_label": "Code QR de carte cadeau",
+      "shop_link": "Visite la boutique en ligne"
+    },
+    "debug": {
+      "panel_aria_label": "Basculer le mode débogage du thème",
+      "theme": "Thème",
+      "debug": "Déboguer",
+      "dark": "Sombre",
+      "light": "Lumière",
+      "auto": "Auto",
+      "klaviyo_popup": "Popup Klaviyo",
+      "product_sticky": "Produit épinglé"
+    },
+    "password": {
+      "close": "Fermer la fenêtre du mot de passe",
+      "enter_password": "Saisis ton mot de passe",
+      "enter_using_password": "Entrer avec le mot de passe",
+      "log_in_here": "Connecte-toi ici",
+      "page_title": "Protégé par mot de passe",
+      "message_fallback": "Saisis le mot de passe pour continuer vers la boutique.",
+      "store_owner_html": "Propriétaire de boutique ? <a href=\"{{ link }}\">Connecte-toi ici</a>"
     }
   },
   "shopify": {
