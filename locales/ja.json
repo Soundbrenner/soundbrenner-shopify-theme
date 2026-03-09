@@ -366,5 +366,12 @@
       "subheadline_free_shipping": "最大{{ Sitewide discount depth }}%オフ＆{{ Free shipping threshold }}以上のご注文で{{ Shipping country }}への送料無料。",
       "subheadline_no_free_shipping": "{{ Shipping country }}で最大{{ Sitewide discount depth }}%オフ"
     }
+  },
+  "shopify": {
+    "checkout": {
+      "split_delivery": {
+        "items_for_shipping": "発送用アイテム"
+      }
+    }
   }
 }

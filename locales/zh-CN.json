@@ -366,5 +366,12 @@
       "subheadline_free_shipping": "全场最高可享{{ Sitewide discount depth }}%优惠，订单满{{ Free shipping threshold }}元，寄往{{ Shipping country }}可享免费送货。",
       "subheadline_no_free_shipping": "在{{ Shipping country }}，最高可享{{ Sitewide discount depth }}%优惠。"
     }
+  },
+  "shopify": {
+    "checkout": {
+      "split_delivery": {
+        "items_for_shipping": "待发货商品"
+      }
+    }
   }
 }
