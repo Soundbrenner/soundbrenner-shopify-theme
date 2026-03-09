@@ -44,8 +44,11 @@
   "gift_card": {
     "add_to_apple_wallet": "Zu Apple Wallet hinzufügen",
     "card": "Geschenkkarte",
+    "copy_code": "Geschenkkartencode kopieren",
+    "copy_code_success": "Geschenkkartencode kopiert.",
     "expired": "Diese Geschenkkarte ist abgelaufen",
     "expires_on": "Läuft ab am {{ expires_on }}",
+    "shop_link": "Onlineshop besuchen",
     "use_at_checkout": "Verwende diese Geschenkkarte beim Bezahlen"
   },
   "password": {

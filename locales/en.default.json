@@ -44,8 +44,11 @@
   "gift_card": {
     "add_to_apple_wallet": "Add to Apple Wallet",
     "card": "Gift card",
+    "copy_code": "Copy gift card code",
+    "copy_code_success": "Gift card code copied.",
     "expired": "This gift card has expired",
     "expires_on": "Expires on {{ expires_on }}",
+    "shop_link": "Visit online store",
     "use_at_checkout": "Use this gift card at checkout"
   },
   "password": {

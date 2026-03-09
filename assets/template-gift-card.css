@@ -35,7 +35,12 @@
   display: block;
   height: var(--sb-space-64);
   margin-bottom: var(--sb-space-48);
-  object-fit: contain;
+  width: auto;
+}
+
+.sb-gift-card__logo svg {
+  display: block;
+  height: var(--sb-space-64);
   width: auto;
 }
 
@@ -85,11 +90,7 @@
 }
 
 .sb-gift-card__qr-frame {
-  background: var(--sb-color-neutral-100);
-  border: 1px solid var(--sb-color-neutral-900-12);
-  border-radius: calc(var(--sb-radius-card) * 0.75);
   margin: 0 0 var(--sb-space-24);
-  padding: var(--sb-space-16);
   width: fit-content;
 }
 
@@ -130,30 +131,10 @@
 }
 
 .sb-gift-card__link {
-  background: transparent;
-  border: 1px solid var(--sb-color-neutral-900-12);
-  border-radius: var(--sb-radius-pill);
   box-sizing: border-box;
-  color: var(--color-foreground);
-  display: inline-flex;
-  font-family: var(--font-primary--family);
-  font-size: var(--font-size-body);
-  font-weight: 600;
-  justify-content: center;
+  height: auto;
   min-height: 3.25rem;
-  padding: 0 var(--sb-space-24);
-  text-align: center;
-  text-decoration: none;
-}
-
-.sb-gift-card__link:focus-visible {
-  outline: 2px solid var(--sb-color-primary-500);
-  outline-offset: 2px;
-}
-
-.sb-gift-card__link:active {
-  border-color: var(--sb-color-primary-500);
-  color: var(--sb-color-primary-500);
+  padding-inline: var(--sb-space-24);
 }
 
 .sb-gift-card__feedback {
@@ -189,10 +170,5 @@
 
   .sb-gift-card__media-frame--has-hover:hover .sb-gift-card__media-image--hover {
     opacity: 1;
-  }
-
-  .sb-gift-card__link:hover {
-    border-color: var(--sb-color-primary-500);
-    color: var(--sb-color-primary-500);
   }
 }

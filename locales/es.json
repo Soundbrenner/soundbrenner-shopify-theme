@@ -44,8 +44,11 @@
   "gift_card": {
     "add_to_apple_wallet": "Añadir a Apple Wallet",
     "card": "Tarjeta de regalo",
+    "copy_code": "Copiar código de la tarjeta regalo",
+    "copy_code_success": "Código de la tarjeta regalo copiado.",
     "expired": "Esta tarjeta de regalo ha caducado",
     "expires_on": "Vence el {{ expires_on }}",
+    "shop_link": "Visitar tienda online",
     "use_at_checkout": "Usa esta tarjeta de regalo al finalizar la compra"
   },
   "password": {

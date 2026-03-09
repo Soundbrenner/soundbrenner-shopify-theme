@@ -44,8 +44,11 @@
   "gift_card": {
     "add_to_apple_wallet": "Apple 지갑에 추가",
     "card": "상품권",
+    "copy_code": "상품권 코드 복사",
+    "copy_code_success": "상품권 코드를 복사했습니다.",
     "expired": "이 상품권은 만료되었습니다",
     "expires_on": "{{ expires_on }}에 만료됨",
+    "shop_link": "온라인 스토어 방문",
     "use_at_checkout": "이 상품권은 결제할 때 사용해 줘"
   },
   "password": {

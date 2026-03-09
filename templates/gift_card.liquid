@@ -41,16 +41,9 @@
         {{ 'gift_card.use_at_checkout' | t }}.
       {% endcapture %}
       <div class="shopify-section sb-gift-card__panel">
-        {% if settings.logo %}
-          {{
-            settings.logo
-            | image_url: width: 256
-            | image_tag:
-              class: 'sb-gift-card__logo',
-              alt: shop.name,
-              loading: 'eager'
-          }}
-        {% endif %}
+        <span class="sb-gift-card__logo" aria-hidden="true">
+          {{ 'logo-soundbrenner-wordmark.svg' | inline_asset_content }}
+        </span>
 
         <div class="sb-gift-card__media-frame{% if gift_card_product_hover_image != blank %} sb-gift-card__media-frame--has-hover{% endif %}">
           {% if gift_card_product_image != blank %}
@@ -104,17 +97,17 @@
 
         <div class="sb-gift-card__actions" data-gift-card-code="{{ gift_card.code | escape }}">
           {% render 'radiant-button',
-            label: 'sb.gift_card.copy_code' | t,
+            label: 'gift_card.copy_code' | t,
             size: 'large',
             extra_class: 'sb-gift-card__button sb-gift-card__copy-button font-caption weight-bold'
           %}
 
           <p class="sb-gift-card__feedback visually-hidden" role="status" data-gift-card-copy-feedback>
-            {{ 'sb.gift_card.copy_code_success' | t }}
+            {{ 'gift_card.copy_code_success' | t }}
           </p>
 
-          <a href="{{ routes.root_url }}" class="sb-gift-card__link">
-            {{ 'sb.gift_card.shop_link' | t }}
+          <a href="{{ routes.root_url }}" class="sb-gift-card__link sb-button-outline-pill-medium font-caption weight-semibold">
+            {{ 'gift_card.shop_link' | t }}
           </a>
         </div>
       </div>
