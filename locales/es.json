@@ -91,7 +91,8 @@
       "download_app_store": "Descarga en el App Store",
       "download_china": "Descargar en China",
       "download_google_play": "Descarga en Google Play",
-      "google_play": "Google Play"
+      "google_play": "Google Play",
+      "try_free_now": "Pruébalo gratis ahora"
     },
     "blog": {
       "about_soundbrenner": "Acerca de Soundbrenner",
@@ -145,7 +146,8 @@
         "ukulele": "Ukelele",
         "vocals": "Voces",
         "woodwind": "Instrumentos de viento madera"
-      }
+      },
+      "about_box_default_html": "<p><strong>Acerca de Soundbrenner</strong></p><p>Nuestra misión es hacer que practicar música sea adictivo.</p><p>Agrega tus enlaces y textos en el editor de temas.</p>"
     },
     "cart": {
       "accepted_payment_methods": "Métodos de pago aceptados",
@@ -206,7 +208,10 @@
       "region_selector": "Selector de región",
       "search": "Buscar",
       "secs": "segundos",
-      "verified_buyer": "Comprador verificado"
+      "verified_buyer": "Comprador verificado",
+      "cookie_preferences": "Preferencias de cookies",
+      "in_the_box": "En la caja",
+      "tech_specs": "Especificaciones técnicas"
     },
     "contact": {
       "email": "Correo electrónico",
@@ -365,6 +370,16 @@
       "subheadline_blocked": "No hacemos envíos a {{ Shipping country }}. Selecciona otro país.",
       "subheadline_free_shipping": "Ahorra hasta un {{ Sitewide discount depth }}% y consigue envío gratis a {{ Shipping country }} en pedidos superiores a {{ Free shipping threshold }}.",
       "subheadline_no_free_shipping": "Ahorra hasta un {{ Sitewide discount depth }}% en {{ Shipping country }}."
+    },
+    "debug": {
+      "panel_aria_label": "Alternar depuración de tema",
+      "theme": "Tema",
+      "debug": "Depurar",
+      "dark": "Oscuro",
+      "light": "Luz",
+      "auto": "Automático",
+      "klaviyo_popup": "Ventana emergente de Klaviyo",
+      "product_sticky": "Producto fijo"
     }
   },
   "shopify": {
