@@ -1,7 +1,5 @@
 .sb-gift-card-page {
-  background:
-    radial-gradient(circle at top, var(--sb-color-neutral-200) 0%, var(--color-background) 55%),
-    var(--color-background);
+  background: var(--sb-color-neutral-100);
   color: var(--color-foreground);
 }
 
