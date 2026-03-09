@@ -311,8 +311,11 @@
   }
 
   @media (hover: hover) and (pointer: fine) {
-    .sb-cart-page__empty-collection-media:hover,
     .sb-cart-page__empty-collection-media:focus-visible {
+      transform: scale(var(--sb-hover-scale-factor, 1.015));
+    }
+
+    .sb-cart-page__empty-collection-media:hover {
       transform: scale(var(--sb-hover-scale-factor, 1.015));
     }
   }
@@ -324,9 +327,14 @@
     text-decoration: none;
   }
 
-  .sb-cart-page__empty-collection-title:hover,
   .sb-cart-page__empty-collection-title:focus-visible {
     color: var(--sb-color-primary-500);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-cart-page__empty-collection-title:hover {
+      color: var(--sb-color-primary-500);
+    }
   }
 
   .sb-cart-page__empty-payments {

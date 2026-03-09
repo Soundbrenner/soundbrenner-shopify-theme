@@ -71,9 +71,14 @@
     transition: transform 220ms ease;
   }
 
-  .sb-resource-tile__link:hover,
   .sb-resource-tile__link:focus-visible {
     transform: translateY(-1px) scale(var(--sb-hover-scale-factor, 1.015));
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-resource-tile__link:hover {
+      transform: translateY(-1px) scale(var(--sb-hover-scale-factor, 1.015));
+    }
   }
 
   .sb-resource-tile__media {

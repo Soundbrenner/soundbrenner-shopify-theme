@@ -325,6 +325,7 @@
       showPanel({ focusSearch = true } = {}) {
         if (!this.panel || !this.button || this.isOpen) return;
 
+        this.updatePanelWidth();
         this.button.setAttribute('aria-expanded', 'true');
         this.setAttribute('data-open', 'true');
         this.panel.classList.remove('is-closing');
@@ -389,6 +390,17 @@
 
       handleRequestClose() {
         this.hidePanel();
+      }
+
+      updatePanelWidth() {
+        if (!this.panel) return;
+
+        this.panel.style.removeProperty('--header-localization-panel-width');
+        const panelWidth = Math.ceil(this.panel.offsetWidth);
+
+        if (panelWidth > 0) {
+          this.panel.style.setProperty('--header-localization-panel-width', `${panelWidth}px`);
+        }
       }
     }
 

@@ -1,0 +1,63 @@
+<div
+  class="sb-search-shortcut"
+  data-search-shortcut-modal
+  data-search-url="{{ routes.search_url }}"
+  data-predictive-search-url="{{ routes.predictive_search_url }}"
+  data-empty-section-id="predictive-search-empty"
+  data-predictive-section-id="predictive-search"
+  data-error-text="{{ 'search.shortcut.error' | t | escape }}"
+  data-recently-viewed-title="{{ 'search.shortcut.recently_viewed' | t | escape }}"
+  data-recently-viewed-storage-key="viewedProducts"
+  data-search-bestsellers-title="{{ 'search.shortcut.bestsellers' | t | escape }}"
+  data-search-bestseller-ids="{{ search_shortcut_bestseller_ids | escape }}"
+>
+  <div
+    class="sb-search-shortcut__dialog"
+    data-search-shortcut-dialog
+    role="dialog"
+    aria-modal="false"
+    aria-label="{{ 'search.title' | t }}"
+    hidden
+  >
+    <form
+      class="sb-search-shortcut__form"
+      action="{{ routes.search_url }}"
+      method="get"
+      role="search"
+      data-search-shortcut-form
+    >
+      <div class="sb-search-shortcut__header">
+        <button
+          type="button"
+          class="sb-search-shortcut__mobile-close"
+          data-search-shortcut-close
+          aria-label="{{ 'search.shortcut.close' | t }}"
+        >
+          <span class="sb-search-shortcut__mobile-close-icon" aria-hidden="true">
+            {{ 'icon-cancel.svg' | inline_asset_content }}
+          </span>
+        </button>
+        <div class="sb-search-shortcut__field">
+          <span class="sb-search-shortcut__icon" aria-hidden="true">{{ 'icon-search.svg' | inline_asset_content }}</span>
+          <input
+            class="sb-search-shortcut__input font-form-input weight-regular"
+            type="search"
+            name="q"
+            placeholder="{{ 'search.shortcut.placeholder' | t }}"
+            autocomplete="off"
+            data-search-shortcut-input
+          >
+          <input type="hidden" name="type" value="product">
+        </div>
+      </div>
+
+      <div class="sb-search-shortcut__body" data-search-shortcut-results></div>
+
+      <div class="sb-search-shortcut__footer">
+        <button class="sb-search-shortcut__view-all sb-button-radiant sb-button-radiant--large" type="submit">
+          <span class="sb-button-radiant__label">{{ 'search.shortcut.view_all' | t }}</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

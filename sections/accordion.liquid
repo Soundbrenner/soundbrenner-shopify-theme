@@ -176,7 +176,7 @@
               {% for raw_group in tech_specs_items %}
                 {% liquid
                   assign group_entry = raw_group.value | default: raw_group.reference.value | default: raw_group.reference | default: raw_group
-                  assign group_title = group_entry.tech_specs_title.value | default: group_entry.tech_specs_title | default: group_entry.title.value | default: group_entry.title | default: tech_specs_title | default: 'Tech specs'
+                  assign group_title = group_entry.tech_specs_title.value | default: group_entry.tech_specs_title | default: group_entry.title.value | default: group_entry.title | default: tech_specs_title | default: 'sb.common.tech_specs' | t
                   assign group_title = group_title | append: '' | strip
                   assign group_items = group_entry.tech_specs_item.value | default: group_entry.tech_specs_item.references | default: group_entry.tech_specs_item
                   assign has_group_rows = false
@@ -253,7 +253,7 @@
                   data-accordion-trigger
                   data-sb-reveal-item
                 >
-                  <span class="sb-accordion__question font-body weight-bold">{{ tech_specs_title | default: 'Tech specs' }}</span>
+                    <span class="sb-accordion__question font-body weight-bold">{{ tech_specs_title | default: 'sb.common.tech_specs' | t }}</span>
                   <span class="sb-accordion__icon" aria-hidden="true">
                     <span class="sb-accordion__icon-plus">{{ 'icon-accordion-add.svg' | inline_asset_content }}</span>
                     <span class="sb-accordion__icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
@@ -386,11 +386,17 @@
     text-decoration: none;
   }
 
-  .sb-accordion__subtitle a:hover,
   .sb-accordion__subtitle a:focus-visible,
   .sb-accordion__subtitle a:active {
     color: var(--sb-color-primary-500);
     text-decoration: underline;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-accordion__subtitle a:hover {
+      color: var(--sb-color-primary-500);
+      text-decoration: underline;
+    }
   }
 
   .sb-accordion__layout {
@@ -540,11 +546,17 @@
     text-decoration: none;
   }
 
-  .sb-accordion__spec-value a:hover,
   .sb-accordion__spec-value a:focus-visible,
   .sb-accordion__spec-value a:active {
     color: var(--sb-color-primary-500);
     text-decoration: underline;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-accordion__spec-value a:hover {
+      color: var(--sb-color-primary-500);
+      text-decoration: underline;
+    }
   }
 
   .sb-accordion__item.is-open .sb-accordion__answer {

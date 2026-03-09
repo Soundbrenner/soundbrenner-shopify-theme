@@ -1,18 +1,18 @@
 {% liquid
   assign compare_table = blank
   if request.page_type == 'product' and product != blank
-    assign compare_table = product.metafields.custom.sbv2_compare_table.value | default: product.metafields.custom.sbv2_compare_table
+    assign compare_table = product.metafields.custom.sbv2_compare_table.value
   endif
   if compare_table == blank
-    assign compare_table = page.metafields.custom.sbv2_compare_table.value | default: page.metafields.custom.sbv2_compare_table
+    assign compare_table = page.metafields.custom.sbv2_compare_table.value
   endif
   assign compare_title = blank
   assign compare_products = blank
   if compare_table != blank
     if section.settings.use_metaobject_title
-      assign compare_title = compare_table.title.value | default: compare_table.title
+      assign compare_title = compare_table.title.value
     endif
-    assign compare_products = compare_table.products.value | default: compare_table.products.references | default: compare_table.products
+    assign compare_products = compare_table.products.value
   endif
   assign compare_chevron_icon_url = 'icon-chevron.svg' | asset_url
 %}
@@ -42,13 +42,8 @@
       {% for compare_item in compare_products limit: 12 %}
         {% liquid
           assign compare_product = blank
-          assign compare_item_entry = compare_item.value | default: compare_item.reference.value | default: compare_item.reference | default: compare_item
-          if compare_item_entry.url != blank and compare_item_entry.variants != blank
-            assign compare_product = compare_item_entry
-          elsif compare_item_entry.product != blank
-            assign compare_product = compare_item_entry.product.value | default: compare_item_entry.product
-          elsif compare_item_entry.handle != blank
-            assign compare_product = all_products[compare_item_entry.handle]
+          if compare_item != blank and compare_item.url != blank and compare_item.variants != blank
+            assign compare_product = compare_item
           endif
         %}
         {% if compare_product != blank %}
@@ -63,13 +58,8 @@
               {% for selector_item in compare_products limit: 12 %}
                 {% liquid
                   assign selector_product = blank
-                  assign selector_item_entry = selector_item.value | default: selector_item.reference.value | default: selector_item.reference | default: selector_item
-                  if selector_item_entry.url != blank and selector_item_entry.variants != blank
-                    assign selector_product = selector_item_entry
-                  elsif selector_item_entry.product != blank
-                    assign selector_product = selector_item_entry.product.value | default: selector_item_entry.product
-                  elsif selector_item_entry.handle != blank
-                    assign selector_product = all_products[selector_item_entry.handle]
+                  if selector_item != blank and selector_item.url != blank and selector_item.variants != blank
+                    assign selector_product = selector_item
                   endif
                 %}
                 {% if selector_product != blank %}
@@ -93,46 +83,22 @@
             {% for variant_item in compare_products limit: 12 %}
               {% liquid
                 assign variant_product = blank
-                assign variant_item_entry = variant_item.value | default: variant_item.reference.value | default: variant_item.reference | default: variant_item
-                if variant_item_entry.url != blank and variant_item_entry.variants != blank
-                  assign variant_product = variant_item_entry
-                elsif variant_item_entry.product != blank
-                  assign variant_product = variant_item_entry.product.value | default: variant_item_entry.product
-                elsif variant_item_entry.handle != blank
-                  assign variant_product = all_products[variant_item_entry.handle]
+                if variant_item != blank and variant_item.url != blank and variant_item.variants != blank
+                  assign variant_product = variant_item
                 endif
               %}
               {% if variant_product != blank %}
                 {% assign variant_index = variant_index | plus: 1 %}
                 {% liquid
                   assign variant_compare_info_text = blank
-                  assign variant_product_settings_ref = variant_product.metafields.custom.sbv2_product_settings.value | default: variant_product.metafields.custom.sbv2_product_settings
+                  assign variant_product_settings_ref = variant_product.metafields.custom.sbv2_product_settings.value
 
                   if variant_product_settings_ref != blank
-                    assign variant_compare_points = variant_product_settings_ref.compare_table_compare_points.value | default: variant_product_settings_ref.compare_table_compare_points
+                    assign variant_compare_points = variant_product_settings_ref.compare_table_compare_points.value
                     if variant_compare_points != blank
                       assign variant_compare_info_rows = ''
                       for compare_entry in variant_compare_points
-                        assign compare_row_text = compare_entry.value | default: compare_entry
-                        if compare_row_text == blank
-                          assign compare_row_text = compare_entry.text.value | default: compare_entry.text
-                        endif
-                        if compare_row_text == blank
-                          assign compare_row_text = compare_entry.label.value | default: compare_entry.label
-                        endif
-                        if compare_row_text == blank
-                          assign compare_row_text = compare_entry.feature.value | default: compare_entry.feature
-                        endif
-                        if compare_row_text == blank
-                          assign compare_row_text = compare_entry.item.value | default: compare_entry.item
-                        endif
-                        if compare_row_text == blank
-                          assign compare_row_text = compare_entry.content.value | default: compare_entry.content
-                        endif
-                        if compare_row_text == blank
-                          assign compare_row_text = compare_entry.description.value | default: compare_entry.description
-                        endif
-                        assign compare_row_text = compare_row_text | strip
+                        assign compare_row_text = compare_entry | strip
                         if compare_row_text != blank
                           if variant_compare_info_rows != blank
                             assign variant_compare_info_rows = variant_compare_info_rows | append: '<br />'
@@ -142,105 +108,6 @@
                       endfor
                       assign variant_compare_info_text = variant_compare_info_rows
                     endif
-                  endif
-
-                  if variant_compare_info_text == blank
-                    assign variant_compare_table_metafield = variant_product.metafields.custom.sbv2_compare_table
-                    if variant_compare_table_metafield != blank
-                      assign variant_compare_table_type = variant_compare_table_metafield.type | downcase
-                      if variant_compare_table_type contains 'list.'
-                        assign variant_compare_info_rows = ''
-                        for compare_entry in variant_compare_table_metafield.value
-                          assign compare_row_text = compare_entry.value | default: compare_entry
-                          if compare_row_text == blank
-                            assign compare_row_text = compare_entry.text.value | default: compare_entry.text
-                          endif
-                          if compare_row_text == blank
-                            assign compare_row_text = compare_entry.label.value | default: compare_entry.label
-                          endif
-                          if compare_row_text == blank
-                            assign compare_row_text = compare_entry.feature.value | default: compare_entry.feature
-                          endif
-                          if compare_row_text == blank
-                            assign compare_row_text = compare_entry.item.value | default: compare_entry.item
-                          endif
-                          if compare_row_text == blank
-                            assign compare_row_text = compare_entry.content.value | default: compare_entry.content
-                          endif
-                          if compare_row_text == blank
-                            assign compare_row_text = compare_entry.description.value | default: compare_entry.description
-                          endif
-                          assign compare_row_text = compare_row_text | strip
-                          if compare_row_text != blank
-                            if variant_compare_info_rows != blank
-                              assign variant_compare_info_rows = variant_compare_info_rows | append: '<br />'
-                            endif
-                            assign variant_compare_info_rows = variant_compare_info_rows | append: compare_row_text
-                          endif
-                        endfor
-                        assign variant_compare_info_text = variant_compare_info_rows
-                      else
-                        assign variant_compare_info_text = variant_compare_table_metafield.value | default: variant_compare_table_metafield
-                      endif
-                    endif
-                  endif
-
-                  assign compare_table_items = shop.metaobjects['sbv2_compare_table_item'].values | default: shop.metaobjects.sbv2_compare_table_item.values
-                  if variant_compare_info_text == blank and compare_table_items != blank
-                    assign variant_compare_info_rows = ''
-                    for compare_table_item in compare_table_items
-                      assign compare_table_item_product = compare_table_item.product.value | default: compare_table_item.product
-                      assign is_product_match = false
-                      if compare_table_item_product != blank
-                        if compare_table_item_product.id == variant_product.id
-                          assign is_product_match = true
-                        elsif compare_table_item_product == variant_product.id
-                          assign is_product_match = true
-                        elsif compare_table_item_product == variant_product.admin_graphql_api_id
-                          assign is_product_match = true
-                        endif
-                      endif
-
-                      if is_product_match
-                        assign compare_row_text = compare_table_item.text.value | default: compare_table_item.text
-                        if compare_row_text == blank
-                          assign compare_row_text = compare_table_item.label.value | default: compare_table_item.label
-                        endif
-                        if compare_row_text == blank
-                          assign compare_row_text = compare_table_item.feature.value | default: compare_table_item.feature
-                        endif
-                        if compare_row_text == blank
-                          assign compare_row_text = compare_table_item.item.value | default: compare_table_item.item
-                        endif
-                        if compare_row_text == blank
-                          assign compare_row_text = compare_table_item.value.value | default: compare_table_item.value
-                        endif
-                        if compare_row_text == blank
-                          assign compare_row_text = compare_table_item.content.value | default: compare_table_item.content
-                        endif
-                        if compare_row_text == blank
-                          assign compare_row_text = compare_table_item.description.value | default: compare_table_item.description
-                        endif
-                        if compare_row_text == blank
-                          assign compare_row_text = compare_table_item.details.value | default: compare_table_item.details
-                        endif
-                        if compare_row_text == blank
-                          assign compare_row_text = compare_table_item.specs.value | default: compare_table_item.specs
-                        endif
-                        if compare_row_text == blank
-                          assign compare_row_text = compare_table_item.title.value | default: compare_table_item.title
-                        endif
-
-                        assign compare_row_text = compare_row_text | strip
-                        if compare_row_text != blank
-                          if variant_compare_info_rows != blank
-                            assign variant_compare_info_rows = variant_compare_info_rows | append: '<br />'
-                          endif
-                          assign variant_compare_info_rows = variant_compare_info_rows | append: compare_row_text
-                        endif
-                      endif
-                    endfor
-                    assign variant_compare_info_text = variant_compare_info_rows
                   endif
 
                 %}

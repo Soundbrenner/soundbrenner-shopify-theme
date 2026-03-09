@@ -9,6 +9,10 @@
  */
 {
   "sections": {
+    "top_sticky_accessory_bar": {
+      "type": "blog-top-sticky-accessory-bar",
+      "settings": {}
+    },
     "main": {
       "type": "main-blog",
       "settings": {
@@ -45,6 +49,7 @@
     }
   },
   "order": [
+    "top_sticky_accessory_bar",
     "main",
     "seasonal_hero"
   ]

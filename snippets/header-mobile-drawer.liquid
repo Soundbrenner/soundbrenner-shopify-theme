@@ -1,0 +1,600 @@
+<div class="menu-drawer-container" data-mobile-menu-drawer data-header-ref="headerDrawerContainer">
+  <div class="menu-drawer" data-mobile-menu-panel>
+    <nav class="menu-drawer__navigation" aria-label="{{ 'sb.common.primary_navigation' | t }}">
+      <button
+        class="menu-drawer__close-button"
+        type="button"
+        aria-label="{{ 'sb.common.close_menu' | t }}"
+        data-mobile-menu-close
+      >
+        <span class="menu-drawer__close-icon" aria-hidden="true">
+          {{ 'icon-cancel.svg' | inline_asset_content }}
+        </span>
+      </button>
+      <ul class="menu-drawer__menu has-submenu" role="list">
+        {% if primary_navigation != blank and primary_navigation.links.size > 0 %}
+          {% for link in primary_navigation.links %}
+            {% liquid
+              assign drawer_link_index = forloop.index
+              assign has_drawer_submenu = false
+
+              for block in section.blocks
+                if block.type == 'primary_item_product' or block.type == 'primary_item_collection' or block.type == 'primary_item_page' or block.type == 'primary_item_app'
+                  assign block_menu_index = block.settings.menu_item_index | plus: 0
+                  if block_menu_index == drawer_link_index
+                    assign has_drawer_submenu = true
+                    break
+                  endif
+                endif
+              endfor
+            %}
+            <li class="menu-drawer__list-item" style="--menu-drawer-animation-index: {{ forloop.index }};">
+              {% if has_drawer_submenu %}
+                <details class="menu-drawer__menu-container">
+                  <summary class="menu-drawer__menu-item menu-drawer__menu-item--mainlist menu-drawer__animated-element">
+                    <span class="menu-drawer__menu-item-text font-callout weight-semibold">{{ link.title | escape }}</span>
+                    <span class="menu-drawer__menu-item-indicator" aria-hidden="true">
+                      <span class="menu-drawer__menu-item-indicator-plus">{{ 'icon-accordion-add.svg' | inline_asset_content }}</span>
+                      <span class="menu-drawer__menu-item-indicator-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
+                    </span>
+                  </summary>
+                  <ul class="menu-drawer__menu menu-drawer__menu--childlist" role="list">
+                    {% assign drawer_submenu_animation_index = 0 %}
+                    {% for block in section.blocks %}
+                      {% liquid
+                        assign drawer_block_type_key = block.type
+
+                        if drawer_block_type_key != 'primary_item_product' and drawer_block_type_key != 'primary_item_collection' and drawer_block_type_key != 'primary_item_page' and drawer_block_type_key != 'primary_item_app'
+                          continue
+                        endif
+
+                        assign block_menu_index = block.settings.menu_item_index | plus: 0
+                        if block_menu_index != drawer_link_index
+                          continue
+                        endif
+
+                        assign drawer_card_link = blank
+                        assign drawer_card_title = blank
+                        assign drawer_card_body = blank
+                        assign drawer_card_image_url = blank
+                        assign drawer_badge_label = blank
+                        assign drawer_badge_type = blank
+                        assign drawer_is_app = false
+                        assign drawer_star_icon_url = 'icon-review-star.svg' | asset_url
+                        assign drawer_rating_display = metronome_rating_display | default: '4.8'
+                        assign drawer_rating_count_display = metronome_count_display | default: '100K+'
+                        assign drawer_rating_value = 4.8
+                        assign drawer_app_store_link = 'https://apps.apple.com/us/app/the-metronome-by-soundbrenner/id1048954353'
+                        assign drawer_google_play_link = 'https://play.google.com/store/apps/details?id=com.soundbrenner.pulse'
+                        assign drawer_card_product = blank
+                        assign drawer_card_collection = blank
+                        assign drawer_card_page = blank
+                        assign drawer_hide_primary_tile = false
+                        assign drawer_accessories_collection = blank
+                        assign drawer_related_product_1 = blank
+                        assign drawer_related_product_2 = blank
+                        assign drawer_related_product_3 = blank
+                        assign drawer_related_product_1_image = blank
+                        assign drawer_related_product_2_image = blank
+                        assign drawer_related_product_3_image = blank
+                        assign drawer_related_product_1_hide_on_mobile = false
+                        assign drawer_related_product_2_hide_on_mobile = false
+                        assign drawer_related_product_3_hide_on_mobile = false
+
+                        case drawer_block_type_key
+                          when 'primary_item_product'
+                            assign drawer_card_product = block.settings.product
+                          when 'primary_item_collection'
+                            assign drawer_card_collection = block.settings.collection
+                            assign drawer_hide_primary_tile = block.settings.hide_on_mobile
+                            assign drawer_related_product_1 = block.settings.related_product_1
+                            assign drawer_related_product_2 = block.settings.related_product_2
+                            assign drawer_related_product_3 = block.settings.related_product_3
+                            assign drawer_related_product_1_image = block.settings.related_product_1_image
+                            assign drawer_related_product_2_image = block.settings.related_product_2_image
+                            assign drawer_related_product_3_image = block.settings.related_product_3_image
+                            assign drawer_related_product_1_hide_on_mobile = block.settings.related_product_1_hide | default: false
+                            assign drawer_related_product_2_hide_on_mobile = block.settings.related_product_2_hide | default: false
+                            assign drawer_related_product_3_hide_on_mobile = block.settings.related_product_3_hide | default: false
+                          when 'primary_item_page'
+                            assign drawer_card_page = block.settings.page
+                          when 'primary_item_app'
+                            assign drawer_is_app = true
+                            assign drawer_card_page = block.settings.app_page
+                            assign drawer_card_title = 'sb.header.metronome_app' | t
+                        endcase
+
+                        if drawer_card_product != blank
+                          assign drawer_card_link = drawer_card_product.url
+                          assign drawer_card_title = drawer_card_product.title
+                          assign drawer_product_settings_ref = drawer_card_product.metafields.custom.sbv2_product_settings.value | default: drawer_card_product.metafields.custom.sbv2_product_settings
+                          if drawer_product_settings_ref != blank
+                            assign drawer_card_body = drawer_product_settings_ref.tagline.value | default: drawer_product_settings_ref.tagline
+                          endif
+                          if drawer_card_body == blank and drawer_card_product.description != blank
+                            assign drawer_card_body = drawer_card_product.description | strip_html
+                          endif
+
+                          if drawer_card_product.tags != blank
+                            for drawer_product_tag in drawer_card_product.tags
+                              assign drawer_product_tag_downcase = drawer_product_tag | downcase
+                              if drawer_product_tag_downcase == 'bestseller'
+                                assign drawer_badge_label = 'sb.product.badge_bestseller' | t
+                                assign drawer_badge_type = 'bestseller'
+                                break
+                              endif
+                              if drawer_product_tag_downcase == 'new'
+                                assign drawer_badge_label = 'sb.product.badge_new' | t
+                                assign drawer_badge_type = 'new'
+                              endif
+                            endfor
+                          endif
+
+                          assign drawer_accessories_collection = block.settings.accessories_collection
+                          if drawer_accessories_collection == blank and drawer_card_product.collections != blank
+                            assign drawer_fallback_non_generic_collection = blank
+                            for drawer_candidate_collection in drawer_card_product.collections
+                              assign drawer_candidate_handle = drawer_candidate_collection.handle | downcase
+                              assign drawer_candidate_title = drawer_candidate_collection.title | downcase
+                              if drawer_candidate_handle contains 'accessor' or drawer_candidate_title contains 'accessor'
+                                assign drawer_accessories_collection = drawer_candidate_collection
+                                break
+                              endif
+
+                              if drawer_fallback_non_generic_collection == blank
+                                assign drawer_is_generic_collection = false
+                                if drawer_candidate_handle == 'all' or drawer_candidate_handle == 'all-products' or drawer_candidate_handle contains 'shop-all' or drawer_candidate_title contains 'shop all'
+                                  assign drawer_is_generic_collection = true
+                                endif
+                                unless drawer_is_generic_collection
+                                  assign drawer_fallback_non_generic_collection = drawer_candidate_collection
+                                endunless
+                              endif
+                            endfor
+                            if drawer_accessories_collection == blank
+                              if drawer_fallback_non_generic_collection != blank
+                                assign drawer_accessories_collection = drawer_fallback_non_generic_collection
+                              else
+                                assign drawer_accessories_collection = drawer_card_product.collections.first
+                              endif
+                            endif
+                          endif
+                        elsif drawer_card_collection != blank
+                          assign drawer_card_link = drawer_card_collection.url
+                          assign drawer_card_title = drawer_card_collection.title
+                          assign drawer_card_body = drawer_card_collection.description | strip_html
+                        elsif drawer_card_page != blank
+                          assign drawer_card_link = drawer_card_page.url
+                          if drawer_card_title == blank
+                            assign drawer_card_title = drawer_card_page.title
+                          endif
+                          if drawer_is_app
+                            assign drawer_card_body = 'sb.header.download_ios_android' | t
+                            assign parsed_drawer_rating_value = drawer_rating_display | split: ' ' | first | plus: 0
+                            if parsed_drawer_rating_value > 0
+                              assign drawer_rating_value = parsed_drawer_rating_value
+                            endif
+                          else
+                            assign drawer_card_body = drawer_card_page.content | strip_html
+                          endif
+                        endif
+
+                        if drawer_card_link == blank or drawer_card_title == blank
+                          continue
+                        endif
+
+                        assign drawer_image = block.settings.image
+                        if drawer_image != blank
+                          assign drawer_card_image_url = drawer_image | image_url: width: 502
+                        endif
+                        assign drawer_submenu_animation_index = drawer_submenu_animation_index | plus: 1
+                      %}
+                      <li class="menu-drawer__submenu-item menu-drawer__submenu-animated-element" style="--menu-drawer-animation-index: {{ drawer_submenu_animation_index }};">
+                        {% unless drawer_hide_primary_tile %}
+                          <a class="menu-drawer__submenu-card{% if drawer_is_app %} menu-drawer__submenu-card--app{% endif %}{% if drawer_badge_label != blank %} menu-drawer__submenu-card--has-badge menu-drawer__submenu-card--{{ drawer_badge_type }}{% endif %}" href="{{ drawer_card_link }}">
+                            <span class="menu-drawer__submenu-media" aria-hidden="true">
+                              {% # theme-check-disable RemoteAsset %}
+                              {% if drawer_card_image_url != blank %}
+                                <img
+                                  class="menu-drawer__submenu-image"
+                                  src="{{ drawer_card_image_url }}"
+                                  alt=""
+                                  loading="lazy"
+                                  decoding="async"
+                                  width="502"
+                                  height="502"
+                                >
+                              {% else %}
+                                <img
+                                  class="menu-drawer__submenu-image"
+                                  src="{{ 'placeholder-primary-navigation-item.jpg' | asset_url }}"
+                                  alt=""
+                                  loading="lazy"
+                                  decoding="async"
+                                  width="502"
+                                  height="502"
+                                >
+                              {% endif %}
+                              {% # theme-check-enable RemoteAsset %}
+                            </span>
+                            <span class="menu-drawer__submenu-copy">
+                              <span class="menu-drawer__submenu-title font-body weight-bold">{{ drawer_card_title | escape }}</span>
+                              {% if drawer_is_app %}
+                                <p class="menu-drawer__app-rating font-caption weight-semibold">
+                                  <span class="menu-drawer__app-stars" aria-hidden="true">
+                                    {% for star_index in (1..5) %}
+                                      {% assign drawer_prior_stars = star_index | minus: 1 %}
+                                      {% assign drawer_star_fill = 0 %}
+                                      {% if drawer_rating_value >= star_index %}
+                                        {% assign drawer_star_fill = 100 %}
+                                      {% elsif drawer_rating_value > drawer_prior_stars %}
+                                        {% assign drawer_star_fill = drawer_rating_value | minus: drawer_prior_stars | times: 100 | round %}
+                                      {% endif %}
+                                      <span class="menu-drawer__app-star" style="--sb-star-fill: {{ drawer_star_fill }}%; --sb-star-icon-url: url('{{ drawer_star_icon_url }}');"></span>
+                                    {% endfor %}
+                                  </span>
+                                  <span
+                                    data-sb-localized-rating-value="{{ drawer_rating_display | escape }}"
+                                    data-sb-localized-rating-digits="1"
+                                  >
+                                    {{ drawer_rating_display }}
+                                  </span>
+                                </p>
+                                <p
+                                  class="menu-drawer__app-rating-count font-caption weight-regular"
+                                  data-sb-localized-count-value="{{ drawer_rating_count_display | escape }}"
+                                  data-sb-localized-count-template="{{ 'sb.header.ratings' | t: count: '__COUNT__' | escape }}"
+                                >
+                                  {{ 'sb.header.ratings' | t: count: drawer_rating_count_display }}
+                                </p>
+                              {% elsif drawer_card_body != blank %}
+                                <span class="menu-drawer__submenu-body font-caption weight-regular">{{ drawer_card_body | truncate: 120 }}</span>
+                              {% endif %}
+                            </span>
+                            {% if drawer_badge_label != blank %}
+                              <span class="menu-drawer__submenu-badge menu-drawer__submenu-badge--{{ drawer_badge_type }} font-caption2 weight-semibold">
+                                {{ drawer_badge_label }}
+                              </span>
+                            {% endif %}
+                          </a>
+                        {% endunless %}
+
+                        {% if drawer_accessories_collection != blank %}
+                          <a class="menu-drawer__submenu-secondary font-caption weight-semibold" href="{{ drawer_accessories_collection.url }}">
+                            {{ 'sb.header.accessories' | t }}
+                          </a>
+                        {% endif %}
+
+                        {% for drawer_related_index in (1..3) %}
+                          {% liquid
+                            assign drawer_related_product = blank
+                            assign drawer_related_product_image = blank
+                            assign drawer_related_product_hide_on_mobile = false
+                            case drawer_related_index
+                              when 1
+                                assign drawer_related_product = drawer_related_product_1
+                                assign drawer_related_product_image = drawer_related_product_1_image
+                                assign drawer_related_product_hide_on_mobile = drawer_related_product_1_hide_on_mobile
+                              when 2
+                                assign drawer_related_product = drawer_related_product_2
+                                assign drawer_related_product_image = drawer_related_product_2_image
+                                assign drawer_related_product_hide_on_mobile = drawer_related_product_2_hide_on_mobile
+                              when 3
+                                assign drawer_related_product = drawer_related_product_3
+                                assign drawer_related_product_image = drawer_related_product_3_image
+                                assign drawer_related_product_hide_on_mobile = drawer_related_product_3_hide_on_mobile
+                            endcase
+
+                            if drawer_related_product == blank or drawer_related_product_hide_on_mobile == true
+                              continue
+                            endif
+
+                            assign drawer_related_image_url = blank
+                            if drawer_related_product_image != blank
+                              assign drawer_related_image_url = drawer_related_product_image | image_url: width: 502
+                            elsif drawer_related_product.featured_image != blank
+                              assign drawer_related_image_url = drawer_related_product.featured_image | image_url: width: 502
+                            endif
+
+                            assign drawer_related_body = blank
+                            assign drawer_related_settings_ref = drawer_related_product.metafields.custom.sbv2_product_settings.value | default: drawer_related_product.metafields.custom.sbv2_product_settings
+                            if drawer_related_settings_ref != blank
+                              assign drawer_related_body = drawer_related_settings_ref.tagline.value | default: drawer_related_settings_ref.tagline
+                            endif
+                            if drawer_related_body == blank and drawer_related_product.description != blank
+                              assign drawer_related_body = drawer_related_product.description | strip_html
+                            endif
+
+                            assign drawer_related_badge_label = blank
+                            assign drawer_related_badge_type = blank
+                            if drawer_related_product.tags != blank
+                              for drawer_related_tag in drawer_related_product.tags
+                                assign drawer_related_tag_downcase = drawer_related_tag | downcase
+                                if drawer_related_tag_downcase == 'bestseller'
+                                  assign drawer_related_badge_label = 'sb.product.badge_bestseller' | t
+                                  assign drawer_related_badge_type = 'bestseller'
+                                  break
+                                endif
+                                if drawer_related_tag_downcase == 'new'
+                                  assign drawer_related_badge_label = 'sb.product.badge_new' | t
+                                  assign drawer_related_badge_type = 'new'
+                                endif
+                              endfor
+                            endif
+                          %}
+                          <a class="menu-drawer__submenu-card menu-drawer__submenu-card--related{% if drawer_related_badge_label != blank %} menu-drawer__submenu-card--has-badge menu-drawer__submenu-card--{{ drawer_related_badge_type }}{% endif %}" href="{{ drawer_related_product.url }}">
+                            <span class="menu-drawer__submenu-media" aria-hidden="true">
+                              {% # theme-check-disable RemoteAsset %}
+                              {% if drawer_related_image_url != blank %}
+                                <img
+                                  class="menu-drawer__submenu-image"
+                                  src="{{ drawer_related_image_url }}"
+                                  alt=""
+                                  loading="lazy"
+                                  decoding="async"
+                                  width="502"
+                                  height="502"
+                                >
+                              {% else %}
+                                <img
+                                  class="menu-drawer__submenu-image"
+                                  src="{{ 'placeholder-primary-navigation-item.jpg' | asset_url }}"
+                                  alt=""
+                                  loading="lazy"
+                                  decoding="async"
+                                  width="502"
+                                  height="502"
+                                >
+                              {% endif %}
+                              {% # theme-check-enable RemoteAsset %}
+                            </span>
+                            <span class="menu-drawer__submenu-copy">
+                              <span class="menu-drawer__submenu-title font-body weight-bold">{{ drawer_related_product.title | escape }}</span>
+                              {% if drawer_related_body != blank %}
+                                <span class="menu-drawer__submenu-body font-caption weight-regular">{{ drawer_related_body | truncate: 120 }}</span>
+                              {% endif %}
+                            </span>
+                            {% if drawer_related_badge_label != blank %}
+                              <span class="menu-drawer__submenu-badge menu-drawer__submenu-badge--{{ drawer_related_badge_type }} font-caption2 weight-semibold">
+                                {{ drawer_related_badge_label }}
+                              </span>
+                            {% endif %}
+                          </a>
+                        {% endfor %}
+
+                        {% if drawer_is_app %}
+                          <a class="menu-drawer__submenu-secondary menu-drawer__submenu-store font-caption weight-semibold" href="{{ drawer_app_store_link }}" target="_blank" rel="noopener noreferrer" aria-label="{{ 'sb.app.download_app_store' | t }}">
+                            <span>{{ 'sb.app.app_store' | t }}</span>
+                            <span class="menu-drawer__submenu-store-badge" aria-hidden="true">
+                              <img
+                                src="{{ 'app-download-app-store.png' | asset_url }}"
+                                alt=""
+                                loading="lazy"
+                                width="100"
+                                height="30"
+                              >
+                            </span>
+                          </a>
+                          <a class="menu-drawer__submenu-secondary menu-drawer__submenu-store font-caption weight-semibold" href="{{ drawer_google_play_link }}" target="_blank" rel="noopener noreferrer" aria-label="{{ 'sb.app.download_google_play' | t }}">
+                            <span>{{ 'sb.app.google_play' | t }}</span>
+                            <span class="menu-drawer__submenu-store-badge" aria-hidden="true">
+                              <img
+                                src="{{ 'app-download-google-play.png' | asset_url }}"
+                                alt=""
+                                loading="lazy"
+                                width="100"
+                                height="30"
+                              >
+                            </span>
+                          </a>
+                        {% endif %}
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </details>
+              {% else %}
+                <a
+                  class="menu-drawer__menu-item menu-drawer__menu-item--mainlist menu-drawer__animated-element"
+                  href="{{ link.url }}"
+                  {% if link.current %}
+                    aria-current="page"
+                  {% endif %}
+                >
+                  <span class="menu-drawer__menu-item-text font-callout weight-semibold">{{ link.title | escape }}</span>
+                </a>
+              {% endif %}
+            </li>
+          {% endfor %}
+        {% endif %}
+
+        {% if show_country or show_language %}
+          {% liquid
+            assign mobile_localization_animation_index = 1
+            if primary_navigation != blank and primary_navigation.links.size > 0
+              assign mobile_localization_animation_index = primary_navigation.links.size | plus: 1
+            endif
+          %}
+          <li class="menu-drawer__list-item menu-drawer__list-item--localization" style="--menu-drawer-animation-index: {{ mobile_localization_animation_index }};">
+            {% if show_language and show_country == false %}
+              <div class="menu-drawer__localization menu-drawer__localization--inline menu-drawer__animated-element">
+                {% render 'localization-form',
+                  show_country: false,
+                  show_language: true,
+                  localization_style: 'drawer',
+                  form_id: section.id | append: '-drawer-inline'
+                %}
+              </div>
+            {% else %}
+              <drawer-localization-component class="menu-drawer__localization">
+                <button
+                  type="button"
+                  class="menu-drawer__menu-item menu-drawer__menu-item--mainlist menu-drawer__localization-button menu-drawer__localization-trigger menu-drawer__animated-element"
+                  aria-expanded="false"
+                  aria-controls="menu-drawer-localization-page-{{ section.id }}"
+                  data-localization-ref="drawerOpenButton"
+                >
+                  <span class="menu-drawer__menu-item-text font-callout weight-semibold">
+                    <span class="menu-drawer__localization-current">
+                      {% if show_country %}
+                        {% if show_country_flag %}
+                          <span
+                            class="menu-drawer__localization-current-flag"
+                            style="background-image: url({{ localization.country | image_url: width: 32 }});"
+                            aria-hidden="true"
+                          ></span>
+                        {% endif %}
+                        <span class="menu-drawer__localization-current-code">
+                          {{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }}{% if show_language %} &middot; {{ localization.language.iso_code | upcase }}{% endif %}
+                        </span>
+                      {% elsif show_language %}
+                        <span class="menu-drawer__localization-current-code">{{ localization.language.iso_code | upcase }}</span>
+                      {% endif %}
+                    </span>
+                  </span>
+                  <span class="menu-drawer__localization-caret" aria-hidden="true">
+                    {{ 'icon-chevron.svg' | inline_asset_content }}
+                  </span>
+                </button>
+                <div
+                  id="menu-drawer-localization-page-{{ section.id }}"
+                  class="menu-drawer__localization-page"
+                  data-localization-ref="drawerPage"
+                  hidden
+                >
+                  <div class="menu-drawer__localization-page-header">
+                    <button
+                      type="button"
+                      class="menu-drawer__localization-back-pill font-caption weight-regular"
+                      data-localization-ref="drawerBackButton"
+                      aria-label="{{ 'sb.common.back' | t }}"
+                    >
+                      <span class="menu-drawer__localization-back-icon" aria-hidden="true">
+                        {{ 'icon-chevron.svg' | inline_asset_content }}
+                      </span>
+                      <span>{{ 'sb.common.back' | t }}</span>
+                    </button>
+                    <p class="menu-drawer__localization-page-title font-callout weight-bold">
+                      {{ 'sb.header.region_and_language' | t }}
+                    </p>
+                  </div>
+                  <div class="menu-drawer__localization-page-body">
+                    {% render 'localization-form',
+                      show_country: show_country,
+                      show_language: show_language,
+                      localization_style: 'drawer',
+                      form_id: section.id | append: '-drawer'
+                    %}
+                  </div>
+                </div>
+              </drawer-localization-component>
+            {% endif %}
+          </li>
+        {% endif %}
+      </ul>
+      {% liquid
+        assign mobile_menu_animated_index = 0
+        if primary_navigation != blank and primary_navigation.links.size > 0
+          assign mobile_menu_animated_index = primary_navigation.links.size
+        endif
+        if show_country or show_language
+          assign mobile_menu_animated_index = mobile_menu_animated_index | plus: 1
+        endif
+        assign mobile_menu_trustpilot_index = mobile_menu_animated_index | plus: 1
+        assign mobile_menu_review_index = mobile_menu_animated_index | plus: 2
+        assign mobile_menu_social_index = mobile_menu_animated_index | plus: 3
+      %}
+      <div class="menu-drawer__trustpilot menu-drawer__animated-element" style="--menu-drawer-animation-index: {{ mobile_menu_trustpilot_index }};">
+        <a
+          class="menu-drawer__trustpilot-link menu-drawer__trustpilot-link--logo"
+          href="{{ trustpilot_url }}"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="{{ 'sb.trustpilot.logo_link' | t }}"
+        >
+          <span class="menu-drawer__trustpilot-logo" aria-hidden="true">
+            {{ 'logo-trustpilot-multicolor.svg' | inline_asset_content }}
+          </span>
+        </a>
+        <a
+          class="menu-drawer__trustpilot-link menu-drawer__trustpilot-link--stars"
+          href="{{ trustpilot_url }}"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="{{ 'sb.trustpilot.stars_link' | t }}"
+        >
+          <span class="menu-drawer__trustpilot-stars" aria-hidden="true">
+            {{ 'trustpilot-stars-multicolor.svg' | inline_asset_content }}
+          </span>
+        </a>
+        <a
+          class="menu-drawer__trustpilot-link menu-drawer__trustpilot-link--text font-body weight-semibold"
+          href="{{ trustpilot_url }}"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="{{ 'sb.trustpilot.read_reviews' | t }}"
+          {% if trustpilot_rating_raw != blank %}
+            data-sb-localized-rating-template="{{ trustpilot_rating_template | escape }}"
+            data-sb-localized-rating-value="{{ trustpilot_rating_raw | escape }}"
+            data-sb-localized-rating-digits="1"
+          {% endif %}
+        >
+          {{ trustpilot_rating_text }}
+        </a>
+      </div>
+
+      <div class="menu-drawer__review menu-drawer__animated-element" style="--menu-drawer-animation-index: {{ mobile_menu_review_index }};" data-mobile-menu-review>
+        <div class="menu-drawer__review-row">
+          <span class="menu-drawer__review-name font-caption weight-semibold" data-mobile-menu-review-name>{{ 'sb.header.mobile_review_name' | t }}</span>
+          <span class="menu-drawer__review-verified font-caption weight-semibold">
+            <span class="menu-drawer__review-verified-icon" aria-hidden="true">
+              {{ 'icon-verified-badge.svg' | inline_asset_content }}
+            </span>
+            <span>{{ 'sb.common.verified_buyer' | t }}</span>
+          </span>
+          <span class="menu-drawer__review-stars" aria-hidden="true" style="--sb-review-star-icon-url: url('{{ 'icon-review-star.svg' | asset_url }}');">
+            <span class="menu-drawer__review-star"></span>
+            <span class="menu-drawer__review-star"></span>
+            <span class="menu-drawer__review-star"></span>
+            <span class="menu-drawer__review-star"></span>
+            <span class="menu-drawer__review-star"></span>
+          </span>
+        </div>
+        <p class="menu-drawer__review-text font-caption weight-regular" data-mobile-menu-review-text>
+          {{ 'sb.header.mobile_review_text' | t }}
+        </p>
+        <p class="menu-drawer__review-date font-caption weight-regular" data-mobile-menu-review-date>{{ 'sb.header.mobile_review_date' | t }}</p>
+      </div>
+
+      <div class="menu-drawer__social menu-drawer__animated-element" style="--menu-drawer-animation-index: {{ mobile_menu_social_index }};" aria-label="{{ 'sb.social.links' | t }}">
+        <a class="menu-drawer__social-link" href="https://www.instagram.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="{{ 'sb.social.instagram' | t }}">
+          {{ 'social-media-instagram.svg' | inline_asset_content }}
+        </a>
+        <a class="menu-drawer__social-link" href="https://www.facebook.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="{{ 'sb.social.facebook' | t }}">
+          {{ 'social-media-facebook.svg' | inline_asset_content }}
+        </a>
+        <a class="menu-drawer__social-link" href="https://www.tiktok.com/@soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="{{ 'sb.social.tiktok' | t }}">
+          {{ 'social-media-tiktok.svg' | inline_asset_content }}
+        </a>
+        <a class="menu-drawer__social-link" href="https://x.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="{{ 'sb.social.x' | t }}">
+          {{ 'social-media-x.svg' | inline_asset_content }}
+        </a>
+        <a class="menu-drawer__social-link" href="https://www.youtube.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="{{ 'sb.social.youtube' | t }}">
+          {{ 'social-media-youtube.svg' | inline_asset_content }}
+        </a>
+      </div>
+    </nav>
+  </div>
+  <button
+    class="menu-drawer__backdrop menu-drawer__backdrop--local"
+    type="button"
+    aria-label="{{ 'sb.common.close_menu' | t }}"
+    data-mobile-menu-close
+  ></button>
+</div>
+<div class="header__primary-backdrop header__primary-backdrop--top" data-header-primary-backdrop="top" aria-hidden="true"></div>
+<div
+  class="header__primary-backdrop header__primary-backdrop--bottom"
+  data-header-primary-backdrop="bottom"
+  aria-hidden="true"
+></div>
+

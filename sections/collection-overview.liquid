@@ -234,6 +234,8 @@
                     </a>
                   </div>
                 {% endif %}
+
+                <div class="sb-collection-overview__carousel-end-offset" data-sb-carousel-end-offset aria-hidden="true"></div>
               </div>
             </div>
 
@@ -280,6 +282,8 @@
                   %}
                 </div>
               {% endfor %}
+
+              <div class="sb-collection-overview__carousel-end-offset" data-sb-carousel-end-offset aria-hidden="true"></div>
 
             </div>
           </div>
@@ -381,9 +385,14 @@
     white-space: nowrap;
   }
 
-  .sb-collection-overview__read-all:hover,
   .sb-collection-overview__read-all:focus-visible {
     background: var(--sb-color-primary-500);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-collection-overview__read-all:hover {
+      background: var(--sb-color-primary-500);
+    }
   }
 
   .sb-collection-overview__read-all-arrow {
@@ -453,11 +462,18 @@
     white-space: nowrap;
   }
 
-  .sb-collection-overview__compare-button:hover,
   .sb-collection-overview__compare-button:focus-visible {
     background: var(--sb-color-neutral-900);
     box-shadow: none;
     color: var(--sb-color-neutral-100);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-collection-overview__compare-button:hover {
+      background: var(--sb-color-neutral-900);
+      box-shadow: none;
+      color: var(--sb-color-neutral-100);
+    }
   }
 
   .sb-collection-overview__carousel {
@@ -499,6 +515,13 @@
     min-width: 283px;
   }
 
+  .sb-collection-overview__carousel-end-offset {
+    flex: 0 0 0;
+    margin-left: calc(-1 * var(--sb-carousel-gap));
+    pointer-events: none;
+    width: 0;
+  }
+
   .sb-collection-overview__view-all-link {
     color: var(--sb-color-neutral-900);
     display: block;
@@ -511,19 +534,25 @@
     aspect-ratio: 1 / 1;
     background: var(--sb-color-neutral-200);
     border-radius: var(--sb-space-24);
+    box-shadow: 0 0 10px 0 var(--sb-color-always-black-12);
     display: flex;
     flex-direction: column;
     gap: var(--sb-space-16);
     justify-content: center;
     transform: scale(1);
-    transition: transform 160ms linear, background-color 160ms linear;
+    transform-origin: center center;
+    transition: transform 220ms ease;
     width: 100%;
   }
 
-  .sb-collection-overview__view-all-link:hover .sb-collection-overview__view-all-card,
-  .sb-collection-overview__view-all-link:focus-visible .sb-collection-overview__view-all-card {
-    background: var(--sb-color-neutral-400);
+  .sb-collection-overview__view-all-link:focus-within .sb-collection-overview__view-all-card {
     transform: scale(var(--sb-hover-scale-factor, 1.015));
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-collection-overview__view-all-link:hover .sb-collection-overview__view-all-card {
+      transform: scale(var(--sb-hover-scale-factor, 1.015));
+    }
   }
 
   .sb-collection-overview__view-all-label {
@@ -549,9 +578,9 @@
   .sb-collection-overview__carousel-controls {
     align-items: center;
     display: none;
-    gap: var(--sb-space-16);
+    gap: 16px;
     justify-content: flex-end;
-    margin-top: var(--sb-space-48);
+    margin-top: 48px;
   }
 
   .sb-collection-overview__carousel.is-overflowing .sb-collection-overview__carousel-controls {
@@ -564,10 +593,10 @@
     border: 0;
     cursor: pointer;
     display: inline-flex;
-    height: var(--sb-space-48);
+    height: 48px;
     justify-content: center;
     padding: 0;
-    width: var(--sb-space-48);
+    width: 48px;
   }
 
   .sb-collection-overview__carousel-arrow[disabled] {
@@ -577,8 +606,8 @@
 
   .sb-collection-overview__carousel-arrow-icon {
     display: inline-flex;
-    height: var(--sb-space-48);
-    width: var(--sb-space-48);
+    height: 48px;
+    width: 48px;
   }
 
   .sb-collection-overview__carousel-arrow-icon--right {
@@ -599,9 +628,14 @@
     fill: var(--sb-color-neutral-800);
   }
 
-  .sb-collection-overview__carousel-arrow:hover:not([disabled]) .sb-collection-overview__carousel-arrow-icon svg path:last-child,
   .sb-collection-overview__carousel-arrow:focus-visible:not([disabled]) .sb-collection-overview__carousel-arrow-icon svg path:last-child {
     fill: var(--sb-color-primary-500);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-collection-overview__carousel-arrow:hover:not([disabled]) .sb-collection-overview__carousel-arrow-icon svg path:last-child {
+      fill: var(--sb-color-primary-500);
+    }
   }
 
   .sb-collection-overview__carousel.is-not-overflowing .sb-collection-overview__carousel-track {

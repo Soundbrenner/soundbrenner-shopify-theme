@@ -1,0 +1,486 @@
+{% liquid
+  assign seasonal_sale_name = settings.seasonal_sale_name | strip
+  assign sale_name_token = '{{ Sale name }}'
+  assign sitewide_discount_depth_token = '{{ Sitewide discount depth }}'
+  assign shipping_country_token = '{{ Shipping country }}'
+  assign free_shipping_threshold_token = '{{ Free shipping threshold }}'
+  assign affiliate_name_token = '{{ Affiliate name }}'
+  assign sitewide_seasonal_discount_depth = settings.sitewide_seasonal_discount_depth | default: 48 | strip
+  assign sitewide_affiliate_discount_depth = settings.sitewide_affiliate_discount_depth | default: 20 | strip
+  assign affiliate_announcement_gradient_value = 'linear-gradient(90deg, #67E8F9 0%, #1E293B 33%, #1E293B 66%, #67E8F9 100%)'
+  assign affiliate_discount_cookie_duration_hours = 336
+
+  assign header_affiliate_metaobject = blank
+  if request.page_type == 'page' and page != blank
+    assign header_affiliate_metaobject = page.metafields.custom.affiliate.value | default: page.metafields.custom.affiliate
+    if header_affiliate_metaobject == blank
+      assign header_affiliate_metaobject = page.metafields.custom.affiliate_deal.value | default: page.metafields.custom.affiliate_deal
+    endif
+    if header_affiliate_metaobject == blank
+      assign header_affiliate_metaobject = page.metafields.custom.affiliate_profile.value | default: page.metafields.custom.affiliate_profile
+    endif
+  endif
+
+  assign is_affiliate_page = false
+  if header_affiliate_metaobject != blank
+    assign is_affiliate_page = true
+  endif
+  assign use_affiliate_announcement_override = false
+  if is_affiliate_page
+    assign use_affiliate_announcement_override = true
+  endif
+
+  assign header_affiliate_name = ''
+  assign header_affiliate_discount_code = ''
+  assign header_affiliate_collabs_id = ''
+  assign header_affiliate_image_desktop_url = ''
+  assign header_affiliate_image_mobile_url = ''
+  if header_affiliate_metaobject != blank
+    assign header_affiliate_name = header_affiliate_metaobject.full_name.value | default: header_affiliate_metaobject.full_name | strip
+    if header_affiliate_name == blank
+      assign header_affiliate_name = header_affiliate_metaobject.discount_name.value | default: header_affiliate_metaobject.discount_name | strip
+    endif
+    assign header_affiliate_discount_code = header_affiliate_metaobject.discount_name.value | default: header_affiliate_metaobject.discount_name | strip
+    assign header_affiliate_collabs_id = header_affiliate_metaobject.collabs_id.value | default: header_affiliate_metaobject.collabs_id | strip
+
+    assign header_affiliate_image_desktop_source = header_affiliate_metaobject.image_desktop.value | default: header_affiliate_metaobject.image_desktop
+    if header_affiliate_image_desktop_source == blank
+      assign header_affiliate_image_desktop_source = header_affiliate_metaobject.background_image_desktop.value | default: header_affiliate_metaobject.background_image_desktop
+    endif
+    if header_affiliate_image_desktop_source == blank
+      assign header_affiliate_image_desktop_source = header_affiliate_metaobject.hero_image_desktop.value | default: header_affiliate_metaobject.hero_image_desktop
+    endif
+    if header_affiliate_image_desktop_source != blank
+      assign header_affiliate_image_desktop_width = header_affiliate_image_desktop_source.width | default: 2480 | at_most: 2480
+      assign header_affiliate_image_desktop_url = header_affiliate_image_desktop_source | image_url: width: header_affiliate_image_desktop_width
+    endif
+
+    assign header_affiliate_image_mobile_source = header_affiliate_metaobject.image_mobile.value | default: header_affiliate_metaobject.image_mobile
+    if header_affiliate_image_mobile_source == blank
+      assign header_affiliate_image_mobile_source = header_affiliate_metaobject.background_image_mobile.value | default: header_affiliate_metaobject.background_image_mobile
+    endif
+    if header_affiliate_image_mobile_source == blank
+      assign header_affiliate_image_mobile_source = header_affiliate_metaobject.hero_image_mobile.value | default: header_affiliate_metaobject.hero_image_mobile
+    endif
+    if header_affiliate_image_mobile_source != blank
+      assign header_affiliate_image_mobile_width = header_affiliate_image_mobile_source.width | default: 1206 | at_most: 1206
+      assign header_affiliate_image_mobile_url = header_affiliate_image_mobile_source | image_url: width: header_affiliate_image_mobile_width
+    endif
+  endif
+  if header_affiliate_name == blank and page != blank
+    assign header_affiliate_name = page.title | strip
+  endif
+
+  assign seasonal_shipping_country_name = localization.country.name | default: localization.country.iso_code | strip
+  if seasonal_shipping_country_name == blank
+    assign seasonal_shipping_country_name = 'sb.cart.your_country' | t
+  endif
+  assign seasonal_shipping_country_iso = localization.country.iso_code | upcase | strip
+  assign seasonal_shipping_country_handle = seasonal_shipping_country_iso | downcase
+  assign seasonal_shipping_is_blocked = false
+  assign seasonal_shipping_has_free_shipping = false
+  assign seasonal_free_shipping_threshold_display = ''
+  assign seasonal_entry_threshold_cents = 0
+  assign seasonal_shipping_entry = shop.metaobjects['database_localized_shipping_info'][seasonal_shipping_country_handle]
+  if seasonal_shipping_entry != blank and seasonal_shipping_country_iso != blank
+    assign seasonal_entry_ship_to = seasonal_shipping_entry.ship_to_it.value | default: seasonal_shipping_entry.ship_to_it | append: '' | downcase
+    assign seasonal_entry_has_free_shipping = seasonal_shipping_entry.free_shipping_available.value | default: seasonal_shipping_entry.free_shipping_available | append: '' | downcase
+    assign seasonal_entry_threshold = seasonal_shipping_entry.free_shipping_threshold_in_local_currency.value | default: seasonal_shipping_entry.free_shipping_threshold_in_local_currency
+    if seasonal_entry_ship_to == 'false' or seasonal_entry_ship_to == '0' or seasonal_entry_ship_to == 'no'
+      assign seasonal_shipping_is_blocked = true
+    endif
+    if seasonal_entry_has_free_shipping == 'true' or seasonal_entry_has_free_shipping == '1' or seasonal_entry_has_free_shipping == 'yes'
+      assign seasonal_shipping_has_free_shipping = true
+    endif
+    if seasonal_entry_threshold != blank
+      assign seasonal_entry_threshold_cents = seasonal_entry_threshold | times: 100
+      capture seasonal_free_shipping_threshold_display
+        render 'sb-money-no-decimals', amount: seasonal_entry_threshold_cents, currency: cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency, context: 'storefront'
+      endcapture
+      assign seasonal_free_shipping_threshold_display = seasonal_free_shipping_threshold_display | strip
+    endif
+  endif
+
+  assign announcement_text_free_shipping = settings.seasonal_announcement_copy_free_shipping | strip
+  assign announcement_text_no_free_shipping = settings.seasonal_announcement_copy_no_free_shipping | strip
+  assign announcement_text_blocked = settings.seasonal_announcement_copy_blocked | strip
+
+  if seasonal_shipping_is_blocked
+    assign announcement_text = announcement_text_blocked
+  elsif seasonal_shipping_has_free_shipping
+    assign announcement_text = announcement_text_free_shipping
+  else
+    assign announcement_text = announcement_text_no_free_shipping
+  endif
+
+  if use_affiliate_announcement_override
+    assign resolved_sale_name = header_affiliate_name
+    assign resolved_discount_depth = sitewide_affiliate_discount_depth
+    assign announcement_gradient = affiliate_announcement_gradient_value
+  else
+    assign resolved_sale_name = seasonal_sale_name
+    assign resolved_discount_depth = sitewide_seasonal_discount_depth
+    assign announcement_gradient = settings.seasonal_announcement_gradient | default: 'linear-gradient(90deg, #E9CC92 0%, #92734F 33%, #92734F 66%, #E9CC92 100%)'
+  endif
+  assign announcement_text_template = announcement_text
+  assign announcement_text_template = announcement_text_template | replace: sale_name_token, resolved_sale_name
+  assign announcement_text_template = announcement_text_template | replace: sitewide_discount_depth_token, resolved_discount_depth
+  assign announcement_text_template = announcement_text_template | replace: shipping_country_token, seasonal_shipping_country_name
+  assign announcement_text_template = announcement_text_template | replace: affiliate_name_token, resolved_sale_name
+  assign announcement_text = announcement_text_template | replace: free_shipping_threshold_token, seasonal_free_shipping_threshold_display
+  if seasonal_shipping_is_blocked
+    assign affiliate_announcement_text_template = announcement_text_blocked
+  elsif seasonal_shipping_has_free_shipping
+    assign affiliate_announcement_text_template = announcement_text_free_shipping
+  else
+    assign affiliate_announcement_text_template = announcement_text_no_free_shipping
+  endif
+  assign affiliate_announcement_text_template = affiliate_announcement_text_template | replace: sale_name_token, affiliate_name_token
+  assign affiliate_announcement_text_template = affiliate_announcement_text_template | replace: sitewide_discount_depth_token, sitewide_affiliate_discount_depth
+  assign affiliate_announcement_text_template = affiliate_announcement_text_template | replace: shipping_country_token, seasonal_shipping_country_name
+
+  assign show_announcement = false
+  if announcement_text != blank
+    assign show_announcement = true
+  endif
+
+  assign sale_end_date = settings.seasonal_sale_end_date | strip
+  assign show_announcement_countdown = false
+  if show_announcement and sale_end_date != blank and seasonal_shipping_is_blocked == false and use_affiliate_announcement_override == false
+    assign show_announcement_countdown = true
+  endif
+
+  assign countdown_initial_days = '00'
+  assign countdown_initial_hours = '00'
+  assign countdown_initial_mins = '00'
+  assign countdown_initial_secs = '00'
+  assign countdown_initial_show = false
+  assign countdown_display_threshold_seconds = 432000
+  if show_announcement_countdown
+    assign countdown_now_timestamp = 'now' | date: '%s' | plus: 0
+    assign countdown_end_timestamp = sale_end_date | append: ' 23:59:59' | date: '%s' | plus: 0
+    if countdown_end_timestamp > 0
+      assign countdown_remaining_seconds = countdown_end_timestamp | minus: countdown_now_timestamp
+      if countdown_remaining_seconds < 0
+        assign countdown_remaining_seconds = 0
+      endif
+      if countdown_remaining_seconds > 0 and countdown_remaining_seconds <= countdown_display_threshold_seconds
+        assign countdown_initial_show = true
+      endif
+
+      assign countdown_days_number = countdown_remaining_seconds | divided_by: 86400
+      assign countdown_hours_number = countdown_remaining_seconds | modulo: 86400 | divided_by: 3600
+      assign countdown_mins_number = countdown_remaining_seconds | modulo: 3600 | divided_by: 60
+      assign countdown_secs_number = countdown_remaining_seconds | modulo: 60
+
+      if countdown_days_number > 99
+        assign countdown_days_number = 99
+      endif
+      if countdown_hours_number > 99
+        assign countdown_hours_number = 99
+      endif
+      if countdown_mins_number > 99
+        assign countdown_mins_number = 99
+      endif
+      if countdown_secs_number > 99
+        assign countdown_secs_number = 99
+      endif
+
+      assign countdown_initial_days = countdown_days_number | prepend: '0' | slice: -2, 2
+      assign countdown_initial_hours = countdown_hours_number | prepend: '0' | slice: -2, 2
+      assign countdown_initial_mins = countdown_mins_number | prepend: '0' | slice: -2, 2
+      assign countdown_initial_secs = countdown_secs_number | prepend: '0' | slice: -2, 2
+    endif
+  endif
+
+  assign announcement_emoji_asset = 'emoji-sale-new-year.png'
+  case announcement_gradient
+    when 'linear-gradient(90deg, #E9CC92 0%, #92734F 33%, #92734F 66%, #E9CC92 100%)'
+      assign announcement_emoji_asset = 'emoji-sale-new-year.png'
+    when 'linear-gradient(90deg, #F3C1DE 0%, #C77CA5 33%, #C77CA5 66%, #F3C1DE 100%)'
+      assign announcement_emoji_asset = 'emoji-sale-valentines-day.png'
+    when 'linear-gradient(90deg, #A4CF83 0%, #768E57 33%, #768E57 66%, #A4CF83 100%)'
+      assign announcement_emoji_asset = 'emoji-sale-spring.png'
+    when 'linear-gradient(90deg, #B19CD9 0%, #7B5EA7 33%, #7B5EA7 66%, #B19CD9 100%)'
+      assign announcement_emoji_asset = 'emoji-sale-easter.png'
+    when 'linear-gradient(90deg, #9CBDCD 0%, #F08835 33%, #F08835 66%, #9CBDCD 100%)'
+      assign announcement_emoji_asset = 'emoji-sale-summer.png'
+    when 'linear-gradient(90deg, #E6A53C 0%, #1E4F8F 33%, #1E4F8F 66%, #E6A53C 100%)'
+      assign announcement_emoji_asset = 'emoji-sale-back-to-school.png'
+    when 'linear-gradient(90deg, #1F3937 0%, #57522A 33%, #E58C56 66%, #6F351F 100%)'
+      assign announcement_emoji_asset = 'emoji-sale-fall.png'
+    when 'linear-gradient(90deg, #2F173A 0%, #D84418 33%, #D84418 66%, #2F173A 100%)'
+      assign announcement_emoji_asset = 'emoji-sale-halloween.png'
+    when 'linear-gradient(90deg, #8759F1 0%, #023CFB 33%, #8759F1 66%, #023CFB 100%)'
+      assign announcement_emoji_asset = 'emoji-sale-bfcm.png'
+    when 'linear-gradient(90deg, #B49F76 0%, #C32B2E 33%, #C32B2E 66%, #B49F76 100%)'
+      assign announcement_emoji_asset = 'emoji-sale-holiday.png'
+    when 'linear-gradient(90deg, var(--sb-color-primary-500) 0%, var(--sb-color-primary-700) 33%, var(--sb-color-primary-700) 66%, var(--sb-color-primary-500) 100%)'
+      assign announcement_emoji_asset = 'emoji-sale-anniversary.png'
+    when 'linear-gradient(90deg, #67E8F9 0%, #1E293B 33%, #1E293B 66%, #67E8F9 100%)'
+      assign announcement_emoji_asset = 'emoji-sale-affiliate.png'
+  endcase
+  assign affiliate_announcement_emoji_asset_url = 'emoji-sale-affiliate.png' | asset_url
+%}
+
+{% if is_affiliate_page and header_affiliate_discount_code != blank %}
+  <script>
+    (() => {
+      const code = {{ header_affiliate_discount_code | json }};
+      const affiliateNameRaw = {{ header_affiliate_name | json }};
+      const affiliateImageDesktopRaw = {{ header_affiliate_image_desktop_url | json }};
+      const affiliateImageMobileRaw = {{ header_affiliate_image_mobile_url | json }};
+      const collabsIdRaw = {{ header_affiliate_collabs_id | json }};
+      const cookieDurationHoursRaw = Number.parseInt({{ affiliate_discount_cookie_duration_hours | json }}, 10);
+      const cookieDurationHours = Number.isFinite(cookieDurationHoursRaw) && cookieDurationHoursRaw > 0 ? cookieDurationHoursRaw : 336;
+      const cookieDurationMs = cookieDurationHours * 60 * 60 * 1000;
+      const homeRedirectPath = {{ routes.root_url | json }} || '/';
+      const affiliateCookieName = 'sb_affiliate_announcement_state';
+      const collabsId = `${collabsIdRaw || ''}`.trim();
+      const affiliateName = `${affiliateNameRaw || code}`.trim();
+      const affiliateImageDesktop = `${affiliateImageDesktopRaw || ''}`.trim();
+      const affiliateImageMobile = `${affiliateImageMobileRaw || ''}`.trim();
+      if (!code) return;
+      const keySuffix = collabsId ? `${code}-${collabsId}` : code;
+      const appliedKey = `sb-affiliate-discount-applied-${keySuffix}`;
+
+      try {
+        if (window.sessionStorage.getItem(appliedKey) === '1') {
+          window.location.replace(homeRedirectPath);
+          return;
+        }
+      } catch (_) {
+        return;
+      }
+
+      const expiresAt = Date.now() + cookieDurationMs;
+      const announcementState = {
+        discountCode: code,
+        affiliateName: affiliateName || code,
+        heroDesktopImage: affiliateImageDesktop,
+        heroMobileImage: affiliateImageMobile,
+        expiresAt,
+      };
+
+      try {
+        window.sessionStorage.setItem(appliedKey, '1');
+        const maxAgeSeconds = Math.max(1, Math.floor((expiresAt - Date.now()) / 1000));
+        const serializedState = encodeURIComponent(JSON.stringify(announcementState));
+        document.cookie = `${affiliateCookieName}=${serializedState}; path=/; max-age=${maxAgeSeconds}; SameSite=Lax`;
+      } catch (_) {
+        // no-op
+      }
+
+      const discountUrl = new URL(`/discount/${encodeURIComponent(code)}`, window.location.origin);
+      discountUrl.searchParams.set('redirect', homeRedirectPath);
+      if (collabsId) {
+        discountUrl.searchParams.set('dt_id', collabsId);
+      }
+      window.location.replace(`${discountUrl.pathname}${discountUrl.search}`);
+    })();
+  </script>
+{% endif %}
+
+{% if show_announcement %}
+  <announcement-bar-component
+    class="header-announcement-bar full-width"
+    style="--sb-announcement-background: {{ announcement_gradient }};"
+    data-header-announcement-source
+    data-announcement-template="{{ announcement_text_template | escape }}"
+    data-affiliate-announcement-template="{{ affiliate_announcement_text_template | escape }}"
+    data-affiliate-announcement-gradient="{{ affiliate_announcement_gradient_value | escape }}"
+    data-affiliate-announcement-emoji="{{ affiliate_announcement_emoji_asset_url | escape }}"
+    data-affiliate-name-token="{{ affiliate_name_token | escape }}"
+    data-free-shipping-threshold-token="{{ free_shipping_threshold_token | escape }}"
+    data-free-shipping-threshold-display="{{ seasonal_free_shipping_threshold_display | escape }}"
+    data-free-shipping-threshold-cents="{{ seasonal_entry_threshold_cents | default: 0 }}"
+    data-currency="{{ cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency }}"
+  >
+    <div class="header__announcement">
+      <div class="header__announcement-content">
+        <div class="header__announcement-emojis" aria-hidden="true">
+          <span class="header__announcement-emoji header__announcement-emoji--left">
+            <img src="{{ announcement_emoji_asset | asset_url }}" alt="" loading="eager" width="20" height="20">
+          </span>
+          <span class="header__announcement-emoji header__announcement-emoji--right">
+            <img src="{{ announcement_emoji_asset | asset_url }}" alt="" loading="eager" width="20" height="20">
+          </span>
+        </div>
+
+        <div class="header__announcement-top">
+          <p class="header__announcement-text font-caption weight-semibold">{{ announcement_text | escape | newline_to_br }}</p>
+        </div>
+
+        {% if show_announcement_countdown %}
+          <div
+            class="header__announcement-countdown"
+            data-announcement-countdown
+            data-sale-end-date="{{ sale_end_date | escape }}"
+            {% unless countdown_initial_show %}
+              hidden
+            {% endunless %}
+          >
+            <div class="header__announcement-countdown-group">
+              <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-days>{{ countdown_initial_days }}</span>
+              <span class="header__announcement-countdown-label font-caption2 weight-semibold">{{ 'sb.common.days' | t }}</span>
+            </div>
+            <div class="header__announcement-countdown-group">
+              <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-hours>{{ countdown_initial_hours }}</span>
+              <span class="header__announcement-countdown-label font-caption2 weight-semibold">{{ 'sb.common.hours' | t }}</span>
+            </div>
+            <div class="header__announcement-countdown-group">
+              <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-mins>{{ countdown_initial_mins }}</span>
+              <span class="header__announcement-countdown-label font-caption2 weight-semibold">{{ 'sb.common.mins' | t }}</span>
+            </div>
+            <div class="header__announcement-countdown-group">
+              <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-secs>{{ countdown_initial_secs }}</span>
+              <span class="header__announcement-countdown-label font-caption2 weight-semibold">{{ 'sb.common.secs' | t }}</span>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </announcement-bar-component>
+{% endif %}
+
+{% stylesheet %}
+  :root {
+    --sb-announcement-min-height: 0px;
+    --sb-announcement-height: 0px;
+  }
+
+  :root:has(.header-announcement-bar) {
+    --sb-announcement-min-height: 42px;
+  }
+
+  .header-announcement-bar {
+    --sb-announcement-row-gap: 6px;
+    --sb-announcement-padding-block: 8px;
+    --sb-announcement-emoji-size: 20px;
+    --sb-announcement-emoji-offset: 36px;
+    --sb-announcement-countdown-gap: 12px;
+    --sb-announcement-countdown-group-gap: 6px;
+    --sb-announcement-countdown-pill-size: 24px;
+    --sb-announcement-countdown-pill-padding: 2px;
+    position: relative;
+  }
+
+  @media screen and (min-width: 990px) {
+    body:has(.header.is-primary-open) .header-announcement-bar {
+      z-index: 83;
+    }
+  }
+
+  .header__announcement {
+    align-items: center;
+    background: var(--sb-announcement-background, var(--sb-gradient-default-1));
+    display: flex;
+    justify-content: center;
+    min-height: var(--sb-announcement-min-height);
+    padding: var(--sb-announcement-padding-block) var(--page-margin, 16px);
+    width: 100%;
+  }
+
+  .header__announcement-content {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-announcement-row-gap);
+    max-width: calc(100% - (var(--sb-announcement-emoji-offset) * 2));
+    position: relative;
+    width: fit-content;
+  }
+
+  .header__announcement-emojis {
+    align-items: center;
+    display: flex;
+    inset: 0 calc(-1 * var(--sb-announcement-emoji-offset));
+    justify-content: space-between;
+    pointer-events: none;
+    position: absolute;
+  }
+
+  .header__announcement-top {
+    display: block;
+    width: 100%;
+  }
+
+  .header__announcement-emoji {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    height: var(--sb-announcement-emoji-size);
+    justify-content: center;
+    overflow: hidden;
+    width: var(--sb-announcement-emoji-size);
+  }
+
+  .header__announcement-emoji img {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .header__announcement-text {
+    color: var(--sb-color-always-white);
+    margin: 0;
+    max-width: 100%;
+    min-width: 0;
+    text-align: center;
+    white-space: normal;
+    word-break: break-word;
+    text-wrap: pretty;
+    text-wrap: balance;
+  }
+
+  .header__announcement-countdown {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sb-announcement-countdown-gap);
+    justify-content: center;
+    width: 100%;
+  }
+
+  .header__announcement-countdown[hidden] {
+    display: none;
+  }
+
+  .header.is-affiliate-announcement-active .header__announcement-countdown {
+    display: none;
+  }
+
+  .header__announcement-countdown-group {
+    align-items: center;
+    color: var(--sb-color-always-white);
+    display: inline-flex;
+    gap: var(--sb-announcement-countdown-group-gap);
+  }
+
+  .header__announcement-countdown-value {
+    align-items: center;
+    background: var(--sb-color-always-black-25);
+    box-sizing: border-box;
+    border-radius: 4px;
+    display: inline-flex;
+    font-variant-numeric: tabular-nums;
+    justify-content: center;
+    line-height: 1;
+    min-width: var(--sb-announcement-countdown-pill-size);
+    padding: var(--sb-announcement-countdown-pill-padding);
+    text-align: center;
+    width: var(--sb-announcement-countdown-pill-size);
+  }
+
+  .header__announcement-countdown-label {
+    color: var(--sb-color-always-white);
+    line-height: 1;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:general.announcement_bar",
+  "settings": []
+}
+{% endschema %}

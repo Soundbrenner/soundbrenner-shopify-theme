@@ -1,0 +1,64 @@
+{% liquid
+  assign sb_blog_tag_value = tag | default: '' | strip
+  assign sb_blog_default_label = blog_title | default: '' | strip
+  assign sb_blog_resolved_label = ''
+
+  if sb_blog_tag_value != blank
+    assign sb_blog_tag_value_downcase = sb_blog_tag_value | downcase
+    assign sb_blog_product_prefix = sb_blog_tag_value_downcase | slice: 0, 10
+    assign sb_blog_instrument_prefix = sb_blog_tag_value_downcase | slice: 0, 13
+
+    if sb_blog_product_prefix == 'by_product'
+      assign sb_blog_option_label = sb_blog_tag_value | slice: 10, sb_blog_tag_value.size
+      assign sb_blog_leading_char = sb_blog_option_label | slice: 0, 1
+      if sb_blog_leading_char == '_' or sb_blog_leading_char == '-' or sb_blog_leading_char == ':' or sb_blog_leading_char == '|'
+        assign sb_blog_option_label = sb_blog_option_label | slice: 1, sb_blog_option_label.size
+      endif
+      assign sb_blog_option_label = sb_blog_option_label | strip
+      if sb_blog_option_label == blank
+        assign sb_blog_option_label = sb_blog_tag_value
+      endif
+
+      assign sb_blog_option_key = sb_blog_option_label | handleize
+      assign sb_blog_linked_product = all_products[sb_blog_option_key]
+      assign sb_blog_linked_collection = collections[sb_blog_option_key]
+      assign sb_blog_locale_fallback_label = 'sb.blog.product_filters.' | append: sb_blog_option_key | t
+
+      assign sb_blog_resolved_label = sb_blog_option_label
+      if sb_blog_linked_product != blank
+        assign sb_blog_resolved_label = sb_blog_linked_product.title
+      elsif sb_blog_linked_collection != blank
+        assign sb_blog_resolved_label = sb_blog_linked_collection.title
+      elsif sb_blog_option_key == 'the-metronome-app'
+        assign sb_blog_resolved_label = 'sb.header.metronome_app' | t
+      elsif sb_blog_locale_fallback_label contains 'translation missing:'
+      else
+        assign sb_blog_resolved_label = sb_blog_locale_fallback_label
+      endif
+    elsif sb_blog_instrument_prefix == 'by_instrument'
+      assign sb_blog_option_label = sb_blog_tag_value | slice: 13, sb_blog_tag_value.size
+      assign sb_blog_leading_char = sb_blog_option_label | slice: 0, 1
+      if sb_blog_leading_char == '_' or sb_blog_leading_char == '-' or sb_blog_leading_char == ':' or sb_blog_leading_char == '|'
+        assign sb_blog_option_label = sb_blog_option_label | slice: 1, sb_blog_option_label.size
+      endif
+      assign sb_blog_option_label = sb_blog_option_label | strip
+      if sb_blog_option_label == blank
+        assign sb_blog_option_label = sb_blog_tag_value
+      endif
+
+      assign sb_blog_option_key = sb_blog_option_label | handleize | replace: '-', '_'
+      assign sb_blog_locale_fallback_label = 'sb.blog.instrument_filters.' | append: sb_blog_option_key | t
+      assign sb_blog_resolved_label = sb_blog_option_label
+      unless sb_blog_locale_fallback_label contains 'translation missing:'
+        assign sb_blog_resolved_label = sb_blog_locale_fallback_label
+      endunless
+    else
+      assign sb_blog_resolved_label = sb_blog_tag_value
+    endif
+  endif
+
+  if sb_blog_resolved_label == blank
+    assign sb_blog_resolved_label = sb_blog_default_label
+  endif
+%}
+{{ sb_blog_resolved_label }}

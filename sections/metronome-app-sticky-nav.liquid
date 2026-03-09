@@ -6,124 +6,34 @@
 %}
 
 <section id="sb-metronome-app-sticky-nav-{{ section.id }}" class="sb-metronome-app-sticky-nav">
-  <div
-    class="sb-metronome-app-sticky-nav__wrap"
-    data-sb-sticky-top-navigation
-    data-metronome-app-sticky-nav-wrap
-  >
-    <div class="sb-metronome-app-sticky-nav__bar">
-      <p class="sb-metronome-app-sticky-nav__title font-body weight-bold">
-        {{ sticky_page_title }}
-      </p>
+  <div class="sb-metronome-app-sticky-nav__bar">
+    <p class="sb-metronome-app-sticky-nav__title font-body weight-bold">
+      {{ sticky_page_title }}
+    </p>
 
-      <a
-        class="sb-button-radiant sb-button-radiant--medium sb-metronome-app-sticky-nav__button"
-        href="#sb-download-app-section"
-        data-metronome-app-sticky-nav-trigger
-      >
-        <span class="sb-button-radiant__label">{{ 'sb.common.download' | t }}</span>
-      </a>
-    </div>
+    <a
+      class="sb-button-radiant sb-button-radiant--medium sb-metronome-app-sticky-nav__button"
+      href="#sb-download-app-section"
+    >
+      <span class="sb-button-radiant__label">{{ 'sb.common.download' | t }}</span>
+    </a>
   </div>
 </section>
 
-<script>
-  (() => {
-    const root = document.getElementById('sb-metronome-app-sticky-nav-{{ section.id }}');
-    if (!root) return;
-
-    const wrap = root.querySelector('[data-metronome-app-sticky-nav-wrap]');
-    const trigger = root.querySelector('[data-metronome-app-sticky-nav-trigger]');
-    const sectionWrapper = root.closest('.shopify-section');
-    const targetSelector = '#sb-download-app-section';
-    const mobileMediaQuery = window.matchMedia('(max-width: 749px)');
-
-    if (!wrap || !trigger) return;
-
-    const ensureVisibility = () => {
-      root.hidden = false;
-      wrap.hidden = false;
-      if (sectionWrapper) {
-        sectionWrapper.style.removeProperty('display');
-      }
-    };
-
-    const requestStickyStackSync = () => {
-      if (window.SBStickyStack && typeof window.SBStickyStack.requestSync === 'function') {
-        window.SBStickyStack.requestSync();
-      }
-    };
-
-    const syncStickyRole = () => {
-      ensureVisibility();
-      const isMobile = mobileMediaQuery.matches;
-      if (isMobile) {
-        wrap.removeAttribute('data-sb-sticky-top-navigation');
-        wrap.setAttribute('data-sb-sticky-bottom-navigation', '');
-      } else {
-        wrap.removeAttribute('data-sb-sticky-bottom-navigation');
-        wrap.setAttribute('data-sb-sticky-top-navigation', '');
-      }
-      wrap.setAttribute('data-sb-sticky-active', 'true');
-      requestStickyStackSync();
-    };
-
-    const scrollToDownloadSection = () => {
-      const target = document.querySelector(targetSelector);
-      if (!target) return;
-      if (window.SBStickyStack && typeof window.SBStickyStack.scrollToElement === 'function') {
-        window.SBStickyStack.scrollToElement(target, { behavior: 'smooth' });
-        return;
-      }
-      const fallbackOffset = Number.parseFloat(
-        getComputedStyle(document.documentElement).getPropertyValue('--sb-sticky-scroll-target-offset')
-      ) || Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sb-space-96')) || 96;
-      const targetTopAbsolute = target.getBoundingClientRect().top + window.scrollY;
-      const nextTop = Math.max(targetTopAbsolute - fallbackOffset, 0);
-      window.scrollTo({ top: nextTop, behavior: 'smooth' });
-    };
-
-    trigger.addEventListener('click', (event) => {
-      event.preventDefault();
-      scrollToDownloadSection();
-    });
-
-    ensureVisibility();
-    syncStickyRole();
-    window.addEventListener('resize', syncStickyRole, { passive: true });
-    window.addEventListener('load', syncStickyRole, { once: true });
-    if (typeof mobileMediaQuery.addEventListener === 'function') {
-      mobileMediaQuery.addEventListener('change', syncStickyRole);
-    } else if (typeof mobileMediaQuery.addListener === 'function') {
-      mobileMediaQuery.addListener(syncStickyRole);
-    }
-    if (document.fonts && typeof document.fonts.ready === 'object' && typeof document.fonts.ready.then === 'function') {
-      document.fonts.ready.then(() => {
-        syncStickyRole();
-      });
-    }
-  })();
-</script>
-
 {% stylesheet %}
+  #header-group + .shopify-section[id*='template--']:has(> .sb-metronome-app-sticky-nav),
+  .shopify-section.shopify-section-group-header-group ~ .shopify-section[id*='template--']:has(> .sb-metronome-app-sticky-nav),
+  .shopify-section:has(> .header) ~ .shopify-section[id*='template--']:has(> .sb-metronome-app-sticky-nav),
+  .shopify-section:has(> .sb-metronome-app-sticky-nav) {
+    margin-top: 0 !important;
+  }
+
   .sb-metronome-app-sticky-nav {
     --sb-metronome-app-sticky-top-gap: 16px;
-    --sb-metronome-app-sticky-inline-margin: 60px;
-  }
-
-  .sb-metronome-app-sticky-nav,
-  .sb-metronome-app-sticky-nav__wrap {
-    display: block !important;
-  }
-
-  .sb-metronome-app-sticky-nav__wrap {
-    left: 0;
-    pointer-events: none;
-    position: fixed;
-    right: 0;
-    top: calc(var(--sb-header-height, 60px) + var(--sb-announcement-min-height, 0px) + var(--sb-metronome-app-sticky-top-gap));
-    width: 100%;
-    z-index: 49;
+    --sb-metronome-app-sticky-bottom-gap: 12px;
+    --sb-metronome-app-sticky-inline-margin-desktop: 60px;
+    --sb-metronome-app-sticky-safe-area-bottom: env(safe-area-inset-bottom, 0px);
+    display: block;
   }
 
   .sb-metronome-app-sticky-nav__bar {
@@ -131,14 +41,14 @@
     background: var(--sb-color-neutral-200);
     border-radius: 24px;
     box-shadow: inset 0 0 0 1px var(--sb-color-neutral-600);
+    box-sizing: border-box;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
     gap: 12px;
+    grid-template-columns: minmax(0, 1fr) auto;
     margin-inline: auto;
     max-width: 1240px;
     padding: 12px 24px;
-    pointer-events: auto;
-    width: min(1240px, calc(100vw - (var(--sb-metronome-app-sticky-inline-margin) * 2)));
+    width: min(1240px, calc(100vw - (var(--sb-metronome-app-sticky-inline-margin-desktop) * 2)));
   }
 
   .sb-metronome-app-sticky-nav__title {
@@ -152,40 +62,64 @@
     text-decoration: none;
   }
 
-  @media (max-width: 749px) {
-    .sb-metronome-app-sticky-nav__wrap {
-      bottom: 12px;
-      left: var(--page-margin);
-      right: var(--page-margin);
-      top: auto !important;
-      width: auto;
-      z-index: 52;
+  @media (min-width: 990px) {
+    .shopify-section:has(> .sb-metronome-app-sticky-nav) {
+      position: sticky;
+      top: 0;
+      z-index: 49;
+    }
+
+    #header-group:has(#header-component[data-sticky-mode='always']) + .shopify-section[id*='template--']:has(> .sb-metronome-app-sticky-nav),
+    #header-group:has(#header-component[data-sticky-mode='scroll-up'][data-sticky-state='active'])
+      + .shopify-section[id*='template--']:has(> .sb-metronome-app-sticky-nav) {
+      top: var(--sb-header-height);
+    }
+
+    .sb-metronome-app-sticky-nav {
+      padding-top: var(--sb-metronome-app-sticky-top-gap);
     }
 
     .sb-metronome-app-sticky-nav__bar {
-      align-items: center;
+      height: auto;
+      position: static;
+    }
+  }
+
+  @media (max-width: 989px) {
+    .shopify-section:has(> .sb-metronome-app-sticky-nav) {
+      height: 0;
+      position: static;
+      top: auto;
+      z-index: auto;
+    }
+
+    .sb-metronome-app-sticky-nav {
+      height: 0;
+    }
+
+    .sb-metronome-app-sticky-nav__bar {
       border-radius: 999px;
-      box-shadow: inset 0 0 0 1px var(--sb-color-neutral-600);
-      display: flex;
-      gap: 12px;
+      height: auto;
+      left: var(--page-margin);
+      min-height: 0;
       max-width: none;
       padding: 16px 16px 16px 20px;
-      width: 100%;
+      position: fixed;
+      right: var(--page-margin);
+      top: auto;
+      width: auto;
+      bottom: calc(var(--sb-metronome-app-sticky-bottom-gap) + var(--sb-metronome-app-sticky-safe-area-bottom));
+      z-index: 52;
     }
 
     .sb-metronome-app-sticky-nav__title {
-      min-width: 0;
       overflow: hidden;
-      text-align: left;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
     .sb-metronome-app-sticky-nav__button {
-      flex: 0 0 auto;
-      justify-self: auto;
       margin-left: auto;
-      width: auto;
     }
   }
 {% endstylesheet %}

@@ -454,9 +454,11 @@
     text-align: center;
   }
 
-  .sb-hero-video__thumb:hover .sb-hero-video__thumb-image,
-  .sb-hero-video__thumb:hover .sb-hero-video__thumb-title {
-    opacity: 0.75;
+  @media (hover: hover) and (pointer: fine) {
+    .sb-hero-video__thumb:hover .sb-hero-video__thumb-image,
+    .sb-hero-video__thumb:hover .sb-hero-video__thumb-title {
+      opacity: 0.75;
+    }
   }
 
   .sb-hero-video__thumb.is-active .sb-hero-video__thumb-frame {

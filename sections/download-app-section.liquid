@@ -1,5 +1,8 @@
 {% liquid
   assign download_app_title = section.settings.title | strip
+  if download_app_title == blank or download_app_title == 'Try it for free now'
+    assign download_app_title = 'sb.app.try_free_now' | t
+  endif
   assign download_app_app_store_link = 'https://apps.apple.com/us/app/the-metronome-by-soundbrenner/id1048954353'
   assign download_app_google_play_link = 'https://play.google.com/store/apps/details?id=com.soundbrenner.pulse'
   assign download_app_china_link = 'https://files.soundbrenner.com/downloads/TheMetronome.apk'
@@ -52,7 +55,7 @@
   }
 
   .sb-download-app-section {
-    scroll-margin-top: var(--sb-sticky-scroll-target-offset, var(--sb-space-96));
+    scroll-margin-top: var(--sb-space-96);
   }
 
   .sb-download-app-section__title {

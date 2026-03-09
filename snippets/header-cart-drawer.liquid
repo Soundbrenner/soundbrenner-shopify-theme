@@ -1,0 +1,111 @@
+<cart-drawer-component auto-open>
+  <div class="header__cart-drawer" data-cart-drawer hidden>
+    <button type="button" class="header__cart-drawer-backdrop" data-cart-drawer-close aria-label="{{ 'sb.common.close_cart' | t }}"></button>
+    <aside class="header__cart-drawer-panel" role="dialog" aria-modal="true" aria-label="{{ 'sb.common.cart_drawer' | t }}" data-cart-drawer-panel cart-summary-sticky="true">
+      <div class="header__cart-drawer-header">
+        <div class="header__cart-drawer-header-row">
+          <h3 class="header__cart-drawer-title font-title weight-bold">
+            {{ 'cart.title' | t }}
+            <span class="header__cart-drawer-count font-caption2 weight-semibold" data-cart-drawer-count {% if cart.item_count == 0 %}hidden{% endif %}>
+              {{ cart.item_count }}
+            </span>
+          </h3>
+          <button type="button" class="header__cart-drawer-close" data-cart-drawer-close aria-label="{{ 'sb.common.close_cart' | t }}">
+            <span class="header__cart-drawer-close-icon" aria-hidden="true">{{ 'icon-cancel.svg' | inline_asset_content }}</span>
+          </button>
+        </div>
+        <p class="header__cart-drawer-empty-message font-body weight-regular" data-cart-empty-message {% unless cart.empty? %}hidden{% endunless %}>
+          {{ 'sb.cart.empty_message' | t }}
+        </p>
+        {% render 'sb-cart-free-shipping-progress',
+          available: seasonal_shipping_has_free_shipping and seasonal_shipping_is_blocked == false,
+          threshold_cents: seasonal_entry_threshold_cents,
+          subtotal_cents: cart.total_price,
+          currency: cart.currency.iso_code,
+          has_items: cart.item_count > 0,
+          filled_message: true,
+          extra_class: 'header__cart-drawer-free-shipping'
+        %}
+        <div class="header__cart-drawer-items-divider" aria-hidden="true"></div>
+      </div>
+
+      <cart-items-component
+        class="sb-cart-items"
+        data-context="drawer"
+        data-currency="{{ cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency }}"
+        data-placeholder-image="{{ cart_placeholder_image }}"
+        data-line-discount-template="{{ 'sb.cart.discount_with_percent' | t: code: '__CODE__', percent: '__PERCENT__' | escape }}"
+        data-order-discount-template="{{ 'sb.cart.discount_with_percent' | t: code: '__CODE__', percent: '__PERCENT__' | escape }}"
+      >
+        <div class="header__cart-drawer-content">
+          {% render 'sb-cart-line-items',
+            list_class: 'sb-cart-line-list',
+            hidden: cart.item_count == 0,
+            placeholder_image: cart_placeholder_image
+          %}
+
+          <div class="header__cart-empty" data-cart-empty {% unless cart.empty? %}hidden{% endunless %}>
+            {% render 'sb-cart-empty-collections',
+              container_class: 'header__cart-empty-collections',
+              grid_class: 'header__cart-empty-collection-grid',
+              item_class: 'header__cart-empty-collection-item',
+              media_class: 'header__cart-empty-collection-media',
+              image_class: 'header__cart-empty-collection-image',
+              title_class: 'header__cart-empty-collection-title',
+              title_font_class: 'font-caption weight-semibold',
+              primary_navigation: primary_navigation,
+              placeholder_image: cart_placeholder_image
+            %}
+            {% render 'sb-cart-empty-payments',
+              container_class: 'header__cart-empty-payments',
+              show_shop_all: true,
+              shop_all_class: 'sb-button-radiant sb-button-radiant--large header__cart-empty-action',
+              payment_list_class: 'header__cart-empty-payment-list',
+              payment_item_class: 'header__cart-empty-payment-item'
+            %}
+          </div>
+        </div>
+
+        <div class="header__cart-drawer-summary" data-cart-summary {% if cart.empty? %}hidden{% endif %}>
+          {% liquid
+            assign seasonal_shipping_advertised_min_time_number = seasonal_shipping_advertised_min_time | plus: 0
+            assign seasonal_shipping_advertised_max_time_number = seasonal_shipping_advertised_max_time | plus: 0
+          %}
+          {% capture cart_summary_shipping_text %}
+            {% if seasonal_shipping_entry == blank %}
+              {{ 'sb.cart.shipping_ships_worldwide' | t }}
+            {% elsif seasonal_shipping_is_blocked %}
+              {{ 'sb.cart.shipping_not_shipping_to' | t: country: seasonal_shipping_country_name }}
+            {% elsif seasonal_shipping_advertised_min_time != blank and seasonal_shipping_advertised_max_time != blank and seasonal_shipping_advertised_min_time_number < 11 and seasonal_shipping_advertised_max_time_number < 12 %}
+              {{ 'sb.cart.shipping_days_delivery_in' | t: min: seasonal_shipping_advertised_min_time, max: seasonal_shipping_advertised_max_time, country: seasonal_shipping_country_name }}
+            {% else %}
+              {{ 'sb.cart.shipping_ships_to' | t: country: seasonal_shipping_country_name }}
+            {% endif %}
+          {% endcapture %}
+          {% assign cart_summary_shipping_text = cart_summary_shipping_text | strip %}
+          {% capture cart_summary_taxes_text %}
+            {% if seasonal_entry_taxes_included == 'true' or seasonal_entry_taxes_included == '1' or seasonal_entry_taxes_included == 'yes' %}
+              {{ 'sb.cart.included_in_price' | t }}
+            {% else %}
+              {{ 'sb.cart.taxes_may_be_due_on_delivery' | t }}
+            {% endif %}
+          {% endcapture %}
+          {% assign cart_summary_taxes_text = cart_summary_taxes_text | strip %}
+          {% render 'sb-cart-summary-inner',
+            summary_class: 'header__cart-drawer-summary-inner sb-cart-summary',
+            show_top_divider: true,
+            shipping_text: cart_summary_shipping_text,
+            taxes_text: cart_summary_taxes_text,
+            discount_input_id: 'HeaderCartDiscountCode-' | append: section.id,
+            checkout_mode: 'link',
+            checkout_button_class: '',
+            clear_button_class: 'header__cart-drawer-action',
+            show_clear: false,
+            payment_list_class: 'header__cart-summary-payment-list',
+            payment_item_class: 'header__cart-summary-payment-item'
+          %}
+        </div>
+      </cart-items-component>
+    </aside>
+  </div>
+</cart-drawer-component>

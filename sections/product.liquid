@@ -459,14 +459,6 @@
 
 <section
   class="sb-product-main{% unless product_has_page_header %} sb-product-main--no-page-header{% endunless %}"
-  style="
-    --sb-supplementary-sticky-top-gap-desktop: {{ section.settings.supplementary_sticky_top_gap_desktop | default: 16 }}px;
-    --sb-supplementary-sticky-top-gap-mobile: {{ section.settings.supplementary_sticky_top_gap_mobile | default: 16 }}px;
-    --sb-supplementary-sticky-inline-margin-desktop: {{ section.settings.supplementary_sticky_inline_margin_desktop | default: 60 }}px;
-    --sb-supplementary-sticky-inline-margin-mobile: {{ section.settings.supplementary_sticky_inline_margin_mobile | default: 16 }}px;
-    --sb-supplementary-sticky-nav-padding-y-desktop: {{ section.settings.supplementary_sticky_nav_padding_y_desktop | default: 12 }}px;
-    --sb-supplementary-sticky-nav-padding-y-mobile: {{ section.settings.supplementary_sticky_nav_padding_y_mobile | default: 12 }}px;
-  "
   data-sb-reveal
   data-product-id="{{ product.id }}"
   data-product-title="{{ product.title | escape }}"
@@ -477,155 +469,7 @@
   data-product-currency="{{ product_currency_code }}"
 >
   <div
-    class="sb-product-main__sticky-bar-wrap{% if product_has_page_header %} sb-product-main__sticky-bar-wrap--segmented-controls{% else %} sb-product-main__sticky-bar-wrap--hidden{% endif %}"
-    data-sb-sticky-top-navigation
-    data-sb-sticky-active="{% if product_has_page_header %}true{% else %}false{% endif %}"
-  >
-    <div class="sb-product-main__sticky-bar{% unless product_has_page_header %} sb-product-main__sticky-bar--no-segmented{% endunless %}" data-sticky-buy-bar>
-      <div class="sb-product-main__sticky-info">
-        <div class="sb-product-main__sticky-image-wrap" aria-hidden="true">
-          {% if sticky_media_image_url != blank %}
-            {% # theme-check-disable RemoteAsset %}
-            <img
-              class="sb-product-main__sticky-image"
-              data-sticky-image
-              src="{{ sticky_media_image_url }}"
-              alt="{{ product.title | escape }}"
-              loading="eager"
-              width="48"
-              height="48"
-            >
-            {% # theme-check-enable RemoteAsset %}
-          {% else %}
-            <div class="sb-product-main__sticky-image sb-product-main__sticky-image--placeholder" data-sticky-image></div>
-          {% endif %}
-        </div>
-
-        <div class="sb-product-main__sticky-meta{% if product_hide_reviews %} sb-product-main__sticky-meta--no-reviews{% endif %}">
-          <div class="sb-product-main__sticky-price-stack">
-            <span
-              class="sb-product-main__sticky-compare-price font-caption weight-regular"
-              data-sticky-compare-price
-              {% unless sticky_has_compare_price %}
-                hidden
-              {% endunless %}
-            >
-              {% render 'sb-money-no-decimals', amount: current_variant.compare_at_price, currency: product_currency_code, context: 'storefront' %}
-            </span>
-            <span class="sb-product-main__sticky-current-price font-caption weight-regular" data-sticky-current-price>
-              {% render 'sb-money-no-decimals', amount: current_variant.price, currency: product_currency_code, context: 'storefront' %}
-            </span>
-          </div>
-
-          {% unless product_hide_reviews %}
-            <div class="sb-product-main__sticky-reviews">
-              <a
-                class="sb-product-main__sticky-stars sb-product-thumbnail__stars"
-                href="#klaviyo-product-reviews-wrapper"
-                data-sticky-reviews-link
-                data-rating-tooltip="{{ product_rating_tooltip }}"
-                aria-label="{{ 'sb.product.go_to_reviews' | t }}"
-              >
-                {% assign sticky_star_icon_url = 'icon-review-star.svg' | asset_url %}
-                {% for i in (1..5) %}
-                  {% assign step = i | minus: 1 %}
-                  {% assign fill_ratio = product_rating | minus: step %}
-                  {% if fill_ratio >= 1 %}
-                    {% assign fill_percent = 100 %}
-                  {% elsif fill_ratio <= 0 %}
-                    {% assign fill_percent = 0 %}
-                  {% else %}
-                    {% assign fill_percent = fill_ratio | times: 100 | round %}
-                  {% endif %}
-                  <span
-                    class="sb-product-main__sticky-star"
-                    style="--sb-star-fill: {{ fill_percent }}%; --sb-star-icon-url: url('{{ sticky_star_icon_url }}');"
-                  ></span>
-                {% endfor %}
-              </a>
-              <a
-                class="sb-product-main__sticky-review-count font-caption weight-regular"
-                href="#klaviyo-product-reviews-wrapper"
-                data-sticky-reviews-link
-                data-sticky-review-count
-                data-sticky-review-count-value="{{ product_reviews_count | plus: 0 | round }}"
-              >
-                {{ 'sb.product.reviews_count' | t: count: product_reviews_count }}
-              </a>
-            </div>
-          {% endunless %}
-        </div>
-      </div>
-
-      {% if product_has_page_header %}
-        <div class="sb-product-main__sticky-segmented-wrap">
-          <div
-            class="sb-product-main__sticky-segmented"
-            data-sticky-segmented-controls
-            role="tablist"
-            aria-label="{{ 'sb.product.page_mode' | t }}"
-          >
-            <span class="sb-product-main__sticky-segment-indicator" aria-hidden="true"></span>
-            <button
-              class="sb-product-main__sticky-segment-pill is-active font-caption weight-semibold"
-              type="button"
-              data-sticky-segment-option="learn-more"
-              aria-pressed="true"
-            >
-              {{ 'sb.product.learn_more' | t }}
-            </button>
-            <button
-              class="sb-product-main__sticky-segment-pill font-caption weight-medium"
-              type="button"
-              data-sticky-segment-option="buy-now"
-              aria-pressed="false"
-            >
-              {{ 'sb.product.buy_now' | t }}
-            </button>
-          </div>
-        </div>
-      {% endif %}
-
-      <button
-        class="sb-product-main__sticky-add-button sb-button-radiant sb-button-radiant--medium sb-button-radiant--leading-icon font-caption weight-bold"
-        type="button"
-        data-sticky-add-button
-        {% unless current_variant.available %}
-          disabled
-        {% endunless %}
-        data-label-available="{{ product_label_add_to_cart }}"
-        data-label-unavailable="{{ product_label_sold_out }}"
-        aria-label="{% if current_variant.available %}{{ product_label_add_to_cart }}{% else %}{{ product_label_sold_out }}{% endif %}"
-      >
-        <span class="sb-button-radiant__icon sb-product-main__sticky-add-button-icon" aria-hidden="true">
-          {% if add_to_cart_icon_type == 'arrow' %}
-            {{ 'icon-arrow-large-40.svg' | inline_asset_content }}
-          {% else %}
-            <img
-              class="sb-product-main__add-button-icon-image"
-              src="{{ 'icon-add-to-cart.svg' | asset_url }}"
-              alt=""
-              width="16"
-              height="16"
-            >
-          {% endif %}
-        </span>
-        <span class="sb-button-radiant__label" data-sticky-add-button-label>
-          {% if current_variant.available %}
-            {{ product_label_add_to_cart }}
-          {% else %}
-            {{ product_label_sold_out }}
-          {% endif %}
-        </span>
-      </button>
-    </div>
-  </div>
-
-  <div
-    class="sb-product-main__sticky-bottom-bar-wrap sb-product-main__sticky-bottom-bar-wrap--hidden"
-    data-sticky-bottom-wrap
-    data-sb-sticky-bottom-navigation
-    data-sb-sticky-active="false"
+    class="sb-product-main__sticky-bottom-bar-wrap{% unless product_has_page_header %} sb-product-main__sticky-bottom-bar-wrap--hidden{% endunless %}"
   >
     <div class="sb-product-main__sticky-bottom-bar">
       <div class="sb-product-main__sticky-bottom-info">
@@ -634,7 +478,6 @@
             {% # theme-check-disable RemoteAsset %}
             <img
               class="sb-product-main__sticky-bottom-image"
-              data-sticky-bottom-image
               src="{{ sticky_media_image_url }}"
               alt="{{ product.title | escape }}"
               loading="eager"
@@ -643,7 +486,7 @@
             >
             {% # theme-check-enable RemoteAsset %}
           {% else %}
-            <div class="sb-product-main__sticky-bottom-image sb-product-main__sticky-bottom-image--placeholder" data-sticky-bottom-image></div>
+            <div class="sb-product-main__sticky-bottom-image sb-product-main__sticky-bottom-image--placeholder"></div>
           {% endif %}
         </div>
 
@@ -1271,6 +1114,7 @@
               class="sb-product-main__add-button sb-button-radiant sb-button-radiant--large sb-button-radiant--leading-icon font-caption weight-bold"
               type="submit"
               name="add"
+              data-primary-product-add-button
               {% unless current_variant.available %}
                 disabled
               {% endunless %}
@@ -1299,7 +1143,6 @@
               {% endif %}
               </span>
             </button>
-
             {% if product_dynamic_checkout_markup != blank %}
               <div class="sb-product-main__shop-pay-proxy{% unless current_variant.available %} is-unavailable{% endunless %}" data-shop-pay-proxy>
                 <div
@@ -2023,8 +1866,17 @@
 </section>
 
 {% stylesheet %}
+  #header-group + .shopify-section[id*='template--']:has(> .sb-product-main:not(.sb-product-main--no-page-header)),
+  .shopify-section.shopify-section-group-header-group ~ .shopify-section[id*='template--']:has(> .sb-product-main:not(.sb-product-main--no-page-header)),
+  .shopify-section:has(> .header) ~ .shopify-section[id*='template--']:has(> .sb-product-main:not(.sb-product-main--no-page-header)),
+  .shopify-section:has(> .sb-product-main:not(.sb-product-main--no-page-header)) {
+    margin-top: 0 !important;
+  }
+
   .sb-product-main {
-    --sb-product-gallery-mobile-size: calc((var(--sb-space-128) * 2) + var(--sb-space-4));
+    --sb-top-accessory-nav-gap-desktop: 0px;
+    --sb-top-accessory-nav-gap-mobile: 0px;
+    --sb-product-gallery-mobile-size: 260px;
     width: 100%;
   }
 
@@ -2051,21 +1903,12 @@
     display: none;
   }
 
-  @media (max-width: 749px) {
-    html.sb-product-mobile-segmented-active .header {
-      border-bottom: 0;
-    }
-
+  @media (max-width: 989px) {
     .sb-product-main__sticky-bar-wrap--segmented-controls {
-      --sb-supplementary-sticky-inline-margin: var(--sb-supplementary-sticky-inline-margin-mobile);
-      --sb-supplementary-sticky-top-gap: 0px;
       display: block;
-      left: 0;
-      position: fixed;
-      right: 0;
-      top: calc(var(--sb-header-height, 60px) + var(--sb-announcement-min-height, 0px) + var(--sb-supplementary-sticky-top-gap));
+      margin-bottom: 24px;
+      transition: opacity 250ms ease-in-out;
       width: 100%;
-      z-index: 40;
     }
 
     .sb-product-main__sticky-bar-wrap--segmented-controls .sb-product-main__sticky-bar {
@@ -2076,7 +1919,7 @@
       box-shadow: none;
       box-sizing: border-box;
       display: block;
-      padding: 8px var(--sb-supplementary-sticky-inline-margin) 8px;
+      padding: 8px var(--page-margin) 8px;
       width: 100%;
     }
 
@@ -2115,7 +1958,7 @@
       pointer-events: none;
       position: absolute;
       top: 4px;
-      transition: left 420ms cubic-bezier(0.22, 1, 0.36, 1), width 420ms cubic-bezier(0.22, 1, 0.36, 1);
+      transition: none;
       width: calc((100% - 8px - var(--sb-segment-gap)) / 2);
       will-change: left, width;
     }
@@ -2140,9 +1983,14 @@
       z-index: 1;
     }
 
-    .sb-product-main__sticky-bar-wrap--segmented-controls .sb-product-main__sticky-segment-pill:hover:not(.is-active),
     .sb-product-main__sticky-bar-wrap--segmented-controls .sb-product-main__sticky-segment-pill:focus-visible:not(.is-active) {
       background: var(--sb-color-neutral-700);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .sb-product-main__sticky-bar-wrap--segmented-controls .sb-product-main__sticky-segment-pill:hover:not(.is-active) {
+        background: var(--sb-color-neutral-700);
+      }
     }
 
     .sb-product-main__sticky-bar-wrap--segmented-controls .sb-product-main__sticky-segment-pill.is-active {
@@ -2150,16 +1998,21 @@
     }
 
     .sb-product-main__sticky-bottom-bar-wrap {
-      bottom: 12px;
+      bottom: calc(12px + env(safe-area-inset-bottom));
       display: block;
       left: var(--page-margin);
+      opacity: 1;
+      pointer-events: auto;
       position: fixed;
       right: var(--page-margin);
+      transition: opacity 250ms ease-in-out;
       z-index: 45;
     }
 
     .sb-product-main__sticky-bottom-bar-wrap--hidden {
-      display: none;
+      opacity: 0;
+      pointer-events: none;
+      transition: none;
     }
 
     .sb-product-main__sticky-bottom-bar {
@@ -2167,8 +2020,10 @@
       background: var(--sb-color-neutral-200);
       border-radius: 999px;
       box-shadow: inset 0 0 0 1px var(--sb-color-neutral-600);
+      box-sizing: border-box;
       display: flex;
       gap: 12px;
+      height: auto;
       padding: 16px 16px 16px 20px;
       width: 100%;
     }
@@ -2282,20 +2137,21 @@
       white-space: nowrap;
     }
 
-    .sb-product-main__sticky-bottom-stars:hover,
-    .sb-product-main__sticky-bottom-stars:focus-visible {
-      cursor: pointer;
-    }
-
-    .sb-product-main__sticky-bottom-stars:hover .sb-product-main__sticky-bottom-star,
-    .sb-product-main__sticky-bottom-stars:focus-visible .sb-product-main__sticky-bottom-star {
-      opacity: 0.75;
-    }
-
-    .sb-product-main__sticky-bottom-review-count:hover,
+    .sb-product-main__sticky-bottom-stars:focus-visible,
     .sb-product-main__sticky-bottom-review-count:focus-visible {
       color: var(--sb-color-primary-500);
       cursor: pointer;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .sb-product-main__sticky-bottom-stars:hover .sb-product-main__sticky-bottom-star {
+        opacity: 0.75;
+      }
+
+      .sb-product-main__sticky-bottom-review-count:hover {
+        color: var(--sb-color-primary-500);
+        cursor: pointer;
+      }
     }
 
     .sb-product-main__sticky-bottom-add-button {
@@ -2304,17 +2160,12 @@
     }
   }
 
-  @media (min-width: 750px) {
+  @media (min-width: 990px) {
     .sb-product-main__sticky-bar-wrap {
-      --sb-sticky-inline-margin: 60px;
-      --sb-supplementary-sticky-top-gap: var(--sb-supplementary-sticky-top-gap-desktop);
+      --sb-product-sticky-inline-margin: 60px;
       display: block;
-      left: 0;
-      position: fixed;
-      right: 0;
-      top: calc(var(--sb-header-height, 5rem) + var(--sb-supplementary-sticky-top-gap));
+      margin-bottom: 24px;
       width: 100%;
-      z-index: 40;
     }
 
     .sb-product-main__sticky-bottom-bar-wrap {
@@ -2336,7 +2187,7 @@
       margin-inline: auto;
       max-width: 1240px;
       padding: 12px 24px;
-      width: min(1240px, calc(100vw - (var(--sb-sticky-inline-margin) * 2)));
+      width: min(1240px, calc(100vw - (var(--sb-product-sticky-inline-margin) * 2)));
     }
 
     .sb-product-main__sticky-bar--no-segmented {
@@ -2450,14 +2301,24 @@
       white-space: nowrap;
     }
 
-    .sb-product-main__sticky-stars:hover,
     .sb-product-main__sticky-stars:focus-visible {
       cursor: pointer;
     }
 
-    .sb-product-main__sticky-stars:hover .sb-product-main__sticky-star,
+    @media (hover: hover) and (pointer: fine) {
+      .sb-product-main__sticky-stars:hover {
+        cursor: pointer;
+      }
+    }
+
     .sb-product-main__sticky-stars:focus-visible .sb-product-main__sticky-star {
       opacity: 0.75;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .sb-product-main__sticky-stars:hover .sb-product-main__sticky-star {
+        opacity: 0.75;
+      }
     }
 
     .sb-product-main__sticky-stars.sb-product-thumbnail__stars[data-rating-tooltip]::after {
@@ -2465,10 +2326,16 @@
       padding: 4px 8px;
     }
 
-    .sb-product-main__sticky-review-count:hover,
     .sb-product-main__sticky-review-count:focus-visible {
       color: var(--sb-color-primary-500);
       cursor: pointer;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .sb-product-main__sticky-review-count:hover {
+        color: var(--sb-color-primary-500);
+        cursor: pointer;
+      }
     }
 
     .sb-product-main__sticky-segmented-wrap {
@@ -2508,7 +2375,7 @@
       pointer-events: none;
       position: absolute;
       top: 4px;
-      transition: left 420ms cubic-bezier(0.22, 1, 0.36, 1), width 420ms cubic-bezier(0.22, 1, 0.36, 1);
+      transition: none;
       width: calc((100% - 8px - var(--sb-segment-gap)) / 2);
       will-change: left, width;
     }
@@ -2533,9 +2400,14 @@
       z-index: 1;
     }
 
-    .sb-product-main__sticky-segment-pill:hover:not(.is-active),
     .sb-product-main__sticky-segment-pill:focus-visible:not(.is-active) {
       background: var(--sb-color-neutral-700);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .sb-product-main__sticky-segment-pill:hover:not(.is-active) {
+        background: var(--sb-color-neutral-700);
+      }
     }
 
     .sb-product-main__sticky-segment-pill.is-active {
@@ -2549,7 +2421,7 @@
 
   }
 
-  @media (min-width: 750px) and (max-width: 1359px) {
+  @media (min-width: 990px) and (max-width: 1359px) {
     .sb-product-main__sticky-bar {
       column-gap: 24px;
       grid-template-columns: minmax(0, 1fr) auto;
@@ -2832,9 +2704,14 @@
     width: 100%;
   }
 
-  .sb-product-main__selector-list-item:hover,
   .sb-product-main__selector-list-item:focus-visible {
     box-shadow: inset 0 0 0 2px var(--sb-color-neutral-800);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-product-main__selector-list-item:hover {
+      box-shadow: inset 0 0 0 2px var(--sb-color-neutral-800);
+    }
   }
 
   .sb-product-main__selector-list-item.is-selected {
@@ -2872,10 +2749,16 @@
     white-space: nowrap;
   }
 
-  .sb-product-main__variant-pill:hover,
   .sb-product-main__variant-pill:focus-visible {
     background: var(--sb-color-neutral-900);
     color: var(--sb-color-neutral-100);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-product-main__variant-pill:hover {
+      background: var(--sb-color-neutral-900);
+      color: var(--sb-color-neutral-100);
+    }
   }
 
   .sb-product-main__variant-pill.is-active {
@@ -2929,9 +2812,14 @@
     width: var(--sb-space-48);
   }
 
-  .sb-product-main__color-swatch:hover,
   .sb-product-main__color-swatch:focus-visible {
     box-shadow: inset 0 0 0 2px var(--sb-color-neutral-800);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-product-main__color-swatch:hover {
+      box-shadow: inset 0 0 0 2px var(--sb-color-neutral-800);
+    }
   }
 
   .sb-product-main__color-swatch.is-selected {
@@ -3267,9 +3155,14 @@
     width: 100%;
   }
 
-  .sb-product-main__video-story:hover .sb-product-main__video-story-poster,
   .sb-product-main__video-story:focus-visible .sb-product-main__video-story-poster {
     opacity: 0.75;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-product-main__video-story:hover .sb-product-main__video-story-poster {
+      opacity: 0.75;
+    }
   }
 
   .sb-product-main__video-story-modal {
@@ -3555,9 +3448,14 @@
     text-decoration: none;
   }
 
-  .sb-product-main__addon-title:hover,
   .sb-product-main__addon-title:focus-visible {
     color: var(--sb-color-primary-500);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-product-main__addon-title:hover {
+      color: var(--sb-color-primary-500);
+    }
   }
 
   .sb-product-main__addon-price-row {
@@ -3602,10 +3500,16 @@
     white-space: nowrap;
   }
 
-  .sb-product-main__addon-option-pill:hover,
   .sb-product-main__addon-option-pill:focus-visible {
     background: var(--sb-color-neutral-900);
     color: var(--sb-color-neutral-100);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-product-main__addon-option-pill:hover {
+      background: var(--sb-color-neutral-900);
+      color: var(--sb-color-neutral-100);
+    }
   }
 
   .sb-product-main__addon-option-pill.is-active {
@@ -3643,9 +3547,14 @@
     width: 100%;
   }
 
-  .sb-product-main__addon-color-swatch:hover,
   .sb-product-main__addon-color-swatch:focus-visible {
     box-shadow: inset 0 0 0 2px var(--sb-color-neutral-800);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-product-main__addon-color-swatch:hover {
+      box-shadow: inset 0 0 0 2px var(--sb-color-neutral-800);
+    }
   }
 
   .sb-product-main__addon-color-swatch.is-selected {
@@ -3691,10 +3600,16 @@
     color: var(--sb-color-always-white);
   }
 
-  .sb-product-main__addon-view-button:hover,
   .sb-product-main__addon-view-button:focus-visible {
     background: var(--sb-color-neutral-900);
     color: var(--sb-color-neutral-100);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-product-main__addon-view-button:hover {
+      background: var(--sb-color-neutral-900);
+      color: var(--sb-color-neutral-100);
+    }
   }
 
   .sb-product-main__add-button-icon {
@@ -3786,7 +3701,6 @@
     display: none !important;
   }
 
-  .sb-product-main__shop-pay-proxy:hover .sb-product-main__shop-pay-button,
   .sb-product-main__shop-pay-proxy:focus-within .sb-product-main__shop-pay-button {
     box-shadow:
       0 -18px 30px 0 var(--sb-color-shop-pay-500-25),
@@ -3796,6 +3710,19 @@
       0 -20px 20px 0 var(--sb-color-always-white-50) inset,
       0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
     transform: translateY(var(--sb-button-hover-lift, -2px));
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-product-main__shop-pay-proxy:hover .sb-product-main__shop-pay-button {
+      box-shadow:
+        0 -18px 30px 0 var(--sb-color-shop-pay-500-25),
+        0 -6px 14px 0 var(--sb-color-shop-pay-500-25),
+        0 -10px 20px 0 var(--sb-color-shop-pay-500-25),
+        0 0 0 1px var(--sb-color-shop-pay-700) inset,
+        0 -20px 20px 0 var(--sb-color-always-white-50) inset,
+        0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
+      transform: translateY(var(--sb-button-hover-lift, -2px));
+    }
   }
 
   @media (min-width: 750px) {
@@ -3939,18 +3866,17 @@
         }
       }
 
-      const addButton = root.querySelector('.sb-product-main__add-button');
+      const addButton = root.querySelector('[data-primary-product-add-button]');
       const addButtonLabel = addButton ? addButton.querySelector('[data-add-button-label]') : null;
-      const stickyBarWrap = root.querySelector('.sb-product-main__sticky-bar-wrap');
-      const stickyBar = root.querySelector('[data-sticky-buy-bar]');
-      const stickyImage = root.querySelector('[data-sticky-image]');
-      const stickyBottomWrap = root.querySelector('[data-sticky-bottom-wrap]');
-      const stickyBottomImage = root.querySelector('[data-sticky-bottom-image]');
-      const stickyComparePriceElement = root.querySelector('[data-sticky-compare-price]');
-      const stickyCurrentPriceElement = root.querySelector('[data-sticky-current-price]');
-      const stickyAddButton = root.querySelector('[data-sticky-add-button]');
+      const stickyTopBarRoot = document.querySelector('.sb-product-top-sticky-accessory-bar');
+      const stickyImage = stickyTopBarRoot?.querySelector('[data-sticky-image]') || root.querySelector('[data-sticky-image]');
+      const stickyBottomImage = root.querySelector('.sb-product-main__sticky-bottom-image');
+      const stickyComparePriceElement = stickyTopBarRoot?.querySelector('[data-sticky-compare-price]') || root.querySelector('[data-sticky-compare-price]');
+      const stickyCurrentPriceElement = stickyTopBarRoot?.querySelector('[data-sticky-current-price]') || root.querySelector('[data-sticky-current-price]');
+      const stickyAddButton = stickyTopBarRoot?.querySelector('[data-sticky-add-button]') || root.querySelector('[data-sticky-add-button]');
       const stickyAddButtonLabel = stickyAddButton ? stickyAddButton.querySelector('[data-sticky-add-button-label]') : null;
-      const stickyReviewCountElement = root.querySelector('[data-sticky-review-count]');
+      const stickyReviewCountElement = stickyTopBarRoot?.querySelector('[data-sticky-review-count]') || root.querySelector('[data-sticky-review-count]');
+      const stickyBottomBarWrap = root.querySelector('.sb-product-main__sticky-bottom-bar-wrap');
       const stickyBottomComparePriceElement = root.querySelector('[data-sticky-bottom-compare-price]');
       const stickyBottomCurrentPriceElement = root.querySelector('[data-sticky-bottom-current-price]');
       const stickyBottomAddButton = root.querySelector('[data-sticky-bottom-add-button]');
@@ -3958,17 +3884,17 @@
         ? stickyBottomAddButton.querySelector('[data-sticky-bottom-add-button-label]')
         : null;
       const stickyBottomReviewCountElement = root.querySelector('[data-sticky-bottom-review-count]');
-      const stickySegmentedControls = root.querySelector('[data-sticky-segmented-controls]');
+      const stickySegmentedControls = stickyTopBarRoot?.querySelector('[data-sticky-segmented-controls]') || root.querySelector('[data-sticky-segmented-controls]');
       const stickySegmentIndicator = stickySegmentedControls
         ? stickySegmentedControls.querySelector('.sb-product-main__sticky-segment-indicator')
         : null;
-      const stickySegmentButtons = Array.from(root.querySelectorAll('[data-sticky-segment-option]'));
-      const mobileSegmentedMediaQuery = window.matchMedia('(max-width: 749px)');
+      const stickySegmentButtons = stickySegmentedControls
+        ? Array.from(stickySegmentedControls.querySelectorAll('[data-sticky-segment-option]'))
+        : Array.from(root.querySelectorAll('[data-sticky-segment-option]'));
       const hasStickySegmentedControls = Boolean(stickySegmentedControls && stickySegmentButtons.length);
-      const shouldDeferStickyBarUntilPastAddButton = !hasStickySegmentedControls;
-      let isDeferredStickyBarVisible = !shouldDeferStickyBarUntilPastAddButton;
-      let isBottomStickyBarVisible = false;
-      const headerElement = document.querySelector('.header');
+      const hasPageHeader = !root.classList.contains('sb-product-main--no-page-header');
+      const stickyTopBarWrap = stickyTopBarRoot?.querySelector('.sb-product-main__sticky-bar-wrap') || null;
+      const isMobileProductViewport = window.matchMedia('(max-width: 989px)');
       const priceRow = root.querySelector('[data-product-price-row]');
       const comparePriceElement = root.querySelector('[data-product-compare-price]');
       const currentPriceElement = root.querySelector('[data-product-current-price]');
@@ -4107,11 +4033,6 @@
 
       syncFreeShippingThresholdCopy();
 
-      const syncMobileSegmentedHeaderState = () => {
-        const shouldActivateMobileSegmentedHeader = hasStickySegmentedControls && mobileSegmentedMediaQuery.matches;
-        document.documentElement.classList.toggle('sb-product-mobile-segmented-active', shouldActivateMobileSegmentedHeader);
-      };
-
       const syncVariantUrl = (variantId) => {
         if (!variantId) return;
         const url = new URL(window.location.href);
@@ -4126,7 +4047,6 @@
         'learn-more': window.scrollY || window.pageYOffset || 0,
         'buy-now': null,
       };
-
       const clampScrollTop = (value) => {
         const nextValue = Number.isFinite(value) ? value : 0;
         const maxScroll = Math.max(
@@ -4136,33 +4056,52 @@
         return Math.min(Math.max(nextValue, 0), maxScroll);
       };
 
+      const getStickyRevealThreshold = () => {
+        const value = Number.parseFloat(
+          getComputedStyle(document.documentElement).getPropertyValue('--sb-top-stack-bottom')
+        );
+        return Number.isFinite(value) ? value : 0;
+      };
+
       const captureSegmentScroll = (segmentValue = root.dataset.pageSegment || 'learn-more') => {
         const activeSegment = normalizeSegment(segmentValue);
         segmentScrollMemory[activeSegment] = window.scrollY || window.pageYOffset || 0;
       };
+      const headerComponent = document.querySelector('#header-component');
 
-      const captureHeaderNavState = () => {
-        if (window.SBHeaderNav && typeof window.SBHeaderNav.captureState === 'function') {
-          return window.SBHeaderNav.captureState();
+      const setHeaderScrollSyncSuspended = (suspended) => {
+        if (window.SBHeaderNav && typeof window.SBHeaderNav.setScrollSyncSuspended === 'function') {
+          window.SBHeaderNav.setScrollSyncSuspended(suspended);
         }
-        if (!headerElement) return null;
-        return {
-          transform: headerElement.style.transform || '',
-        };
       };
 
-      const restoreHeaderNavState = (state) => {
-        if (!state) return;
-        if (
-          window.SBHeaderNav &&
-          typeof window.SBHeaderNav.restoreState === 'function' &&
-          Object.prototype.hasOwnProperty.call(state, 'hiddenOffset')
-        ) {
-          window.SBHeaderNav.restoreState(state);
-          return;
+      const forceHeaderStickySync = () => {
+        if (window.SBHeaderNav && typeof window.SBHeaderNav.refreshScrollMode === 'function') {
+          window.SBHeaderNav.refreshScrollMode({ forceSync: true });
         }
-        if (!headerElement || typeof state.transform !== 'string') return;
-        headerElement.style.transform = state.transform;
+      };
+
+      const captureHeaderVisualState = () => {
+        if (window.SBHeaderNav && typeof window.SBHeaderNav.captureVisualState === 'function') {
+          return window.SBHeaderNav.captureVisualState();
+        }
+        return null;
+      };
+
+      const restoreHeaderVisualState = (snapshot) => {
+        if (window.SBHeaderNav && typeof window.SBHeaderNav.restoreVisualState === 'function') {
+          window.SBHeaderNav.restoreVisualState(snapshot);
+        }
+      };
+
+      const getHeaderHideOffset = () => {
+        const rootStyles = getComputedStyle(document.documentElement);
+        const headerHeight = Number.parseFloat(rootStyles.getPropertyValue('--sb-header-height'));
+        const announcementHeight = Number.parseFloat(rootStyles.getPropertyValue('--sb-announcement-height'));
+        return Math.max(
+          0,
+          (Number.isFinite(headerHeight) ? headerHeight : 0) + (Number.isFinite(announcementHeight) ? announcementHeight : 0)
+        );
       };
 
       const syncStickySegmentIndicator = (segmentValue, { immediate = false } = {}) => {
@@ -4198,42 +4137,55 @@
         stickySegmentIndicator.style.height = `${nextHeight}px`;
       };
 
-      const syncStickySegmentWidth = () => {
-        // Segmented width is fully handled by CSS breakpoints.
-      };
-
       const getHeadingOffset = () => {
         const value = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sb-space-96'));
         return Number.isFinite(value) ? value : 96;
       };
 
-      const productSection = root.closest('.shopify-section[id*="template--"]');
-
       const getSegmentManagedSections = (currentProductSection) => {
         const mainContent = document.querySelector('#MainContent');
-        const mainSections = Array.from(
+        const allSections = Array.from(
           (mainContent || document).querySelectorAll('.shopify-section[id*="template--"]')
         );
+        const mainSections = allSections.filter((section) => !section.querySelector('[data-sb-product-top-sticky-accessory-bar]'));
         if (currentProductSection && mainSections.includes(currentProductSection)) return mainSections;
-        return Array.from(document.querySelectorAll('.shopify-section[id*="template--"]'));
+        return Array.from(document.querySelectorAll('.shopify-section[id*="template--"]')).filter(
+          (section) => !section.querySelector('[data-sb-product-top-sticky-accessory-bar]')
+        );
       };
 
-      const ensureProductSectionStartsFirst = () => {
-        if (hasStickySegmentedControls) return;
+      const reorderSectionsForMissingPageHeader = () => {
+        if (hasPageHeader) return;
+        const productSection = root.closest('.shopify-section[id*="template--"]');
         if (!(productSection instanceof HTMLElement)) return;
-        const sectionParent = productSection.parentElement;
-        if (!(sectionParent instanceof HTMLElement)) return;
+        if (productSection.dataset.sbNoHeroOrderApplied === 'true') return;
 
-        const orderedSections = Array.from(sectionParent.children).filter((node) => (
-          node instanceof HTMLElement &&
-          node.classList.contains('shopify-section') &&
-          node.id.includes('template--')
-        ));
-        if (!orderedSections.length) return;
-        const firstTemplateSection = orderedSections[0];
-        if (!(firstTemplateSection instanceof HTMLElement) || firstTemplateSection === productSection) return;
-        sectionParent.insertBefore(productSection, firstTemplateSection);
+        const orderedSections = getSegmentManagedSections(productSection);
+        const productSectionIndex = orderedSections.indexOf(productSection);
+        if (productSectionIndex <= 0) {
+          productSection.dataset.sbNoHeroOrderApplied = 'true';
+          return;
+        }
+
+        const sectionsBeforeProduct = orderedSections.slice(0, productSectionIndex);
+        if (!sectionsBeforeProduct.length) {
+          productSection.dataset.sbNoHeroOrderApplied = 'true';
+          return;
+        }
+
+        const parent = productSection.parentNode;
+        if (!(parent instanceof Node)) return;
+
+        const fragment = document.createDocumentFragment();
+        sectionsBeforeProduct.forEach((section) => {
+          fragment.appendChild(section);
+        });
+
+        parent.insertBefore(fragment, productSection.nextSibling);
+        productSection.dataset.sbNoHeroOrderApplied = 'true';
       };
+
+      reorderSectionsForMissingPageHeader();
 
       const applyPageSegmentVisibility = (segmentValue) => {
         const activeSegment = normalizeSegment(segmentValue);
@@ -4268,8 +4220,8 @@
       const applyStickySegment = (
         segmentValue,
         {
-          syncUrl = false,
           immediateIndicator = false,
+          syncUrl = false,
           restoreScroll = false,
         } = {}
       ) => {
@@ -4298,33 +4250,31 @@
         }
         try {
           syncStickyBarMetrics({ immediateIndicator });
-          syncStickyBarTop();
-          syncBottomStickyBarVisibility();
         } catch (error) {
           // Keep segmented controls usable even if sticky metrics fail.
         }
+        syncStickyAccessoryVisibility();
 
         if (restoreScroll && segmentChanged) {
-          const previousHeaderState = captureHeaderNavState();
+          const headerVisualState = captureHeaderVisualState();
           const savedScroll = segmentScrollMemory[activeSegment];
-          const nextScrollTop = clampScrollTop(Number.isFinite(savedScroll) ? savedScroll : 0);
+          const savedScrollTop = clampScrollTop(Number.isFinite(savedScroll) ? savedScroll : 0);
+          const shouldPreserveHiddenHeader = headerVisualState?.stickyMode === 'scroll-up'
+            && headerVisualState?.stickyState === 'idle';
+          const nextScrollTop = shouldPreserveHiddenHeader
+            ? Math.max(savedScrollTop, getHeaderHideOffset())
+            : savedScrollTop;
+          setHeaderScrollSyncSuspended(true);
+          window.scrollTo({
+            top: nextScrollTop,
+            behavior: 'auto',
+          });
           window.requestAnimationFrame(() => {
-            window.requestAnimationFrame(() => {
-              window.scrollTo({
-                top: nextScrollTop,
-                behavior: 'auto',
-              });
-              syncStickyBarTop();
-              captureSegmentScroll(activeSegment);
-              window.requestAnimationFrame(() => {
-                restoreHeaderNavState(previousHeaderState);
-                try {
-                  syncStickyBarTop();
-                } catch (error) {
-                  // Keep segment switching usable even if sticky top sync fails.
-                }
-              });
-            });
+            setHeaderScrollSyncSuspended(false);
+            forceHeaderStickySync();
+            if (headerVisualState?.stickyMode === 'scroll-up' && headerVisualState?.stickyState === 'active') {
+              restoreHeaderVisualState(headerVisualState);
+            }
           });
         } else {
           captureSegmentScroll(activeSegment);
@@ -4340,50 +4290,47 @@
         window.history.replaceState({}, '', url.toString());
       };
 
-      syncStickyReviewCount();
-      ensureProductSectionStartsFirst();
-      window.requestAnimationFrame(ensureProductSectionStartsFirst);
-      window.setTimeout(ensureProductSectionStartsFirst, 80);
-      if (stickySegmentedControls && stickySegmentButtons.length) {
+      const syncSegmentFromUrl = ({ immediateIndicator = false } = {}) => {
         const segmentFromUrl = normalizeSegment(new URL(window.location.href).searchParams.get('p') || '');
-        applyStickySegment(segmentFromUrl, { immediateIndicator: true });
+        applyStickySegment(segmentFromUrl, { immediateIndicator });
+      };
 
-        let segmentRefreshFrame = 0;
-        const refreshSegmentVisibility = () => {
-          if (segmentRefreshFrame) return;
-          segmentRefreshFrame = window.requestAnimationFrame(() => {
-            segmentRefreshFrame = 0;
-            const activeSegment = normalizeSegment(root.dataset.pageSegment || segmentFromUrl);
-            applyPageSegmentVisibility(activeSegment);
-            syncStickyBarMetrics({ immediateIndicator: true });
-            syncStickyBarTop();
-            syncBottomStickyBarVisibility();
-          });
+      const syncStickyAccessoryVisibility = () => {
+        const isMobileViewport = isMobileProductViewport.matches;
+        const revealThreshold = getStickyRevealThreshold();
+        const addButtonRect = addButton?.getBoundingClientRect?.() || null;
+        const hasScrolledPastPrimaryAddButton = Boolean(addButtonRect) && addButtonRect.bottom <= revealThreshold;
+        const activeSegment = normalizeSegment(root.dataset.pageSegment || 'learn-more');
+
+        if (stickyTopBarWrap) {
+          const shouldShowTopBar = hasPageHeader || (!isMobileViewport && hasScrolledPastPrimaryAddButton);
+          stickyTopBarWrap.classList.toggle('sb-product-main__sticky-bar-wrap--hidden', !shouldShowTopBar);
+        }
+
+        if (stickyBottomBarWrap) {
+          const shouldShowBottomBar = isMobileViewport
+            && (
+              hasPageHeader
+                ? (activeSegment !== 'buy-now' || hasScrolledPastPrimaryAddButton)
+                : hasScrolledPastPrimaryAddButton
+            );
+          stickyBottomBarWrap.classList.toggle('sb-product-main__sticky-bottom-bar-wrap--hidden', !shouldShowBottomBar);
+        }
+      };
+
+      syncStickyReviewCount();
+      if (stickySegmentedControls && stickySegmentButtons.length) {
+        syncSegmentFromUrl({ immediateIndicator: true });
+
+        const syncInitialSegmentVisibility = () => {
+          syncSegmentFromUrl({ immediateIndicator: true });
         };
 
-        const segmentObserverRoot = document.querySelector('#MainContent') || document.body;
-        if (segmentObserverRoot) {
-          const segmentMutationObserver = new MutationObserver((mutations) => {
-            const hasTemplateSectionInsertion = mutations.some((mutation) =>
-              Array.from(mutation.addedNodes).some(
-                (node) =>
-                  node instanceof HTMLElement &&
-                  (
-                    (node.classList.contains('shopify-section') && node.id.includes('template--')) ||
-                    Boolean(node.querySelector('.shopify-section[id*="template--"]'))
-                  )
-              )
-            );
-            if (hasTemplateSectionInsertion) {
-              refreshSegmentVisibility();
-            }
-          });
-          segmentMutationObserver.observe(segmentObserverRoot, {
-            childList: true,
-            subtree: true,
-          });
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', syncInitialSegmentVisibility, { once: true });
+        } else {
+          window.requestAnimationFrame(syncInitialSegmentVisibility);
         }
-        refreshSegmentVisibility();
 
         stickySegmentButtons.forEach((button) => {
           button.addEventListener('click', () => {
@@ -4398,18 +4345,6 @@
           const nextSegment = normalizeSegment(new URL(window.location.href).searchParams.get('p') || '');
           applyStickySegment(nextSegment, { restoreScroll: true });
         });
-      }
-
-      if (!hasStickySegmentedControls && productSection instanceof HTMLElement) {
-        const productSectionParent = productSection.parentElement;
-        if (productSectionParent instanceof HTMLElement) {
-          const productOrderObserver = new MutationObserver(() => {
-            ensureProductSectionStartsFirst();
-          });
-          productOrderObserver.observe(productSectionParent, {
-            childList: true,
-          });
-        }
       }
 
       const dispatchVariantSelectedEvent = (variant, sourceId = 'product-main') => {
@@ -4610,193 +4545,18 @@
         window.setTimeout(preloadStickyImageSources, 0);
       }
 
-      const parseRootPx = (name, fallback = 0) => {
-        const raw = window.getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-        const parsed = Number.parseFloat(raw);
-        return Number.isFinite(parsed) ? parsed : fallback;
-      };
-
-      const getStickyStackState = () => {
-        if (window.SBStickyStack && typeof window.SBStickyStack.getState === 'function') {
-          const stickyState = window.SBStickyStack.getState();
-          if (stickyState && typeof stickyState === 'object') return stickyState;
-        }
-        return {
-          headerBottom: parseRootPx('--sb-sticky-header-bottom', 0),
-          topStackBottom: parseRootPx('--sb-sticky-top-stack-bottom', 0),
-          bottomStackHeight: parseRootPx('--sb-sticky-bottom-stack-height', 0),
-          scrollTargetOffset: parseRootPx('--sb-sticky-scroll-target-offset', getHeadingOffset())
-        };
-      };
-
-      const requestStickyStackSync = () => {
-        if (window.SBStickyStack && typeof window.SBStickyStack.requestSync === 'function') {
-          window.SBStickyStack.requestSync();
-        }
-      };
-
-      const setStickyAccessoryActiveState = (element, active) => {
-        if (!element) return false;
-        const nextValue = active ? 'true' : 'false';
-        if (element.getAttribute('data-sb-sticky-active') === nextValue) return false;
-        element.setAttribute('data-sb-sticky-active', nextValue);
-        return true;
-      };
-
-      const getResolvedStickyTopGap = () => {
-        if (!stickyBarWrap) return 16;
-        const spacingValue = window.getComputedStyle(stickyBarWrap).getPropertyValue('--sb-supplementary-sticky-top-gap');
-        const spacing = Number.parseFloat(spacingValue);
-        return Number.isFinite(spacing) ? spacing : 16;
-      };
-
-      const getAccessoryActivationLine = () => {
-        const spacing = getResolvedStickyTopGap();
-        const stickyState = getStickyStackState();
-        return Math.max(stickyState.headerBottom + spacing, spacing);
-      };
-
-      const getBottomStickyTriggerTop = () => {
-        const stickyState = getStickyStackState();
-        return Math.max(stickyState.topStackBottom, stickyState.headerBottom, 0);
-      };
-
-      const isPastAddButtonForBottomSticky = () => {
-        if (!addButton) return true;
-        return addButton.getBoundingClientRect().bottom <= getBottomStickyTriggerTop();
-      };
-
-      const shouldShowBottomStickyBar = () => {
-        if (!stickyBottomWrap || !mobileSegmentedMediaQuery.matches) return false;
-        if (hasStickySegmentedControls) {
-          const activeSegment = normalizeSegment(root.dataset.pageSegment || 'learn-more');
-          if (activeSegment === 'learn-more') return true;
-          return isPastAddButtonForBottomSticky();
-        }
-        return isPastAddButtonForBottomSticky();
-      };
-
-      const syncBottomStickyBarVisibility = () => {
-        if (!stickyBottomWrap) return false;
-        const nextVisible = shouldShowBottomStickyBar();
-        if (nextVisible === isBottomStickyBarVisible) return false;
-        isBottomStickyBarVisible = nextVisible;
-        stickyBottomWrap.classList.toggle('sb-product-main__sticky-bottom-bar-wrap--hidden', !nextVisible);
-        setStickyAccessoryActiveState(stickyBottomWrap, nextVisible);
-        requestStickyStackSync();
-        return true;
-      };
-
-      const shouldShowDeferredStickyBar = () => {
-        if (!stickyBarWrap) return false;
-        if (!shouldDeferStickyBarUntilPastAddButton) return true;
-        if (!addButton) return true;
-        const addButtonRect = addButton.getBoundingClientRect();
-        return addButtonRect.bottom <= getAccessoryActivationLine();
-      };
-
-      const syncDeferredStickyBarVisibility = () => {
-        if (!stickyBarWrap) return false;
-        if (!shouldDeferStickyBarUntilPastAddButton) {
-          const alwaysActive = !stickyBarWrap.classList.contains('sb-product-main__sticky-bar-wrap--hidden');
-          if (setStickyAccessoryActiveState(stickyBarWrap, alwaysActive)) {
-            requestStickyStackSync();
-          }
-          return false;
-        }
-        const nextVisible = shouldShowDeferredStickyBar();
-        if (nextVisible === isDeferredStickyBarVisible) return false;
-        isDeferredStickyBarVisible = nextVisible;
-        stickyBarWrap.classList.toggle('sb-product-main__sticky-bar-wrap--hidden', !nextVisible);
-        setStickyAccessoryActiveState(stickyBarWrap, nextVisible);
-        requestStickyStackSync();
-        return true;
-      };
-
-      let stickyBarTopRafId = 0;
-      const scheduleStickyBarTopSync = () => {
-        if (stickyBarTopRafId) return;
-        stickyBarTopRafId = window.requestAnimationFrame(() => {
-          stickyBarTopRafId = 0;
-          syncStickyBarTop();
-        });
-      };
-
-      function syncStickyBarTop() {
-        requestStickyStackSync();
-      }
-
-      const getFirstVisibleTemplateSection = () => {
-        const templateSections = Array.from(document.querySelectorAll('.shopify-section[id*="template--"]'));
-        return templateSections.find((section) => {
-          if (!(section instanceof HTMLElement)) return false;
-          if (section.offsetHeight <= 0) return false;
-          return Array.from(section.children).some((child) => {
-            if (!(child instanceof HTMLElement)) return false;
-            const tag = child.tagName;
-            return tag !== 'SCRIPT' && tag !== 'STYLE';
-          });
-        }) || null;
-      };
-
       function syncStickyBarMetrics({ immediateIndicator = true } = {}) {
-        syncStickySegmentWidth();
         syncStickySegmentIndicator(root.dataset.pageSegment || 'learn-more', { immediate: immediateIndicator });
-        requestStickyStackSync();
-
-        const templateSections = Array.from(document.querySelectorAll('.shopify-section[id*="template--"]'));
-        if (!hasStickySegmentedControls) {
-          templateSections.forEach((section) => {
-            if (section.style.paddingTop) section.style.paddingTop = '';
-          });
-          return;
-        }
-
-        const firstTemplateSection = getFirstVisibleTemplateSection();
-        if (!firstTemplateSection) return;
-
-        const stickyState = getStickyStackState();
-        const headingOffset = getHeadingOffset();
-        const currentScrollTop = window.scrollY || window.pageYOffset || 0;
-        const firstTemplateSectionTop = firstTemplateSection.getBoundingClientRect().top + currentScrollTop;
-        const topAccessoryIsActive = Boolean(stickyBarWrap)
-          && stickyBarWrap.getAttribute('data-sb-sticky-active') !== 'false'
-          && !stickyBarWrap.classList.contains('sb-product-main__sticky-bar-wrap--hidden');
-        const firstTemplateSectionPadding = topAccessoryIsActive
-          ? Math.max(Math.round(stickyState.topStackBottom + headingOffset - firstTemplateSectionTop), 0)
-          : 0;
-        const currentInlinePadding = Number.parseFloat(firstTemplateSection.style.paddingTop || '0') || 0;
-        const resolvedFirstTemplateSectionPadding = (
-          hasStickySegmentedControls && currentScrollTop > 4
-            ? Math.max(firstTemplateSectionPadding, currentInlinePadding)
-            : firstTemplateSectionPadding
-        );
-
-        templateSections.forEach((section) => {
-          if (section === firstTemplateSection && resolvedFirstTemplateSectionPadding > 0) {
-            const nextPaddingValue = `${resolvedFirstTemplateSectionPadding}px`;
-            if (section.style.paddingTop !== nextPaddingValue) {
-              section.style.paddingTop = nextPaddingValue;
-            }
-            return;
-          }
-          if (section.style.paddingTop) section.style.paddingTop = '';
-        });
       }
 
       const getScrollTargetOffset = () => {
-        const stickyState = getStickyStackState();
-        const headingOffset = getHeadingOffset();
-        if (Number.isFinite(stickyState.scrollTargetOffset) && stickyState.scrollTargetOffset > 0) {
-          return stickyState.scrollTargetOffset;
-        }
-        return Math.max(Math.round(stickyState.topStackBottom + headingOffset), headingOffset);
+        return getHeadingOffset();
       };
 
       const scrollToReviewsHeading = ({ ensureBuyNow = false } = {}) => {
         const hasSegmentedControls = Boolean(stickySegmentedControls && stickySegmentButtons.length);
         if (hasSegmentedControls && ensureBuyNow && normalizeSegment(root.dataset.pageSegment || 'learn-more') !== 'buy-now') {
-          applyStickySegment('buy-now', { syncUrl: true });
+          applyStickySegment('buy-now');
         }
 
         const performScroll = () => {
@@ -4805,12 +4565,7 @@
           const hiddenWrapper = target.closest('.shopify-section.sb-segment-hidden');
           if (hiddenWrapper) return;
 
-          syncStickyBarTop();
           syncStickyBarMetrics();
-          if (window.SBStickyStack && typeof window.SBStickyStack.scrollToElement === 'function') {
-            window.SBStickyStack.scrollToElement(target, { behavior: 'smooth' });
-            return;
-          }
           const targetAbsoluteTop = target.getBoundingClientRect().top + window.scrollY;
           const targetTop = targetAbsoluteTop - getScrollTargetOffset();
           window.scrollTo({ top: Math.max(targetTop, 0), behavior: 'smooth' });
@@ -4846,75 +4601,25 @@
         true
       );
 
-      syncDeferredStickyBarVisibility();
       syncStickyBarMetrics({ immediateIndicator: true });
-      syncStickyBarTop();
-      syncBottomStickyBarVisibility();
-      scheduleStickyBarTopSync();
-      syncMobileSegmentedHeaderState();
-      window.setTimeout(() => {
-        syncDeferredStickyBarVisibility();
-        syncStickyBarMetrics({ immediateIndicator: true });
-        syncBottomStickyBarVisibility();
-        scheduleStickyBarTopSync();
-      }, 80);
-      window.setTimeout(() => {
-        syncDeferredStickyBarVisibility();
-        syncStickyBarMetrics({ immediateIndicator: true });
-        syncStickyBarTop();
-        syncBottomStickyBarVisibility();
-        scheduleStickyBarTopSync();
-      }, 300);
+      syncStickyAccessoryVisibility();
+      captureSegmentScroll();
 
       window.addEventListener(
         'scroll',
         () => {
           captureSegmentScroll();
-          const stickyVisibilityChanged = syncDeferredStickyBarVisibility();
-          syncStickyBarTop();
-          if (stickyVisibilityChanged) {
-            syncStickyBarMetrics({ immediateIndicator: true });
-          }
-          syncBottomStickyBarVisibility();
-          scheduleStickyBarTopSync();
+          syncStickyAccessoryVisibility();
         },
         { passive: true }
       );
       window.addEventListener('resize', () => {
-        syncDeferredStickyBarVisibility();
         syncStickyBarMetrics({ immediateIndicator: true });
-        syncStickyBarTop();
-        syncBottomStickyBarVisibility();
-        scheduleStickyBarTopSync();
-        syncMobileSegmentedHeaderState();
+        syncStickyAccessoryVisibility();
       });
-
-      const mainContent = document.querySelector('#MainContent');
-      if (mainContent) {
-        const sectionObserver = new MutationObserver(() => {
-          syncDeferredStickyBarVisibility();
-          syncStickyBarMetrics({ immediateIndicator: true });
-          syncStickyBarTop();
-          syncBottomStickyBarVisibility();
-        });
-        sectionObserver.observe(mainContent, {
-          childList: true,
-          subtree: false,
-        });
-      }
 
       document.addEventListener('sb:cart-drawer:state-change', () => {
         syncStickyBarMetrics({ immediateIndicator: true });
-        syncStickyBarTop();
-        syncBottomStickyBarVisibility();
-        scheduleStickyBarTopSync();
-      });
-      document.addEventListener('sb:sticky-stack:change', () => {
-        syncDeferredStickyBarVisibility();
-        if (!hasStickySegmentedControls) {
-          syncStickyBarMetrics({ immediateIndicator: true });
-        }
-        syncBottomStickyBarVisibility();
       });
 
       const initGalleryVideos = () => {
@@ -5509,9 +5214,6 @@
         if (stickyCurrentPriceElement) {
           stickyCurrentPriceElement.textContent = formatMoney(resolvedPricing.currentPriceCents);
         }
-        if (stickyBottomCurrentPriceElement) {
-          stickyBottomCurrentPriceElement.textContent = formatMoney(resolvedPricing.currentPriceCents);
-        }
         if (stickyComparePriceElement) {
           if (hasComparePrice) {
             stickyComparePriceElement.textContent = formatMoney(resolvedPricing.comparePriceCents);
@@ -5519,15 +5221,6 @@
           } else {
             stickyComparePriceElement.textContent = '';
             stickyComparePriceElement.hidden = true;
-          }
-        }
-        if (stickyBottomComparePriceElement) {
-          if (hasComparePrice) {
-            stickyBottomComparePriceElement.textContent = formatMoney(resolvedPricing.comparePriceCents);
-            stickyBottomComparePriceElement.hidden = false;
-          } else {
-            stickyBottomComparePriceElement.textContent = '';
-            stickyBottomComparePriceElement.hidden = true;
           }
         }
         if (stickyAddButton) {
@@ -5538,13 +5231,26 @@
           if (stickyAddButtonLabel) stickyAddButtonLabel.textContent = nextLabel;
           stickyAddButton.setAttribute('aria-label', nextLabel);
         }
+
+        if (stickyBottomCurrentPriceElement) {
+          stickyBottomCurrentPriceElement.textContent = formatMoney(resolvedPricing.currentPriceCents);
+        }
+        if (stickyBottomComparePriceElement) {
+          if (hasComparePrice) {
+            stickyBottomComparePriceElement.textContent = formatMoney(resolvedPricing.comparePriceCents);
+            stickyBottomComparePriceElement.hidden = false;
+          } else {
+            stickyBottomComparePriceElement.textContent = '';
+            stickyBottomComparePriceElement.hidden = true;
+          }
+        }
         if (stickyBottomAddButton) {
           stickyBottomAddButton.disabled = !purchaseData.available;
           const availableLabel = stickyBottomAddButton.dataset.labelAvailable || addLabel;
           const unavailableLabel = stickyBottomAddButton.dataset.labelUnavailable || soldOutLabel;
           const nextLabel = purchaseData.available ? availableLabel : unavailableLabel;
           if (stickyBottomAddButtonLabel) stickyBottomAddButtonLabel.textContent = nextLabel;
-          stickyBottomAddButton.setAttribute('aria-label', purchaseData.available ? addToCartLabel : soldOutLabel);
+          stickyBottomAddButton.setAttribute('aria-label', nextLabel);
         }
 
         const stickyVariant = variants.find((variant) => `${variant.id}` === `${purchaseData.id}`);
@@ -5848,70 +5554,6 @@
 {
   "name": "t:general.product",
   "settings": [
-    {
-      "type": "header",
-      "content": "Supplementary sticky navigation"
-    },
-    {
-      "type": "range",
-      "id": "supplementary_sticky_top_gap_desktop",
-      "label": "Top gap desktop",
-      "min": 0,
-      "max": 64,
-      "step": 1,
-      "unit": "px",
-      "default": 16
-    },
-    {
-      "type": "range",
-      "id": "supplementary_sticky_top_gap_mobile",
-      "label": "Top gap mobile",
-      "min": 0,
-      "max": 64,
-      "step": 1,
-      "unit": "px",
-      "default": 16
-    },
-    {
-      "type": "range",
-      "id": "supplementary_sticky_inline_margin_desktop",
-      "label": "Inline margin desktop",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 60
-    },
-    {
-      "type": "range",
-      "id": "supplementary_sticky_inline_margin_mobile",
-      "label": "Inline margin mobile",
-      "min": 0,
-      "max": 64,
-      "step": 1,
-      "unit": "px",
-      "default": 16
-    },
-    {
-      "type": "range",
-      "id": "supplementary_sticky_nav_padding_y_desktop",
-      "label": "Vertical padding desktop",
-      "min": 0,
-      "max": 32,
-      "step": 1,
-      "unit": "px",
-      "default": 12
-    },
-    {
-      "type": "range",
-      "id": "supplementary_sticky_nav_padding_y_mobile",
-      "label": "Vertical padding mobile",
-      "min": 0,
-      "max": 32,
-      "step": 1,
-      "unit": "px",
-      "default": 12
-    },
     {
       "type": "select",
       "id": "add_to_cart_icon",

@@ -58,7 +58,28 @@
     "placeholder": "Rechercher des articles, des pages ou des produits",
     "submit": "Rechercher",
     "no_results_html": "Aucun résultat trouvé pour {{ terms }}",
-    "results_for_html": "{{ count }} résultats trouvés pour {{ terms }}"
+    "no_results_in_html": "Aucun résultat trouvé pour « {{ terms }} » dans {{ group }}.",
+    "no_results_try_html": "Essayez de chercher dans <a href=\"{{ first_url }}\">{{ first_group }}</a> ou <a href=\"{{ second_url }}\">{{ second_group }}</a>.",
+    "results_for_html": {
+      "one": "{{ count }} résultat trouvé pour {{ terms }}",
+      "other": "{{ count }} résultats trouvés pour {{ terms }}"
+    },
+    "group_products": "Produits",
+    "group_pages": "Pages",
+    "group_articles": "Articles",
+    "group_collections": "Collections",
+    "shortcut": {
+      "clear": "Effacer",
+      "close": "Fermer la recherche",
+      "error": "Une erreur s’est produite. Veuillez réessayer.",
+      "no_results_html": "Aucun résultat trouvé pour « {{ terms }} ».",
+      "placeholder": "Rechercher",
+      "bestsellers": "Meilleures ventes",
+      "recently_viewed": "Vu récemment",
+      "start_typing": "Commencez à saisir pour rechercher.",
+      "suggestions": "Suggestions",
+      "view_all": "Voir tous les résultats"
+    }
   },
   "sb": {
     "accordion": {
@@ -99,7 +120,32 @@
       "read_this_next": "À lire ensuite",
       "sidebar_content": "Contenu de la barre latérale",
       "sidebar_promo": "Promo barre latérale",
-      "sticky_navigation": "Navigation de blog fixe"
+      "sticky_navigation": "Navigation de blog fixe",
+      "product_filters": {
+        "core_2_practice_companion": "Core 2 compagnon de pratique",
+        "flow_microphone": "Micro Flow",
+        "genki_wave_midi_ring": "Bague MIDI Genki Wave",
+        "minuendo_earplugs": "Bouchons Minuendo",
+        "playtronica_midi_instruments": "Instruments MIDI Playtronica",
+        "pulse_vibrating_metronome": "Métronome vibrant Pulse",
+        "spark_practice_companion": "Spark compagnon de pratique",
+        "stomp_foot_pedal": "Pédale Stomp",
+        "the_metronome_app": "L’application de métronome",
+        "wave_in_ear_monitors": "Moniteurs intra-auriculaires Wave",
+        "wave_pro_in_ear_monitors": "Moniteurs intra-auriculaires Wave Pro"
+      },
+      "instrument_filters": {
+        "acoustic_guitar": "Guitare acoustique",
+        "bass_guitar": "Basse",
+        "drums": "Batterie",
+        "electric_guitar": "Guitare électrique",
+        "keys": "Claviers",
+        "orchestral_strings": "Cordes orchestrales",
+        "playtronica": "Playtronica",
+        "ukulele": "Ukulélé",
+        "vocals": "Chant",
+        "woodwind": "Bois"
+      }
     },
     "cart": {
       "accepted_payment_methods": "Moyens de paiement acceptés",
@@ -140,6 +186,7 @@
       "view_all": "Voir tout"
     },
     "common": {
+      "account": "Compte",
       "back": "Retour",
       "cart_drawer": "Panier",
       "close_cart": "Fermer le panier",

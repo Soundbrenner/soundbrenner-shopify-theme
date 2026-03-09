@@ -468,9 +468,14 @@
     aspect-ratio: 122 / 36;
   }
 
-  .sb-large-feature__app-download-link[href]:hover,
   .sb-large-feature__app-download-link[href]:focus-visible {
     opacity: 0.75;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-large-feature__app-download-link[href]:hover {
+      opacity: 0.75;
+    }
   }
 
   @media (max-width: 749px) {

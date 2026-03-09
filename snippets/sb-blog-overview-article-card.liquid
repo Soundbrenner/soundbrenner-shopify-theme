@@ -1,33 +1,25 @@
 {% liquid
   assign card_style_class = card_class | default: ''
-  assign category_text = blank
+  assign category_tag = blank
   assign fallback_tag = blank
   for tag in article.tags
     assign normalized_tag = tag | downcase
-    if normalized_tag contains 'by_product'
-      assign parsed_category = tag | remove_first: 'By_product: ' | remove_first: 'by_product: ' | remove_first: 'By_product - ' | remove_first: 'by_product - ' | remove_first: 'By_product-' | remove_first: 'by_product-' | remove_first: 'By_product ' | remove_first: 'by_product ' | remove_first: 'By_product' | remove_first: 'by_product' | strip
-      if parsed_category != blank
-        assign category_text = parsed_category
-        break
-      endif
-    elsif normalized_tag contains 'by_instrument'
-      assign parsed_category = tag | remove_first: 'By_instrument: ' | remove_first: 'by_instrument: ' | remove_first: 'By_instrument - ' | remove_first: 'by_instrument - ' | remove_first: 'By_instrument-' | remove_first: 'by_instrument-' | remove_first: 'By_instrument ' | remove_first: 'by_instrument ' | remove_first: 'By_instrument' | remove_first: 'by_instrument' | strip
-      if parsed_category != blank
-        assign category_text = parsed_category
-        break
-      endif
+    if normalized_tag contains 'by_product' or normalized_tag contains 'by_instrument'
+      assign category_tag = tag
+      break
     elsif fallback_tag == blank
       assign fallback_tag = tag
     endif
   endfor
 
-  if category_text == blank and fallback_tag != blank
-    assign category_text = fallback_tag
+  if category_tag == blank and fallback_tag != blank
+    assign category_tag = fallback_tag
   endif
 
-  if category_text == blank and blog_title != blank
-    assign category_text = blog_title
-  endif
+  capture category_text
+    render 'sb-blog-tag-label', tag: category_tag, blog_title: blog_title
+  endcapture
+  assign category_text = category_text | strip
 
   assign card_title_class = 'font-body weight-bold'
   assign card_meta_class = 'font-caption weight-semibold'
@@ -36,13 +28,27 @@
     assign card_meta_class = 'font-caption weight-semibold'
   endif
 
-  assign image_sizes = '(max-width: 989px) calc(100vw - 40px), 800px'
-  if card_style_class == 'sb-blog-overview-card--half'
-    assign image_sizes = '(max-width: 989px) calc(100vw - 40px), 385px'
-  elsif card_style_class == 'sb-blog-overview-card--third'
-    assign image_sizes = '(max-width: 989px) calc(100vw - 40px), 246px'
-  elsif card_style_class == 'sb-blog-overview-card--archive'
-    assign image_sizes = '(max-width: 989px) calc(100vw - 40px), 266px'
+  assign card_image_sizes = image_sizes
+  assign card_image_widths = image_widths
+  assign card_image_request_width = image_request_width | default: 1200
+
+  if card_image_sizes == blank
+    assign card_image_sizes = '(max-width: 989px) calc(100vw - 40px), 800px'
+    if card_style_class == 'sb-blog-overview-card--half'
+      assign card_image_sizes = '(max-width: 989px) calc(100vw - 40px), 385px'
+    elsif card_style_class == 'sb-blog-overview-card--third'
+      assign card_image_sizes = '(max-width: 989px) calc(100vw - 40px), 246px'
+    elsif card_style_class == 'sb-blog-overview-card--archive'
+      assign card_image_sizes = '(max-width: 989px) calc(100vw - 40px), 266px'
+    endif
+  endif
+
+  if card_image_widths == blank
+    assign card_image_widths = '246,385,533,800,1200'
+  endif
+
+  if article.image != blank and article.image.width != blank
+    assign card_image_request_width = card_image_request_width | at_most: article.image.width
   endif
 %}
 
@@ -52,10 +58,10 @@
       {% if article.image != blank %}
         {{
           article.image
-          | image_url: width: 1200
+          | image_url: width: card_image_request_width
           | image_tag:
-            widths: '246,385,533,800,1200',
-            sizes: image_sizes,
+            widths: card_image_widths,
+            sizes: card_image_sizes,
             class: 'sb-blog-overview-card__image',
             loading: 'lazy',
             alt: article.title

@@ -1,0 +1,173 @@
+{% liquid
+  assign default_collection = collections.all
+  assign primary_currency = cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency | upcase
+  assign has_default_products = false
+  if default_collection != blank and default_collection.products_count > 0
+    assign has_default_products = true
+  endif
+%}
+
+<div class="sb-search-shortcut-results" data-search-shortcut-results-fragment>
+  {% if has_default_products %}
+    <section class="sb-search-shortcut-results__group" aria-label="{{ 'search.group_products' | t }}">
+      <h3 class="sb-search-shortcut-results__heading font-caption weight-semibold">{{ 'search.group_products' | t }}</h3>
+      <ul class="sb-search-shortcut-results__grid" role="list">
+        {% for product in default_collection.products limit: 4 %}
+          {% liquid
+            assign product_primary_media = blank
+            if product.media != blank
+              for product_media in product.media
+                if product_media.media_type == 'image'
+                  assign product_primary_media = product_media
+                  break
+                endif
+              endfor
+            endif
+            if product_primary_media == blank
+              assign product_primary_media = product.media | first
+            endif
+            assign product_image = blank
+            if product_primary_media != blank
+              assign product_image = product_primary_media.preview_image | default: product_primary_media
+            endif
+            if product_image == blank
+              assign product_image = product.featured_media.preview_image | default: product.featured_image
+            endif
+
+            assign product_image_width = 584
+            if product_image != blank and product_image.width != blank
+              assign product_image_width = product_image.width | at_most: 584
+            endif
+            assign selected_variant = product.selected_or_first_available_variant
+            assign product_hover_image_url = blank
+            if selected_variant != blank
+              capture product_variant_hover_image_url
+                render 'sb-hover-image-url', resource: selected_variant, width: product_image_width
+              endcapture
+              assign product_variant_hover_image_url = product_variant_hover_image_url | strip
+              if product_variant_hover_image_url != blank
+                assign product_hover_image_url = product_variant_hover_image_url
+              endif
+            endif
+            if product_hover_image_url == blank
+              capture product_primary_hover_image_url
+                render 'sb-hover-image-url', resource: product, width: product_image_width
+              endcapture
+              assign product_primary_hover_image_url = product_primary_hover_image_url | strip
+              if product_primary_hover_image_url != blank
+                assign product_hover_image_url = product_primary_hover_image_url
+              endif
+            endif
+
+            assign product_settings_ref = product.metafields.custom.sbv2_product_settings.value | default: product.metafields.custom.sbv2_product_settings
+            assign product_hide_discounts = blank
+            if product_settings_ref != blank
+              assign product_hide_discounts_setting = product_settings_ref.hide_discounts.value | default: product_settings_ref.hide_discounts
+              if product_hide_discounts_setting == true or product_hide_discounts_setting == 'true' or product_hide_discounts_setting == 1 or product_hide_discounts_setting == '1'
+                assign product_hide_discounts = true
+              endif
+            endif
+            if product_hide_discounts == blank
+              assign product_hide_discounts = false
+            endif
+            if product_hide_discounts == 'true' or product_hide_discounts == 1 or product_hide_discounts == '1'
+              assign product_hide_discounts = true
+            elsif product_hide_discounts == 'false' or product_hide_discounts == 0 or product_hide_discounts == '0'
+              assign product_hide_discounts = false
+            endif
+
+            assign product_price = blank
+            assign product_compare_price_display = blank
+            assign product_price_cents = blank
+            assign product_compare_price_cents = blank
+            if selected_variant != blank
+              assign product_price_cents = selected_variant.price | plus: 0
+              capture product_price
+                render 'sb-money-no-decimals', amount: selected_variant.price, currency: primary_currency, context: 'storefront'
+              endcapture
+              assign product_price = product_price | strip
+
+              if selected_variant.compare_at_price > selected_variant.price and product_hide_discounts == false
+                assign product_compare_price_cents = selected_variant.compare_at_price | plus: 0
+                capture product_compare_price_display
+                  render 'sb-money-no-decimals', amount: selected_variant.compare_at_price, currency: primary_currency, context: 'storefront'
+                endcapture
+                assign product_compare_price_display = product_compare_price_display | strip
+              endif
+            endif
+
+            if product_hide_discounts
+              assign product_compare_price_display = blank
+              assign product_compare_price_cents = blank
+            endif
+
+          %}
+          <li
+            class="sb-search-shortcut-results__item"
+            data-search-result-item
+            data-search-result-index="{{ forloop.index0 }}"
+            data-product-id="{{ product.id }}"
+          >
+            <article
+              class="sb-search-shortcut-card sb-search-shortcut-card--product sb-search-shortcut-card--product-compact"
+              data-search-shortcut-product-card
+              data-thumbnail-product-id="{{ product.id }}"
+              data-thumbnail-hide-discounts="{% if product_hide_discounts %}true{% else %}false{% endif %}"
+              {% if product_price_cents != blank %}data-thumbnail-price-cents="{{ product_price_cents }}"{% endif %}
+              {% if product_compare_price_cents != blank %}data-thumbnail-compare-price-cents="{{ product_compare_price_cents }}"{% endif %}
+            >
+              <div class="sb-search-shortcut-card__product-link-group">
+                <a class="sb-search-shortcut-card__product-media-link" href="{{ product.url }}">
+                  <span class="sb-search-shortcut-card__media sb-search-shortcut-card__media--product{% if product_hover_image_url != blank %} sb-search-shortcut-card__media--has-hover{% endif %}" aria-hidden="true">
+                    {% if product_image != blank %}
+                      {{
+                        product_image
+                        | image_url: width: product_image_width
+                        | image_tag:
+                          widths: '120, 160, 200, 240, 320, 420, 584',
+                          sizes: '(min-width: 990px) 160px, 30vw',
+                          class: 'sb-search-shortcut-card__image sb-search-shortcut-card__image--primary',
+                          loading: 'lazy',
+                          alt: product.title
+                      }}
+                      {% if product_hover_image_url != blank %}
+                        <img
+                          class="sb-search-shortcut-card__image sb-search-shortcut-card__image--hover"
+                          src="{{ product_hover_image_url }}"
+                          alt=""
+                          loading="lazy"
+                          width="292"
+                          height="292"
+                          aria-hidden="true"
+                        >
+                      {% endif %}
+                    {% else %}
+                      <span class="sb-search-shortcut-card__image sb-search-shortcut-card__image--placeholder sb-search-shortcut-card__image--primary"></span>
+                    {% endif %}
+                  </span>
+                </a>
+                <span class="sb-search-shortcut-card__content sb-search-shortcut-card__content--product">
+                  <a class="sb-search-shortcut-card__product-title-link font-caption weight-bold" href="{{ product.url }}">
+                    <span class="sb-search-shortcut-card__title sb-search-shortcut-card__title--product">{{ product.title }}</span>
+                  </a>
+                </span>
+              </div>
+              <span class="sb-search-shortcut-card__meta sb-search-shortcut-card__meta--product font-caption weight-regular" data-thumbnail-price-row{% if product_price == blank and product_compare_price_display == blank %} hidden{% endif %}>
+                <span class="sb-search-shortcut-card__compare" data-thumbnail-price-compare{% if product_compare_price_display == blank %} hidden{% endif %}>{{ product_compare_price_display }}</span>
+                <span class="sb-search-shortcut-card__price" data-thumbnail-price-current{% if product_price == blank %} hidden{% endif %}>{{ product_price }}</span>
+              </span>
+            </article>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
+
+</div>
+
+{% schema %}
+{
+  "name": "Predictive search empty",
+  "settings": []
+}
+{% endschema %}

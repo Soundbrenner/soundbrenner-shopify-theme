@@ -55,10 +55,31 @@
   },
   "search": {
     "title": "Search",
-    "placeholder": "Search articles, pages, or products",
+    "placeholder": "Products, pages or blog articles",
     "submit": "Search",
-    "no_results_html": "No results found for {{ terms }}",
-    "results_for_html": "{{ count }} results found for {{ terms }}"
+    "no_results_html": "No results found for “{{ terms }}”",
+    "no_results_in_html": "No results found for “{{ terms }}” in {{ group }}.",
+    "no_results_try_html": "Try searching in <a href=\"{{ first_url }}\">{{ first_group }}</a> or <a href=\"{{ second_url }}\">{{ second_group }}</a>.",
+    "results_for_html": {
+      "one": "{{ count }} result found for “{{ terms }}” in {{ group }}.",
+      "other": "{{ count }} results found for “{{ terms }}” in {{ group }}."
+    },
+    "group_products": "Products",
+    "group_pages": "Pages",
+    "group_articles": "Blog",
+    "group_collections": "Collections",
+    "shortcut": {
+      "clear": "Clear",
+      "close": "Close search",
+      "error": "Something went wrong. Please try again.",
+      "no_results_html": "No results found for “{{ terms }}”.",
+      "placeholder": "Search",
+      "start_typing": "Start typing to search.",
+      "bestsellers": "Bestsellers",
+      "recently_viewed": "Recently viewed",
+      "suggestions": "Suggestions",
+      "view_all": "View all"
+    }
   },
   "sb": {
     "accordion": {
@@ -70,10 +91,12 @@
       "download_app_store": "Download on the App Store",
       "download_china": "Download in China",
       "download_google_play": "Download on Google Play",
-      "google_play": "Google Play"
+      "google_play": "Google Play",
+      "try_free_now": "Try it for free now"
     },
     "blog": {
       "about_soundbrenner": "About Soundbrenner",
+      "about_box_default_html": "<p><strong>About Soundbrenner</strong></p><p>We are on a mission to make music practice addictive.</p><p>Add your links and copy in Theme editor.</p>",
       "all": "All",
       "archive": "Archive",
       "blog": "Blog",
@@ -99,7 +122,32 @@
       "read_this_next": "Read this next",
       "sidebar_content": "Sidebar content",
       "sidebar_promo": "Sidebar promo",
-      "sticky_navigation": "Sticky blog navigation"
+      "sticky_navigation": "Sticky blog navigation",
+      "product_filters": {
+        "core_2_practice_companion": "Core 2 practice companion",
+        "flow_microphone": "Flow microphone",
+        "genki_wave_midi_ring": "Genki Wave MIDI ring",
+        "minuendo_earplugs": "Minuendo earplugs",
+        "playtronica_midi_instruments": "Playtronica MIDI instruments",
+        "pulse_vibrating_metronome": "Pulse vibrating metronome",
+        "spark_practice_companion": "Spark practice companion",
+        "stomp_foot_pedal": "Stomp foot pedal",
+        "the_metronome_app": "The Metronome app",
+        "wave_in_ear_monitors": "Wave in-ear monitors",
+        "wave_pro_in_ear_monitors": "Wave Pro in-ear monitors"
+      },
+      "instrument_filters": {
+        "acoustic_guitar": "Acoustic guitar",
+        "bass_guitar": "Bass guitar",
+        "drums": "Drums",
+        "electric_guitar": "Electric guitar",
+        "keys": "Keys",
+        "orchestral_strings": "Orchestral strings",
+        "playtronica": "Playtronica",
+        "ukulele": "Ukulele",
+        "vocals": "Vocals",
+        "woodwind": "Woodwind"
+      }
     },
     "cart": {
       "accepted_payment_methods": "Accepted payment methods",
@@ -140,8 +188,10 @@
       "view_all": "View all"
     },
     "common": {
+      "account": "Account",
       "back": "Back",
       "cart_drawer": "Cart drawer",
+      "cookie_preferences": "Cookie preferences",
       "close_cart": "Close cart",
       "close_menu": "Close menu",
       "continue": "Continue",
@@ -159,7 +209,19 @@
       "region_selector": "Region selector",
       "search": "Search",
       "secs": "secs",
-      "verified_buyer": "Verified buyer"
+      "verified_buyer": "Verified buyer",
+      "in_the_box": "In the box",
+      "tech_specs": "Tech specs"
+    },
+    "debug": {
+      "panel_aria_label": "Theme debug toggle",
+      "theme": "Theme",
+      "debug": "Debug",
+      "dark": "Dark",
+      "light": "Light",
+      "auto": "Auto",
+      "klaviyo_popup": "Klaviyo popup",
+      "product_sticky": "Product sticky"
     },
     "contact": {
       "email": "Email",

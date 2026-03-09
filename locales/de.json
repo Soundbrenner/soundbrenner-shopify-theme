@@ -58,7 +58,28 @@
     "placeholder": "Durchsuche Artikel, Seiten oder Produkte",
     "submit": "Suche",
     "no_results_html": "Keine Ergebnisse für {{ terms }} gefunden",
-    "results_for_html": "{{ count }} Ergebnisse für {{ terms }} gefunden"
+    "no_results_in_html": "Keine Ergebnisse für „{{ terms }}“ in {{ group }} gefunden.",
+    "no_results_try_html": "Versuche es mit einer Suche in <a href=\"{{ first_url }}\">{{ first_group }}</a> oder <a href=\"{{ second_url }}\">{{ second_group }}</a>.",
+    "results_for_html": {
+      "one": "{{ count }} Ergebnis für {{ terms }} gefunden",
+      "other": "{{ count }} Ergebnisse für {{ terms }} gefunden"
+    },
+    "group_products": "Produkte",
+    "group_pages": "Seiten",
+    "group_articles": "Artikel",
+    "group_collections": "Kollektionen",
+    "shortcut": {
+      "clear": "Löschen",
+      "close": "Suche schließen",
+      "error": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+      "no_results_html": "Keine Ergebnisse für „{{ terms }}“ gefunden.",
+      "placeholder": "Suchen",
+      "bestsellers": "Bestseller",
+      "recently_viewed": "Zuletzt angesehen",
+      "start_typing": "Beginne mit der Eingabe, um zu suchen.",
+      "suggestions": "Vorschläge",
+      "view_all": "Alle Ergebnisse anzeigen"
+    }
   },
   "sb": {
     "accordion": {
@@ -99,7 +120,32 @@
       "read_this_next": "Lies als Nächstes",
       "sidebar_content": "Seitenleisteninhalt",
       "sidebar_promo": "Seitenleisten-Promo",
-      "sticky_navigation": "Feste Blog-Navigation"
+      "sticky_navigation": "Feste Blog-Navigation",
+      "product_filters": {
+        "core_2_practice_companion": "Core 2 Übungsbegleiter",
+        "flow_microphone": "Flow Mikrofon",
+        "genki_wave_midi_ring": "Genki Wave MIDI Ring",
+        "minuendo_earplugs": "Minuendo Ohrstöpsel",
+        "playtronica_midi_instruments": "Playtronica MIDI-Instrumente",
+        "pulse_vibrating_metronome": "Pulse Vibrationsmetronom",
+        "spark_practice_companion": "Spark Übungsbegleiter",
+        "stomp_foot_pedal": "Stomp Fußpedal",
+        "the_metronome_app": "Die Metronom-App",
+        "wave_in_ear_monitors": "Wave In-Ear-Monitore",
+        "wave_pro_in_ear_monitors": "Wave Pro In-Ear-Monitore"
+      },
+      "instrument_filters": {
+        "acoustic_guitar": "Akustikgitarre",
+        "bass_guitar": "Bassgitarre",
+        "drums": "Schlagzeug",
+        "electric_guitar": "E-Gitarre",
+        "keys": "Tasteninstrumente",
+        "orchestral_strings": "Orchesterstreicher",
+        "playtronica": "Playtronica",
+        "ukulele": "Ukulele",
+        "vocals": "Gesang",
+        "woodwind": "Holzbläser"
+      }
     },
     "cart": {
       "accepted_payment_methods": "Akzeptierte Zahlungsmethoden",
@@ -140,6 +186,7 @@
       "view_all": "Alle anzeigen"
     },
     "common": {
+      "account": "Konto",
       "back": "Zurück",
       "cart_drawer": "Warenkorb öffnen",
       "close_cart": "Warenkorb schließen",

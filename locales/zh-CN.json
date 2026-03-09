@@ -58,7 +58,28 @@
     "placeholder": "搜索文章、页面或产品",
     "submit": "搜索",
     "no_results_html": "未找到与{{ terms }}相关的结果",
-    "results_for_html": "为{{ terms }}找到{{ count }}个结果"
+    "no_results_in_html": "在{{ group }}中未找到与“{{ terms }}”相关的结果。",
+    "no_results_try_html": "请尝试在<a href=\"{{ first_url }}\">{{ first_group }}</a>或<a href=\"{{ second_url }}\">{{ second_group }}</a>中搜索。",
+    "results_for_html": {
+      "one": "为{{ terms }}找到{{ count }}个结果",
+      "other": "为{{ terms }}找到{{ count }}个结果"
+    },
+    "group_products": "产品",
+    "group_pages": "页面",
+    "group_articles": "文章",
+    "group_collections": "系列",
+    "shortcut": {
+      "clear": "清除",
+      "close": "关闭搜索",
+      "error": "出现问题，请重试。",
+      "no_results_html": "未找到与“{{ terms }}”相关的结果。",
+      "placeholder": "搜索",
+      "bestsellers": "畅销产品",
+      "recently_viewed": "最近浏览",
+      "start_typing": "输入关键词开始搜索。",
+      "suggestions": "建议",
+      "view_all": "查看全部结果"
+    }
   },
   "sb": {
     "accordion": {
@@ -99,7 +120,32 @@
       "read_this_next": "继续阅读",
       "sidebar_content": "侧边栏内容",
       "sidebar_promo": "侧边栏推广",
-      "sticky_navigation": "博客导航栏固定"
+      "sticky_navigation": "博客导航栏固定",
+      "product_filters": {
+        "core_2_practice_companion": "Core 2 练习伴侣",
+        "flow_microphone": "Flow 麦克风",
+        "genki_wave_midi_ring": "Genki Wave MIDI 指环",
+        "minuendo_earplugs": "Minuendo 耳塞",
+        "playtronica_midi_instruments": "Playtronica MIDI 乐器",
+        "pulse_vibrating_metronome": "Pulse 振动节拍器",
+        "spark_practice_companion": "Spark 练习伴侣",
+        "stomp_foot_pedal": "Stomp 脚踏板",
+        "the_metronome_app": "节拍器应用",
+        "wave_in_ear_monitors": "Wave 入耳式监听耳机",
+        "wave_pro_in_ear_monitors": "Wave Pro 入耳式监听耳机"
+      },
+      "instrument_filters": {
+        "acoustic_guitar": "原声吉他",
+        "bass_guitar": "贝斯吉他",
+        "drums": "鼓",
+        "electric_guitar": "电吉他",
+        "keys": "键盘",
+        "orchestral_strings": "管弦乐弦乐器",
+        "playtronica": "Playtronica",
+        "ukulele": "尤克里里",
+        "vocals": "人声",
+        "woodwind": "木管乐器"
+      }
     },
     "cart": {
       "accepted_payment_methods": "可接受的付款方式",
@@ -140,6 +186,7 @@
       "view_all": "查看全部"
     },
     "common": {
+      "account": "账户",
       "back": "返回",
       "cart_drawer": "购物车抽屉",
       "close_cart": "关闭购物车",

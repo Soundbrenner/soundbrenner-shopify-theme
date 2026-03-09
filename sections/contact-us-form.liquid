@@ -133,11 +133,17 @@
     text-decoration: none;
   }
 
-  .sb-contact-form__subtitle-block a:hover,
   .sb-contact-form__subtitle-block a:focus-visible,
   .sb-contact-form__subtitle-block a:active {
     color: var(--sb-color-primary-500);
     text-decoration: underline;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-contact-form__subtitle-block a:hover {
+      color: var(--sb-color-primary-500);
+      text-decoration: underline;
+    }
   }
 
   .sb-contact-form__grid {

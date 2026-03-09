@@ -6,6 +6,20 @@
 {% assign trustpilot_rating_value = trustpilot_entry.rating.value | default: trustpilot_entry.rating %}
 {% assign footer_newsletter_arrow_icon_url = 'arrow-reduced-padding.svg' | asset_url %}
 {% assign trustpilot_rating_template = '' %}
+{% assign footer_is_metronome_app_page = false %}
+{% assign footer_is_product_page = false %}
+{% assign footer_is_product_page_segmented = false %}
+{% if request.page_type == 'page' and page != blank and page.handle == 'the-metronome-app' %}
+  {% assign footer_is_metronome_app_page = true %}
+{% endif %}
+{% if request.page_type == 'product' and product != blank %}
+  {% assign footer_is_product_page = true %}
+  {% assign footer_product_page_header_ref = product.metafields.custom.sbv2_product_page_header %}
+  {% assign footer_product_page_header = footer_product_page_header_ref.value | default: footer_product_page_header_ref.reference.value | default: footer_product_page_header_ref.reference | default: footer_product_page_header_ref %}
+  {% if footer_product_page_header != blank %}
+    {% assign footer_is_product_page_segmented = true %}
+  {% endif %}
+{% endif %}
 {% if trustpilot_rating_value != blank %}
   {% assign trustpilot_rating_text = 'sb.trustpilot.rating_out_of_five' | t: rating: trustpilot_rating_value %}
   {% assign trustpilot_rating_template = 'sb.trustpilot.rating_out_of_five' | t: rating: '__RATING__' %}
@@ -13,23 +27,23 @@
   {% assign trustpilot_rating_text = section.settings.trustpilot_rating %}
 {% endif %}
 
-<footer class="sb-footer full-width" data-sb-reveal style="--sb-footer-newsletter-arrow-icon-url: url('{{ footer_newsletter_arrow_icon_url }}');">
+<footer class="sb-footer full-width{% if footer_is_metronome_app_page %} sb-footer--metronome-app-page{% endif %}{% if footer_is_product_page %} sb-footer--product-page{% endif %}{% if footer_is_product_page_segmented %} sb-footer--product-page-segmented{% else %}{% if footer_is_product_page %} sb-footer--product-page-standard{% endif %}{% endif %}" data-sb-reveal style="--sb-footer-newsletter-arrow-icon-url: url('{{ footer_newsletter_arrow_icon_url }}');">
   <div class="sb-footer__masthead" data-sb-reveal-item style="--sb-reveal-delay: 0ms;" aria-hidden="true">
     <img
       class="sb-footer__masthead-image sb-footer__masthead-image--dark"
       src="{{ 'masthead-master-your-craft-dark.png' | asset_url }}"
       alt=""
       loading="lazy"
-      width="1732"
-      height="264"
+      width="2480"
+      height="170"
     >
     <img
       class="sb-footer__masthead-image sb-footer__masthead-image--light"
       src="{{ 'masthead-master-your-craft-light.png' | asset_url }}"
       alt=""
       loading="lazy"
-      width="1732"
-      height="264"
+      width="2480"
+      height="170"
     >
   </div>
 
@@ -290,9 +304,35 @@
 
   .sb-footer__newsletter-klaviyo {
     margin-top: 4px;
+    min-height: 48px;
     overflow: visible !important;
     position: relative !important;
     width: 100%;
+  }
+
+  .sb-footer__newsletter-klaviyo::before {
+    background-color: var(--sb-color-neutral-500);
+    border-radius: 999px;
+    box-shadow:
+      0 1px 0 0 var(--sb-color-always-white-25),
+      0 4px 4px 0 var(--sb-color-always-black-25) inset;
+    content: '';
+    height: 48px;
+    left: 0;
+    opacity: 1;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  .sb-footer__newsletter-klaviyo.is-ready::before {
+    opacity: 0;
+  }
+
+  .sb-footer__newsletter-klaviyo > * {
+    position: relative;
+    z-index: 1;
   }
 
   .sb-footer__newsletter-klaviyo .klaviyo-form {
@@ -305,20 +345,32 @@
       0 4px 4px 0 var(--sb-color-always-black-25) inset !important;
   }
 
-  .sb-footer__newsletter-klaviyo:not(.is-success) .klaviyo-form:has(input[type='email']:hover),
   .sb-footer__newsletter-klaviyo:not(.is-success) .klaviyo-form:has(input[type='email']:focus),
   .sb-footer__newsletter-klaviyo:not(.is-success) .klaviyo-form:has(input[type='email']:active),
   .sb-footer__newsletter-klaviyo:not(.is-success) .klaviyo-form:has(input[type='email']:focus-visible) {
     background-color: var(--sb-color-neutral-600) !important;
   }
 
+  @media (hover: hover) and (pointer: fine) {
+    .sb-footer__newsletter-klaviyo:not(.is-success) .klaviyo-form:has(input[type='email']:hover) {
+      background-color: var(--sb-color-neutral-600) !important;
+    }
+  }
+
   .sb-footer__newsletter-klaviyo.is-success .klaviyo-form,
-  .sb-footer__newsletter-klaviyo.is-success .klaviyo-form:hover,
   .sb-footer__newsletter-klaviyo.is-success .klaviyo-form:active,
   .sb-footer__newsletter-klaviyo.is-success .klaviyo-form:focus-within {
     background-color: var(--sb-color-neutral-500) !important;
     cursor: default !important;
     pointer-events: none !important;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-footer__newsletter-klaviyo.is-success .klaviyo-form:hover {
+      background-color: var(--sb-color-neutral-500) !important;
+      cursor: default !important;
+      pointer-events: none !important;
+    }
   }
 
   .sb-footer__newsletter-klaviyo .klaviyo-form [data-testid='form-row'] {
@@ -468,7 +520,6 @@
     fill: var(--sb-color-always-white) !important;
   }
 
-  .sb-footer__newsletter-klaviyo .klaviyo-form button:hover,
   .sb-footer__newsletter-klaviyo .klaviyo-form button:focus-visible {
     box-shadow:
       0 -18px 30px 0 var(--sb-color-primary-300-25),
@@ -478,6 +529,19 @@
       0 -20px 20px 0 var(--sb-color-always-white-50) inset,
       0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
     transform: translateY(var(--sb-button-hover-lift, -2px));
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-footer__newsletter-klaviyo .klaviyo-form button:hover {
+      box-shadow:
+        0 -18px 30px 0 var(--sb-color-primary-300-25),
+        0 -6px 14px 0 var(--sb-color-primary-300-25),
+        0 -10px 20px 0 var(--sb-color-primary-500-25),
+        0 0 0 1px var(--sb-color-primary-700) inset,
+        0 -20px 20px 0 var(--sb-color-always-white-50) inset,
+        0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
+      transform: translateY(var(--sb-button-hover-lift, -2px));
+    }
   }
 
   .sb-footer__newsletter-klaviyo .klaviyo-form button:focus-visible {
@@ -497,7 +561,6 @@
       width: 72px;
     }
 
-    .sb-footer__newsletter-klaviyo .klaviyo-form button:hover,
     .sb-footer__newsletter-klaviyo .klaviyo-form button:focus-visible {
       box-shadow:
         0 -18px 30px 0 var(--sb-color-primary-300-25),
@@ -508,10 +571,22 @@
         0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
       transform: translateY(var(--sb-button-hover-lift, -2px));
     }
+
+    @media (hover: hover) and (pointer: fine) {
+      .sb-footer__newsletter-klaviyo .klaviyo-form button:hover {
+        box-shadow:
+          0 -18px 30px 0 var(--sb-color-primary-300-25),
+          0 -6px 14px 0 var(--sb-color-primary-300-25),
+          0 -10px 20px 0 var(--sb-color-primary-500-25),
+          0 0 0 1px var(--sb-color-primary-700) inset,
+          0 -20px 20px 0 var(--sb-color-always-white-50) inset,
+          0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
+        transform: translateY(var(--sb-button-hover-lift, -2px));
+      }
+    }
   }
 
   @media (hover: none), (pointer: coarse) {
-    .sb-footer__newsletter-klaviyo .klaviyo-form button:hover,
     .sb-footer__newsletter-klaviyo .klaviyo-form button:focus-visible {
       box-shadow:
         0 -18px 30px 0 var(--sb-color-primary-300-25),
@@ -553,12 +628,19 @@
   }
 
   .sb-footer__newsletter-klaviyo .klaviyo-form input:focus,
-  .sb-footer__newsletter-klaviyo .klaviyo-form input:hover,
   .sb-footer__newsletter-klaviyo .klaviyo-form input:active,
   .sb-footer__newsletter-klaviyo .klaviyo-form input:focus-visible {
     border: 0 !important;
     box-shadow: none !important;
     outline: none !important;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-footer__newsletter-klaviyo .klaviyo-form input:hover {
+      border: 0 !important;
+      box-shadow: none !important;
+      outline: none !important;
+    }
   }
 
   .sb-footer__newsletter-klaviyo .klaviyo-form .success_message,
@@ -616,9 +698,14 @@
     text-decoration: none;
   }
 
-  .sb-footer__trust-link--text:hover,
   .sb-footer__trust-link--text:focus-visible {
     text-decoration: underline;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-footer__trust-link--text:hover {
+      text-decoration: underline;
+    }
   }
 
   .sb-footer__trust-logo,
@@ -645,14 +732,24 @@
     fill: currentColor !important;
   }
 
-  .sb-footer__trust-link:hover .sb-footer__trust-logo,
   .sb-footer__trust-link:focus-visible .sb-footer__trust-logo {
     opacity: 0.75;
   }
 
-  .sb-footer__trust-link:hover .sb-footer__trust-stars,
+  @media (hover: hover) and (pointer: fine) {
+    .sb-footer__trust-link:hover .sb-footer__trust-logo {
+      opacity: 0.75;
+    }
+  }
+
   .sb-footer__trust-link:focus-visible .sb-footer__trust-stars {
     opacity: 0.75;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-footer__trust-link:hover .sb-footer__trust-stars {
+      opacity: 0.75;
+    }
   }
 
   .sb-footer__social {
@@ -669,10 +766,16 @@
     transition: color 0.2s ease;
   }
 
-  .sb-footer__social-link:hover,
   .sb-footer__social-link:focus-visible {
     color: var(--sb-color-neutral-900-75);
     text-decoration: none;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-footer__social-link:hover {
+      color: var(--sb-color-neutral-900-75);
+      text-decoration: none;
+    }
   }
 
   .sb-footer__social-link svg {
@@ -761,6 +864,26 @@
     }
   }
 
+  @media (max-width: 989px) {
+    .sb-footer.sb-footer--metronome-app-page {
+      padding-bottom: calc(
+        var(--sb-space-36)
+        + 68px
+        + 12px
+        + env(safe-area-inset-bottom)
+      );
+    }
+
+    .sb-footer.sb-footer--product-page {
+      padding-bottom: calc(
+        var(--sb-space-36)
+        + 72px
+        + 12px
+        + env(safe-area-inset-bottom)
+      );
+    }
+  }
+
 {% endstylesheet %}
 
 <script>
@@ -835,7 +958,11 @@
       if (!root) return;
 
       const form = root.querySelector('.klaviyo-form');
-      if (!form) return;
+      if (!form) {
+        root.classList.remove('is-ready');
+        return;
+      }
+      root.classList.add('is-ready');
 
       const input = root.querySelector('input[type="email"]');
       const button = root.querySelector('button');

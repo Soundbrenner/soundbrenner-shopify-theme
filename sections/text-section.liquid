@@ -91,11 +91,17 @@
     text-decoration: none;
   }
 
-  .sb-text-section__body--neutral-links a:hover,
   .sb-text-section__body--neutral-links a:focus-visible,
   .sb-text-section__body--neutral-links a:active {
     color: var(--sb-color-primary-500);
     text-decoration: none;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-text-section__body--neutral-links a:hover {
+      color: var(--sb-color-primary-500);
+      text-decoration: none;
+    }
   }
 
   .sb-text-section__divider-wrap {
@@ -129,9 +135,14 @@
     text-decoration: none;
   }
 
-  .sb-text-section__social-link:hover,
   .sb-text-section__social-link:focus-visible {
     color: var(--sb-color-primary-500);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-text-section__social-link:hover {
+      color: var(--sb-color-primary-500);
+    }
   }
 
   .sb-text-section__social-link svg {

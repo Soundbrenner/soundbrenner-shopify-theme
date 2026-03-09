@@ -96,6 +96,16 @@
   if thumbnail_show_compare_add_to_cart_large == 'true' or thumbnail_show_compare_add_to_cart_large == 1 or thumbnail_show_compare_add_to_cart_large == '1'
     assign thumbnail_show_compare_add_to_cart_large = true
   endif
+
+  assign thumbnail_static_media = static_media
+  if thumbnail_static_media == blank
+    assign thumbnail_static_media = false
+  endif
+  if thumbnail_static_media == 'true' or thumbnail_static_media == 1 or thumbnail_static_media == '1'
+    assign thumbnail_static_media = true
+  elsif thumbnail_static_media == 'false' or thumbnail_static_media == 0 or thumbnail_static_media == '0'
+    assign thumbnail_static_media = false
+  endif
   assign selected_swatch_value = selected_swatch | default: 1 | plus: 0
   assign swatch_payload_entry_delimiter = '^^^sb-entry^^^'
   assign swatch_payload_field_delimiter = '^^^sb-field^^^'
@@ -545,7 +555,8 @@
   <div
     class="sb-product-thumbnail__media-wrap"
     data-gallery-index="0"
-    {% if thumbnail_hover_image_url != blank %}data-hover-image="{{ thumbnail_hover_image_url }}"{% endif %}
+    data-thumbnail-static-media="{% if thumbnail_static_media %}true{% else %}false{% endif %}"
+    {% if thumbnail_static_media == false and thumbnail_hover_image_url != blank %}data-hover-image="{{ thumbnail_hover_image_url }}"{% endif %}
   >
     <a class="sb-product-thumbnail__media" href="{{ thumbnail_url }}" data-thumbnail-link data-thumbnail-base-url="{{ thumbnail_url }}">
       {% if thumbnail_badge_label != blank %}
@@ -567,7 +578,7 @@
         <div class="sb-product-thumbnail__image-placeholder" aria-hidden="true"></div>
       {% endif %}
     </a>
-    {% if thumbnail_gallery_count > 1 %}
+    {% if thumbnail_static_media == false and thumbnail_gallery_count > 1 %}
       <div class="sb-product-thumbnail__gallery-sources" aria-hidden="true">
         {% assign gallery_image_urls = thumbnail_gallery_images | split: '||' %}
         {% for gallery_image_url in gallery_image_urls %}
@@ -578,27 +589,29 @@
         {% endfor %}
       </div>
     {% endif %}
-    {% if thumbnail_gallery_count > 1 or thumbnail_has_swatches_input %}
-      <button
-        type="button"
-        class="sb-product-thumbnail__gallery-nav sb-product-thumbnail__gallery-nav--left"
-        data-gallery-nav="-1"
-        aria-label="{{ 'sb.product.previous_image' | t }}"
-      >
-        <span class="sb-product-thumbnail__gallery-nav-icon" aria-hidden="true">
-          {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
-        </span>
-      </button>
-      <button
-        type="button"
-        class="sb-product-thumbnail__gallery-nav sb-product-thumbnail__gallery-nav--right"
-        data-gallery-nav="1"
-        aria-label="{{ 'sb.product.next_image' | t }}"
-      >
-        <span class="sb-product-thumbnail__gallery-nav-icon" aria-hidden="true">
-          {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
-        </span>
-      </button>
+    {% if thumbnail_static_media == false %}
+      {% if thumbnail_gallery_count > 1 or thumbnail_has_swatches_input %}
+        <button
+          type="button"
+          class="sb-product-thumbnail__gallery-nav sb-product-thumbnail__gallery-nav--left"
+          data-gallery-nav="-1"
+          aria-label="{{ 'sb.product.previous_image' | t }}"
+        >
+          <span class="sb-product-thumbnail__gallery-nav-icon" aria-hidden="true">
+            {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
+          </span>
+        </button>
+        <button
+          type="button"
+          class="sb-product-thumbnail__gallery-nav sb-product-thumbnail__gallery-nav--right"
+          data-gallery-nav="1"
+          aria-label="{{ 'sb.product.next_image' | t }}"
+        >
+          <span class="sb-product-thumbnail__gallery-nav-icon" aria-hidden="true">
+            {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
+          </span>
+        </button>
+      {% endif %}
     {% endif %}
     {% if thumbnail_show_add_to_cart and thumbnail_variant_id != blank %}
       <button

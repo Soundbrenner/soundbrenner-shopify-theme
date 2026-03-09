@@ -1,0 +1,161 @@
+{% liquid
+  assign max_items = section.settings.max_items
+%}
+
+<section class="sb-list-collections" aria-label="{{ 'collections.title' | t | escape }}">
+  <div class="sb-list-collections__container page-width">
+    <header class="sb-list-collections__header" data-sb-reveal-item>
+      <h1 class="sb-list-collections__title font-title weight-bold">{{ 'collections.title' | t }}</h1>
+    </header>
+
+    <div class="sb-list-collections__grid" data-sb-reveal>
+      {% for collection in collections limit: max_items %}
+        {% liquid
+          assign collection_image = collection.featured_image
+          if collection_image == blank and collection.products.first != blank
+            assign collection_image = collection.products.first.featured_image
+          endif
+        %}
+
+        <article class="sb-list-collections__card" data-sb-reveal-item>
+          <a class="sb-list-collections__media-link" href="{{ collection.url }}" aria-label="{{ collection.title | escape }}">
+            <span class="sb-list-collections__media">
+            {% if collection_image != blank %}
+              {% liquid
+                assign max_crop_width_by_height = collection_image.height | times: 3 | divided_by: 4
+                assign collection_image_max_width = collection_image.width | at_most: max_crop_width_by_height
+                assign collection_image_1x_width = collection_image_max_width | at_most: 800
+                assign collection_image_1x_height = collection_image_1x_width | times: 4 | divided_by: 3
+                assign collection_image_2x_width = collection_image_1x_width | times: 2 | at_most: collection_image_max_width
+                assign collection_image_2x_height = collection_image_2x_width | times: 4 | divided_by: 3
+              %}
+              <img
+                class="sb-list-collections__image"
+                src="{{ collection_image | image_url: width: collection_image_1x_width, height: collection_image_1x_height, crop: 'center' }}"
+                srcset="{{ collection_image | image_url: width: collection_image_1x_width, height: collection_image_1x_height, crop: 'center' }} 1x, {{ collection_image | image_url: width: collection_image_2x_width, height: collection_image_2x_height, crop: 'center' }} 2x"
+                alt="{{ collection.title | escape }}"
+                loading="lazy"
+                width="{{ collection_image_1x_width }}"
+                height="{{ collection_image_1x_height }}"
+              >
+            {% else %}
+              <span class="sb-list-collections__image sb-list-collections__image--placeholder" aria-hidden="true"></span>
+            {% endif %}
+            </span>
+          </a>
+
+          <div class="sb-list-collections__content">
+            <a class="sb-list-collections__name sb-list-collections__name-link font-callout weight-bold" href="{{ collection.url }}">{{ collection.title }}</a>
+
+            {% if collection.description != blank %}
+              <span class="sb-list-collections__description font-body weight-regular">{{ collection.description | strip_html }}</span>
+            {% endif %}
+          </div>
+        </article>
+      {% else %}
+        <p class="sb-list-collections__empty font-body weight-semibold">{{ 'collections.title' | t }}</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .sb-list-collections__container {
+    display: grid;
+    gap: var(--sb-space-48);
+  }
+
+  .sb-list-collections__title,
+  .sb-list-collections__name,
+  .sb-list-collections__empty {
+    margin: 0;
+  }
+
+  .sb-list-collections__grid {
+    display: grid;
+    gap: var(--sb-space-48) var(--sb-space-36);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sb-list-collections__card {
+    color: inherit;
+    display: grid;
+    grid-template-rows: auto 1fr;
+  }
+
+  .sb-list-collections__content {
+    align-content: start;
+    display: grid;
+    margin-top: var(--sb-space-24);
+  }
+
+  .sb-list-collections__name-link {
+    color: var(--sb-color-neutral-900);
+    text-decoration: none;
+  }
+
+  .sb-list-collections__description {
+    margin-top: 12px;
+  }
+
+  .sb-list-collections__media {
+    aspect-ratio: 3 / 4;
+    border-radius: 24px;
+    display: block;
+    overflow: hidden;
+    transform-origin: center center;
+    transition: transform 220ms ease;
+  }
+
+  .sb-list-collections__image {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .sb-list-collections__name-link:focus-visible {
+    color: var(--sb-color-primary-500);
+    outline: none;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-list-collections__media-link:hover .sb-list-collections__media,
+    .sb-list-collections__media-link:focus-visible .sb-list-collections__media,
+    .sb-list-collections__media-link:focus-within .sb-list-collections__media {
+      transform: scale(var(--sb-hover-scale-factor, 1.015));
+    }
+
+    .sb-list-collections__name-link:hover,
+    .sb-list-collections__name-link:focus-visible {
+      color: var(--sb-color-primary-500);
+    }
+  }
+
+  .sb-list-collections__image--placeholder {
+    background: var(--sb-color-neutral-200);
+  }
+
+  @media (min-width: 990px) {
+    .sb-list-collections__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Collection list",
+  "settings": [
+    {
+      "type": "range",
+      "id": "max_items",
+      "label": "Collection count",
+      "min": 1,
+      "max": 24,
+      "step": 1,
+      "default": 24
+    }
+  ]
+}
+{% endschema %}

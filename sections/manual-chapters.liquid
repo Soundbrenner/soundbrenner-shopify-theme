@@ -36,8 +36,7 @@
     class="sb-manual-chapters__sticky-nav-wrap sb-manual-chapters__sticky-nav-wrap--mobile"
     aria-label="{{ 'sb.manual.sticky_navigation' | t }}"
     data-sb-reveal
-    data-sb-sticky-top-navigation
-    data-sb-sticky-active="true"
+    data-manual-top-bar
   >
     <div class="sb-manual-chapters__sticky-nav sb-manual-chapters__sticky-nav--mobile" data-sb-reveal-item>
       <div class="sb-manual-chapters__sticky-dropdown" data-manual-chapter-dropdown>
@@ -56,55 +55,69 @@
           </span>
         </button>
 
-        <div
-          id="SbManualChaptersPanel-{{ section.id }}"
-          class="sb-manual-chapters__sticky-filter-panel sb-manual-chapters__sticky-filter-panel--mobile"
-          data-manual-chapter-panel
-        >
-          <div class="sb-manual-chapters__sticky-filter-panel-surface">
-            <div class="sb-manual-chapters__sticky-filter-panel-inner sb-manual-chapters__sticky-filter-panel-inner--mobile">
-              <div class="sb-manual-chapters__sticky-filter-panel-header">
-                <button
-                  type="button"
-                  class="sb-manual-chapters__sticky-filter-close"
-                  data-manual-chapter-close
-                  aria-label="{{ 'sb.manual.close_chapters' | t }}"
-                >
-                  <span class="sb-manual-chapters__sticky-filter-close-icon" aria-hidden="true">
-                    {{ 'icon-cancel.svg' | inline_asset_content }}
-                  </span>
-                </button>
-                <p class="sb-manual-chapters__sticky-filter-panel-title font-callout weight-bold">{{ 'sb.manual.chapters' | t }}</p>
-              </div>
+        <div class="menu-drawer-container sb-manual-chapters__drawer-container" data-manual-drawer-container>
+          <div
+            id="SbManualChaptersPanel-{{ section.id }}"
+            class="menu-drawer sb-manual-chapters__sticky-filter-panel sb-manual-chapters__sticky-filter-panel--mobile"
+            data-manual-chapter-panel
+          >
+            <div class="sb-manual-chapters__sticky-filter-panel-surface">
+              <div class="sb-manual-chapters__sticky-filter-panel-inner sb-manual-chapters__sticky-filter-panel-inner--mobile">
+                <div class="sb-manual-chapters__sticky-filter-panel-header">
+                  <button
+                    type="button"
+                    class="menu-drawer__close-button sb-manual-chapters__sticky-filter-close"
+                    data-manual-chapter-close
+                    aria-label="{{ 'sb.manual.close_chapters' | t }}"
+                  >
+                    <span class="menu-drawer__close-icon sb-manual-chapters__sticky-filter-close-icon" aria-hidden="true">
+                      {{ 'icon-cancel.svg' | inline_asset_content }}
+                    </span>
+                  </button>
+                  <p
+                    class="sb-manual-chapters__sticky-filter-panel-title menu-drawer__animated-element font-callout weight-bold"
+                    style="--menu-drawer-animation-index: 1;"
+                  >
+                    {{ 'sb.manual.chapters' | t }}
+                  </p>
+                </div>
 
-              <div class="sb-manual-chapters__sticky-filter-panel-list">
-                {% assign first_mobile_chapter_link = true %}
-                {% for block in section.blocks %}
-                  {% if block.type == 'heading' %}
-                    {% assign raw_anchor = block.settings.heading | append: '-' | append: block.id %}
-                    {% assign chapter_id = raw_anchor | handleize %}
-                    <a
-                      class="sb-manual-chapters__sticky-filter-option font-caption{% if first_mobile_chapter_link %} is-active{% endif %}"
-                      href="#{{ chapter_id }}"
-                      data-sb-reveal-item
-                      data-manual-link
-                      data-target="{{ chapter_id }}"
-                      data-manual-label="{{ block.settings.heading | default: manual_chapter_fallback | escape }}"
-                      data-manual-chapter-option
-                    >
-                      {{ block.settings.heading | default: manual_chapter_fallback }}
-                    </a>
-                    {% assign first_mobile_chapter_link = false %}
-                  {% endif %}
-                {% endfor %}
+                <div class="sb-manual-chapters__sticky-filter-panel-list">
+                  {% assign first_mobile_chapter_link = true %}
+                  {% assign mobile_chapter_animation_index = 3 %}
+                  {% for block in section.blocks %}
+                    {% if block.type == 'heading' %}
+                      {% assign raw_anchor = block.settings.heading | append: '-' | append: block.id %}
+                      {% assign chapter_id = raw_anchor | handleize %}
+                      <a
+                        class="sb-manual-chapters__sticky-filter-option menu-drawer__animated-element font-caption{% if first_mobile_chapter_link %} is-active{% endif %}"
+                        href="#{{ chapter_id }}"
+                        data-sb-reveal-item
+                        data-manual-link
+                        data-target="{{ chapter_id }}"
+                        data-manual-label="{{ block.settings.heading | default: manual_chapter_fallback | escape }}"
+                        data-manual-chapter-option
+                        style="--menu-drawer-animation-index: {{ mobile_chapter_animation_index | minus: 1 }};"
+                      >
+                        {{ block.settings.heading | default: manual_chapter_fallback }}
+                      </a>
+                      {% assign first_mobile_chapter_link = false %}
+                      {% assign mobile_chapter_animation_index = mobile_chapter_animation_index | plus: 1 %}
+                    {% endif %}
+                  {% endfor %}
+                </div>
               </div>
             </div>
           </div>
+          <div
+            class="menu-drawer__backdrop menu-drawer__backdrop--local sb-manual-chapters__sticky-backdrop"
+            data-manual-chapter-backdrop
+            aria-hidden="true"
+          ></div>
         </div>
       </div>
     </div>
   </div>
-  <div class="sb-manual-chapters__sticky-backdrop" data-manual-chapter-backdrop aria-hidden="true"></div>
 
   <div class="sb-manual-chapters__content">
     {% for block in section.blocks %}
@@ -155,7 +168,7 @@
           assign image_grid_hide_accordion_and_title = block.settings.hide_accordion_and_title
           assign image_grid_accordion_title = block.settings.accordion_title | strip
           if image_grid_accordion_title == blank
-            assign image_grid_accordion_title = 'In the box'
+            assign image_grid_accordion_title = 'sb.common.in_the_box' | t
           endif
 
           assign image_grid_items_from_product = blank
@@ -431,7 +444,7 @@
               {% for tech_specs_group_raw in tech_specs_groups %}
                 {% liquid
                   assign tech_specs_group_entry = tech_specs_group_raw.value | default: tech_specs_group_raw.reference.value | default: tech_specs_group_raw.reference | default: tech_specs_group_raw
-                  assign tech_specs_group_title = tech_specs_group_entry.tech_specs_title.value | default: tech_specs_group_entry.tech_specs_title | default: tech_specs_group_entry.title.value | default: tech_specs_group_entry.title | default: 'Tech specs'
+                  assign tech_specs_group_title = tech_specs_group_entry.tech_specs_title.value | default: tech_specs_group_entry.tech_specs_title | default: tech_specs_group_entry.title.value | default: tech_specs_group_entry.title | default: 'sb.common.tech_specs' | t
                   assign tech_specs_group_title = tech_specs_group_title | append: '' | strip
                   assign tech_specs_group_title_normalized = tech_specs_group_title | downcase | strip
                   assign tech_specs_group_items = tech_specs_group_entry.tech_specs_item.value | default: tech_specs_group_entry.tech_specs_item.references | default: tech_specs_group_entry.tech_specs_item
@@ -531,7 +544,7 @@
               {% endfor %}
             {% else %}
               {% liquid
-                assign tech_specs_title = tech_specs_root.tech_specs_title.value | default: tech_specs_root.tech_specs_title | default: 'Tech specs'
+                assign tech_specs_title = tech_specs_root.tech_specs_title.value | default: tech_specs_root.tech_specs_title | default: 'sb.common.tech_specs' | t
                 assign tech_specs_title = tech_specs_title | append: '' | strip
                 assign tech_specs_title_normalized = tech_specs_title | downcase | strip
               %}
@@ -616,7 +629,7 @@
             assign tech_specs_item_rows = tech_specs_item_source.tech_specs_item.value | default: tech_specs_item_source.tech_specs_item.references | default: tech_specs_item_source.tech_specs_item
           endif
 
-          assign tech_specs_item_title = tech_specs_item_source.tech_specs_title.value | default: tech_specs_item_source.tech_specs_title | default: tech_specs_item_source.title.value | default: tech_specs_item_source.title | default: 'Tech specs'
+          assign tech_specs_item_title = tech_specs_item_source.tech_specs_title.value | default: tech_specs_item_source.tech_specs_title | default: tech_specs_item_source.title.value | default: tech_specs_item_source.title | default: 'sb.common.tech_specs' | t
           assign tech_specs_item_title = tech_specs_item_title | append: '' | strip
           assign tech_specs_item_has_rows = false
           if tech_specs_item_rows != blank
@@ -734,19 +747,12 @@
 
 {% stylesheet %}
   .sb-manual-chapters {
-    --sb-supplementary-sticky-top-gap-mobile: 16px;
-    --sb-supplementary-sticky-inline-margin-tablet: 60px;
-    --sb-supplementary-sticky-inline-margin-mobile: 16px;
-    --sb-supplementary-sticky-nav-padding-y-mobile: 12px;
-    --sb-manual-sidebar-sticky-top-gap: 36px;
-    --sb-manual-scroll-target-offset: var(
-      --sb-sticky-scroll-target-offset,
-      calc(var(--sb-sticky-top-stack-bottom, 0px) + var(--sb-space-96))
-    );
-    --sb-manual-first-offset-extra: 0px;
+    --sb-top-accessory-nav-gap-mobile: var(--sb-space-16);
+    --sb-manual-scroll-target-offset: var(--sb-space-96);
     --sb-manual-mobile-sticky-nav-control-height: 36px;
     --sb-menu-unroll-duration: 420ms;
     --sb-menu-unroll-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --sb-manual-chapters-drawer-animation-speed: 320ms;
     display: grid;
     gap: var(--sb-space-48);
     grid-template-columns: 280px minmax(0, 1fr);
@@ -755,7 +761,7 @@
   .sb-manual-chapters__sidebar {
     align-self: start;
     position: sticky;
-    top: max(var(--sb-space-96), calc(var(--sb-sticky-top-stack-bottom, 0px) + var(--sb-manual-sidebar-sticky-top-gap)));
+    top: var(--sb-space-96);
     width: 280px;
   }
 
@@ -777,9 +783,14 @@
     background: var(--sb-color-primary-500);
   }
 
-  .sb-manual-chapters__nav-link:not(.is-active):hover,
   .sb-manual-chapters__nav-link:not(.is-active):focus-visible {
     background: var(--sb-color-neutral-300);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-manual-chapters__nav-link:not(.is-active):hover {
+      background: var(--sb-color-neutral-300);
+    }
   }
 
   .sb-manual-chapters__content {
@@ -986,11 +997,17 @@
     text-decoration: none;
   }
 
-  .sb-manual-chapters__spec-value a:hover,
   .sb-manual-chapters__spec-value a:focus-visible,
   .sb-manual-chapters__spec-value a:active {
     color: var(--sb-color-primary-500);
     text-decoration: underline;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-manual-chapters__spec-value a:hover {
+      color: var(--sb-color-primary-500);
+      text-decoration: underline;
+    }
   }
 
   .sb-manual-chapters__accordion.is-open .sb-manual-chapters__accordion-answer {
@@ -1025,6 +1042,14 @@
     width: 100%;
   }
 
+  .sb-manual-chapters__content > .sb-manual-chapters__accordion:has(+ :not(.sb-manual-chapters__accordion)) {
+    margin-bottom: var(--sb-space-24);
+  }
+
+  .sb-manual-chapters__tech-specs > .sb-manual-chapters__accordion:last-child {
+    margin-bottom: var(--sb-space-24);
+  }
+
   .sb-manual-chapters__heading {
     color: var(--sb-color-neutral-900);
     margin: 0;
@@ -1032,7 +1057,7 @@
 
   .sb-manual-chapters__heading-medium {
     color: var(--sb-color-neutral-900);
-    margin: 12px 0 8px;
+    margin: 0;
   }
 
   .sb-manual-chapters__body {
@@ -1054,12 +1079,16 @@
   }
 
   .sb-manual-chapters__sticky-backdrop {
-    display: none;
+    display: block;
     opacity: 0;
     pointer-events: none;
     position: fixed;
-    transition: opacity 180ms ease;
+    transition: opacity var(--sb-manual-chapters-drawer-animation-speed, 320ms) ease;
     z-index: 109;
+  }
+
+  body.is-manual-chapter-resize-closing .sb-manual-chapters__sticky-backdrop {
+    transition: none;
   }
 
   html.is-manual-chapter-open,
@@ -1072,7 +1101,36 @@
     touch-action: none;
   }
 
-  @media (max-width: 1239px) {
+  @media (max-width: 989px) {
+    #header-group + .shopify-section[id*='template--']:has(> .sb-manual-chapters),
+    .shopify-section.shopify-section-group-header-group ~ .shopify-section[id*='template--']:has(> .sb-manual-chapters),
+    .shopify-section:has(> .header) ~ .shopify-section[id*='template--']:has(> .sb-manual-chapters),
+    .shopify-section:has(> .sb-manual-chapters),
+    .shopify-section.sb-manual-top-bar-host {
+      margin-top: 0 !important;
+    }
+
+    .shopify-section.sb-manual-top-bar-host {
+      position: sticky;
+      top: 0;
+      z-index: 49;
+      height: auto;
+    }
+
+    #header-group:has(#header-component[data-sticky-mode='always']) + .shopify-section.sb-manual-top-bar-host,
+    #header-group:has(#header-component[data-sticky-mode='scroll-up'][data-sticky-state='active']) + .shopify-section.sb-manual-top-bar-host {
+      top: var(--sb-header-height);
+    }
+
+    .shopify-section.sb-manual-top-bar-host:has(.sb-manual-chapters__drawer-container.menu-open),
+    .shopify-section.sb-manual-top-bar-host:has(.sb-manual-chapters__drawer-container.is-closing) {
+      z-index: 110;
+    }
+
+    .shopify-section.sb-manual-top-bar-host + .shopify-section[id*='template--'] {
+      margin-top: var(--sb-space-96) !important;
+    }
+
     .sb-manual-chapters {
       display: flex;
       flex-direction: column;
@@ -1088,61 +1146,38 @@
       display: flex;
       flex-direction: column;
       gap: var(--sb-space-24);
-      padding-top: var(--sb-manual-first-offset-extra);
     }
 
     .sb-manual-chapters__sticky-nav-wrap--mobile {
-      --sb-supplementary-sticky-inline-margin: var(--sb-supplementary-sticky-inline-margin-tablet);
-      --sb-supplementary-sticky-top-gap: var(--sb-supplementary-sticky-top-gap-mobile);
       display: block;
-      left: 0;
-      pointer-events: none;
-      position: fixed;
-      right: 0;
-      top: var(
-        --sb-manual-sticky-nav-top,
-        calc(var(--sb-header-height, 60px) + var(--sb-announcement-min-height, 0px) + var(--sb-supplementary-sticky-top-gap))
-      );
       width: 100%;
-      z-index: 110;
+      margin-bottom: 0;
+      padding-top: var(--sb-space-16);
+      position: static;
+      top: auto;
+      z-index: auto;
     }
 
     .sb-manual-chapters__sticky-nav--mobile {
-      --sb-supplementary-sticky-nav-padding-y: var(--sb-supplementary-sticky-nav-padding-y-mobile);
       align-items: center;
       background: var(--sb-color-neutral-200);
       border-radius: 24px;
+      box-sizing: border-box;
       box-shadow: inset 0 0 0 1px var(--sb-color-neutral-600);
       column-gap: 16px;
       display: grid;
       grid-template-columns: minmax(0, 1fr);
       justify-items: start;
+      min-height: 0;
       margin-inline: auto;
-      padding: var(--sb-supplementary-sticky-nav-padding-y) 12px;
-      pointer-events: auto;
-      width: calc(100vw - (var(--sb-supplementary-sticky-inline-margin) * 2));
+      padding: 12px;
+      width: 100%;
     }
 
     .sb-manual-chapters__sticky-nav--mobile .sb-manual-chapters__sticky-dropdown {
       max-width: 100%;
       min-width: 0;
       position: relative;
-    }
-
-    html.is-manual-chapter-open .sb-manual-chapters__sticky-nav--mobile,
-    body.is-manual-chapter-open .sb-manual-chapters__sticky-nav--mobile {
-      position: relative;
-    }
-
-    html.is-manual-chapter-open .sb-manual-chapters__sticky-nav--mobile::after,
-    body.is-manual-chapter-open .sb-manual-chapters__sticky-nav--mobile::after {
-      background: var(--sb-color-always-black-25);
-      border-radius: inherit;
-      content: '';
-      inset: 0;
-      pointer-events: none;
-      position: absolute;
-      z-index: 1;
     }
 
     .sb-manual-chapters__sticky-filter {
@@ -1207,44 +1242,26 @@
       transform: none;
     }
 
-    .sb-manual-chapters__sticky-filter:hover,
     .sb-manual-chapters__sticky-filter:focus-visible {
       background: var(--sb-color-neutral-600);
       color: var(--sb-color-neutral-900);
     }
 
+    @media (hover: hover) and (pointer: fine) {
+      .sb-manual-chapters__sticky-filter:hover {
+        background: var(--sb-color-neutral-600);
+        color: var(--sb-color-neutral-900);
+      }
+    }
+
+    .sb-manual-chapters__drawer-container {
+      --sb-drawer-animation-speed: var(--sb-manual-chapters-drawer-animation-speed);
+      --sb-drawer-overlay-background: var(--sb-color-always-black-25);
+      --sb-drawer-overlay-filter: brightness(0.75);
+    }
+
     .sb-manual-chapters__sticky-filter-panel--mobile {
-      align-items: stretch;
       border-radius: 0;
-      display: block;
-      grid-template-rows: none;
-      height: 100dvh;
-      left: 0;
-      max-width: none;
-      min-width: 0;
-      opacity: 0;
-      overflow: hidden;
-      pointer-events: none;
-      position: fixed;
-      top: 0;
-      transform: translateX(-100%);
-      transition:
-        transform var(--sb-menu-unroll-duration) var(--sb-menu-unroll-ease),
-        opacity 180ms ease;
-      width: min(500px, calc(100vw - 20px));
-      box-shadow: 0 var(--sb-space-4) var(--sb-space-20) 0 var(--sb-color-always-black-25);
-      z-index: 110;
-    }
-
-    .sb-manual-chapters__sticky-filter-panel--mobile.is-active {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateX(0);
-    }
-
-    .sb-manual-chapters__sticky-filter-panel--mobile.is-closing {
-      opacity: 0;
-      transform: translateX(-100%);
     }
 
     .sb-manual-chapters__sticky-filter-panel--mobile .sb-manual-chapters__sticky-filter-panel-surface {
@@ -1274,44 +1291,8 @@
       margin-bottom: 20px;
     }
 
-    .sb-manual-chapters__sticky-filter-close {
-      align-items: center;
-      background: transparent;
-      border: 0;
-      color: var(--sb-color-neutral-900);
-      cursor: pointer;
-      display: inline-flex;
-      flex: 0 0 auto;
-      height: 20px;
-      justify-content: center;
-      padding: 0;
-      position: relative;
-      width: 20px;
-    }
-
-    .sb-manual-chapters__sticky-filter-close-icon {
-      color: inherit;
-      display: inline-flex;
-      height: 16px;
-      transition: color 140ms ease;
-      width: 16px;
-    }
-
-    .sb-manual-chapters__sticky-filter-close:hover .sb-manual-chapters__sticky-filter-close-icon,
-    .sb-manual-chapters__sticky-filter-close:focus-visible .sb-manual-chapters__sticky-filter-close-icon {
-      color: var(--sb-color-primary-500);
-    }
-
-    .sb-manual-chapters__sticky-filter-close-icon svg {
-      display: block;
-      height: 100%;
-      width: 100%;
-    }
-
-    .sb-manual-chapters__sticky-filter-close-icon svg path:not([fill='none']),
-    .sb-manual-chapters__sticky-filter-close-icon svg circle:not([fill='none']),
-    .sb-manual-chapters__sticky-filter-close-icon svg rect:not([fill='none']) {
-      fill: currentColor !important;
+    .sb-manual-chapters__sticky-filter-close.menu-drawer__close-button {
+      margin: 0;
     }
 
     .sb-manual-chapters__sticky-filter-panel-title {
@@ -1343,10 +1324,16 @@
       width: 100%;
     }
 
-    .sb-manual-chapters__sticky-filter-option:hover,
     .sb-manual-chapters__sticky-filter-option:focus-visible {
       background: var(--sb-color-neutral-400);
       color: var(--sb-color-neutral-900);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .sb-manual-chapters__sticky-filter-option:hover {
+        background: var(--sb-color-neutral-400);
+        color: var(--sb-color-neutral-900);
+      }
     }
 
     .sb-manual-chapters__sticky-filter-option.is-active {
@@ -1355,35 +1342,26 @@
       font-weight: 600;
     }
 
-    .sb-manual-chapters__sticky-filter-option.is-active:hover,
     .sb-manual-chapters__sticky-filter-option.is-active:focus-visible {
       background: var(--sb-color-primary-700);
       color: var(--sb-color-always-white);
     }
 
-    .sb-manual-chapters__sticky-backdrop {
-      -webkit-backdrop-filter: brightness(0.75);
-      backdrop-filter: brightness(0.75);
-      background: var(--sb-color-always-black-25);
-      display: block;
-      inset: 0;
+    @media (hover: hover) and (pointer: fine) {
+      .sb-manual-chapters__sticky-filter-option.is-active:hover {
+        background: var(--sb-color-primary-700);
+        color: var(--sb-color-always-white);
+      }
     }
 
-    .sb-manual-chapters__sticky-backdrop.is-active {
-      opacity: 1;
-      pointer-events: auto;
+    .sb-manual-chapters__sticky-backdrop {
+      inset: 0;
     }
   }
 
   @media (max-width: 989px) {
     .sb-manual-chapters__image-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-  }
-
-  @media (max-width: 749px) {
-    .sb-manual-chapters__sticky-nav-wrap--mobile {
-      --sb-supplementary-sticky-inline-margin: var(--sb-supplementary-sticky-inline-margin-mobile);
     }
   }
 
@@ -1401,48 +1379,59 @@
     if (!root || root.dataset.manualInit === 'true') return;
     root.dataset.manualInit = 'true';
 
+    const mobileTopBar = root.querySelector('[data-manual-top-bar]');
+    const mobileTopBarOrigin = mobileTopBar?.parentNode || null;
+    let mobileTopBarHost = null;
+
     const links = [...root.querySelectorAll('[data-manual-link]')];
     const chapters = [...root.querySelectorAll('.sb-manual-chapters__chapter')];
     const sidebar = root.querySelector('.sb-manual-chapters__sidebar');
-    const stickyNavWraps = Array.from(root.querySelectorAll('.sb-manual-chapters__sticky-nav-wrap'));
     const chapterDropdowns = Array.from(root.querySelectorAll('[data-manual-chapter-dropdown]'));
     const chapterCloseButtons = Array.from(root.querySelectorAll('[data-manual-chapter-close]'));
-    const chapterBackdrop = root.querySelector('[data-manual-chapter-backdrop]');
     const currentChapterLabels = Array.from(root.querySelectorAll('[data-manual-current-chapter-label]'));
-    const headerElement = document.querySelector('.header');
     const chapterFallbackLabel = {{ 'sb.manual.chapter' | t | json }};
     const chaptersFallbackLabel = {{ 'sb.manual.chapters' | t | json }};
     if (!links.length || !chapters.length) return;
-    let activeFirstTemplateSection = null;
 
-    const isMobileViewport = () => window.matchMedia('(max-width: 1239px)').matches;
-    const syncStickyTopNavigationMarker = () => {
-      const shouldMarkStickyNavigation = isMobileViewport();
-      let markersChanged = false;
-      stickyNavWraps.forEach((wrap) => {
-        if (!wrap.hasAttribute('data-sb-sticky-top-navigation')) {
-          wrap.setAttribute('data-sb-sticky-top-navigation', '');
-          markersChanged = true;
+    const isMobileViewport = () => window.matchMedia('(max-width: 989px)').matches;
+    let wasMobileViewport = isMobileViewport();
+
+    const ensureMobileTopBarHost = () => {
+      if (mobileTopBarHost && mobileTopBarHost.isConnected) return mobileTopBarHost;
+
+      const firstTemplateSection = document.querySelector('.shopify-section[id*="template--"]');
+      if (!firstTemplateSection) return null;
+      const parent = firstTemplateSection.parentNode;
+      if (!(parent instanceof Node)) return null;
+
+      const host = document.createElement('div');
+      host.className = 'shopify-section sb-manual-top-bar-host';
+      parent.insertBefore(host, firstTemplateSection);
+      mobileTopBarHost = host;
+      return mobileTopBarHost;
+    };
+
+    const syncMobileTopBarPlacement = () => {
+      if (!mobileTopBar || !mobileTopBarOrigin) return;
+
+      if (!isMobileViewport()) {
+        if (mobileTopBarHost) {
+          if (mobileTopBarHost.parentNode) {
+            mobileTopBarHost.parentNode.removeChild(mobileTopBarHost);
+          }
+          mobileTopBarHost = null;
         }
-        const nextActiveState = shouldMarkStickyNavigation ? 'true' : 'false';
-        if (wrap.getAttribute('data-sb-sticky-active') !== nextActiveState) {
-          wrap.setAttribute('data-sb-sticky-active', nextActiveState);
-          markersChanged = true;
+        if (mobileTopBar.parentNode !== mobileTopBarOrigin) {
+          mobileTopBarOrigin.insertBefore(mobileTopBar, mobileTopBarOrigin.firstChild);
         }
-      });
-      const nextScrollModeState = shouldMarkStickyNavigation ? 'true' : 'false';
-      if (root.getAttribute('data-sb-hide-primary-nav-on-scroll') !== nextScrollModeState) {
-        root.setAttribute('data-sb-hide-primary-nav-on-scroll', nextScrollModeState);
-        markersChanged = true;
+        return;
       }
-      if (window.SBStickyStack && typeof window.SBStickyStack.requestSync === 'function') {
-        window.SBStickyStack.requestSync();
-      }
-      if (window.SBHeaderNav && typeof window.SBHeaderNav.refreshScrollMode === 'function') {
-        window.SBHeaderNav.refreshScrollMode();
-      }
-      if (markersChanged) {
-        requestLayoutSync({ force: true });
+
+      const host = ensureMobileTopBarHost();
+      if (!host) return;
+
+      if (mobileTopBar.parentNode !== host) {
+        host.insertBefore(mobileTopBar, host.firstChild);
       }
     };
 
@@ -1476,212 +1465,46 @@
       const parsed = Number.parseFloat(rawValue);
       return Number.isFinite(parsed) ? parsed : fallback;
     };
-    const parsePxValue = (value, fallback = 0) => {
-      const parsed = Number.parseFloat(`${value || ''}`.trim());
-      return Number.isFinite(parsed) ? parsed : fallback;
-    };
-    const isVisibleElement = (element) => {
-      if (!(element instanceof Element)) return false;
-      if (element.hidden) return false;
-      if (!element.getClientRects().length) return false;
-      const styles = window.getComputedStyle(element);
-      return styles.display !== 'none' && styles.visibility !== 'hidden';
-    };
-    const isActiveTopAccessoryWrap = (wrap) => {
-      if (!(wrap instanceof Element)) return false;
-      const explicitState = `${wrap.getAttribute('data-sb-sticky-active') || ''}`.trim().toLowerCase();
-      if (explicitState === 'false' || explicitState === '0' || explicitState === 'no') return false;
-      return isVisibleElement(wrap);
-    };
-    const getActiveTopAccessoryWraps = () => stickyNavWraps.filter((wrap) => isActiveTopAccessoryWrap(wrap));
-    const getTopAccessoryGap = (wrap) => {
-      const explicit = parsePxValue(wrap.getAttribute('data-sb-sticky-gap'), Number.NaN);
-      if (Number.isFinite(explicit)) return explicit;
-      const styles = window.getComputedStyle(wrap);
-      const gap = parsePxValue(styles.getPropertyValue('--sb-supplementary-sticky-top-gap'), Number.NaN);
-      if (Number.isFinite(gap)) return gap;
-      return 0;
-    };
-    const getTopAccessoryControlHeight = (wrap) => {
-      const control = wrap.querySelector('.sb-manual-chapters__sticky-nav--mobile');
-      if (control instanceof Element && isVisibleElement(control)) {
-        return Math.max(control.getBoundingClientRect().height || 0, 0);
-      }
-      return Math.max(wrap.getBoundingClientRect().height || 0, 0);
-    };
-    const getTopAccessoryCurrentBottom = () => {
-      let maxBottom = 0;
-      getActiveTopAccessoryWraps().forEach((wrap) => {
-        const rect = wrap.getBoundingClientRect();
-        if (!Number.isFinite(rect.bottom) || rect.height <= 0) return;
-        maxBottom = Math.max(maxBottom, rect.bottom);
-      });
-      return Math.max(maxBottom, 0);
-    };
-    const getCurrentHeaderBottomFromDom = () => {
-      if (!(headerElement instanceof Element) || !isVisibleElement(headerElement)) return 0;
-      const styles = window.getComputedStyle(headerElement);
-      const borderBottom = parsePxValue(styles.borderBottomWidth, 0);
-      return Math.max((headerElement.getBoundingClientRect().bottom || 0) - borderBottom, 0);
-    };
-    const getAnnouncementHeight = () => {
-      if (!(headerElement instanceof Element) || !isVisibleElement(headerElement)) return 0;
-      const announcement = headerElement.querySelector('.header__announcement');
-      const minAnnouncementHeight = parseSpaceVar('--sb-announcement-min-height', 0);
-      if (!(announcement instanceof Element) || !isVisibleElement(announcement)) {
-        return Math.max(minAnnouncementHeight, 0);
-      }
-      return Math.max(announcement.getBoundingClientRect().height || 0, minAnnouncementHeight, 0);
-    };
-    const getCurrentTopStackBottomFromDom = () => {
-      let topStackBottom = Math.max(getCurrentHeaderBottomFromDom(), 0);
-      getActiveTopAccessoryWraps().forEach((wrap) => {
-        const control = wrap.querySelector('.sb-manual-chapters__sticky-nav--mobile');
-        const measuredElement = (control instanceof Element && isVisibleElement(control)) ? control : wrap;
-        const rect = measuredElement.getBoundingClientRect();
-        if (!Number.isFinite(rect.bottom) || rect.height <= 0) return;
-        topStackBottom = Math.max(topStackBottom, rect.bottom);
-      });
-      return Math.max(topStackBottom, 0);
-    };
 
     const getHeadingOffset = () => parseSpaceVar('--sb-space-96', 96);
 
-    const getTopStackBottom = () => {
-      if (window.SBStickyStack && typeof window.SBStickyStack.getState === 'function') {
-        const stickyState = window.SBStickyStack.getState();
-        if (Number.isFinite(stickyState?.topStackBottom)) {
-          return Math.max(stickyState.topStackBottom, 0);
-        }
-      }
-      return parseSpaceVar('--sb-sticky-top-stack-bottom', 0);
-    };
-    const getHeaderExpandedHeight = () => {
-      if (!(headerElement instanceof Element) || !isVisibleElement(headerElement)) {
-        return 0;
-      }
-      return Math.max(headerElement.getBoundingClientRect().height || 0, 0);
-    };
-    const getProjectedTopStackBottomForDirection = (direction = 'down') => {
-      const activeWraps = getActiveTopAccessoryWraps();
-      const hasActiveTopAccessory = activeWraps.length > 0;
-      const headerExpandedHeight = getHeaderExpandedHeight();
-      let projectedHeaderBottom = headerExpandedHeight;
-      if (direction === 'down') {
-        projectedHeaderBottom = hasActiveTopAccessory
-          ? 0
-          : Math.max(headerExpandedHeight - getAnnouncementHeight(), 0);
-      }
-      let projectedBottom = Math.max(projectedHeaderBottom, 0);
-      activeWraps.forEach((wrap) => {
-        const accessoryBottom = projectedHeaderBottom + getTopAccessoryGap(wrap) + getTopAccessoryControlHeight(wrap);
-        projectedBottom = Math.max(projectedBottom, accessoryBottom);
-      });
-      return Math.max(projectedBottom, 0);
-    };
     const syncManualScrollTargetOffsetVar = () => {
       const headingOffset = getHeadingOffset();
-      const currentTopBottom = Math.max(getTopStackBottom(), getTopAccessoryCurrentBottom(), getCurrentTopStackBottomFromDom());
-      const nextOffset = Math.max(Math.round(currentTopBottom + headingOffset), headingOffset);
+      const nextOffset = Math.max(Math.round(headingOffset), 0);
       const nextOffsetValue = `${nextOffset}px`;
       if (root.style.getPropertyValue('--sb-manual-scroll-target-offset') !== nextOffsetValue) {
         root.style.setProperty('--sb-manual-scroll-target-offset', nextOffsetValue);
       }
     };
 
-    const setFirstTemplateSection = (section) => {
-      if (activeFirstTemplateSection && activeFirstTemplateSection !== section) {
-        activeFirstTemplateSection.removeAttribute('data-sb-manual-first-section');
-        activeFirstTemplateSection.style.removeProperty('--sb-manual-first-offset-extra');
-      }
-      activeFirstTemplateSection = section || null;
-      if (activeFirstTemplateSection) {
-        activeFirstTemplateSection.setAttribute('data-sb-manual-first-section', 'true');
-      }
-    };
-
-    const clearFirstTemplateSectionOffset = () => {
-      if (!activeFirstTemplateSection) return;
-      activeFirstTemplateSection.removeAttribute('data-sb-manual-first-section');
-      activeFirstTemplateSection.style.removeProperty('--sb-manual-first-offset-extra');
-      activeFirstTemplateSection = null;
-    };
-
-    const getFirstTemplateSection = () => {
-      const scopedRoot = document.querySelector('#MainContent') || document;
-      const sections = Array.from(scopedRoot.querySelectorAll('.shopify-section[id*="template--"]'));
-      return sections.find((section) => section instanceof HTMLElement && section.offsetHeight > 0) || null;
-    };
-
     let layoutTicking = false;
-    let pendingForcedLayoutSync = false;
-    const requestLayoutSync = ({ force = false } = {}) => {
-      if (force) pendingForcedLayoutSync = true;
+    const requestLayoutSync = () => {
       if (layoutTicking) return;
       layoutTicking = true;
       window.requestAnimationFrame(() => {
-        const shouldForce = pendingForcedLayoutSync;
-        pendingForcedLayoutSync = false;
         syncManualScrollTargetOffsetVar();
-        syncFirstContentOffset({ force: shouldForce });
         layoutTicking = false;
       });
     };
 
-    const syncFirstContentOffset = ({ force = false } = {}) => {
-      const shouldApplyOffset = isMobileViewport();
-      if (!shouldApplyOffset) {
-        clearFirstTemplateSectionOffset();
-        return;
-      }
-
-      const currentScrollTop = window.scrollY || window.pageYOffset || 0;
-      if (!force && currentScrollTop > 4) {
-        return;
-      }
-
-      const firstTemplateSection = getFirstTemplateSection();
-      setFirstTemplateSection(firstTemplateSection);
-      if (!activeFirstTemplateSection) return;
-
-      const sectionTop = activeFirstTemplateSection.getBoundingClientRect().top + currentScrollTop;
-      const topStackBottom = Math.max(getTopStackBottom(), getTopAccessoryCurrentBottom(), getCurrentTopStackBottomFromDom());
-      const nextOffset = Math.max(Math.round(topStackBottom + getHeadingOffset() - sectionTop), 0);
-      const nextOffsetValue = `${nextOffset}px`;
-      if (activeFirstTemplateSection.style.getPropertyValue('--sb-manual-first-offset-extra') !== nextOffsetValue) {
-        activeFirstTemplateSection.style.setProperty('--sb-manual-first-offset-extra', nextOffsetValue);
-      }
-    };
-
     const getStickyOffset = () => {
       const headingOffset = getHeadingOffset();
-      const topStackBottom = Math.max(getTopStackBottom(), getTopAccessoryCurrentBottom(), getCurrentTopStackBottomFromDom());
       if (isMobileViewport()) {
-        return Math.max(topStackBottom + 8, 72);
+        return headingOffset;
       }
 
       if (!sidebar || window.getComputedStyle(sidebar).display === 'none') {
-        return Math.max(topStackBottom + 8, headingOffset);
+        return headingOffset;
       }
 
       const sidebarTop = Number.parseFloat(window.getComputedStyle(sidebar).top);
       if (Number.isFinite(sidebarTop)) return Math.max(sidebarTop + 8, headingOffset);
-      return Math.max(topStackBottom + 8, headingOffset);
+      return headingOffset;
     };
 
-    const getScrollTargetOffset = (targetElement = null, { directionOverride = null, preferCurrentState = false } = {}) => {
+    const getScrollTargetOffset = () => {
       const headingOffset = getHeadingOffset();
-      const pageY = window.scrollY || window.pageYOffset || 0;
-      const targetPageY = targetElement instanceof Element
-        ? targetElement.getBoundingClientRect().top + pageY
-        : pageY;
-      const direction = directionOverride || (targetPageY > pageY ? 'down' : 'up');
-      if (preferCurrentState) {
-        const currentTopStackBottom = Math.max(getTopStackBottom(), getTopAccessoryCurrentBottom(), getCurrentTopStackBottomFromDom());
-        return Math.max(Math.round(currentTopStackBottom + headingOffset), headingOffset);
-      }
-      const projectedTopStackBottom = getProjectedTopStackBottomForDirection(direction);
-      return Math.max(Math.round(projectedTopStackBottom + headingOffset), headingOffset);
+      return Math.max(Math.round(headingOffset), headingOffset);
     };
 
     const setActive = (id) => {
@@ -1694,7 +1517,7 @@
     const getActiveChapterId = () => {
       const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
       const stickyTriggerLine = getStickyOffset();
-      const activationOffset = getScrollTargetOffset(null, { preferCurrentState: true });
+      const activationOffset = getScrollTargetOffset();
       const triggerLine = Math.min(
         Math.max(Math.round(activationOffset + 1), Math.round(stickyTriggerLine + 1), 1),
         Math.max(viewportHeight - 1, 1)
@@ -1731,10 +1554,6 @@
       const chapter = findChapterById(nextId);
       if (!chapter) return;
 
-      if (window.SBStickyStack && typeof window.SBStickyStack.requestSync === 'function') {
-        window.SBStickyStack.requestSync();
-      }
-
       if (updateHash) {
         const nextHash = `#${nextId}`;
         if (window.location.hash !== nextHash) {
@@ -1742,16 +1561,12 @@
         }
       }
 
-      if (window.SBStickyStack && typeof window.SBStickyStack.scrollToElement === 'function') {
-        window.SBStickyStack.scrollToElement(chapter.heading, { behavior: 'smooth' });
-      } else {
-        const currentY = window.scrollY || window.pageYOffset || 0;
-        const targetTop = chapter.heading.getBoundingClientRect().top + currentY - getScrollTargetOffset(chapter.heading);
-        window.scrollTo({
-          top: Math.max(Math.round(targetTop), 0),
-          behavior: 'smooth',
-        });
-      }
+      const currentY = window.scrollY || window.pageYOffset || 0;
+      const targetTop = chapter.heading.getBoundingClientRect().top + currentY - getScrollTargetOffset();
+      window.scrollTo({
+        top: Math.max(Math.round(targetTop), 0),
+        behavior: 'smooth',
+      });
 
       requestSync();
       setActive(nextId);
@@ -1759,9 +1574,11 @@
 
     const updateChapterBackdropState = () => {
       const isOpen = chapterDropdowns.some((dropdown) => dropdown.getAttribute('data-open') === 'true');
-      if (chapterBackdrop) {
-        chapterBackdrop.classList.toggle('is-active', isOpen);
-      }
+      chapterDropdowns.forEach((dropdown) => {
+        const drawerContainer = dropdown.querySelector('[data-manual-drawer-container]');
+        if (!drawerContainer) return;
+        drawerContainer.classList.toggle('menu-open', dropdown.getAttribute('data-open') === 'true');
+      });
       document.documentElement.classList.toggle('is-manual-chapter-open', isOpen);
       if (document.body) {
         document.body.classList.toggle('is-manual-chapter-open', isOpen);
@@ -1771,29 +1588,24 @@
     const closeChapterDropdown = (dropdown, { returnFocus = false } = {}) => {
       if (!dropdown || dropdown.getAttribute('data-open') !== 'true') return;
       const trigger = dropdown.querySelector('[data-manual-chapter-trigger]');
-      const panel = dropdown.querySelector('[data-manual-chapter-panel]');
-      if (!trigger || !panel) return;
+      const drawerContainer = dropdown.querySelector('[data-manual-drawer-container]');
+      if (!trigger) return;
 
       trigger.setAttribute('aria-expanded', 'false');
       dropdown.removeAttribute('data-open');
-      panel.classList.remove('is-active');
-      panel.classList.add('is-closing');
-
-      let closeSettled = false;
-      const finalizeClose = (event) => {
-        if (event && event.target !== panel) return;
-        if (event && event.propertyName !== 'grid-template-rows' && event.propertyName !== 'transform') return;
-        if (closeSettled || dropdown.getAttribute('data-open') === 'true') return;
-        closeSettled = true;
-        panel.removeEventListener('transitionend', finalizeClose);
-        panel.classList.remove('is-closing');
-        if (returnFocus) trigger.focus();
-      };
-
-      panel.addEventListener('transitionend', finalizeClose);
-      window.setTimeout(finalizeClose, 620);
-
+      if (drawerContainer) {
+        drawerContainer.classList.remove('menu-open');
+        drawerContainer.classList.add('is-closing');
+        window.clearTimeout(Number(drawerContainer.dataset.manualDrawerCloseTimer || 0));
+        const closeTimer = window.setTimeout(() => {
+          drawerContainer.classList.remove('is-closing');
+          delete drawerContainer.dataset.manualDrawerCloseTimer;
+          updateChapterBackdropState();
+        }, 360);
+        drawerContainer.dataset.manualDrawerCloseTimer = String(closeTimer);
+      }
       updateChapterBackdropState();
+      if (returnFocus) trigger.focus();
     };
 
     const closeAllChapterDropdowns = ({ exceptDropdown = null, returnFocus = false } = {}) => {
@@ -1807,14 +1619,18 @@
     const openChapterDropdown = (dropdown) => {
       if (!dropdown) return;
       const trigger = dropdown.querySelector('[data-manual-chapter-trigger]');
-      const panel = dropdown.querySelector('[data-manual-chapter-panel]');
-      if (!trigger || !panel) return;
+      const drawerContainer = dropdown.querySelector('[data-manual-drawer-container]');
+      if (!trigger) return;
 
       closeAllChapterDropdowns({ exceptDropdown: dropdown });
       trigger.setAttribute('aria-expanded', 'true');
       dropdown.setAttribute('data-open', 'true');
-      panel.classList.remove('is-closing');
-      panel.classList.add('is-active');
+      if (drawerContainer) {
+        window.clearTimeout(Number(drawerContainer.dataset.manualDrawerCloseTimer || 0));
+        drawerContainer.classList.remove('is-closing');
+        drawerContainer.classList.add('menu-open');
+        delete drawerContainer.dataset.manualDrawerCloseTimer;
+      }
       updateChapterBackdropState();
     };
 
@@ -1839,11 +1655,11 @@
       });
     });
 
-    if (chapterBackdrop) {
-      chapterBackdrop.addEventListener('click', () => {
+    root.querySelectorAll('[data-manual-chapter-backdrop]').forEach((backdrop) => {
+      backdrop.addEventListener('click', () => {
         closeAllChapterDropdowns();
       });
-    }
+    });
 
     document.addEventListener('keydown', (event) => {
       if (event.key !== 'Escape') return;
@@ -1943,56 +1759,52 @@
     window.addEventListener(
       'resize',
       () => {
-        closeAllChapterDropdowns();
-        syncStickyTopNavigationMarker();
-        requestLayoutSync({ force: true });
+        const nextIsMobileViewport = isMobileViewport();
+        if (wasMobileViewport && !nextIsMobileViewport) {
+          document.body.classList.add('is-manual-chapter-resize-closing');
+          closeAllChapterDropdowns();
+          window.requestAnimationFrame(() => {
+            document.body.classList.remove('is-manual-chapter-resize-closing');
+          });
+        }
+        wasMobileViewport = nextIsMobileViewport;
+        syncMobileTopBarPlacement();
+        requestLayoutSync();
         requestSync();
       },
       { passive: true }
     );
     window.addEventListener('hashchange', () => {
-      requestLayoutSync({ force: true });
+      syncMobileTopBarPlacement();
+      requestLayoutSync();
       requestSync();
     });
     window.addEventListener('load', () => {
-      requestLayoutSync({ force: true });
+      syncMobileTopBarPlacement();
+      requestLayoutSync();
       requestSync();
     });
     document.addEventListener('sb:cart-drawer:state-change', () => {
-      requestLayoutSync({ force: true });
-      requestSync();
-    });
-    document.addEventListener('sb:sticky-stack:change', () => {
       requestLayoutSync();
       requestSync();
     });
 
     if (document.fonts && typeof document.fonts.ready === 'object') {
       document.fonts.ready.then(() => {
-        requestLayoutSync({ force: true });
+        syncMobileTopBarPlacement();
+        requestLayoutSync();
       }).catch(() => {});
     }
 
     if (window.ResizeObserver) {
       const observer = new ResizeObserver(() => {
-        requestLayoutSync({ force: true });
-        requestSync();
-      });
-      if (headerElement) observer.observe(headerElement);
-      stickyNavWraps.forEach((wrap) => observer.observe(wrap));
-      if (sidebar) observer.observe(sidebar);
-    }
-
-    if (headerElement) {
-      const headerObserver = new MutationObserver(() => {
         requestLayoutSync();
         requestSync();
       });
-      headerObserver.observe(headerElement, { attributes: true, attributeFilter: ['class'] });
+      if (sidebar) observer.observe(sidebar);
     }
-
-    syncStickyTopNavigationMarker();
-    requestLayoutSync({ force: true });
+    syncMobileTopBarPlacement();
+    requestLayoutSync();
     syncActive();
     window.setTimeout(syncActive, 120);
     window.setTimeout(syncActive, 360);

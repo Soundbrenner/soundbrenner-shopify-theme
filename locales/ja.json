@@ -58,7 +58,28 @@
     "placeholder": "記事、ページ、または製品を検索",
     "submit": "検索",
     "no_results_html": "{{ terms }}に該当する結果は見つかりませんでした",
-    "results_for_html": "{{ count }}件の検索結果が{{ terms }}に見つかりました"
+    "no_results_in_html": "「{{ terms }}」の{{ group }}に一致する結果は見つかりませんでした。",
+    "no_results_try_html": "<a href=\"{{ first_url }}\">{{ first_group }}</a>または<a href=\"{{ second_url }}\">{{ second_group }}</a>で検索してみてください。",
+    "results_for_html": {
+      "one": "{{ count }}件の検索結果が{{ terms }}に見つかりました",
+      "other": "{{ count }}件の検索結果が{{ terms }}に見つかりました"
+    },
+    "group_products": "製品",
+    "group_pages": "ページ",
+    "group_articles": "記事",
+    "group_collections": "コレクション",
+    "shortcut": {
+      "clear": "クリア",
+      "close": "検索を閉じる",
+      "error": "問題が発生しました。もう一度お試しください。",
+      "no_results_html": "「{{ terms }}」に一致する結果は見つかりませんでした。",
+      "placeholder": "検索",
+      "bestsellers": "ベストセラー",
+      "recently_viewed": "最近見た商品",
+      "start_typing": "検索するには入力してください。",
+      "suggestions": "候補",
+      "view_all": "すべての結果を見る"
+    }
   },
   "sb": {
     "accordion": {
@@ -99,7 +120,32 @@
       "read_this_next": "次はこちらをご覧ください",
       "sidebar_content": "サイドバーの内容",
       "sidebar_promo": "サイドバーのプロモ",
-      "sticky_navigation": "固定ブログナビゲーション"
+      "sticky_navigation": "固定ブログナビゲーション",
+      "product_filters": {
+        "core_2_practice_companion": "Core 2 練習コンパニオン",
+        "flow_microphone": "Flow マイクロフォン",
+        "genki_wave_midi_ring": "Genki Wave MIDI リング",
+        "minuendo_earplugs": "Minuendo イヤープラグ",
+        "playtronica_midi_instruments": "Playtronica MIDI 楽器",
+        "pulse_vibrating_metronome": "Pulse 振動メトロノーム",
+        "spark_practice_companion": "Spark 練習コンパニオン",
+        "stomp_foot_pedal": "Stomp フットペダル",
+        "the_metronome_app": "メトロノームアプリ",
+        "wave_in_ear_monitors": "Wave インイヤーモニター",
+        "wave_pro_in_ear_monitors": "Wave Pro インイヤーモニター"
+      },
+      "instrument_filters": {
+        "acoustic_guitar": "アコースティックギター",
+        "bass_guitar": "ベースギター",
+        "drums": "ドラム",
+        "electric_guitar": "エレキギター",
+        "keys": "鍵盤楽器",
+        "orchestral_strings": "オーケストラ弦楽器",
+        "playtronica": "Playtronica",
+        "ukulele": "ウクレレ",
+        "vocals": "ボーカル",
+        "woodwind": "木管楽器"
+      }
     },
     "cart": {
       "accepted_payment_methods": "ご利用可能なお支払い方法",
@@ -140,6 +186,7 @@
       "view_all": "すべて見る"
     },
     "common": {
+      "account": "アカウント",
       "back": "戻る",
       "cart_drawer": "カートドロワー",
       "close_cart": "カートを閉じる",

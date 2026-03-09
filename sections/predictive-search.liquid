@@ -1,0 +1,320 @@
+{% liquid
+  assign products = predictive_search.resources.products
+  assign pages = predictive_search.resources.pages
+  assign articles = predictive_search.resources.articles
+  assign collections_resources = predictive_search.resources.collections
+  assign queries = predictive_search.resources.queries
+
+  assign total_results_count = products.size
+  assign total_results_count = total_results_count | plus: pages.size
+  assign total_results_count = total_results_count | plus: articles.size
+  assign total_results_count = total_results_count | plus: collections_resources.size
+  assign total_results_count = total_results_count | plus: queries.size
+
+  assign result_index = 0
+  assign primary_currency = cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency | upcase
+%}
+
+<div class="sb-search-shortcut-results" data-search-shortcut-results-fragment data-search-results>
+  {% if predictive_search.performed %}
+    {% if total_results_count > 0 %}
+      {% if queries.size > 0 %}
+        <section class="sb-search-shortcut-results__group sb-search-shortcut-results__group--queries" aria-label="{{ 'search.shortcut.suggestions' | t }}">
+          <ul class="sb-search-shortcut-results__pills" role="list">
+            {% for query in queries %}
+              {% liquid
+                assign suggestion_search_term = query.text | default: query.styled_text | strip_html | strip
+                capture suggestion_product_search_url
+                  echo routes.search_url
+                  echo '?q='
+                  echo suggestion_search_term | url_encode
+                  echo '&type=product'
+                endcapture
+              %}
+              <li class="sb-search-shortcut-results__item" data-search-result-item data-search-result-index="{{ result_index }}">
+                <a class="sb-search-shortcut-pill font-caption weight-regular" href="{{ suggestion_product_search_url }}">
+                  {{ suggestion_search_term }}
+                </a>
+              </li>
+              {% assign result_index = result_index | plus: 1 %}
+            {% endfor %}
+          </ul>
+        </section>
+      {% endif %}
+
+      {% if products.size > 0 %}
+        <section class="sb-search-shortcut-results__group sb-search-shortcut-results__group--products" aria-label="{{ 'search.group_products' | t }}">
+          <h3 class="sb-search-shortcut-results__heading font-caption weight-semibold">{{ 'search.group_products' | t }}</h3>
+          <ul class="sb-search-shortcut-results__grid" role="list">
+            {% for product in products %}
+              {% liquid
+                assign product_primary_media = blank
+                if product.media != blank
+                  for product_media in product.media
+                    if product_media.media_type == 'image'
+                      assign product_primary_media = product_media
+                      break
+                    endif
+                  endfor
+                endif
+                if product_primary_media == blank
+                  assign product_primary_media = product.media | first
+                endif
+                assign product_image = blank
+                if product_primary_media != blank
+                  assign product_image = product_primary_media.preview_image | default: product_primary_media
+                endif
+                if product_image == blank
+                  assign product_image = product.featured_media.preview_image | default: product.featured_image
+                endif
+
+                assign product_image_width = 584
+                if product_image != blank and product_image.width != blank
+                  assign product_image_width = product_image.width | at_most: 584
+                endif
+                assign selected_variant = product.selected_or_first_available_variant
+                assign product_hover_image_url = blank
+                if selected_variant != blank
+                  capture product_variant_hover_image_url
+                    render 'sb-hover-image-url', resource: selected_variant, width: product_image_width
+                  endcapture
+                  assign product_variant_hover_image_url = product_variant_hover_image_url | strip
+                  if product_variant_hover_image_url != blank
+                    assign product_hover_image_url = product_variant_hover_image_url
+                  endif
+                endif
+                if product_hover_image_url == blank
+                  capture product_primary_hover_image_url
+                    render 'sb-hover-image-url', resource: product, width: product_image_width
+                  endcapture
+                  assign product_primary_hover_image_url = product_primary_hover_image_url | strip
+                  if product_primary_hover_image_url != blank
+                    assign product_hover_image_url = product_primary_hover_image_url
+                  endif
+                endif
+
+                assign product_settings_ref = product.metafields.custom.sbv2_product_settings.value | default: product.metafields.custom.sbv2_product_settings
+                assign product_hide_discounts = blank
+                if product_settings_ref != blank
+                  assign product_hide_discounts_setting = product_settings_ref.hide_discounts.value | default: product_settings_ref.hide_discounts
+                  if product_hide_discounts_setting == true or product_hide_discounts_setting == 'true' or product_hide_discounts_setting == 1 or product_hide_discounts_setting == '1'
+                    assign product_hide_discounts = true
+                  endif
+                endif
+                if product_hide_discounts == blank
+                  assign product_hide_discounts = false
+                endif
+                if product_hide_discounts == 'true' or product_hide_discounts == 1 or product_hide_discounts == '1'
+                  assign product_hide_discounts = true
+                elsif product_hide_discounts == 'false' or product_hide_discounts == 0 or product_hide_discounts == '0'
+                  assign product_hide_discounts = false
+                endif
+
+                assign product_price = blank
+                assign product_compare_price_display = blank
+                assign product_price_cents = blank
+                assign product_compare_price_cents = blank
+                if selected_variant != blank
+                  assign product_price_cents = selected_variant.price | plus: 0
+                  capture product_price
+                    render 'sb-money-no-decimals', amount: selected_variant.price, currency: primary_currency, context: 'storefront'
+                  endcapture
+                  assign product_price = product_price | strip
+
+                  if selected_variant.compare_at_price > selected_variant.price and product_hide_discounts == false
+                    assign product_compare_price_cents = selected_variant.compare_at_price | plus: 0
+                    capture product_compare_price_display
+                      render 'sb-money-no-decimals', amount: selected_variant.compare_at_price, currency: primary_currency, context: 'storefront'
+                    endcapture
+                    assign product_compare_price_display = product_compare_price_display | strip
+                  endif
+                endif
+
+                if product_hide_discounts
+                  assign product_compare_price_display = blank
+                  assign product_compare_price_cents = blank
+                endif
+
+              %}
+              <li
+                class="sb-search-shortcut-results__item"
+                data-search-result-item
+                data-search-result-index="{{ result_index }}"
+                data-product-id="{{ product.id }}"
+              >
+                <article
+                  class="sb-search-shortcut-card sb-search-shortcut-card--product sb-search-shortcut-card--product-compact"
+                  data-search-shortcut-product-card
+                  data-thumbnail-product-id="{{ product.id }}"
+                  data-thumbnail-hide-discounts="{% if product_hide_discounts %}true{% else %}false{% endif %}"
+                  {% if product_price_cents != blank %}data-thumbnail-price-cents="{{ product_price_cents }}"{% endif %}
+                  {% if product_compare_price_cents != blank %}data-thumbnail-compare-price-cents="{{ product_compare_price_cents }}"{% endif %}
+                >
+                  <div class="sb-search-shortcut-card__product-link-group">
+                    <a class="sb-search-shortcut-card__product-media-link" href="{{ product.url }}">
+                      <span class="sb-search-shortcut-card__media sb-search-shortcut-card__media--product{% if product_hover_image_url != blank %} sb-search-shortcut-card__media--has-hover{% endif %}" aria-hidden="true">
+                        {% if product_image != blank %}
+                          {{
+                            product_image
+                            | image_url: width: product_image_width
+                            | image_tag:
+                              widths: '120, 160, 200, 240, 320, 420, 584',
+                              sizes: '(min-width: 990px) 160px, 30vw',
+                              class: 'sb-search-shortcut-card__image sb-search-shortcut-card__image--primary',
+                              loading: 'lazy',
+                              alt: product.title
+                          }}
+                          {% if product_hover_image_url != blank %}
+                            <img
+                              class="sb-search-shortcut-card__image sb-search-shortcut-card__image--hover"
+                              src="{{ product_hover_image_url }}"
+                              alt=""
+                              loading="lazy"
+                              width="292"
+                              height="292"
+                              aria-hidden="true"
+                            >
+                          {% endif %}
+                        {% else %}
+                          <span class="sb-search-shortcut-card__image sb-search-shortcut-card__image--placeholder sb-search-shortcut-card__image--primary"></span>
+                        {% endif %}
+                      </span>
+                    </a>
+                    <span class="sb-search-shortcut-card__content sb-search-shortcut-card__content--product">
+                      <a class="sb-search-shortcut-card__product-title-link font-caption weight-bold" href="{{ product.url }}">
+                        <span class="sb-search-shortcut-card__title sb-search-shortcut-card__title--product">{{ product.title }}</span>
+                      </a>
+                    </span>
+                  </div>
+                  <span class="sb-search-shortcut-card__meta sb-search-shortcut-card__meta--product font-caption weight-regular" data-thumbnail-price-row{% if product_price == blank and product_compare_price_display == blank %} hidden{% endif %}>
+                    <span class="sb-search-shortcut-card__compare" data-thumbnail-price-compare{% if product_compare_price_display == blank %} hidden{% endif %}>{{ product_compare_price_display }}</span>
+                    <span class="sb-search-shortcut-card__price" data-thumbnail-price-current{% if product_price == blank %} hidden{% endif %}>{{ product_price }}</span>
+                  </span>
+                </article>
+              </li>
+              {% assign result_index = result_index | plus: 1 %}
+            {% endfor %}
+          </ul>
+        </section>
+      {% endif %}
+
+      {% if collections_resources.size > 0 %}
+        <section class="sb-search-shortcut-results__group sb-search-shortcut-results__group--collections" aria-label="{{ 'search.group_collections' | t }}">
+          <h3 class="sb-search-shortcut-results__heading font-caption weight-semibold">{{ 'search.group_collections' | t }}</h3>
+          <ul class="sb-search-shortcut-results__grid" role="list">
+            {% for collection in collections_resources %}
+              {% assign collection_thumbnail_count = 0 %}
+              {% capture collection_thumbnails_markup %}
+                {% for product in collection.products %}
+                  {% liquid
+                    assign collection_product_image = product.featured_media.preview_image | default: product.featured_image
+                    if collection_product_image == blank
+                      continue
+                    endif
+
+                    assign collection_product_image_width = 200
+                    if collection_product_image.width != blank
+                      assign collection_product_image_width = collection_product_image.width | at_most: 200
+                    endif
+                  %}
+                  <span class="sb-search-shortcut-card__collection-thumbnail">
+                    {{
+                      collection_product_image
+                      | image_url: width: collection_product_image_width
+                      | image_tag:
+                        widths: '80, 100, 120, 160, 200',
+                        sizes: '(min-width: 990px) 120px, 20vw',
+                        class: 'sb-search-shortcut-card__collection-thumbnail-image',
+                        loading: 'lazy',
+                        alt: product.title
+                    }}
+                  </span>
+                  {% assign collection_thumbnail_count = collection_thumbnail_count | plus: 1 %}
+                  {% if collection_thumbnail_count >= 4 %}
+                    {% break %}
+                  {% endif %}
+                {% endfor %}
+              {% endcapture %}
+              {% liquid
+                assign collection_card_state_class = 'sb-search-shortcut-card--collection-no-thumbnails'
+                if collection_thumbnail_count > 0
+                  assign collection_card_state_class = 'sb-search-shortcut-card--collection-with-thumbnails'
+                endif
+              %}
+              <li class="sb-search-shortcut-results__item" data-search-result-item data-search-result-index="{{ result_index }}">
+                <a class="sb-search-shortcut-card sb-search-shortcut-card--collection sb-search-shortcut-card--no-media {{ collection_card_state_class }}" href="{{ collection.url }}">
+                  {% if collection_thumbnail_count > 0 %}
+                    <span class="sb-search-shortcut-card__collection-thumbnails" aria-hidden="true">
+                      {{ collection_thumbnails_markup }}
+                    </span>
+                  {% endif %}
+                  <span class="sb-search-shortcut-card__content">
+                    <span class="sb-search-shortcut-card__title font-caption weight-semibold">{{ collection.title }}</span>
+                  </span>
+                </a>
+              </li>
+              {% assign result_index = result_index | plus: 1 %}
+            {% endfor %}
+          </ul>
+        </section>
+      {% endif %}
+
+      {% if pages.size > 0 %}
+        <section class="sb-search-shortcut-results__group sb-search-shortcut-results__group--pages" aria-label="{{ 'search.group_pages' | t }}">
+          <h3 class="sb-search-shortcut-results__heading font-caption weight-semibold">{{ 'search.group_pages' | t }}</h3>
+          <ul class="sb-search-shortcut-results__grid" role="list">
+            {% for page_item in pages %}
+              {% liquid
+                assign page_excerpt = page_item.content | strip_html | strip | truncatewords: 16
+              %}
+              <li class="sb-search-shortcut-results__item" data-search-result-item data-search-result-index="{{ result_index }}">
+                <a class="sb-search-shortcut-card sb-search-shortcut-card--no-media" href="{{ page_item.url }}">
+                  <span class="sb-search-shortcut-card__content">
+                    <span class="sb-search-shortcut-card__title font-caption weight-semibold">{{ page_item.title }}</span>
+                    {% if page_excerpt != blank %}
+                      <span class="sb-search-shortcut-card__meta font-caption weight-regular">{{ page_excerpt }}</span>
+                    {% endif %}
+                  </span>
+                </a>
+              </li>
+              {% assign result_index = result_index | plus: 1 %}
+            {% endfor %}
+          </ul>
+        </section>
+      {% endif %}
+
+      {% if articles.size > 0 %}
+        <section class="sb-search-shortcut-results__group sb-search-shortcut-results__group--articles" aria-label="{{ 'search.group_articles' | t }}">
+          <h3 class="sb-search-shortcut-results__heading font-caption weight-semibold">{{ 'search.group_articles' | t }}</h3>
+          <ul class="sb-search-shortcut-results__grid" role="list">
+            {% for article in articles %}
+              {% liquid
+                assign article_excerpt = article.excerpt_or_content | strip_html | strip | truncatewords: 16
+              %}
+              <li class="sb-search-shortcut-results__item" data-search-result-item data-search-result-index="{{ result_index }}">
+                <a class="sb-search-shortcut-card sb-search-shortcut-card--no-media" href="{{ article.url }}">
+                  <span class="sb-search-shortcut-card__content">
+                    <span class="sb-search-shortcut-card__title font-caption weight-semibold">{{ article.title }}</span>
+                    {% if article_excerpt != blank %}
+                      <span class="sb-search-shortcut-card__meta font-caption weight-regular">{{ article_excerpt }}</span>
+                    {% endif %}
+                  </span>
+                </a>
+              </li>
+              {% assign result_index = result_index | plus: 1 %}
+            {% endfor %}
+          </ul>
+        </section>
+      {% endif %}
+    {% else %}
+      <p class="sb-search-shortcut-results__empty sb-search-shortcut-results__no-results font-caption weight-regular">{{ 'search.shortcut.no_results_html' | t: terms: predictive_search.terms }}</p>
+    {% endif %}
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Predictive search",
+  "settings": []
+}
+{% endschema %}

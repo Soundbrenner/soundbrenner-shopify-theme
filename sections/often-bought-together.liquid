@@ -46,7 +46,7 @@
 
       {% if recommendations.performed and recommended_products != blank %}
         <section
-          class="sb-often-bought-together"
+          class="sb-often-bought-together{% if request.page_type == 'search' %} sb-often-bought-together--search{% endif %}"
           data-sb-reveal
           data-sb-thumbnail-section
         >
@@ -64,7 +64,7 @@
     </sb-product-recommendations>
   {% elsif has_manual_products %}
     <section
-      class="sb-often-bought-together"
+      class="sb-often-bought-together{% if request.page_type == 'search' %} sb-often-bought-together--search{% endif %}"
       data-sb-reveal
       data-sb-thumbnail-section
     >
@@ -123,6 +123,10 @@
     color: var(--sb-color-neutral-900);
     margin: 0 0 var(--sb-space-48);
     text-align: center;
+  }
+
+  .sb-often-bought-together--search .sb-often-bought-together__title {
+    text-align: left;
   }
 
   .sb-often-bought-together__grid {
@@ -285,7 +289,7 @@
     }
   ],
   "enabled_on": {
-    "templates": ["product", "article"]
+    "templates": ["product", "article", "search"]
   }
 }
 {% endschema %}

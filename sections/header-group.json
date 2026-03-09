@@ -11,6 +11,10 @@
   "type": "header",
   "name": "t:general.header",
   "sections": {
+    "header_announcements": {
+      "type": "header-announcements",
+      "settings": {}
+    },
     "header": {
       "type": "header",
       "blocks": {
@@ -161,6 +165,7 @@
     }
   },
   "order": [
+    "header_announcements",
     "header"
   ]
 }

@@ -10,8 +10,10 @@
 {
   "sections": {
     "main": {
-      "type": "list-collections-redirect",
-      "settings": {}
+      "type": "main-list-collections",
+      "settings": {
+        "max_items": 24
+      }
     }
   },
   "order": [

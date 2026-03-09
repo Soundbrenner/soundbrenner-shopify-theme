@@ -10,6 +10,7 @@
 
         const viewport = root.querySelector('[data-sb-carousel-viewport]');
         const track = root.querySelector('[data-sb-carousel-track]');
+        const nativeEndOffsetSpacer = track ? track.querySelector('[data-sb-carousel-end-offset]') : null;
         const prev = root.querySelector('[data-sb-carousel-prev]');
         const next = root.querySelector('[data-sb-carousel-next]');
 
@@ -26,40 +27,64 @@
           const token = desktop ? '--page-margin-desktop' : '--page-margin-mobile';
           return px(styles.getPropertyValue(token)) || px(styles.getPropertyValue('--page-margin')) || 16;
         };
-        const pageWidth = () => px(getComputedStyle(document.documentElement).getPropertyValue('--page-width')) || 1240;
-        const contentWidth = () => Math.max(1, Math.min(pageWidth(), window.innerWidth - (pageMargin() * 2)));
-        const nativeExtraScroll = () => Math.max(0, viewport.clientWidth - contentWidth());
-        const applyNativeExtraScroll = () => {
-          const shouldCompensate = desiredMaxScroll() > 1;
-          const endOffset = shouldCompensate ? nativeExtraScroll() : 0;
-          track.style.setProperty('--sb-carousel-native-end-offset', `${endOffset}px`);
-          track.style.paddingRight = '';
-        };
+        const contentWidth = () => Math.max(1, root.getBoundingClientRect().width || root.clientWidth || 0);
+        const viewportPaddingStart = () => px(getComputedStyle(viewport).paddingLeft);
+        const viewportPaddingEnd = () => px(getComputedStyle(viewport).paddingRight);
         const items = () => track.querySelectorAll('[data-sb-carousel-item]');
-        const itemsSpan = () => {
-          const list = items();
-          if (!list.length) return 0;
-          const first = list[0];
-          const last = list[list.length - 1];
-          const firstLeft = first.offsetLeft;
-          const lastRight = last.offsetLeft + last.getBoundingClientRect().width;
-          return Math.max(0, lastRight - firstLeft);
-        };
-        const desiredMaxScroll = () => Math.max(0, itemsSpan() - contentWidth());
-        const currentMaxScroll = () => {
-          const desired = desiredMaxScroll();
-          const native = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
-          return Math.max(0, Math.min(native, desired));
-        };
+        const itemStartOffset = (item) => Math.max(0, item.offsetLeft - viewportPaddingStart());
+        const itemEndOffset = (item) =>
+          Math.max(0, item.offsetLeft + item.getBoundingClientRect().width - (viewport.clientWidth - viewportPaddingEnd()));
 
         const scrollEpsilon = 2;
+        const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const shouldClampToBounds = () => window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+        const arrowFeedbackDuration = 220;
+        let maxScroll = 0;
+        let syncFrame = 0;
+        let pendingTarget = null;
+        const arrowFeedbackTimers = new WeakMap();
+
+        const currentMaxScroll = () => maxScroll;
+        const clearNativeEndOffset = () => {
+          track.style.removeProperty('--sb-carousel-native-end-offset');
+          track.style.paddingRight = '';
+          track.style.marginRight = '';
+          if (nativeEndOffsetSpacer instanceof HTMLElement) {
+            nativeEndOffsetSpacer.style.flexBasis = '';
+            nativeEndOffsetSpacer.style.marginLeft = '';
+            nativeEndOffsetSpacer.style.width = '';
+          }
+        };
+        const requestSyncState = () => {
+          if (syncFrame) return;
+          syncFrame = window.requestAnimationFrame(() => {
+            syncFrame = 0;
+            syncState();
+          });
+        };
+        const playArrowFeedback = (button) => {
+          if (!button || button.disabled) return;
+
+          const existingTimer = arrowFeedbackTimers.get(button);
+          if (existingTimer) window.clearTimeout(existingTimer);
+
+          button.classList.remove('is-clicked');
+          void button.offsetWidth;
+          button.classList.add('is-clicked');
+
+          const timer = window.setTimeout(() => {
+            button.classList.remove('is-clicked');
+            arrowFeedbackTimers.delete(button);
+          }, arrowFeedbackDuration);
+
+          arrowFeedbackTimers.set(button, timer);
+        };
 
         const getSnapPoints = (max) => {
           const list = items();
           if (!list.length) return [0, max];
 
-          const firstLeft = list[0].offsetLeft;
-          const points = Array.from(list).map((item) => item.offsetLeft - firstLeft);
+          const points = Array.from(list).map((item) => itemStartOffset(item));
           points.push(max);
 
           const normalized = points
@@ -91,31 +116,82 @@
         };
 
         const syncState = () => {
-          setBleed();
-          applyNativeExtraScroll();
-          track.style.transform = '';
-
           const max = currentMaxScroll();
           const overflowing = max > 1;
+          if (overflowing && shouldClampToBounds()) {
+            if (viewport.scrollLeft > max + scrollEpsilon) viewport.scrollLeft = max;
+            if (viewport.scrollLeft < -scrollEpsilon) viewport.scrollLeft = 0;
+          }
+          const current = Math.max(0, Math.min(viewport.scrollLeft, max));
+          const effectiveCurrent = pendingTarget === null
+            ? current
+            : Math.max(0, Math.min(pendingTarget, max));
           root.classList.toggle('is-overflowing', overflowing);
           root.classList.toggle('is-not-overflowing', !overflowing);
 
           if (!overflowing) {
             if (Math.abs(viewport.scrollLeft) > scrollEpsilon) viewport.scrollLeft = 0;
+            pendingTarget = null;
             prev.disabled = true;
             next.disabled = true;
             return;
           }
 
-          if (viewport.scrollLeft > max - scrollEpsilon) viewport.scrollLeft = max;
-          if (viewport.scrollLeft < scrollEpsilon) viewport.scrollLeft = 0;
+          prev.disabled = effectiveCurrent <= scrollEpsilon;
+          next.disabled = effectiveCurrent >= max - scrollEpsilon;
 
-          prev.disabled = viewport.scrollLeft <= scrollEpsilon;
-          next.disabled = viewport.scrollLeft >= max - scrollEpsilon;
+          if (pendingTarget !== null && Math.abs(current - pendingTarget) <= scrollEpsilon) {
+            pendingTarget = null;
+          }
         };
 
-        const scrollToOffset = (value) => {
-          applyNativeExtraScroll();
+        const refreshLayout = () => {
+          setBleed();
+          clearNativeEndOffset();
+          track.style.transform = '';
+
+          const list = items();
+          const lastItem = list[list.length - 1];
+          const desiredMax = lastItem ? itemEndOffset(lastItem) : 0;
+          const baseNativeMax = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+          const nativeEndOffset = Math.max(0, desiredMax - baseNativeMax);
+
+          if (nativeEndOffset > scrollEpsilon) {
+            if (nativeEndOffsetSpacer instanceof HTMLElement) {
+              const gap = px(getComputedStyle(track).gap);
+              nativeEndOffsetSpacer.style.flexBasis = `${nativeEndOffset}px`;
+              nativeEndOffsetSpacer.style.marginLeft = `${gap > 0 ? -gap : 0}px`;
+              nativeEndOffsetSpacer.style.width = `${nativeEndOffset}px`;
+
+              const adjustedNativeMax = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+              const remainingShortfall = Math.max(0, desiredMax - adjustedNativeMax);
+              if (remainingShortfall > scrollEpsilon) {
+                nativeEndOffsetSpacer.style.flexBasis = `${nativeEndOffset + remainingShortfall}px`;
+                nativeEndOffsetSpacer.style.width = `${nativeEndOffset + remainingShortfall}px`;
+              }
+            } else {
+              track.style.paddingRight = `${nativeEndOffset}px`;
+
+              const adjustedNativeMax = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+              const remainingShortfall = Math.max(0, desiredMax - adjustedNativeMax);
+              if (remainingShortfall > scrollEpsilon) {
+                track.style.paddingRight = `${nativeEndOffset + remainingShortfall}px`;
+              }
+            }
+          }
+
+          maxScroll = desiredMax;
+
+          if (maxScroll <= scrollEpsilon) {
+            if (Math.abs(viewport.scrollLeft) > scrollEpsilon) viewport.scrollLeft = 0;
+          } else if (shouldClampToBounds() && viewport.scrollLeft > maxScroll) {
+            viewport.scrollLeft = maxScroll;
+          }
+
+          syncState();
+        };
+
+        const scrollToOffset = (value, { animate = false } = {}) => {
           const max = currentMaxScroll();
           let clamped = Math.max(0, Math.min(value, max));
           if (clamped < scrollEpsilon) clamped = 0;
@@ -124,24 +200,45 @@
           const intendedDelta = Math.abs(clamped - startOffset);
           if (intendedDelta <= scrollEpsilon) return;
 
+          if (animate && !prefersReducedMotion()) {
+            pendingTarget = clamped;
+            viewport.scrollTo({ left: clamped, behavior: 'smooth' });
+            requestSyncState();
+            return;
+          }
+
+          pendingTarget = null;
           viewport.scrollLeft = clamped;
           syncState();
         };
 
+        const syncControlsForTarget = (target) => {
+          const max = currentMaxScroll();
+          const clamped = Math.max(0, Math.min(target, max));
+          prev.disabled = clamped <= scrollEpsilon;
+          next.disabled = clamped >= max - scrollEpsilon;
+        };
+
         prev.addEventListener('click', () => {
           const max = currentMaxScroll();
-          scrollToOffset(getPrevSnap(viewport.scrollLeft, max));
+          const target = getPrevSnap(viewport.scrollLeft, max);
+          playArrowFeedback(prev);
+          syncControlsForTarget(target);
+          scrollToOffset(target, { animate: true });
         });
 
         next.addEventListener('click', () => {
           const max = currentMaxScroll();
-          scrollToOffset(getNextSnap(viewport.scrollLeft, max));
+          const target = getNextSnap(viewport.scrollLeft, max);
+          playArrowFeedback(next);
+          syncControlsForTarget(target);
+          scrollToOffset(target, { animate: true });
         });
 
         viewport.addEventListener(
           'scroll',
           () => {
-            window.requestAnimationFrame(syncState);
+            requestSyncState();
           },
           { passive: true }
         );
@@ -154,6 +251,7 @@
             const horizontalDelta = event.deltaX;
             if (Math.abs(horizontalDelta) < 1) return;
 
+            pendingTarget = null;
             event.preventDefault();
             const max = currentMaxScroll();
             let nextOffset = Math.max(0, Math.min(viewport.scrollLeft + horizontalDelta, max));
@@ -165,24 +263,24 @@
         );
 
         if ('ResizeObserver' in window) {
-          const observer = new ResizeObserver(() => syncState());
+          const observer = new ResizeObserver(() => refreshLayout());
           observer.observe(viewport);
           observer.observe(track);
         }
 
         track.querySelectorAll('img').forEach((img) => {
           if (!img.complete) {
-            img.addEventListener('load', syncState, { once: true });
-            img.addEventListener('error', syncState, { once: true });
+            img.addEventListener('load', refreshLayout, { once: true });
+            img.addEventListener('error', refreshLayout, { once: true });
           }
         });
 
-        window.addEventListener('load', syncState);
-        window.addEventListener('resize', syncState);
-        syncState();
-        window.requestAnimationFrame(syncState);
-        window.setTimeout(syncState, 120);
-        window.setTimeout(syncState, 360);
+        window.addEventListener('load', refreshLayout);
+        window.addEventListener('resize', refreshLayout);
+        refreshLayout();
+        window.requestAnimationFrame(refreshLayout);
+        window.setTimeout(refreshLayout, 120);
+        window.setTimeout(refreshLayout, 360);
       });
     };
 

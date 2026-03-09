@@ -5,62 +5,833 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/search
 {% endcomment %}
 
-<h1>{{ 'search.title' | t }}</h1>
+<section id="sb-search-{{ section.id }}" class="sb-search full-width" data-sb-thumbnail-section>
+  <h1 class="sb-search__title font-title weight-bold">{{ 'search.title' | t }}</h1>
 
-{% assign search_currency_code = cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency | upcase %}
-
-<form action="{{ routes.search_url }}" method="get" role="search">
-  <input
-    type="search"
-    size="50"
-    name="q"
-    value="{{ search.terms | escape }}"
-    placeholder="{{ 'search.placeholder' | t }}"
-  >
-  <button type="submit">{{ 'search.submit' | t }}</button>
-</form>
-
-{% if search.performed %}
-  {% if search.results_count == 0 %}
-    <p>{{ 'search.no_results_html' | t: terms: search.terms }}</p>
-  {% else %}
-    <p>{{ 'search.results_for_html' | t: terms: search.terms, count: search.results_count }}</p>
-
-    <div class="search-results">
-      {% paginate search.results by 20 %}
-        {% # Search result items may be an article, a page, or a product. %}
-        {% for result in search.results %}
-          <div class="search-result">
-            {% assign featured_image = result.featured_image | default: result.image %}
-            {% if featured_image %}
-              {% render 'image', class: 'search-result__image', image: featured_image, url: result.url, width: 400 %}
-            {% endif %}
-            <div class="search-result__content">
-              <p>
-                {{ result.title | link_to: result.url }}
-                {% if result.price %}
-                  {% render 'sb-money-no-decimals', amount: result.price, currency: search_currency_code, context: 'storefront' %}
-                {% endif %}
-              </p>
-            </div>
-          </div>
-        {% endfor %}
-
-        {{ paginate | default_pagination }}
-      {% endpaginate %}
-    </div>
+  {% assign search_types_raw = search.types %}
+  {% assign search_has_product_type = false %}
+  {% assign search_has_page_type = false %}
+  {% assign search_has_article_type = false %}
+  {% if search_types_raw contains 'product' %}
+    {% assign search_has_product_type = true %}
   {% endif %}
-{% endif %}
+  {% if search_types_raw contains 'page' %}
+    {% assign search_has_page_type = true %}
+  {% endif %}
+  {% if search_types_raw contains 'article' %}
+    {% assign search_has_article_type = true %}
+  {% endif %}
+  {% assign search_type_filter = '' %}
+  {% assign is_products_filter = false %}
+  {% assign is_pages_filter = false %}
+  {% assign is_articles_filter = false %}
+  {% assign search_segment_index = 0 %}
+  {% if search_has_page_type and search_has_product_type == false and search_has_article_type == false %}
+    {% assign search_type_filter = 'page' %}
+    {% assign is_pages_filter = true %}
+    {% assign search_segment_index = 1 %}
+  {% elsif search_has_article_type and search_has_product_type == false and search_has_page_type == false %}
+    {% assign search_type_filter = 'article' %}
+    {% assign is_articles_filter = true %}
+    {% assign search_segment_index = 2 %}
+  {% elsif search_has_product_type and search_has_page_type == false and search_has_article_type == false %}
+    {% assign search_type_filter = 'product' %}
+    {% assign is_products_filter = true %}
+    {% assign search_segment_index = 0 %}
+  {% else %}
+    {% assign search_type_filter = 'product' %}
+    {% assign is_products_filter = true %}
+    {% assign search_segment_index = 0 %}
+  {% endif %}
+  {% assign search_submit_label = 'search.submit' | t %}
+  {% assign no_results_current_group = 'search.group_products' | t %}
+  {% assign no_results_alt_group_one = 'search.group_pages' | t %}
+  {% assign no_results_alt_group_two = 'search.group_articles' | t %}
+  {% assign no_results_alt_type_one = 'page' %}
+  {% assign no_results_alt_type_two = 'article' %}
+  {% if search_type_filter == 'page' %}
+    {% assign no_results_current_group = 'search.group_pages' | t %}
+    {% assign no_results_alt_group_one = 'search.group_products' | t %}
+    {% assign no_results_alt_group_two = 'search.group_articles' | t %}
+    {% assign no_results_alt_type_one = 'product' %}
+    {% assign no_results_alt_type_two = 'article' %}
+  {% elsif search_type_filter == 'article' %}
+    {% assign no_results_current_group = 'search.group_articles' | t %}
+    {% assign no_results_alt_group_one = 'search.group_products' | t %}
+    {% assign no_results_alt_group_two = 'search.group_pages' | t %}
+    {% assign no_results_alt_type_one = 'product' %}
+    {% assign no_results_alt_type_two = 'page' %}
+  {% endif %}
+
+  <form class="sb-search__form" action="{{ routes.search_url }}" method="get" role="search">
+    <div class="sb-search__input-wrap">
+      <span class="sb-search__input-icon" aria-hidden="true">
+        {{ 'icon-search.svg' | inline_asset_content }}
+      </span>
+      <input
+        class="sb-search__input font-form-input weight-regular"
+        type="search"
+        size="50"
+        name="q"
+        value="{{ search.terms | escape }}"
+        placeholder="{{ 'search.placeholder' | t }}"
+      >
+    </div>
+    <input type="hidden" name="type" value="{{ search_type_filter }}">
+    {% render 'radiant-button',
+      label: search_submit_label,
+      size: 'large',
+      button_type: 'submit',
+      extra_class: 'sb-search__submit font-caption weight-bold'
+    %}
+  </form>
+
+  {% if search.performed %}
+    <div class="sb-search__segmented-wrap">
+      <div
+        class="sb-search__segmented"
+        style="--sb-search-segment-index: {{ search_segment_index }}; --sb-search-segment-count: 3;"
+        role="navigation"
+        aria-label="{{ 'search.title' | t }}"
+      >
+        <span class="sb-search__segment-indicator" aria-hidden="true"></span>
+        <a
+          class="sb-search__segment-pill font-caption{% if is_products_filter %} is-active weight-semibold{% else %} weight-medium{% endif %}"
+          href="{{ routes.search_url }}?q={{ search.terms | url_encode }}&type=product"
+          {% if is_products_filter %}
+            aria-current="page"
+          {% endif %}
+        >
+          {{ 'search.group_products' | t }}
+        </a>
+        <a
+          class="sb-search__segment-pill font-caption{% if is_pages_filter %} is-active weight-semibold{% else %} weight-medium{% endif %}"
+          href="{{ routes.search_url }}?q={{ search.terms | url_encode }}&type=page"
+          {% if is_pages_filter %}
+            aria-current="page"
+          {% endif %}
+        >
+          {{ 'search.group_pages' | t }}
+        </a>
+        <a
+          class="sb-search__segment-pill font-caption{% if is_articles_filter %} is-active weight-semibold{% else %} weight-medium{% endif %}"
+          href="{{ routes.search_url }}?q={{ search.terms | url_encode }}&type=article"
+          {% if is_articles_filter %}
+            aria-current="page"
+          {% endif %}
+        >
+          {{ 'search.group_articles' | t }}
+        </a>
+      </div>
+    </div>
+
+    {% if search.results_count == 0 %}
+      {% capture no_results_alt_url_one %}{{ routes.search_url }}?q={{ search.terms | url_encode }}&type={{ no_results_alt_type_one }}{% endcapture %}
+      {% capture no_results_alt_url_two %}{{ routes.search_url }}?q={{ search.terms | url_encode }}&type={{ no_results_alt_type_two }}{% endcapture %}
+      <p class="sb-search__summary font-body weight-regular">
+        {{ 'search.no_results_in_html' | t: terms: search.terms, group: no_results_current_group }}
+        {{ 'search.no_results_try_html' | t: first_group: no_results_alt_group_one, second_group: no_results_alt_group_two, first_url: no_results_alt_url_one, second_url: no_results_alt_url_two }}
+      </p>
+    {% else %}
+      {% paginate search.results by 20 %}
+        {% assign product_results = search.results | where: 'object_type', 'product' %}
+        {% assign page_results = search.results | where: 'object_type', 'page' %}
+        {% assign article_results = search.results | where: 'object_type', 'article' %}
+        <p class="sb-search__summary font-body weight-regular">
+          {{ 'search.results_for_html' | t: terms: search.terms, count: search.results_count, group: no_results_current_group }}
+        </p>
+
+        {% if search_type_filter == 'product' and product_results.size > 0 %}
+          <section class="sb-search__group sb-search__group--products" aria-label="{{ 'search.group_products' | t }}">
+            <ul class="sb-search__grid" role="list">
+              {% for result in product_results %}
+                <li class="sb-search__item sb-search__item--product">
+                  {% render 'product-thumbnail', product: result, product_name: result.title %}
+                </li>
+              {% endfor %}
+            </ul>
+          </section>
+        {% endif %}
+
+        {% if search_type_filter == 'page' and page_results.size > 0 %}
+          <section class="sb-search__group sb-search__group--pages" aria-label="{{ 'search.group_pages' | t }}">
+            <ul class="sb-search__grid" role="list">
+              {% for result in page_results %}
+                {% assign page_excerpt = result.content | strip_html | strip | truncatewords: 24 %}
+                {% assign page_social_image = result.metafields.custom.social_media_image.value | default: result.metafields.custom.social_media_image %}
+                {% assign page_social_ratio = page_social_image.aspect_ratio %}
+                {% if page_social_ratio == blank and page_social_image.width != blank and page_social_image.height != blank and page_social_image.height != 0 %}
+                  {% assign page_social_ratio = page_social_image.width | times: 1.0 | divided_by: page_social_image.height %}
+                {% endif %}
+                {% assign page_social_request_width = 584 %}
+                {% if page_social_image.width != blank %}
+                  {% assign page_social_request_width = page_social_image.width | at_most: 584 %}
+                {% endif %}
+                <li class="sb-search__item sb-search__item--page">
+                  <article class="sb-blog-overview-card sb-blog-overview-card--third">
+                    <a
+                      class="sb-blog-overview-card__media sb-blog-overview-card__media--page"
+                      href="{{ result.url }}"
+                      {% if page_social_ratio != blank %}
+                        style="--sb-search-page-media-ratio: {{ page_social_ratio }};"
+                      {% endif %}
+                    >
+                      {% if page_social_image != blank %}
+                        {{
+                          page_social_image
+                          | image_url: width: page_social_request_width
+                          | image_tag:
+                            widths: '180, 240, 292, 360, 480, 584',
+                            sizes: '(min-width: 990px) 292px, (min-width: 750px) calc((100vw - 96px) / 3), calc((100vw - 56px) / 2)',
+                            class: 'sb-blog-overview-card__image',
+                            loading: 'lazy',
+                            alt: result.title
+                        }}
+                      {% else %}
+                        <div class="sb-blog-overview-card__image sb-blog-overview-card__image--placeholder" aria-hidden="true"></div>
+                      {% endif %}
+                    </a>
+                    <div class="sb-blog-overview-card__content">
+                      <h2 class="sb-blog-overview-card__title font-body weight-bold">
+                        <a href="{{ result.url }}">{{ result.title }}</a>
+                      </h2>
+                      {% if page_excerpt != blank %}
+                        <p class="sb-blog-overview-card__date font-caption weight-regular">{{ page_excerpt }}</p>
+                      {% endif %}
+                    </div>
+                  </article>
+                </li>
+              {% endfor %}
+            </ul>
+          </section>
+        {% endif %}
+
+        {% if search_type_filter == 'article' and article_results.size > 0 %}
+          <section class="sb-search__group sb-search__group--articles" aria-label="{{ 'search.group_articles' | t }}">
+            <ul class="sb-search__grid" role="list">
+              {% for result in article_results %}
+                {% assign search_article_blog_title = result.blog.title | default: 'sb.blog.blog' | t %}
+                <li class="sb-search__item sb-search__item--article">
+                  {% render 'sb-blog-overview-article-card',
+                    article: result,
+                    blog_title: search_article_blog_title,
+                    card_class: 'sb-blog-overview-card--third',
+                    show_excerpt: false,
+                    image_request_width: 584,
+                    image_widths: '180, 240, 292, 360, 480, 584',
+                    image_sizes: '(min-width: 990px) 292px, (min-width: 750px) calc((100vw - 96px) / 3), calc((100vw - 56px) / 2)'
+                  %}
+                </li>
+              {% endfor %}
+            </ul>
+          </section>
+        {% endif %}
+
+        {% if paginate.pages > 1 %}
+          <nav class="sb-search__pagination" aria-label="{{ 'sb.blog.pagination' | t }}">
+            {% if paginate.previous %}
+              <a
+                class="sb-search__pagination-arrow sb-search__pagination-arrow--prev"
+                href="{{ paginate.previous.url }}"
+                aria-label="{{ 'sb.blog.previous_page' | t }}"
+              >
+                <span class="sb-search__pagination-arrow-icon" aria-hidden="true">
+                  {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
+                </span>
+              </a>
+            {% else %}
+              <span
+                class="sb-search__pagination-arrow sb-search__pagination-arrow--prev is-disabled"
+                aria-disabled="true"
+              >
+                <span class="sb-search__pagination-arrow-icon" aria-hidden="true">
+                  {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
+                </span>
+              </span>
+            {% endif %}
+
+            <p class="sb-search__pagination-status font-body weight-semibold">
+              {{ paginate.current_page }} of {{ paginate.pages }}
+            </p>
+
+            {% if paginate.next %}
+              <a
+                class="sb-search__pagination-arrow sb-search__pagination-arrow--next"
+                href="{{ paginate.next.url }}"
+                aria-label="{{ 'sb.blog.next_page' | t }}"
+              >
+                <span class="sb-search__pagination-arrow-icon" aria-hidden="true">
+                  {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
+                </span>
+              </a>
+            {% else %}
+              <span
+                class="sb-search__pagination-arrow sb-search__pagination-arrow--next is-disabled"
+                aria-disabled="true"
+              >
+                <span class="sb-search__pagination-arrow-icon" aria-hidden="true">
+                  {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
+                </span>
+              </span>
+            {% endif %}
+          </nav>
+        {% endif %}
+      {% endpaginate %}
+    {% endif %}
+  {% endif %}
+</section>
 
 {% stylesheet %}
-  .search-results {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  .sb-search {
+    --sb-search-inline-margin: 16px;
+    margin: 0 auto;
+    max-width: 1240px;
+    width: min(1240px, calc(100vw - (var(--sb-search-inline-margin) * 2)));
+    padding: 0;
   }
-  .search-results .prev,
-  .search-results .page,
-  .search-results .next {
-    grid-column: 1 / -1;
+
+  .sb-search__title {
+    margin: 0 0 var(--sb-space-36);
+  }
+
+  .sb-search__form {
+    align-items: center;
+    display: flex;
+    gap: var(--sb-space-16);
+    margin-bottom: 0;
+  }
+
+  .sb-search__input {
+    background: transparent;
+    border: 0;
+    color: var(--sb-color-neutral-800);
+    flex: 1 1 auto;
+    height: 100%;
+    min-width: 0;
+    overflow: hidden;
+    padding: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+  }
+
+  .sb-search__input-wrap {
+    align-items: center;
+    background: var(--sb-color-always-white);
+    border: 0;
+    border-radius: 999px;
+    box-shadow: 0 0 10px 0 var(--sb-color-always-black-12);
+    display: flex;
+    flex: 1 1 auto;
+    gap: 8px;
+    height: 48px;
+    min-width: 0;
+    padding: 0 20px;
+  }
+
+  .sb-search__input-icon {
+    align-items: center;
+    color: var(--sb-color-neutral-800);
+    display: inline-flex;
+    flex: 0 0 auto;
+    height: 16px;
+    justify-content: center;
+    width: 16px;
+  }
+
+  .sb-search__input-icon svg {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .sb-search__input-icon svg [fill] {
+    fill: currentColor;
+  }
+
+  .sb-search__input::placeholder {
+    color: var(--sb-color-neutral-800);
+    display: block;
+    opacity: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .sb-search__input:not(:placeholder-shown) {
+    color: var(--sb-color-always-black);
+  }
+
+  .sb-search__input:focus,
+  .sb-search__input:focus-visible {
+    outline: none;
+  }
+
+  .sb-search__input::-webkit-search-decoration,
+  .sb-search__input::-webkit-search-cancel-button,
+  .sb-search__input::-webkit-search-results-button,
+  .sb-search__input::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+    display: none;
+  }
+
+  .sb-search__input::-ms-clear,
+  .sb-search__input::-ms-reveal {
+    display: none;
+    height: 0;
+    width: 0;
+  }
+
+  .sb-search__input-wrap:focus-within {
+    box-shadow: 0 0 10px 0 var(--sb-color-always-black-12);
+  }
+
+  .sb-search__submit,
+  .sb-search__submit.sb-button-radiant {
+    flex: 0 0 auto !important;
+  }
+
+  .sb-search__segmented-wrap {
+    margin-top: var(--sb-space-36);
+    width: 100%;
+  }
+
+  .sb-search__segmented {
+    --sb-search-segment-count: 3;
+    --sb-segment-gap: 8px;
+    align-items: stretch;
+    background: var(--sb-color-neutral-200);
+    border-radius: 999px;
+    display: flex;
+    gap: var(--sb-segment-gap);
+    height: 36px;
+    max-width: none;
+    overflow: hidden;
+    padding: 4px;
+    position: relative;
+    width: 100%;
+  }
+
+  .sb-search__segment-indicator {
+    background: var(--sb-color-neutral-600);
+    border-radius: 999px;
+    height: calc(100% - 8px);
+    left: 4px;
+    pointer-events: none;
+    position: absolute;
+    top: 4px;
+    transform: translateX(calc(var(--sb-search-segment-index) * (100% + var(--sb-segment-gap))));
+    width: calc((100% - 8px - (var(--sb-segment-gap) * (var(--sb-search-segment-count) - 1))) / var(--sb-search-segment-count));
+    will-change: transform;
+  }
+
+  .sb-search__segment-pill {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    border-radius: 999px;
+    color: var(--sb-color-neutral-900);
+    cursor: pointer;
+    display: flex;
+    flex: 1 1 0;
+    justify-content: center;
+    min-height: 0;
+    overflow: hidden;
+    padding: 0 12px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    z-index: 1;
+  }
+
+  .sb-search__segment-pill:focus-visible:not(.is-active) {
+    background: var(--sb-color-neutral-700);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-search__segment-pill:hover:not(.is-active) {
+      background: var(--sb-color-neutral-700);
+    }
+  }
+
+  .sb-search__summary {
+    margin: var(--sb-space-36) 0 var(--sb-space-36);
+  }
+
+  .sb-search__summary a {
+    color: var(--sb-color-primary-500);
+    text-decoration: none;
+  }
+
+  .sb-search__summary a:focus-visible {
+    color: var(--sb-color-primary-500);
+    text-decoration: underline;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-search__summary a:hover {
+      color: var(--sb-color-primary-500);
+      text-decoration: underline;
+    }
+  }
+
+  .sb-search__grid {
+    align-items: stretch;
+    column-gap: var(--sb-space-24);
+    display: grid;
+    row-gap: var(--sb-space-36);
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .sb-search__group--products .sb-search__grid {
+    column-gap: var(--sb-space-24);
+    row-gap: var(--sb-space-36);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sb-search__group--articles .sb-search__grid {
+    column-gap: var(--sb-space-24);
+    row-gap: var(--sb-space-36);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sb-search__group--pages .sb-search__grid {
+    column-gap: var(--sb-space-24);
+    row-gap: var(--sb-space-36);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sb-search__item--product {
+    align-items: stretch;
+    display: flex;
+    margin: 0;
+    padding: 0;
+  }
+
+  .sb-search__item--product .sb-product-thumbnail {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin: 0;
+    min-width: 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  .sb-search__item--article .sb-blog-overview-card,
+  .sb-search__item--page .sb-blog-overview-card {
+    background: var(--sb-color-neutral-200);
+    border-radius: var(--sb-space-24);
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    height: auto;
+    margin-bottom: 0;
+    min-width: 0;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .sb-search__item--article,
+  .sb-search__item--page {
+    align-items: stretch;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+  }
+
+  .sb-search__item--article .sb-blog-overview-card__media,
+  .sb-search__item--page .sb-blog-overview-card__media {
+    background: var(--sb-color-neutral-200);
+    display: block;
+    opacity: 1;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .sb-search__item--article .sb-blog-overview-card__media {
+    aspect-ratio: 16 / 9;
+  }
+
+  .sb-search__item--page .sb-blog-overview-card__media--page {
+    aspect-ratio: var(--sb-search-page-media-ratio, auto);
+  }
+
+  .sb-search__item--article .sb-blog-overview-card__media:focus-visible,
+  .sb-search__item--page .sb-blog-overview-card__media:focus-visible {
+    opacity: 0.75;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-search__item--article .sb-blog-overview-card__media:hover,
+    .sb-search__item--page .sb-blog-overview-card__media:hover {
+      opacity: 0.75;
+    }
+  }
+
+  .sb-search__item--article .sb-blog-overview-card__image,
+  .sb-search__item--page .sb-blog-overview-card__image {
+    display: block;
+    width: 100%;
+  }
+
+  .sb-search__item--article .sb-blog-overview-card__image {
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .sb-search__item--page .sb-blog-overview-card__image {
+    height: auto;
+  }
+
+  .sb-search__item--article .sb-blog-overview-card__image--placeholder,
+  .sb-search__item--page .sb-blog-overview-card__image--placeholder {
+    background: var(--sb-color-neutral-300);
+  }
+
+  .sb-search__item--article .sb-blog-overview-card__content,
+  .sb-search__item--page .sb-blog-overview-card__content {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: var(--sb-space-12);
+    padding: var(--sb-space-24);
+  }
+
+  .sb-search__item--article .sb-blog-overview-card__content {
+    flex: 1 0 auto;
+  }
+
+  .sb-search__item--article .sb-blog-overview-card__category,
+  .sb-search__item--article .sb-blog-overview-card__date,
+  .sb-search__item--page .sb-blog-overview-card__category,
+  .sb-search__item--page .sb-blog-overview-card__date {
+    color: var(--sb-color-neutral-800);
+    margin: 0;
+  }
+
+  .sb-search__item--article .sb-blog-overview-card__title,
+  .sb-search__item--page .sb-blog-overview-card__title {
+    margin: 0;
+  }
+
+  .sb-search__item--article .sb-blog-overview-card__title a,
+  .sb-search__item--page .sb-blog-overview-card__title a {
+    color: var(--sb-color-neutral-900);
+    display: inline-block;
+    max-width: 100%;
+    text-decoration: none;
+  }
+
+  .sb-search__item--article .sb-blog-overview-card__title a:focus-visible,
+  .sb-search__item--page .sb-blog-overview-card__title a:focus-visible {
+    color: var(--sb-color-primary-500);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-search__item--article .sb-blog-overview-card__title a:hover,
+    .sb-search__item--page .sb-blog-overview-card__title a:hover {
+      color: var(--sb-color-primary-500);
+    }
+  }
+
+  .sb-search__item--article .sb-blog-overview-card__date,
+  .sb-search__item--page .sb-blog-overview-card__date {
+    margin-top: 0;
+  }
+
+  .sb-search__item--article .sb-blog-overview-card__date {
+    margin-top: auto;
+  }
+
+  .sb-search__card {
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-decoration: none;
+  }
+
+  .sb-search__card:focus-visible .sb-search__card-title {
+    color: var(--sb-color-primary-500);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-search__card:hover .sb-search__card-title {
+      color: var(--sb-color-primary-500);
+    }
+  }
+
+  .sb-search__thumbnail {
+    background: var(--sb-color-neutral-200);
+    border-radius: var(--sb-space-24);
+    display: block;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .sb-search__thumbnail--page {
+    align-items: center;
+    aspect-ratio: 4 / 3;
+    display: flex;
+    justify-content: center;
+  }
+
+  .sb-search__thumbnail-placeholder {
+    align-items: center;
+    color: var(--sb-color-neutral-700);
+    display: inline-flex;
+    height: 100%;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .sb-search__thumbnail-placeholder svg {
+    display: block;
+    height: 28px;
+    width: 28px;
+  }
+
+  .sb-search__card-content {
+    display: grid;
+    gap: 8px;
+  }
+
+  .sb-search__card-title {
+    color: var(--sb-color-neutral-900);
+  }
+
+  .sb-search__card-text,
+  .sb-search__card-meta,
+  .sb-search__card-price {
+    color: var(--sb-color-neutral-800);
+  }
+
+  .sb-search__pagination {
+    align-items: center;
+    display: flex;
+    gap: var(--sb-space-24);
+    justify-content: flex-start;
+    margin-top: var(--sb-space-48);
+    width: 100%;
+  }
+
+  .sb-search__pagination-arrow {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    color: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    height: var(--sb-space-48);
+    justify-content: center;
+    padding: 0;
+    text-decoration: none;
+    width: var(--sb-space-48);
+  }
+
+  .sb-search__pagination-arrow.is-disabled {
+    cursor: default;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .sb-search__pagination-arrow-icon {
+    display: inline-flex;
+    height: var(--sb-space-48);
+    width: var(--sb-space-48);
+  }
+
+  .sb-search__pagination-arrow--next .sb-search__pagination-arrow-icon {
+    transform: scaleX(-1);
+  }
+
+  .sb-search__pagination-arrow-icon svg {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .sb-search__pagination-arrow-icon svg path:first-child {
+    fill: var(--sb-color-neutral-200);
+  }
+
+  .sb-search__pagination-arrow-icon svg path:last-child {
+    fill: var(--sb-color-neutral-800);
+  }
+
+  .sb-search__pagination-arrow:focus-visible:not(.is-disabled) .sb-search__pagination-arrow-icon svg path:last-child {
+    fill: var(--sb-color-primary-500);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-search__pagination-arrow:hover:not(.is-disabled) .sb-search__pagination-arrow-icon svg path:last-child {
+      fill: var(--sb-color-primary-500);
+    }
+  }
+
+  .sb-search__pagination-status {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+  }
+
+  @media screen and (min-width: 750px) {
+    .sb-search {
+      --sb-search-inline-margin: 24px;
+    }
+
+    .sb-search__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .sb-search__group--products .sb-search__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .sb-search__group--articles .sb-search__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .sb-search__group--pages .sb-search__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (max-width: 989px) {
+    .sb-search__item--article .sb-blog-overview-card__title,
+    .sb-search__item--article .sb-blog-overview-card__title a,
+    .sb-search__item--page .sb-blog-overview-card__title,
+    .sb-search__item--page .sb-blog-overview-card__title a {
+      font-family: var(--font-primary--family);
+    }
+
+  }
+
+  @media screen and (min-width: 990px) {
+    .sb-search__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .sb-search__group--products .sb-search__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .sb-search__group--articles .sb-search__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .sb-search__group--pages .sb-search__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
   }
 {% endstylesheet %}
 

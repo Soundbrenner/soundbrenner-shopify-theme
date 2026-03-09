@@ -550,9 +550,14 @@
     aspect-ratio: 122 / 36;
   }
 
-  .sb-framing-card__app-download-link[href]:hover,
   .sb-framing-card__app-download-link[href]:focus-visible {
     opacity: 0.75;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-framing-card__app-download-link[href]:hover {
+      opacity: 0.75;
+    }
   }
 
   html.sb-affiliate-hero-pending .sb-framing-card[data-hero-card-seasonal="true"] {

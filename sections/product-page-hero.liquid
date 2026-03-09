@@ -251,42 +251,53 @@
       endif
     endif
 
-    assign hero_product_settings_ref = product.metafields.custom.sbv2_product_settings.value | default: product.metafields.custom.sbv2_product_settings
-    if hero_product_settings_ref != blank
-      assign hero_product_tagline = hero_product_settings_ref.tagline.value | default: hero_product_settings_ref.tagline
-      assign hero_product_tagline_html = hero_product_settings_ref.tagline | metafield_tag
+    assign hero_has_media = false
+    if hero_has_video or hero_image_desktop_url != blank or hero_image_mobile_url != blank
+      assign hero_has_media = true
     endif
 
-    assign hero_linked_videos_ref = product.metafields.custom.sbv2_hero_videos
-    assign hero_linked_videos_root = hero_linked_videos_ref.value | default: hero_linked_videos_ref.reference.value | default: hero_linked_videos_ref.reference | default: hero_linked_videos_ref
-    if hero_linked_videos_root != blank
-      assign hero_linked_video_items = hero_linked_videos_root.videos.value | default: hero_linked_videos_root.videos.references | default: hero_linked_videos_root.videos
-      if hero_linked_video_items != blank
-        for hero_linked_video_item in hero_linked_video_items limit: 4
-          assign hero_linked_video_entry = hero_linked_video_item.value | default: hero_linked_video_item.reference.value | default: hero_linked_video_item.reference | default: hero_linked_video_item
-          assign hero_linked_video_youtube_id = hero_linked_video_entry.youtube_id.value | default: hero_linked_video_entry.youtube_id | append: '' | strip
-          if hero_linked_video_youtube_id contains 'youtube.com/watch'
-            assign hero_linked_video_youtube_id = hero_linked_video_youtube_id | split: 'v=' | last | split: '&' | first
-          elsif hero_linked_video_youtube_id contains 'youtu.be/'
-            assign hero_linked_video_youtube_id = hero_linked_video_youtube_id | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first
-          endif
-          assign hero_linked_video_youtube_id = hero_linked_video_youtube_id | split: '?' | first | split: '&' | first | split: '/' | last
+    if hero_has_media == false
+      assign hide_section = true
+    endif
 
-          if hero_linked_video_youtube_id != blank
-            assign hero_has_linked_videos = true
-            break
-          endif
-        endfor
+    if hide_section == false
+      assign hero_product_settings_ref = product.metafields.custom.sbv2_product_settings.value | default: product.metafields.custom.sbv2_product_settings
+      if hero_product_settings_ref != blank
+        assign hero_product_tagline = hero_product_settings_ref.tagline.value | default: hero_product_settings_ref.tagline
+        assign hero_product_tagline_html = hero_product_settings_ref.tagline | metafield_tag
       endif
-    endif
 
-    assign hero_selected_variant = product.selected_or_first_available_variant
-    assign hero_currency_code = cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency | upcase
-    if hero_selected_variant == blank and product.variants != blank
-      assign hero_selected_variant = product.variants.first
-    endif
-    if hero_selected_variant.compare_at_price > hero_selected_variant.price
-      assign hero_has_compare_price = true
+      assign hero_linked_videos_ref = product.metafields.custom.sbv2_hero_videos
+      assign hero_linked_videos_root = hero_linked_videos_ref.value | default: hero_linked_videos_ref.reference.value | default: hero_linked_videos_ref.reference | default: hero_linked_videos_ref
+      if hero_linked_videos_root != blank
+        assign hero_linked_video_items = hero_linked_videos_root.videos.value | default: hero_linked_videos_root.videos.references | default: hero_linked_videos_root.videos
+        if hero_linked_video_items != blank
+          for hero_linked_video_item in hero_linked_video_items limit: 4
+            assign hero_linked_video_entry = hero_linked_video_item.value | default: hero_linked_video_item.reference.value | default: hero_linked_video_item.reference | default: hero_linked_video_item
+            assign hero_linked_video_youtube_id = hero_linked_video_entry.youtube_id.value | default: hero_linked_video_entry.youtube_id | append: '' | strip
+            if hero_linked_video_youtube_id contains 'youtube.com/watch'
+              assign hero_linked_video_youtube_id = hero_linked_video_youtube_id | split: 'v=' | last | split: '&' | first
+            elsif hero_linked_video_youtube_id contains 'youtu.be/'
+              assign hero_linked_video_youtube_id = hero_linked_video_youtube_id | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first
+            endif
+            assign hero_linked_video_youtube_id = hero_linked_video_youtube_id | split: '?' | first | split: '&' | first | split: '/' | last
+
+            if hero_linked_video_youtube_id != blank
+              assign hero_has_linked_videos = true
+              break
+            endif
+          endfor
+        endif
+      endif
+
+      assign hero_selected_variant = product.selected_or_first_available_variant
+      assign hero_currency_code = cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency | upcase
+      if hero_selected_variant == blank and product.variants != blank
+        assign hero_selected_variant = product.variants.first
+      endif
+      if hero_selected_variant.compare_at_price > hero_selected_variant.price
+        assign hero_has_compare_price = true
+      endif
     endif
   endif
 %}
@@ -798,13 +809,9 @@
 
           const target = getHeroVideoTarget();
           if (!target) return;
-          if (window.SBStickyStack && typeof window.SBStickyStack.scrollToElement === 'function') {
-            window.SBStickyStack.scrollToElement(target, { behavior: 'smooth' });
-            return;
-          }
           const fallbackOffset = Number.parseFloat(
-            getComputedStyle(document.documentElement).getPropertyValue('--sb-sticky-scroll-target-offset')
-          ) || Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sb-space-96')) || 96;
+            getComputedStyle(document.documentElement).getPropertyValue('--sb-space-96')
+          ) || 96;
           const targetTop = window.scrollY + target.getBoundingClientRect().top - fallbackOffset;
           window.scrollTo({ top: Math.max(targetTop, 0), behavior: 'smooth' });
         });

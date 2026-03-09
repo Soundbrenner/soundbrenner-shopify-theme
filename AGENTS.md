@@ -17,5 +17,10 @@
 - For block-based sections, always provide at least one default block in presets/templates so the section is visible by default in Theme Editor.
 - For newly created sections with a title setting, always provide a placeholder default title.
 - Do not add hover easing transitions by default. Hover state changes should be instant unless explicitly requested.
+- Scope all `:hover` styles with `@media (hover: hover) and (pointer: fine)` so touch devices do not get sticky hover states. Keep `:focus-visible`, `:active`, and other non-hover interaction states outside that query when needed.
 - All user-facing strings must be translatable. Do not hardcode literal UI copy in Liquid, JSON templates, or JavaScript; use locale keys and the translation system by default.
 - Never seed English copy into non-English locale files. Add new source strings to `locales/en.default.json` and leave non-English locale keys untranslated until real translations are provided.
+- Do not author or auto-translate non-English locale values unless the user explicitly provides the final copy for those locales.
+- For new copy, add keys in `locales/en.default.json` and reference those keys in code so Shopify Translate & Adapt (or equivalent apps) can manage locale translations.
+- For quotation marks around dynamic text (for example search terms), do not hard-code quote characters in Liquid/JS. Put the full sentence, including opening/closing quotes, in locale strings so each language can choose correct punctuation.
+- Default English quote style is curly double quotes: `“{{ term }}”`. Other locales should define their own native quote style in translation files/apps.

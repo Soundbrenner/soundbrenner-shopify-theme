@@ -9,6 +9,10 @@
  */
 {
   "sections": {
+    "top_sticky_accessory_bar": {
+      "type": "product-top-sticky-accessory-bar",
+      "settings": {}
+    },
     "product_page_hero": {
       "type": "product-page-hero",
       "settings": {}
@@ -172,6 +176,7 @@
     }
   },
   "order": [
+    "top_sticky_accessory_bar",
     "product_page_hero",
     "press_ticker_product",
     "top_feature_highlights",

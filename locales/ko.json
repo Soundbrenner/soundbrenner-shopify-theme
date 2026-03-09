@@ -58,7 +58,28 @@
     "placeholder": "기사, 페이지 또는 상품 검색",
     "submit": "검색",
     "no_results_html": "{{ terms }}에 대한 결과가 없습니다",
-    "results_for_html": "{{ count }}개의 결과가 {{ terms }}에 대해 발견되었습니다"
+    "no_results_in_html": "{{ group }}에서 “{{ terms }}”에 대한 결과를 찾을 수 없습니다.",
+    "no_results_try_html": "<a href=\"{{ first_url }}\">{{ first_group }}</a> 또는 <a href=\"{{ second_url }}\">{{ second_group }}</a>에서 검색해 보세요.",
+    "results_for_html": {
+      "one": "{{ count }}개의 결과가 {{ terms }}에 대해 발견되었습니다",
+      "other": "{{ count }}개의 결과가 {{ terms }}에 대해 발견되었습니다"
+    },
+    "group_products": "제품",
+    "group_pages": "페이지",
+    "group_articles": "기사",
+    "group_collections": "컬렉션",
+    "shortcut": {
+      "clear": "지우기",
+      "close": "검색 닫기",
+      "error": "문제가 발생했습니다. 다시 시도해 주세요.",
+      "no_results_html": "“{{ terms }}”에 대한 결과를 찾을 수 없습니다.",
+      "placeholder": "검색",
+      "bestsellers": "베스트셀러",
+      "recently_viewed": "최근 본 상품",
+      "start_typing": "검색하려면 입력하세요.",
+      "suggestions": "추천",
+      "view_all": "모든 결과 보기"
+    }
   },
   "sb": {
     "accordion": {
@@ -99,7 +120,32 @@
       "read_this_next": "다음 글도 읽어봐",
       "sidebar_content": "사이드바 내용",
       "sidebar_promo": "사이드바 프로모션",
-      "sticky_navigation": "고정 블로그 내비게이션"
+      "sticky_navigation": "고정 블로그 내비게이션",
+      "product_filters": {
+        "core_2_practice_companion": "Core 2 연습 컴패니언",
+        "flow_microphone": "Flow 마이크",
+        "genki_wave_midi_ring": "Genki Wave MIDI 링",
+        "minuendo_earplugs": "Minuendo 이어플러그",
+        "playtronica_midi_instruments": "Playtronica MIDI 악기",
+        "pulse_vibrating_metronome": "Pulse 진동 메트로놈",
+        "spark_practice_companion": "Spark 연습 컴패니언",
+        "stomp_foot_pedal": "Stomp 풋 페달",
+        "the_metronome_app": "메트로놈 앱",
+        "wave_in_ear_monitors": "Wave 인이어 모니터",
+        "wave_pro_in_ear_monitors": "Wave Pro 인이어 모니터"
+      },
+      "instrument_filters": {
+        "acoustic_guitar": "어쿠스틱 기타",
+        "bass_guitar": "베이스 기타",
+        "drums": "드럼",
+        "electric_guitar": "일렉트릭 기타",
+        "keys": "키보드",
+        "orchestral_strings": "오케스트라 현악기",
+        "playtronica": "Playtronica",
+        "ukulele": "우쿨렐레",
+        "vocals": "보컬",
+        "woodwind": "목관악기"
+      }
     },
     "cart": {
       "accepted_payment_methods": "사용 가능한 결제 수단",
@@ -140,6 +186,7 @@
       "view_all": "모두 보기"
     },
     "common": {
+      "account": "계정",
       "back": "뒤로",
       "cart_drawer": "장바구니 드로어",
       "close_cart": "장바구니 닫기",
