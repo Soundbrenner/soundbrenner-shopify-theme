@@ -389,6 +389,21 @@
       "auto": "Auto",
       "klaviyo_popup": "Klaviyo-Popup",
       "product_sticky": "Produkt-Sticky"
+    },
+    "gift_card": {
+      "copy_code": "Geschenkkartencode kopieren",
+      "copy_code_success": "Geschenkkartencode kopiert.",
+      "qr_code_label": "Geschenkkarten-QR-Code",
+      "shop_link": "Zum Online-Shop"
+    },
+    "password": {
+      "close": "Passwort-Dialog schließen",
+      "enter_password": "Passwort eingeben",
+      "enter_using_password": "Mit Passwort eintreten",
+      "log_in_here": "Hier einloggen",
+      "page_title": "Passwortgeschützt",
+      "message_fallback": "Gib das Passwort ein, um zum Store zu gelangen.",
+      "store_owner_html": "Shop-Besitzer? <a href=\"{{ link }}\">Hier einloggen</a>"
     }
   },
   "shopify": {

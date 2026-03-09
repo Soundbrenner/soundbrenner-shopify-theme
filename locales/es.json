@@ -389,6 +389,21 @@
       "auto": "Automático",
       "klaviyo_popup": "Ventana emergente de Klaviyo",
       "product_sticky": "Producto fijo"
+    },
+    "gift_card": {
+      "copy_code": "Copiar código de la tarjeta de regalo",
+      "copy_code_success": "Código de tarjeta de regalo copiado.",
+      "qr_code_label": "Código QR de la tarjeta de regalo",
+      "shop_link": "Visita la tienda online"
+    },
+    "password": {
+      "close": "Cerrar diálogo de contraseña",
+      "enter_password": "Introduce la contraseña",
+      "enter_using_password": "Ingresa usando contraseña",
+      "log_in_here": "Inicia sesión aquí",
+      "page_title": "Protegido con contraseña",
+      "message_fallback": "Ingresa la contraseña para continuar a la tienda.",
+      "store_owner_html": "¿Eres dueño de una tienda? <a href=\"{{ link }}\">Inicia sesión aquí</a>"
     }
   },
   "shopify": {
