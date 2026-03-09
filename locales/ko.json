@@ -389,6 +389,21 @@
       "auto": "자동",
       "klaviyo_popup": "Klaviyo 팝업",
       "product_sticky": "제품 고정"
+    },
+    "gift_card": {
+      "copy_code": "기프트 카드 코드 복사",
+      "copy_code_success": "기프트 카드 코드가 복사되었어.",
+      "qr_code_label": "기프트 카드 QR 코드",
+      "shop_link": "온라인 스토어 방문하기"
+    },
+    "password": {
+      "close": "비밀번호 대화상자 닫기",
+      "enter_password": "비밀번호 입력",
+      "enter_using_password": "비밀번호로 입장하기",
+      "log_in_here": "여기에서 로그인하세요",
+      "page_title": "비밀번호로 보호됨",
+      "message_fallback": "스토어로 계속하려면 비밀번호를 입력해 주세요.",
+      "store_owner_html": "스토어 운영자이신가요? <a href=\"{{ link }}\">여기에서 로그인하세요</a>"
     }
   },
   "shopify": {

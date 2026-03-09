@@ -389,6 +389,21 @@
       "auto": "オート",
       "klaviyo_popup": "Klaviyoポップアップ",
       "product_sticky": "製品スティッキー"
+    },
+    "gift_card": {
+      "copy_code": "ギフトカードコードをコピー",
+      "copy_code_success": "ギフトカードコードをコピーしました。",
+      "qr_code_label": "ギフトカードのQRコード",
+      "shop_link": "オンラインストアを見る"
+    },
+    "password": {
+      "close": "パスワードダイアログを閉じる",
+      "enter_password": "パスワードを入力",
+      "enter_using_password": "パスワードを入力",
+      "log_in_here": "こちらからログイン",
+      "page_title": "パスワードで保護されています",
+      "message_fallback": "パスワードを入力してストアに進んでください。",
+      "store_owner_html": "ストアオーナーの方ですか？<a href=\"{{ link }}\">こちらからログイン</a>"
     }
   },
   "shopify": {
