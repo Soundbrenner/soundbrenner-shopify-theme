@@ -1,8 +1,9 @@
 (function () {
   const root = document.documentElement;
   const qrCodeNode = document.querySelector('[data-gift-card-qr-code]');
-  const copyButton = document.querySelector('[data-gift-card-copy-button]');
+  const copyButton = document.querySelector('[data-gift-card-copy-button], .sb-gift-card__copy-button');
   const copyFeedback = document.querySelector('[data-gift-card-copy-feedback]');
+  const copyScope = document.querySelector('[data-gift-card-code]');
 
   const fallbackCopyText = (text) => {
     const textArea = document.createElement('textarea');
@@ -37,7 +38,7 @@
   if (!(copyButton instanceof HTMLElement)) return;
 
   copyButton.addEventListener('click', async () => {
-    const code = copyButton.dataset.giftCardCode || '';
+    const code = (copyScope instanceof HTMLElement ? copyScope.dataset.giftCardCode : '') || '';
     if (!code) return;
 
     try {
