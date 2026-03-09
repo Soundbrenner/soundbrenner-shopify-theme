@@ -106,13 +106,14 @@
       <a
         class="sb-cart-line__media{% if item_hover_image != blank %} sb-cart-line__media--has-hover{% endif %}"
         href="{{ item.url }}"
+        data-image-frame
       >
         {% # theme-check-disable RemoteAsset %}
         {% if item_image != blank %}
           <img class="sb-cart-line__image sb-cart-line__image--primary" src="{{ item_image }}" alt="{{ item_title | escape }}" loading="lazy" width="128" height="128">
         {% else %}
           <img
-            class="sb-cart-line__image sb-cart-line__image--primary"
+            class="sb-cart-line__image sb-cart-line__image--primary sb-cart-line__image--placeholder"
             src="{{ sb_cart_placeholder_image }}"
             alt="{{ item_title | escape }}"
             loading="lazy"

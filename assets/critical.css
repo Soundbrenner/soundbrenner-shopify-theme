@@ -7,8 +7,7 @@
 }
 
 body {
-  display: flex;
-  flex-direction: column;
+  display: block;
   margin: 0;
   min-height: 100svh;
   -webkit-font-smoothing: antialiased;
@@ -1150,6 +1149,10 @@ body .sb-page-content__body .rte > * + * {
   width: 100%;
 }
 
+[data-sb-thumbnail-section] .sb-product-thumbnail__media[data-image-loaded='true'] {
+  background: transparent;
+}
+
 [data-sb-thumbnail-section] .sb-product-thumbnail__badge {
   align-items: center;
   border-radius: var(--sb-space-12);
@@ -1595,22 +1598,20 @@ video.sb-product-main__media-asset {
   background: var(--sb-color-neutral-200);
 }
 
-/* Safari: prevent thin dark edge artifacts on autoplay gallery videos */
-@supports (-webkit-touch-callout: none) {
-  .sb-product-thumbnail__video.sb-product-thumbnail__media-item,
-  video.sb-product-main__media-asset {
-    border: 0;
-    outline: 0;
-    box-shadow: none;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    margin: calc(var(--sb-space-2) * -1);
-    width: calc(100% + (var(--sb-space-2) * 2));
-    height: calc(100% + (var(--sb-space-2) * 2));
-    object-fit: cover;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-  }
+/* Prevent thin edge artifacts on gallery videos while sliding */
+.sb-product-thumbnail__video.sb-product-thumbnail__media-item,
+video.sb-product-main__media-asset {
+  border: 0;
+  outline: 0;
+  box-shadow: none;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  margin: calc(var(--sb-space-2) * -1);
+  width: calc(100% + (var(--sb-space-2) * 2));
+  height: calc(100% + (var(--sb-space-2) * 2));
+  object-fit: cover;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 .sb-button-radiant:active {
@@ -4006,6 +4007,11 @@ button[aria-label='Modal close button']::after {
 button.kl_reviews__close_button:focus-visible::before,
 button[aria-label='Modal close button']:focus-visible::before {
   background-color: var(--sb-color-neutral-800) !important;
+}
+
+button.kl_reviews__close_button:active::before,
+button[aria-label='Modal close button']:active::before {
+  background-color: var(--sb-color-primary-500) !important;
 }
 
 @media (hover: hover) and (pointer: fine) {

@@ -213,6 +213,12 @@
       "in_the_box": "In the box",
       "tech_specs": "Tech specs"
     },
+    "gift_card": {
+      "copy_code": "Copy code",
+      "copy_code_success": "Gift card code copied.",
+      "qr_code_label": "Gift card QR code",
+      "shop_link": "Visit store"
+    },
     "debug": {
       "panel_aria_label": "Theme debug toggle",
       "theme": "Theme",
@@ -260,6 +266,13 @@
       "close_chapters": "Close chapters",
       "product_manual": "Product manual",
       "sticky_navigation": "Sticky manual navigation"
+    },
+    "password": {
+      "close": "Close password dialog",
+      "enter_password": "Enter password",
+      "enter_using_password": "Enter using password",
+      "message_fallback": "Enter the password to continue to the store.",
+      "store_owner_html": "Store owner? <a href=\"{{ link }}\">Log in here</a>"
     },
     "media": {
       "close_video": "Close video",
@@ -355,7 +368,7 @@
       "title_line_1": "Welcome Offer:",
       "title_line_2": "Unlock 20% off",
       "description": "Claim your Welcome Offer and stay updated on new products and special deals.",
-      "email_placeholder": "Enter your email...",
+      "email_placeholder": "Email",
       "email_label": "Enter your email",
       "button_label": "Unlock Welcome Offer",
       "engagement_counter": "🔥 Unlocked by {{ count }} musicians in the last 30 days!",

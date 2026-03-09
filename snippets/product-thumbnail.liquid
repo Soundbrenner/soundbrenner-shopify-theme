@@ -558,7 +558,7 @@
     data-thumbnail-static-media="{% if thumbnail_static_media %}true{% else %}false{% endif %}"
     {% if thumbnail_static_media == false and thumbnail_hover_image_url != blank %}data-hover-image="{{ thumbnail_hover_image_url }}"{% endif %}
   >
-    <a class="sb-product-thumbnail__media" href="{{ thumbnail_url }}" data-thumbnail-link data-thumbnail-base-url="{{ thumbnail_url }}">
+    <a class="sb-product-thumbnail__media" href="{{ thumbnail_url }}" data-thumbnail-link data-thumbnail-base-url="{{ thumbnail_url }}" data-image-frame>
       {% if thumbnail_badge_label != blank %}
         <span class="sb-product-thumbnail__badge sb-product-thumbnail__badge--{{ thumbnail_badge_type }} font-caption weight-semibold">
           {{ thumbnail_badge_label }}

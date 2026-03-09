@@ -2296,11 +2296,16 @@
         const title = escapeHtml(item.product_title || item.title || 'Product');
         const productUrl = escapeHtml(item.url || '#');
         const variantTitle = escapeHtml(getItemVariantTitle(item));
-        const imageUrl = escapeHtml(getItemImageUrl(item) || this.placeholderImage);
+        const rawImageUrl = getItemImageUrl(item);
+        const hasRealImage = Boolean(`${rawImageUrl || ''}`.trim());
+        const imageUrl = escapeHtml(rawImageUrl || this.placeholderImage);
         const escapedHoverImageUrl = hoverImageUrl ? escapeHtml(hoverImageUrl) : '';
         const mediaClass = escapedHoverImageUrl
           ? 'sb-cart-line__media sb-cart-line__media--has-hover'
           : 'sb-cart-line__media';
+        const primaryImageClass = hasRealImage
+          ? 'sb-cart-line__image sb-cart-line__image--primary'
+          : 'sb-cart-line__image sb-cart-line__image--primary sb-cart-line__image--placeholder';
         const quantity = clampCount(item.quantity || 0);
         const effectiveQuantity = Math.max(1, quantity);
         const originalLinePriceCents = Number.isFinite(Number(item.original_line_price))
@@ -2327,8 +2332,8 @@
         const minusButtonAttributes = effectiveQuantity <= 1 ? 'disabled aria-disabled="true"' : '';
 
         lineItem.innerHTML = `
-          <a class="${mediaClass}" href="${productUrl}">
-            <img class="sb-cart-line__image sb-cart-line__image--primary" src="${imageUrl}" alt="${title}" loading="eager" width="128" height="128">
+          <a class="${mediaClass}" href="${productUrl}" data-image-frame>
+            <img class="${primaryImageClass}" src="${imageUrl}" alt="${title}" loading="eager" width="128" height="128">
             ${
               escapedHoverImageUrl
                 ? `<img class="sb-cart-line__image sb-cart-line__image--hover" src="${escapedHoverImageUrl}" alt="" loading="eager" width="128" height="128" aria-hidden="true">`
