@@ -48,6 +48,7 @@
     "copy_code_success": "ギフトカードコードをコピーしました。",
     "expired": "このギフトカードは有効期限が切れています",
     "expires_on": "有効期限：{{ expires_on }}",
+    "qr_code_label": "ギフトカードのQRコード",
     "shop_link": "オンラインストアを見る",
     "use_at_checkout": "このギフトカードをお会計時に使ってください"
   },

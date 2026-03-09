@@ -25,11 +25,31 @@
     <main class="sb-gift-card">
       {% assign gift_card_product = all_products['gift-card'] %}
       {% assign gift_card_product_image = blank %}
-      {% assign gift_card_product_hover_image = blank %}
+      {% assign gift_card_product_image_width = 800 %}
+      {% assign gift_card_product_hover_image_url = blank %}
       {% if gift_card_product != blank %}
         {% assign gift_card_product_image = gift_card_product.featured_image %}
-        {% if gift_card_product.images.size > 1 %}
-          {% assign gift_card_product_hover_image = gift_card_product.images[1] %}
+        {% if gift_card_product_image != blank and gift_card_product_image.width != blank %}
+          {% assign gift_card_product_image_width = gift_card_product_image.width | at_most: 800 %}
+        {% endif %}
+        {% assign gift_card_selected_variant = gift_card_product.selected_or_first_available_variant %}
+        {% if gift_card_selected_variant != blank %}
+          {% capture gift_card_variant_hover_image_url %}
+            {% render 'sb-hover-image-url', resource: gift_card_selected_variant, width: gift_card_product_image_width %}
+          {% endcapture %}
+          {% assign gift_card_variant_hover_image_url = gift_card_variant_hover_image_url | strip %}
+          {% if gift_card_variant_hover_image_url != blank %}
+            {% assign gift_card_product_hover_image_url = gift_card_variant_hover_image_url %}
+          {% endif %}
+        {% endif %}
+        {% if gift_card_product_hover_image_url == blank %}
+          {% capture gift_card_primary_hover_image_url %}
+            {% render 'sb-hover-image-url', resource: gift_card_product, width: gift_card_product_image_width %}
+          {% endcapture %}
+          {% assign gift_card_primary_hover_image_url = gift_card_primary_hover_image_url | strip %}
+          {% if gift_card_primary_hover_image_url != blank %}
+            {% assign gift_card_product_hover_image_url = gift_card_primary_hover_image_url %}
+          {% endif %}
         {% endif %}
       {% endif %}
       {% capture gift_card_info_text %}
@@ -45,11 +65,11 @@
           {{ 'logo-soundbrenner-wordmark.svg' | inline_asset_content }}
         </span>
 
-        <div class="sb-gift-card__media-frame{% if gift_card_product_hover_image != blank %} sb-gift-card__media-frame--has-hover{% endif %}">
+        <div class="sb-gift-card__media-frame{% if gift_card_product_hover_image_url != blank %} sb-gift-card__media-frame--has-hover{% endif %}">
           {% if gift_card_product_image != blank %}
             {{
               gift_card_product_image
-              | image_url: width: 800
+              | image_url: width: gift_card_product_image_width
               | image_tag:
                 class: 'sb-gift-card__media-image sb-gift-card__media-image--primary',
                 alt: gift_card_product_image.alt | default: gift_card_product.title,
@@ -57,17 +77,15 @@
                 sizes: '(min-width: 750px) 400px, calc(100vw - 40px)',
                 widths: '400,600,800'
             }}
-            {% if gift_card_product_hover_image != blank %}
-              {{
-                gift_card_product_hover_image
-                | image_url: width: 800
-                | image_tag:
-                  class: 'sb-gift-card__media-image sb-gift-card__media-image--hover',
-                  alt: '',
-                  loading: 'eager',
-                  sizes: '(min-width: 750px) 400px, calc(100vw - 40px)',
-                  widths: '400,600,800'
-              }}
+            {% if gift_card_product_hover_image_url != blank %}
+              <img
+                class="sb-gift-card__media-image sb-gift-card__media-image--hover"
+                src="{{ gift_card_product_hover_image_url }}"
+                alt=""
+                loading="eager"
+                width="800"
+                height="800"
+              >
             {% endif %}
           {% else %}
             <img
@@ -81,7 +99,7 @@
           {% endif %}
         </div>
 
-        <h1 class="sb-gift-card__balance">{{ gift_card.balance | money_with_currency }}</h1>
+        <h1 class="sb-gift-card__balance font-title weight-bold">{{ gift_card.balance | money_with_currency }}</h1>
         <p class="sb-gift-card__code">{{ gift_card.code | format_code }}</p>
 
         <div class="sb-gift-card__qr-frame">
@@ -89,7 +107,7 @@
             class="sb-gift-card__qr-code"
             data-gift-card-qr-code
             data-identifier="{{ gift_card.qr_identifier | escape }}"
-            aria-label="{{ 'sb.gift_card.qr_code_label' | t }}"
+            aria-label="{{ 'gift_card.qr_code_label' | t }}"
           ></div>
         </div>
 

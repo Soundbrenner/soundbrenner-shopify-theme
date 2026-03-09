@@ -48,6 +48,7 @@
     "copy_code_success": "礼品卡代码已复制。",
     "expired": "此礼品卡已过期",
     "expires_on": "有效期至 {{ expires_on }}",
+    "qr_code_label": "礼品卡二维码",
     "shop_link": "访问在线商店",
     "use_at_checkout": "在结账时使用此礼品卡"
   },

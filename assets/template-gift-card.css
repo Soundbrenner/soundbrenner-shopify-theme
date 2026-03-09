@@ -9,7 +9,7 @@
   box-sizing: border-box;
   display: grid;
   min-height: 100svh;
-  padding: var(--sb-space-48) var(--sb-space-20);
+  padding: var(--sb-space-96) var(--sb-space-20);
   place-items: center;
 }
 
@@ -73,10 +73,6 @@
 }
 
 .sb-gift-card__balance {
-  font-family: var(--font-display--family);
-  font-size: clamp(2rem, 6vw, 3.5rem);
-  font-weight: 700;
-  line-height: var(--font-title-line-height);
   margin-bottom: var(--sb-space-24);
 }
 
@@ -159,7 +155,7 @@
 
 @media (min-width: 750px) {
   .sb-gift-card {
-    padding: var(--sb-space-64) var(--sb-space-24);
+    padding: var(--sb-space-96) var(--sb-space-24);
   }
 }
 

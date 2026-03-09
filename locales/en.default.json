@@ -48,6 +48,7 @@
     "copy_code_success": "Gift card code copied.",
     "expired": "This gift card has expired",
     "expires_on": "Expires on {{ expires_on }}",
+    "qr_code_label": "QR code for gift card",
     "shop_link": "Visit online store",
     "use_at_checkout": "Use this gift card at checkout"
   },

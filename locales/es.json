@@ -48,6 +48,7 @@
     "copy_code_success": "Código de la tarjeta regalo copiado.",
     "expired": "Esta tarjeta de regalo ha caducado",
     "expires_on": "Vence el {{ expires_on }}",
+    "qr_code_label": "Código QR de la tarjeta de regalo",
     "shop_link": "Visitar tienda online",
     "use_at_checkout": "Usa esta tarjeta de regalo al finalizar la compra"
   },

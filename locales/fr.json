@@ -48,6 +48,7 @@
     "copy_code_success": "Code de la carte cadeau copié.",
     "expired": "Cette carte-cadeau a expiré",
     "expires_on": "Expire le {{ expires_on }}",
+    "qr_code_label": "Code QR de la carte cadeau",
     "shop_link": "Visiter la boutique en ligne",
     "use_at_checkout": "Utilise cette carte cadeau lors du paiement"
   },

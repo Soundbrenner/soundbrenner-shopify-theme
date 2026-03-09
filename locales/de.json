@@ -48,6 +48,7 @@
     "copy_code_success": "Geschenkkartencode kopiert.",
     "expired": "Diese Geschenkkarte ist abgelaufen",
     "expires_on": "Läuft ab am {{ expires_on }}",
+    "qr_code_label": "QR-Code für Geschenkkarte",
     "shop_link": "Onlineshop besuchen",
     "use_at_checkout": "Verwende diese Geschenkkarte beim Bezahlen"
   },
