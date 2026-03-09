@@ -91,7 +91,8 @@
       "download_app_store": "App Store에서 다운로드",
       "download_china": "중국에서 다운로드",
       "download_google_play": "Google Play에서 다운로드",
-      "google_play": "구글 플레이"
+      "google_play": "구글 플레이",
+      "try_free_now": "지금 무료로 체험해봐"
     },
     "blog": {
       "about_soundbrenner": "Soundbrenner 소개",
@@ -145,7 +146,8 @@
         "ukulele": "우쿨렐레",
         "vocals": "보컬",
         "woodwind": "목관악기"
-      }
+      },
+      "about_box_default_html": "<p><strong>Soundbrenner 소개</strong></p><p>우리는 음악 연습이 중독처럼 즐거워지도록 만들고 있어.</p><p>테마 에디터에서 링크와 복사할 내용을 추가해 줘.</p>"
     },
     "cart": {
       "accepted_payment_methods": "사용 가능한 결제 수단",
@@ -206,7 +208,10 @@
       "region_selector": "지역 선택기",
       "search": "검색",
       "secs": "초",
-      "verified_buyer": "인증된 구매자"
+      "verified_buyer": "인증된 구매자",
+      "cookie_preferences": "쿠키 설정",
+      "in_the_box": "구성품",
+      "tech_specs": "기술 사양"
     },
     "contact": {
       "email": "이메일",
@@ -365,6 +370,16 @@
       "subheadline_blocked": "{{ Shipping country }}(으)로는 배송하지 않습니다. 다른 국가를 선택해 주세요.",
       "subheadline_free_shipping": "최대 {{ Sitewide discount depth }}% 할인 받고, {{ Free shipping threshold }} 이상 주문 시 {{ Shipping country }}에서 무료 배송을 받아봐.",
       "subheadline_no_free_shipping": "{{ Shipping country }}에서 최대 {{ Sitewide discount depth }}%까지 할인받아."
+    },
+    "debug": {
+      "panel_aria_label": "테마 디버그 전환",
+      "theme": "테마",
+      "debug": "디버그",
+      "dark": "다크",
+      "light": "라이트",
+      "auto": "자동",
+      "klaviyo_popup": "Klaviyo 팝업",
+      "product_sticky": "제품 고정"
     }
   },
   "shopify": {

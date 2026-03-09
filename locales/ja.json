@@ -91,7 +91,8 @@
       "download_app_store": "App Storeでダウンロード",
       "download_china": "中国でダウンロード",
       "download_google_play": "Google Play でダウンロード",
-      "google_play": "Google Play"
+      "google_play": "Google Play",
+      "try_free_now": "今すぐ無料で試そう"
     },
     "blog": {
       "about_soundbrenner": "Soundbrennerについて",
@@ -145,7 +146,8 @@
         "ukulele": "ウクレレ",
         "vocals": "ボーカル",
         "woodwind": "木管楽器"
-      }
+      },
+      "about_box_default_html": "<p><strong>Soundbrennerについて</strong></p><p>音楽の練習をやみつきにすることが、ぼくたちのミッションです。</p><p>リンクやコピーはテーマエディターで追加してね。</p>"
     },
     "cart": {
       "accepted_payment_methods": "ご利用可能なお支払い方法",
@@ -206,7 +208,10 @@
       "region_selector": "地域セレクター",
       "search": "検索",
       "secs": "秒",
-      "verified_buyer": "認証済み購入者"
+      "verified_buyer": "認証済み購入者",
+      "cookie_preferences": "クッキーの設定",
+      "in_the_box": "同梱物",
+      "tech_specs": "技術仕様"
     },
     "contact": {
       "email": "メール",
@@ -365,6 +370,16 @@
       "subheadline_blocked": "{{ Shipping country }}への発送は行っていません。別の国を選んでください。",
       "subheadline_free_shipping": "最大{{ Sitewide discount depth }}%オフ＆{{ Free shipping threshold }}以上のご注文で{{ Shipping country }}への送料無料。",
       "subheadline_no_free_shipping": "{{ Shipping country }}で最大{{ Sitewide discount depth }}%オフ"
+    },
+    "debug": {
+      "panel_aria_label": "テーマデバッグ切り替え",
+      "theme": "テーマ",
+      "debug": "デバッグ",
+      "dark": "ダーク",
+      "light": "ライト",
+      "auto": "オート",
+      "klaviyo_popup": "Klaviyoポップアップ",
+      "product_sticky": "製品スティッキー"
     }
   },
   "shopify": {
