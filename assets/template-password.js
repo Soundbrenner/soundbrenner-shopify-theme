@@ -1,6 +1,6 @@
 (function () {
   const dialog = document.querySelector('[data-password-dialog]');
-  const openButtons = document.querySelectorAll('[data-password-dialog-open]');
+  const openButtons = document.querySelectorAll('[data-password-dialog-open], .sb-password-button--enter');
   const closeButtons = document.querySelectorAll('[data-password-dialog-close]');
 
   if (!(dialog instanceof HTMLDialogElement)) return;

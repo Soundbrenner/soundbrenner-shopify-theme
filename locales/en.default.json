@@ -271,6 +271,8 @@
       "close": "Close password dialog",
       "enter_password": "Enter password",
       "enter_using_password": "Enter using password",
+      "log_in_here": "Log in here",
+      "page_title": "Password protected",
       "message_fallback": "Enter the password to continue to the store.",
       "store_owner_html": "Store owner? <a href=\"{{ link }}\">Log in here</a>"
     },
