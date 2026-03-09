@@ -45,6 +45,7 @@
 .sb-gift-card__media-frame {
   background: var(--sb-color-neutral-200);
   border-radius: 24px;
+  box-shadow: 0 0 10px 0 var(--sb-color-always-black-12);
   margin-bottom: var(--sb-space-48);
   max-width: 400px;
   overflow: hidden;
@@ -132,14 +133,40 @@
 }
 
 .sb-gift-card__feedback {
-  color: var(--sb-color-primary-300);
+  align-items: center;
+  color: var(--sb-color-primary-500);
+  column-gap: 12px;
+  display: inline-flex;
   font-family: var(--font-primary--family);
-  font-size: var(--font-size-caption);
+  font-size: var(--font-size-body);
+  font-weight: 700;
+  inset: calc(100% + 24px) 0 auto;
+  justify-content: center;
   line-height: 1.4;
-  inset: calc(100% + 8px) 0 auto;
-  min-height: 1.25rem;
+  min-height: 1.75rem;
   position: absolute;
   text-align: center;
+}
+
+.sb-gift-card__feedback-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 20px;
+  width: 20px;
+}
+
+.sb-gift-card__feedback-icon svg {
+  display: block;
+  height: 20px;
+  width: 20px;
+}
+
+.sb-gift-card__feedback-icon svg [fill]:not([fill='none']) {
+  fill: currentColor;
+}
+
+.sb-gift-card__feedback-text {
+  font: inherit;
 }
 
 .sb-gift-card__feedback.visually-hidden {

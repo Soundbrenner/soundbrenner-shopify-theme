@@ -61,6 +61,9 @@
         {{ 'gift_card.use_at_checkout' | t }}.
       {% endcapture %}
       {% assign gift_card_store_url = request.locale.root_url | default: routes.root_url | default: '/' %}
+      {% assign gift_card_copy_label = 'gift_card.copy_code' | t %}
+      {% assign gift_card_copy_success_label = 'gift_card.copy_code_success' | t %}
+      {% assign gift_card_shop_label = 'gift_card.shop_link' | t %}
       <div class="shopify-section sb-gift-card__panel">
         <span class="sb-gift-card__logo" aria-hidden="true">
           {{ 'logo-soundbrenner-wordmark.svg' | inline_asset_content }}
@@ -116,18 +119,21 @@
 
         <div class="sb-gift-card__actions" data-gift-card-code="{{ gift_card.code | escape }}">
           {% render 'radiant-button',
-            label: 'gift_card.copy_code' | t,
+            label: gift_card_copy_label,
             size: 'large',
             attributes: 'data-gift-card-copy-button',
             extra_class: 'sb-gift-card__button sb-gift-card__copy-button font-caption weight-bold'
           %}
 
           <p class="sb-gift-card__feedback visually-hidden" role="status" data-gift-card-copy-feedback>
-            {{ 'gift_card.copy_code_success' | t }}
+            <span class="sb-gift-card__feedback-icon" aria-hidden="true">
+              {{ 'icon-check.svg' | inline_asset_content }}
+            </span>
+            <span class="sb-gift-card__feedback-text">{{ gift_card_copy_success_label }}</span>
           </p>
 
           <a href="{{ gift_card_store_url }}" class="sb-gift-card__link sb-button-outline-pill-medium font-caption weight-semibold">
-            {{ 'gift_card.shop_link' | t }}
+            {{ gift_card_shop_label }}
           </a>
         </div>
       </div>
