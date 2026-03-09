@@ -1,7 +1,7 @@
 {% layout none %}
 
 <!doctype html>
-<html lang="{{ request.locale.iso_code }}" data-theme="dark">
+<html lang="{{ request.locale.iso_code }}" data-theme="light">
   <head>
     {% assign page_title = 'gift_card.card' | t %}
     {% assign page_description = 'gift_card.use_at_checkout' | t %}
@@ -60,6 +60,7 @@
         {% endif %}
         {{ 'gift_card.use_at_checkout' | t }}.
       {% endcapture %}
+      {% assign gift_card_store_url = request.locale.root_url | default: routes.root_url | default: '/' %}
       <div class="shopify-section sb-gift-card__panel">
         <span class="sb-gift-card__logo" aria-hidden="true">
           {{ 'logo-soundbrenner-wordmark.svg' | inline_asset_content }}
@@ -117,6 +118,7 @@
           {% render 'radiant-button',
             label: 'gift_card.copy_code' | t,
             size: 'large',
+            attributes: 'data-gift-card-copy-button',
             extra_class: 'sb-gift-card__button sb-gift-card__copy-button font-caption weight-bold'
           %}
 
@@ -124,7 +126,7 @@
             {{ 'gift_card.copy_code_success' | t }}
           </p>
 
-          <a href="{{ routes.root_url }}" class="sb-gift-card__link sb-button-outline-pill-medium font-caption weight-semibold">
+          <a href="{{ gift_card_store_url }}" class="sb-gift-card__link sb-button-outline-pill-medium font-caption weight-semibold">
             {{ 'gift_card.shop_link' | t }}
           </a>
         </div>
