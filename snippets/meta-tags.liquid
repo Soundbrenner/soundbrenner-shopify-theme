@@ -7,11 +7,14 @@
   assign resolved_page_title = page_title | default: shop.name
   assign seasonal_sale_name = settings.seasonal_sale_name | strip
   assign seasonal_discount_depth = settings.sitewide_seasonal_discount_depth | default: 0 | plus: 0
+  assign suppress_shop_name_suffix = false
   if seasonal_sale_name != blank and seasonal_discount_depth > 0
     if request.page_type == 'product' and product != blank
       assign resolved_page_title = 'sb.meta.product_page_title' | t: title: product.title, discount_depth: seasonal_discount_depth, sale_name: seasonal_sale_name
-    elsif request.page_type == 'index'
+      assign suppress_shop_name_suffix = true
+    elsif request.page_type == 'index' and resolved_page_title == shop.name
       assign resolved_page_title = 'sb.meta.shop_page_title' | t: shop_name: shop.name, discount_depth: seasonal_discount_depth, sale_name: seasonal_sale_name
+      assign suppress_shop_name_suffix = true
     endif
   endif
 
@@ -140,7 +143,7 @@
     {{ resolved_page_title }}
     {%- if page_title_tag_labels != blank %} ({{ page_title_tag_labels }}){% endif -%}
     {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-    {%- unless resolved_page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    {%- unless suppress_shop_name_suffix or resolved_page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
   {%- endif -%}
 </title>
 
