@@ -261,6 +261,10 @@
       "product_manual": "製品マニュアル",
       "sticky_navigation": "手動ナビゲーションを固定"
     },
+    "meta": {
+      "product_page_title": "{{ title }} | {{ discount_depth }}%オフ | {{ sale_name }}",
+      "shop_page_title": "{{ shop_name }} | {{ discount_depth }}%オフ | {{ sale_name }}"
+    },
     "media": {
       "close_video": "ビデオを閉じる",
       "play_video": "動画を再生",

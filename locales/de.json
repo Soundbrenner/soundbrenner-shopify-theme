@@ -261,6 +261,10 @@
       "product_manual": "Produktanleitung",
       "sticky_navigation": "Feste manuelle Navigation"
     },
+    "meta": {
+      "product_page_title": "{{ title }} | {{ discount_depth }} % Rabatt | {{ sale_name }}",
+      "shop_page_title": "{{ shop_name }} | {{ discount_depth }} % Rabatt | {{ sale_name }}"
+    },
     "media": {
       "close_video": "Video schließen",
       "play_video": "Video abspielen",

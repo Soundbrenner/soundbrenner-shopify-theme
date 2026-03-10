@@ -261,6 +261,10 @@
       "product_manual": "产品手册",
       "sticky_navigation": "固定手动导航"
     },
+    "meta": {
+      "product_page_title": "{{ title }} | 立减 {{ discount_depth }}% | {{ sale_name }}",
+      "shop_page_title": "{{ shop_name }} | 立减 {{ discount_depth }}% | {{ sale_name }}"
+    },
     "media": {
       "close_video": "关闭视频",
       "play_video": "播放视频",

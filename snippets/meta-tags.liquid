@@ -12,7 +12,7 @@
     if request.page_type == 'product' and product != blank
       assign resolved_page_title = 'sb.meta.product_page_title' | t: title: product.title, discount_depth: seasonal_discount_depth, sale_name: seasonal_sale_name
       assign suppress_shop_name_suffix = true
-    elsif template.name == 'index' and (page_title == blank or resolved_page_title == shop.name)
+    elsif request.page_type == 'index' and resolved_page_title == shop.name
       assign resolved_page_title = 'sb.meta.shop_page_title' | t: shop_name: shop.name, discount_depth: seasonal_discount_depth, sale_name: seasonal_sale_name
       assign suppress_shop_name_suffix = true
     endif
