@@ -2054,6 +2054,11 @@
             row.dataset.sbSwatchInteractionsInitialized = 'true';
 
             const getSelectedInRow = () => getSelectedSwatch(row);
+            const resetRowPreview = () => {
+              const selectedSwatch = getSelectedInRow();
+              if (!selectedSwatch) return;
+              dispatchSwatchVariantEvents(selectedSwatch, 'product-thumbnail-swatch-reset');
+            };
 
             swatches.forEach((swatchButton) => {
               swatchButton.addEventListener('mouseenter', () => {
@@ -2066,19 +2071,23 @@
               });
             });
 
+            row.addEventListener('mousemove', (event) => {
+              if (!supportsThumbnailHoverPreview()) return;
+              const hoveredSwatch =
+                event.target instanceof HTMLElement && event.target.closest('.sb-product-thumbnail__swatch');
+              if (hoveredSwatch && row.contains(hoveredSwatch)) return;
+              resetRowPreview();
+            });
+
             row.addEventListener('mouseleave', () => {
               if (!supportsThumbnailHoverPreview()) return;
-              const selectedSwatch = getSelectedInRow();
-              if (!selectedSwatch) return;
-              dispatchSwatchVariantEvents(selectedSwatch, 'product-thumbnail-swatch-reset');
+              resetRowPreview();
             });
 
             row.addEventListener('focusout', (event) => {
               const nextFocusedElement = event.relatedTarget;
               if (nextFocusedElement && row.contains(nextFocusedElement)) return;
-              const selectedSwatch = getSelectedInRow();
-              if (!selectedSwatch) return;
-              dispatchSwatchVariantEvents(selectedSwatch, 'product-thumbnail-swatch-reset');
+              resetRowPreview();
             });
 
             row.addEventListener('click', (event) => {

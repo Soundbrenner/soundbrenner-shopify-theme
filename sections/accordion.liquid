@@ -12,6 +12,7 @@
   assign tech_specs_items = blank
   assign tech_specs_is_grouped = false
   assign faq_items = blank
+  assign tech_specs_fallback_title = 'sb.common.tech_specs' | t
 
   assign section_title = 'sb.accordion.frequently_asked_questions' | t
   if section.settings.use_custom_title and section.settings.custom_title != blank
@@ -176,7 +177,7 @@
               {% for raw_group in tech_specs_items %}
                 {% liquid
                   assign group_entry = raw_group.value | default: raw_group.reference.value | default: raw_group.reference | default: raw_group
-                  assign group_title = group_entry.tech_specs_title.value | default: group_entry.tech_specs_title | default: group_entry.title.value | default: group_entry.title | default: tech_specs_title | default: 'sb.common.tech_specs' | t
+                  assign group_title = group_entry.tech_specs_title.value | default: group_entry.tech_specs_title | default: group_entry.title.value | default: group_entry.title | default: tech_specs_title | default: tech_specs_fallback_title
                   assign group_title = group_title | append: '' | strip
                   assign group_items = group_entry.tech_specs_item.value | default: group_entry.tech_specs_item.references | default: group_entry.tech_specs_item
                   assign has_group_rows = false
@@ -253,7 +254,7 @@
                   data-accordion-trigger
                   data-sb-reveal-item
                 >
-                    <span class="sb-accordion__question font-body weight-bold">{{ tech_specs_title | default: 'sb.common.tech_specs' | t }}</span>
+                    <span class="sb-accordion__question font-body weight-bold">{{ tech_specs_title | default: tech_specs_fallback_title }}</span>
                   <span class="sb-accordion__icon" aria-hidden="true">
                     <span class="sb-accordion__icon-plus">{{ 'icon-accordion-add.svg' | inline_asset_content }}</span>
                     <span class="sb-accordion__icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
