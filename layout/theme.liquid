@@ -1332,6 +1332,64 @@
 
     {% # Social, title, etc. %}
     {% render 'meta-tags' %}
+    {% liquid
+      assign sb_affiliate_meta_page_type = request.page_type
+      assign sb_affiliate_meta_product_title = ''
+      if request.page_type == 'product' and product != blank
+        assign sb_affiliate_meta_product_title = product.title
+      endif
+      assign sb_affiliate_meta_product_title_template = 'sb.meta.product_page_title'
+        | t: title: '__SB_TITLE__', discount_depth: '__SB_DISCOUNT__', sale_name: '__SB_SALE__'
+      assign sb_affiliate_meta_shop_title_template = 'sb.meta.shop_page_title'
+        | t: shop_name: '__SB_SHOP__', discount_depth: '__SB_DISCOUNT__', sale_name: '__SB_SALE__'
+    %}
+    <script>
+      (() => {
+        const affiliateState = window.SBAffiliateAnnouncementState;
+        if (!affiliateState || typeof affiliateState !== 'object') return;
+
+        const affiliateName = `${affiliateState.affiliateName || ''}`.trim();
+        const expiresAt = Number.parseInt(`${affiliateState.expiresAt || ''}`, 10);
+        const affiliateDiscountDepth = Number({{ settings.sitewide_affiliate_discount_depth | default: 0 | json }});
+        const pageType = {{ sb_affiliate_meta_page_type | json }};
+        const productTitle = {{ sb_affiliate_meta_product_title | json }};
+        const shopName = {{ shop.name | json }};
+
+        if (!affiliateName || !Number.isFinite(expiresAt) || expiresAt <= Date.now()) return;
+        if (!Number.isFinite(affiliateDiscountDepth) || affiliateDiscountDepth <= 0) return;
+
+        const replacePlaceholders = (template, replacements) => {
+          let nextValue = `${template || ''}`;
+          Object.entries(replacements).forEach(([key, value]) => {
+            nextValue = nextValue.replaceAll(key, `${value ?? ''}`);
+          });
+          return nextValue;
+        };
+
+        if (pageType === 'product' && productTitle) {
+          document.title = replacePlaceholders(
+            {{ sb_affiliate_meta_product_title_template | json }},
+            {
+              '__SB_TITLE__': productTitle,
+              '__SB_DISCOUNT__': affiliateDiscountDepth,
+              '__SB_SALE__': affiliateName,
+            }
+          );
+          return;
+        }
+
+        if (pageType === 'index') {
+          document.title = replacePlaceholders(
+            {{ sb_affiliate_meta_shop_title_template | json }},
+            {
+              '__SB_SHOP__': shopName,
+              '__SB_DISCOUNT__': affiliateDiscountDepth,
+              '__SB_SALE__': affiliateName,
+            }
+          );
+        }
+      })();
+    </script>
     <script src="{{ 'view-transitions.js' | asset_url }}" async></script>
 
     {% liquid
