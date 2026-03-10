@@ -31,10 +31,6 @@
     button.addEventListener('click', closeDialog);
   });
 
-  dialog.addEventListener('click', (event) => {
-    if (event.target === dialog) closeDialog();
-  });
-
   if (dialog.hasAttribute('open')) {
     dialog.removeAttribute('open');
     openDialog();
