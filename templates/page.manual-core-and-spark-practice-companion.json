@@ -1192,25 +1192,11 @@
             "answer": "<p>Soundbrenner Core / Spark runs internal software called <strong>firmware</strong>. We recommend keeping your firmware <strong>up to date</strong> to benefit from the latest features, performance improvements, and bug fixes.</p><p>Firmware updates are installed through the <strong>Soundbrenner app (The Metronome by Soundbrenner)</strong>.</p><h3>How to update the firmware</h3><ol><li>Open the <strong>Soundbrenner app</strong> and log in to your account.</li><li>Go to <strong>Settings</strong> and tap <strong>Add a Soundbrenner wearable</strong>.</li><li>Connect to your <strong>Core / Spark</strong> device.</li><li>Tap your <strong>Core / Spark</strong> to open the <strong>device settings</strong>.</li><li>If an update is available, a <strong>“Firmware Update Available”</strong> banner will appear.</li></ol><p>If you do not see this banner, your Core is already running the <strong>latest firmware version</strong>.</p><ol><li>Tap the banner and follow the <strong>on-screen instructions</strong> to start the update.</li><li>Make sure your phone has an <strong>active internet connection</strong>, as the firmware file must be downloaded before installation.</li></ol><p>Wait until the update process is complete.</p><h3>Important note for iOS users</h3><p>After the firmware update, <strong>Core / Spark will be automatically unpaired from your iPhone</strong>. Once the update is finished, simply <strong>pair the device again through the Soundbrenner app</strong>.</p>"
           }
         },
-        "accordion_item_RQetYJ": {
-          "type": "accordion_item",
-          "settings": {
-            "question": "How to use the Core's body strap?",
-            "answer": "<p>The Soundbrenner Core’s vibrating metronome is 7 times stronger than the vibrations on a smartphone. While wearing the Core on your wrist works for most people, some prefer to place the Core on their chest, ankle or shoulder. This is especially true for drummers, since this makes it easier for them to feel the beat.</p><p>Both the Core and Core Steel come with included body straps that allow you to wear them on other parts of your body. To begin, start by removing your Core from its rig. Do this by twisting counter-clockwise and gently lifting it upwards. </p><p></p><p>Next, locate the included body strap, extension and body strap rig. The body strap rig can be differentiated by its magnets which are on the left and right sides of the rig instead of the top and bottom.</p><p></p><p>Attach the body strap to its rig. Make sure to add the extension if necessary. </p><p> </p><p>Place the Core onto the body strap. It should magnetically snap into place. Many musicians prefer navigating to the metronome app and starting it before doing this.</p><p></p><p>And there you have it! You are now ready to start playing with the body strap. Experiment with different locations on your body to find the optimal spot for you.</p>"
-          }
-        },
-        "accordion_item_GFAWML": {
-          "type": "accordion_item",
-          "settings": {
-            "question": "How to factory reset the Core?",
-            "answer": "<p>There are several reasons to factory reset your Core. For example, we recommend to factory reset the Core before reselling it, or as a last resort if you're experiencing issues and other troubleshooting steps don't work.</p><p><strong>How to factory reset the Core</strong></p><p>Simple navigate to \"Settings\" on your Core device. From there head to \"Factory reset?\", press the bottom button and select \"Yes\" by pressing the bottom button again. Your Core was now reset to its factory settings! </p>"
-          }
-        },
         "accordion_item_YNVk4P": {
           "type": "accordion_item",
           "settings": {
             "question": "How to improve the tuner sustain of Core?",
-            "answer": "<p>For certain instruments it can happen that the sustain of the signal is too short for a great tuning experience. This means that you only see the LED lights and note on your Core for a brief moment. This may result in an inconvenient tuning experience, that requires you to frequently strum your string. This can be improved simply by adjusting the angle of your Core when attached to the tuner mount. See below video to see the improvement potential in action!</p>"
+            "answer": "<h3>Improving tuning detection for short sustain instruments</h3><p>With some instruments, the <strong>sustain of the note may be very short</strong>. When this happens, the Core may only display the <strong>note and LED indicators briefly</strong>, which can make tuning less convenient and require you to pluck or strum the string more frequently.</p><p>You can often improve this by <strong>adjusting the angle of your Core / Spark on the tuner mount</strong>. Changing the position slightly can help the device pick up vibrations more clearly, resulting in <strong>longer and more stable note detection</strong>.</p>"
           }
         }
       },
@@ -1404,8 +1390,6 @@
         "accordion_item_6gYW4q",
         "accordion_item_tfgafG",
         "accordion_item_QdNUrT",
-        "accordion_item_RQetYJ",
-        "accordion_item_GFAWML",
         "accordion_item_YNVk4P"
       ],
       "settings": {}
