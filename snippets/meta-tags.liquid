@@ -31,7 +31,7 @@
   endif
   if seasonal_sale_name != blank and seasonal_discount_depth > 0
     if request.page_type == 'page' and affiliate_page_metaobject != blank and affiliate_discount_depth > 0
-      assign resolved_page_title = 'sb.meta.affiliate_page_title' | t: title: page.title, discount_depth: affiliate_discount_depth, sale_name: affiliate_page_sale_name
+      assign resolved_page_title = 'sb.meta.affiliate_page_title' | t: title: shop.name, discount_depth: affiliate_discount_depth, sale_name: affiliate_page_sale_name
       assign suppress_shop_name_suffix = true
     elsif request.page_type == 'product' and product != blank
       assign resolved_page_title = 'sb.meta.product_page_title' | t: title: product.title, discount_depth: seasonal_discount_depth, sale_name: seasonal_sale_name

@@ -444,7 +444,10 @@
               {% for tech_specs_group_raw in tech_specs_groups %}
                 {% liquid
                   assign tech_specs_group_entry = tech_specs_group_raw.value | default: tech_specs_group_raw.reference.value | default: tech_specs_group_raw.reference | default: tech_specs_group_raw
-                  assign tech_specs_group_title = tech_specs_group_entry.tech_specs_title.value | default: tech_specs_group_entry.tech_specs_title | default: tech_specs_group_entry.title.value | default: tech_specs_group_entry.title | default: 'sb.common.tech_specs' | t
+                  assign tech_specs_group_title = tech_specs_group_entry.tech_specs_title.value | default: tech_specs_group_entry.tech_specs_title | default: tech_specs_group_entry.title.value | default: tech_specs_group_entry.title
+                  if tech_specs_group_title == blank
+                    assign tech_specs_group_title = 'sb.common.tech_specs' | t
+                  endif
                   assign tech_specs_group_title = tech_specs_group_title | append: '' | strip
                   assign tech_specs_group_title_normalized = tech_specs_group_title | downcase | strip
                   assign tech_specs_group_items = tech_specs_group_entry.tech_specs_item.value | default: tech_specs_group_entry.tech_specs_item.references | default: tech_specs_group_entry.tech_specs_item
@@ -544,7 +547,10 @@
               {% endfor %}
             {% else %}
               {% liquid
-                assign tech_specs_title = tech_specs_root.tech_specs_title.value | default: tech_specs_root.tech_specs_title | default: 'sb.common.tech_specs' | t
+                assign tech_specs_title = tech_specs_root.tech_specs_title.value | default: tech_specs_root.tech_specs_title
+                if tech_specs_title == blank
+                  assign tech_specs_title = 'sb.common.tech_specs' | t
+                endif
                 assign tech_specs_title = tech_specs_title | append: '' | strip
                 assign tech_specs_title_normalized = tech_specs_title | downcase | strip
               %}
@@ -629,7 +635,10 @@
             assign tech_specs_item_rows = tech_specs_item_source.tech_specs_item.value | default: tech_specs_item_source.tech_specs_item.references | default: tech_specs_item_source.tech_specs_item
           endif
 
-          assign tech_specs_item_title = tech_specs_item_source.tech_specs_title.value | default: tech_specs_item_source.tech_specs_title | default: tech_specs_item_source.title.value | default: tech_specs_item_source.title | default: 'sb.common.tech_specs' | t
+          assign tech_specs_item_title = tech_specs_item_source.tech_specs_title.value | default: tech_specs_item_source.tech_specs_title | default: tech_specs_item_source.title.value | default: tech_specs_item_source.title
+          if tech_specs_item_title == blank
+            assign tech_specs_item_title = 'sb.common.tech_specs' | t
+          endif
           assign tech_specs_item_title = tech_specs_item_title | append: '' | strip
           assign tech_specs_item_has_rows = false
           if tech_specs_item_rows != blank

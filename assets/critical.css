@@ -161,7 +161,7 @@ body {
   Global section rhythm: Scaling-L (96 desktop via token).
   Use general siblings so app/editor-injected nodes between wrappers cannot collapse spacing.
 */
-#header-group + .shopify-section[id*='template--'],
+#header-group ~ .shopify-section[id*='template--'],
 .shopify-section.shopify-section-group-header-group ~ .shopify-section[id*='template--'],
 .shopify-section:has(> .header) ~ .shopify-section[id*='template--'],
 .shopify-section[id*='template--'] ~ .shopify-section[id*='template--'] {

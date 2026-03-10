@@ -1,3 +1,11 @@
+<script>
+  (() => {
+    const currentScript = document.currentScript;
+    const wrapper = currentScript && currentScript.closest('.shopify-section');
+    if (wrapper) wrapper.setAttribute('data-sb-section-empty', 'true');
+  })();
+</script>
+
 {% schema %}
 {
   "name": "Affiliate deal empty",

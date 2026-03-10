@@ -27,6 +27,10 @@
           const token = desktop ? '--page-margin-desktop' : '--page-margin-mobile';
           return px(styles.getPropertyValue(token)) || px(styles.getPropertyValue('--page-margin')) || 16;
         };
+        const layoutViewportWidth = () => Math.max(
+          1,
+          document.documentElement.clientWidth || window.innerWidth || 0
+        );
         const contentWidth = () => Math.max(1, root.getBoundingClientRect().width || root.clientWidth || 0);
         const viewportPaddingStart = () => px(getComputedStyle(viewport).paddingLeft);
         const viewportPaddingEnd = () => px(getComputedStyle(viewport).paddingRight);
@@ -111,7 +115,7 @@
         };
 
         const setBleed = () => {
-          const bleed = Math.max(pageMargin(), (window.innerWidth - contentWidth()) / 2);
+          const bleed = Math.max(pageMargin(), Math.floor((layoutViewportWidth() - contentWidth()) / 2));
           root.style.setProperty('--sb-carousel-bleed-inline', `${Math.max(0, bleed)}px`);
         };
 
