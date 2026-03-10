@@ -263,6 +263,7 @@
     },
     "meta": {
       "product_page_title": "{{ title }} | {{ discount_depth }}% di sconto | {{ sale_name }}",
+      "affiliate_page_title": "{{ title }} | {{ discount_depth }}% di sconto | {{ sale_name }}",
       "shop_page_title": "{{ shop_name }} | {{ discount_depth }}% di sconto | {{ sale_name }}"
     },
     "media": {

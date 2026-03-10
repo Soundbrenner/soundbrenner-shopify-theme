@@ -263,6 +263,7 @@
     },
     "meta": {
       "product_page_title": "{{ title }} | {{ discount_depth }}% 할인 | {{ sale_name }}",
+      "affiliate_page_title": "{{ title }} | {{ discount_depth }}% 할인 | {{ sale_name }}",
       "shop_page_title": "{{ shop_name }} | {{ discount_depth }}% 할인 | {{ sale_name }}"
     },
     "media": {

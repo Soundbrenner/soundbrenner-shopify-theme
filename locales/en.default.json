@@ -279,6 +279,7 @@
     },
     "meta": {
       "product_page_title": "{{ title }} | {{ discount_depth }}% off | {{ sale_name }}",
+      "affiliate_page_title": "{{ title }} | {{ discount_depth }}% off | {{ sale_name }}",
       "shop_page_title": "{{ shop_name }} | {{ discount_depth }}% off | {{ sale_name }}"
     },
     "password": {

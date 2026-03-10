@@ -815,10 +815,10 @@
       seasonalCards.forEach((card) => {
         syncSeasonalHeroThresholdDisplay(card);
       });
+      if (rootNode instanceof HTMLElement) {
+        rootNode.classList.toggle(affiliateHeroPendingClass, Boolean(affiliateState && seasonalCards.length));
+      }
       if (!affiliateState) {
-        if (rootNode instanceof HTMLElement) {
-          rootNode.classList.remove(affiliateHeroPendingClass);
-        }
         return true;
       }
 

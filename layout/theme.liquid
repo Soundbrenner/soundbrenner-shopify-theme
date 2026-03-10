@@ -35,9 +35,6 @@
     <script>
       (() => {
         const affiliateCookieName = 'sb_affiliate_announcement_state';
-        const affiliateHeroPendingClass = 'sb-affiliate-hero-pending';
-        const affiliateAnnouncementActiveClass = 'sb-affiliate-announcement-active';
-        const affiliatePricingPendingClass = 'sb-affiliate-pricing-pending';
         const readCookie = (name) => {
           const cookieSource = `${document.cookie || ''}`;
           if (!cookieSource) return '';
@@ -78,16 +75,6 @@
         const expiresAt = Number.parseInt(`${parsedState.expiresAt || ''}`, 10);
         if (!discountCode || !affiliateName || !Number.isFinite(expiresAt) || expiresAt <= Date.now()) return;
 
-        const rootNode = document.documentElement;
-        if (rootNode instanceof HTMLElement) {
-          rootNode.classList.add(affiliateHeroPendingClass);
-          rootNode.classList.add(affiliateAnnouncementActiveClass);
-          rootNode.classList.add(affiliatePricingPendingClass);
-          window.setTimeout(() => {
-            rootNode.classList.remove(affiliatePricingPendingClass);
-          }, 4000);
-        }
-
         window.SBAffiliateAnnouncementState = {
           discountCode,
           affiliateName,
@@ -98,34 +85,6 @@
       })();
     </script>
     <style>
-      html.sb-affiliate-hero-pending [data-hero-card-seasonal="true"] {
-        opacity: 0;
-        pointer-events: none;
-      }
-
-      html.sb-affiliate-announcement-active .header.has-announcement {
-        --sb-announcement-background: linear-gradient(90deg, #67E8F9 0%, #1E293B 33%, #1E293B 66%, #67E8F9 100%) !important;
-      }
-
-      html.sb-affiliate-pricing-pending [data-product-current-price],
-      html.sb-affiliate-pricing-pending [data-product-compare-price],
-      html.sb-affiliate-pricing-pending [data-sticky-current-price],
-      html.sb-affiliate-pricing-pending [data-sticky-compare-price],
-      html.sb-affiliate-pricing-pending [data-sticky-bottom-current-price],
-      html.sb-affiliate-pricing-pending [data-sticky-bottom-compare-price],
-      html.sb-affiliate-pricing-pending [data-product-hero-current-price],
-      html.sb-affiliate-pricing-pending [data-product-hero-compare-price],
-      html.sb-affiliate-pricing-pending [data-hero-card-current-price],
-      html.sb-affiliate-pricing-pending [data-hero-card-compare-price],
-      html.sb-affiliate-pricing-pending [data-thumbnail-price-current],
-      html.sb-affiliate-pricing-pending [data-thumbnail-price-compare],
-      html.sb-affiliate-pricing-pending [data-value-breakdown-first-current],
-      html.sb-affiliate-pricing-pending [data-value-breakdown-first-compare],
-      html.sb-affiliate-pricing-pending [data-value-breakdown-total-current],
-      html.sb-affiliate-pricing-pending [data-value-breakdown-total-compare] {
-        visibility: hidden;
-      }
-
       .sb-klaviyo-popup-backdrop {
         -webkit-backdrop-filter: blur(var(--sb-space-8));
         backdrop-filter: blur(var(--sb-space-8));
@@ -1395,7 +1354,6 @@
         };
 
         applyAffiliateTitleOverride();
-        document.addEventListener('DOMContentLoaded', applyAffiliateTitleOverride, { once: true });
         window.addEventListener('load', applyAffiliateTitleOverride, { once: true });
       })();
     </script>
@@ -2825,7 +2783,6 @@
           initThumbnailMediaScope(event.target, { initSwatchInteractions: true });
           syncImageFrameScope(event.target);
         });
-        document.documentElement.classList.remove('sb-affiliate-pricing-pending');
       })();
     </script>
     <script>

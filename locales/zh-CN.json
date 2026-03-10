@@ -263,6 +263,7 @@
     },
     "meta": {
       "product_page_title": "{{ title }} | 立减 {{ discount_depth }}% | {{ sale_name }}",
+      "affiliate_page_title": "{{ title }} | 立减 {{ discount_depth }}% | {{ sale_name }}",
       "shop_page_title": "{{ shop_name }} | 立减 {{ discount_depth }}% | {{ sale_name }}"
     },
     "media": {

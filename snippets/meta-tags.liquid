@@ -7,9 +7,33 @@
   assign resolved_page_title = page_title | default: shop.name
   assign seasonal_sale_name = settings.seasonal_sale_name | strip
   assign seasonal_discount_depth = settings.sitewide_seasonal_discount_depth | default: 0 | plus: 0
+  assign affiliate_discount_depth = settings.sitewide_affiliate_discount_depth | default: 0 | plus: 0
+  assign affiliate_page_metaobject = blank
+  assign affiliate_page_sale_name = ''
   assign suppress_shop_name_suffix = false
+  if request.page_type == 'page' and page != blank
+    assign affiliate_page_metaobject = page.metafields.custom.affiliate.value | default: page.metafields.custom.affiliate
+    if affiliate_page_metaobject == blank
+      assign affiliate_page_metaobject = page.metafields.custom.affiliate_deal.value | default: page.metafields.custom.affiliate_deal
+    endif
+    if affiliate_page_metaobject == blank
+      assign affiliate_page_metaobject = page.metafields.custom.affiliate_profile.value | default: page.metafields.custom.affiliate_profile
+    endif
+    if affiliate_page_metaobject != blank
+      assign affiliate_page_sale_name = affiliate_page_metaobject.full_name.value | default: affiliate_page_metaobject.full_name | strip
+      if affiliate_page_sale_name == blank
+        assign affiliate_page_sale_name = affiliate_page_metaobject.discount_name.value | default: affiliate_page_metaobject.discount_name | strip
+      endif
+    endif
+    if affiliate_page_sale_name == blank
+      assign affiliate_page_sale_name = page.title | strip
+    endif
+  endif
   if seasonal_sale_name != blank and seasonal_discount_depth > 0
-    if request.page_type == 'product' and product != blank
+    if request.page_type == 'page' and affiliate_page_metaobject != blank and affiliate_discount_depth > 0
+      assign resolved_page_title = 'sb.meta.affiliate_page_title' | t: title: page.title, discount_depth: affiliate_discount_depth, sale_name: affiliate_page_sale_name
+      assign suppress_shop_name_suffix = true
+    elsif request.page_type == 'product' and product != blank
       assign resolved_page_title = 'sb.meta.product_page_title' | t: title: product.title, discount_depth: seasonal_discount_depth, sale_name: seasonal_sale_name
       assign suppress_shop_name_suffix = true
     elsif request.page_type == 'index' and resolved_page_title == shop.name
