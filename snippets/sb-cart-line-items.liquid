@@ -189,12 +189,12 @@
               </span>
             </button>
             <input
-              class="sb-cart-quantity__input font-caption weight-bold"
+              class="sb-cart-quantity__input font-form-input weight-bold"
               data-cart-qty-input
-              type="number"
-              min="1"
-              step="1"
+              type="text"
+              pattern="[0-9]*"
               inputmode="numeric"
+              autocomplete="off"
               value="{{ item.quantity }}"
               aria-label="{{ 'sb.cart.quantity' | t }}"
             >

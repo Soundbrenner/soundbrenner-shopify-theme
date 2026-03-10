@@ -4076,9 +4076,9 @@
         }
       };
 
-      const forceHeaderStickySync = () => {
+      const refreshHeaderStickyMode = () => {
         if (window.SBHeaderNav && typeof window.SBHeaderNav.refreshScrollMode === 'function') {
-          window.SBHeaderNav.refreshScrollMode({ forceSync: true });
+          window.SBHeaderNav.refreshScrollMode();
         }
       };
 
@@ -4272,8 +4272,8 @@
           });
           window.requestAnimationFrame(() => {
             setHeaderScrollSyncSuspended(false);
-            forceHeaderStickySync();
-            if (headerVisualState?.stickyMode === 'scroll-up' && headerVisualState?.stickyState === 'active') {
+            refreshHeaderStickyMode();
+            if (headerVisualState?.stickyMode === 'scroll-up') {
               restoreHeaderVisualState(headerVisualState);
             }
           });

@@ -4004,7 +4004,7 @@
     height: 36px;
     min-height: 36px;
     min-width: 0;
-    padding: 0 var(--sb-space-12);
+    padding: 0 16px;
     width: 100%;
   }
 

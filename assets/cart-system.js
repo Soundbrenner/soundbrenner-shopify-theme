@@ -1455,12 +1455,14 @@
       this.boundHandleCartChanged = this.handleCartChanged.bind(this);
       this.boundHandleClick = this.handleClick.bind(this);
       this.boundHandleChange = this.handleChange.bind(this);
+      this.boundHandleFocusIn = this.handleFocusIn.bind(this);
       this.boundHandleSubmit = this.handleSubmit.bind(this);
       this.boundHandleDiscountDisclosureToggle = this.handleDiscountDisclosureToggle.bind(this);
 
       document.addEventListener(EVENTS.cartChanged, this.boundHandleCartChanged);
       this.addEventListener('click', this.boundHandleClick);
       this.addEventListener('change', this.boundHandleChange);
+      this.addEventListener('focusin', this.boundHandleFocusIn);
       this.addEventListener('submit', this.boundHandleSubmit);
 
       if (this.discountDisclosureNode) {
@@ -1502,6 +1504,9 @@
       }
       if (this.boundHandleChange) {
         this.removeEventListener('change', this.boundHandleChange);
+      }
+      if (this.boundHandleFocusIn) {
+        this.removeEventListener('focusin', this.boundHandleFocusIn);
       }
       if (this.boundHandleSubmit) {
         this.removeEventListener('submit', this.boundHandleSubmit);
@@ -1636,6 +1641,11 @@
       const target = event.target instanceof Element ? event.target : null;
       if (!target) return;
 
+      if (target.matches('[data-cart-qty-input]') && target instanceof HTMLInputElement) {
+        this.scheduleQuantityInputSelection(target);
+        return;
+      }
+
       const removeButton = target.closest('[data-cart-remove]');
       if (removeButton) {
         event.preventDefault();
@@ -1689,6 +1699,14 @@
       }
     }
 
+    handleFocusIn(event) {
+      const target = event.target;
+      if (!(target instanceof HTMLInputElement)) return;
+      if (!target.matches('[data-cart-qty-input]')) return;
+
+      this.scheduleQuantityInputSelection(target);
+    }
+
     handleChange(event) {
       const target = event.target;
       if (!(target instanceof HTMLInputElement)) return;
@@ -1700,6 +1718,18 @@
       const nextValue = Math.max(1, clampCount(target.value));
       target.value = `${nextValue}`;
       this.updateLine(line, nextValue);
+    }
+
+    scheduleQuantityInputSelection(input) {
+      window.setTimeout(() => {
+        if (!(input instanceof HTMLInputElement)) return;
+        if (document.activeElement !== input) return;
+
+        input.select();
+        if (typeof input.setSelectionRange === 'function') {
+          input.setSelectionRange(0, input.value.length);
+        }
+      }, 0);
     }
 
     handleSubmit(event) {
@@ -2386,12 +2416,12 @@
                   <span class="sb-cart-quantity__icon sb-cart-quantity__icon--minus" aria-hidden="true">${CART_ICON_MINUS_SVG}</span>
                 </button>
                 <input
-                  class="sb-cart-quantity__input font-caption weight-bold"
+                  class="sb-cart-quantity__input font-form-input weight-bold"
                   data-cart-qty-input
-                  type="number"
-                  min="1"
-                  step="1"
+                  type="text"
+                  pattern="[0-9]*"
                   inputmode="numeric"
+                  autocomplete="off"
                   value="${effectiveQuantity}"
                   aria-label="Quantity"
                 >

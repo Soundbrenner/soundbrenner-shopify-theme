@@ -16,6 +16,7 @@
     };
     const clampViewportY = (value) => Math.max(0, Math.min(window.innerHeight, value));
     const bottomBounceThresholdPx = 16;
+    const stickyHideThresholdPx = 4;
     const normalizeStickyMode = (value) => {
       const normalizedValue = `${value || ''}`.trim().toLowerCase();
       if (normalizedValue === 'always') return 'always';
@@ -71,6 +72,26 @@
     let scrollRafId = null;
     let deferredTopStackSyncTimer = null;
     let headerHeightObserver = null;
+    let lastStickyActiveScrollTop = getScrollTop();
+    let lastViewportWidth = window.innerWidth;
+    let lastViewportHeight = window.innerHeight;
+    let lastObservedScrollDirection = 'none';
+    let lastStickyDebugReason = 'init';
+    let lastStickyDebugScrollTop = getScrollTop();
+    let lastStickyDebugLastY = lastY;
+
+    const syncStickyDebugState = (payload = {}) => {
+      header.dataset.stickyDebugReason = `${payload.reason || lastStickyDebugReason || ''}`.trim() || 'unknown';
+      header.dataset.stickyDebugScrollTop = String(Math.round(
+        Number.isFinite(payload.scrollTop) ? payload.scrollTop : lastStickyDebugScrollTop
+      ));
+      header.dataset.stickyDebugLastY = String(Math.round(
+        Number.isFinite(payload.lastY) ? payload.lastY : lastStickyDebugLastY
+      ));
+      if (Number.isFinite(payload.scrollTop)) lastStickyDebugScrollTop = payload.scrollTop;
+      if (Number.isFinite(payload.lastY)) lastStickyDebugLastY = payload.lastY;
+      if (payload.reason) lastStickyDebugReason = payload.reason;
+    };
 
     const readHeaderSpacingVar = (propertyName, fallback = 0) => {
       const parsed = Number.parseFloat(getComputedStyle(header).getPropertyValue(propertyName));
@@ -183,30 +204,48 @@
       const isBottomBounce = stickyMode === 'scroll-up' && isNearBottom && wasNearBottom;
       const isAtTop = headerTop >= 0;
       const isScrollingUp = !isBottomBounce && scrollTop < lastY;
+      const isScrollingDown = !isBottomBounce && scrollTop > lastY;
+      let debugReason = force ? 'force' : 'scroll';
+
+      if (isScrollingUp) {
+        lastObservedScrollDirection = 'up';
+      } else if (isScrollingDown) {
+        lastObservedScrollDirection = 'down';
+      }
 
       if (stickyMode === 'none') {
         offscreen = false;
+        lastStickyActiveScrollTop = scrollTop;
+        debugReason = 'mode-none';
         setStickyState('inactive');
         setScrollDirection('none');
         lastY = scrollTop;
+        syncStickyDebugState({ reason: debugReason, scrollTop, lastY });
         applyStickyVisualState();
         return;
       }
 
       if (!offscreen && stickyMode !== 'always' && !force) {
         lastY = scrollTop;
+        syncStickyDebugState({ reason: 'onscreen-skip', scrollTop, lastY });
         return;
       }
 
       if (stickyMode === 'always') {
         if (isAtTop) {
+          lastStickyActiveScrollTop = scrollTop;
+          debugReason = 'always-top';
           setScrollDirection('none');
         } else if (isScrollingUp) {
+          lastStickyActiveScrollTop = scrollTop;
+          debugReason = 'always-up';
           setScrollDirection('up');
         } else {
+          debugReason = 'always-down';
           setScrollDirection('down');
         }
         lastY = scrollTop;
+        syncStickyDebugState({ reason: debugReason, scrollTop, lastY });
         applyStickyVisualState();
         return;
       }
@@ -214,14 +253,24 @@
       if (force) {
         if (isAtTop) {
           offscreen = false;
+          lastStickyActiveScrollTop = scrollTop;
+          debugReason = 'force-top';
           setStickyState('inactive');
           setScrollDirection('none');
+        } else if (stickyMode === 'scroll-up' && header.dataset.stickyState === 'active') {
+          offscreen = true;
+          lastStickyActiveScrollTop = scrollTop;
+          debugReason = 'force-keep-active';
+          setStickyState('active');
+          setScrollDirection('up');
         } else {
           offscreen = true;
+          debugReason = 'force-idle';
           setStickyState('idle');
           setScrollDirection('none');
         }
         lastY = scrollTop;
+        syncStickyDebugState({ reason: debugReason, scrollTop, lastY });
         applyStickyVisualState();
         return;
       }
@@ -229,21 +278,34 @@
       if (isScrollingUp) {
         if (isAtTop) {
           offscreen = false;
+          lastStickyActiveScrollTop = scrollTop;
+          debugReason = 'scroll-up-top';
           setStickyState('inactive');
           setScrollDirection('none');
         } else {
+          lastStickyActiveScrollTop = scrollTop;
+          debugReason = 'scroll-up-show';
           setStickyState('active');
           setScrollDirection('up');
         }
       } else if (header.dataset.stickyState === 'active') {
-        setScrollDirection('none');
-        setStickyState('idle');
+        const hasScrolledDownEnoughToHide = scrollTop >= (lastStickyActiveScrollTop + stickyHideThresholdPx);
+        if (hasScrolledDownEnoughToHide) {
+          debugReason = 'scroll-down-hide';
+          setScrollDirection('down');
+          setStickyState('idle');
+        } else {
+          debugReason = 'hold-active';
+          setScrollDirection('up');
+        }
       } else {
+        debugReason = 'idle-no-up';
         setStickyState('idle');
         setScrollDirection('none');
       }
 
       lastY = scrollTop;
+      syncStickyDebugState({ reason: debugReason, scrollTop, lastY });
       applyStickyVisualState();
     };
 
@@ -298,6 +360,7 @@
     };
 
     syncStickyObserver();
+    syncStickyDebugState({ reason: 'init-sync', scrollTop: getScrollTop(), lastY });
     syncTopStackBottom();
     scheduleTopStackSync();
 
@@ -320,11 +383,36 @@
 
     addRuntimeEventListener(document, 'scroll', onWindowScroll, { passive: true });
     addRuntimeEventListener(window, 'resize', () => {
+      const previousViewportWidth = lastViewportWidth;
+      const nextViewportWidth = window.innerWidth;
+      const previousViewportHeight = lastViewportHeight;
+      const nextViewportHeight = window.innerHeight;
+      const isViewportExpandingUpward = stickyMode === 'scroll-up'
+        && isMobileViewport()
+        && nextViewportWidth === previousViewportWidth
+        && nextViewportHeight > previousViewportHeight
+        && lastObservedScrollDirection === 'up';
+      lastViewportWidth = nextViewportWidth;
+      lastViewportHeight = nextViewportHeight;
+
       if (typeof shared.syncPageScrollLock === 'function') {
         shared.syncPageScrollLock();
       }
       refreshHeaderScrollMode();
-      syncStickyState({ force: true });
+
+      if (isViewportExpandingUpward && getScrollTop() > 0) {
+        offscreen = true;
+        lastStickyActiveScrollTop = getScrollTop();
+        setStickyState('active');
+        setScrollDirection('up');
+        setLastScrollY(getScrollTop());
+        syncStickyDebugState({ reason: 'resize-grow-show', scrollTop: getScrollTop(), lastY });
+        applyStickyVisualState();
+      } else if (stickyMode === 'scroll-up' && nextViewportWidth === previousViewportWidth) {
+        syncStickyState();
+      } else {
+        syncStickyState({ force: true });
+      }
       scheduleTopStackSync();
     }, { passive: true });
 
