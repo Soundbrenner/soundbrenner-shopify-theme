@@ -277,6 +277,10 @@
       "product_manual": "Product manual",
       "sticky_navigation": "Sticky manual navigation"
     },
+    "meta": {
+      "product_page_title": "{{ title }} | {{ discount_depth }}% off | {{ sale_name }}",
+      "shop_page_title": "{{ shop_name }} | {{ discount_depth }}% off | {{ sale_name }}"
+    },
     "password": {
       "close": "Close password dialog",
       "enter_password": "Enter password",

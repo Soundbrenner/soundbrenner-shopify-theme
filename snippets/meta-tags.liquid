@@ -6,12 +6,13 @@
 {%- liquid
   assign resolved_page_title = page_title | default: shop.name
   assign seasonal_sale_name = settings.seasonal_sale_name | strip
-  if request.page_type == 'product' and seasonal_sale_name != blank
-    assign resolved_page_title_downcase = resolved_page_title | downcase
-    assign seasonal_sale_name_downcase = seasonal_sale_name | downcase
-    unless resolved_page_title_downcase contains seasonal_sale_name_downcase
-      assign resolved_page_title = resolved_page_title | append: ' – ' | append: seasonal_sale_name
-    endunless
+  assign seasonal_discount_depth = settings.sitewide_seasonal_discount_depth | default: 0 | plus: 0
+  if seasonal_sale_name != blank and seasonal_discount_depth > 0
+    if request.page_type == 'product' and product != blank
+      assign resolved_page_title = 'sb.meta.product_page_title' | t: title: product.title, discount_depth: seasonal_discount_depth, sale_name: seasonal_sale_name
+    elsif request.page_type == 'index'
+      assign resolved_page_title = 'sb.meta.shop_page_title' | t: shop_name: shop.name, discount_depth: seasonal_discount_depth, sale_name: seasonal_sale_name
+    endif
   endif
 
   assign og_title = resolved_page_title
