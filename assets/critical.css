@@ -2593,9 +2593,9 @@ video.sb-product-main__media-asset {
   display: inline-block;
   height: 12px;
   margin-left: 8px;
-  mask: center / contain no-repeat url("icon-x.svg");
+  mask: center / contain no-repeat url("icon-cancel.svg");
   width: 12px;
-  -webkit-mask: center / contain no-repeat url("icon-x.svg");
+  -webkit-mask: center / contain no-repeat url("icon-cancel.svg");
 }
 
 :is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) .kl_reviews__clear_filter__button:focus-visible,
@@ -3003,9 +3003,9 @@ html[data-sb-page-segment='learn-more'] .shopify-section:has(> .sb-product-main)
   content: '';
   display: inline-block;
   height: var(--sb-space-16);
-  mask: center / contain no-repeat url("icon-x.svg");
+  mask: center / contain no-repeat url("icon-cancel.svg");
   width: var(--sb-space-16);
-  -webkit-mask: center / contain no-repeat url("icon-x.svg");
+  -webkit-mask: center / contain no-repeat url("icon-cancel.svg");
 }
 
 /* Author row spacing + name weight normalization */
