@@ -672,7 +672,7 @@
 
 .sb-search-shortcut-card__meta--product {
   align-items: center;
-  gap: 6px;
+  gap: var(--sb-space-8);
 }
 
 .sb-search-shortcut-card__compare {

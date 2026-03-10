@@ -64,6 +64,11 @@
     return true;
   };
   const notifyHeaderSearchState = (isOpen) => {
+    openButtons.forEach((button) => {
+      if (!(button instanceof HTMLElement)) return;
+      button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
     document.dispatchEvent(
       new CustomEvent('sb:header-search-shortcut:toggle', {
         detail: {

@@ -578,6 +578,15 @@
         opacity: 0.7;
       }
 
+      .sb-theme-debug-toggle__viewport {
+        color: var(--sb-color-neutral-100);
+        display: grid;
+        font-size: 10px;
+        gap: 2px;
+        line-height: 1.2;
+        opacity: 0.85;
+      }
+
       .sb-theme-debug-toggle__button {
         background: var(--sb-color-neutral-900-50);
         border: 1px solid var(--sb-color-neutral-900-25);
@@ -2854,6 +2863,41 @@
           );
           rangeSvgs.forEach((svg) => {
             svg.setAttribute('preserveAspectRatio', 'none');
+
+            const viewBox = svg.viewBox?.baseVal;
+            const renderedWidth = svg.getBoundingClientRect().width;
+            const renderedHeight = svg.getBoundingClientRect().height;
+            const viewBoxWidth = viewBox?.width || svg.width.baseVal.value || renderedWidth || 1;
+            const viewBoxHeight = viewBox?.height || svg.height.baseVal.value || renderedHeight || 1;
+            const scaleX = renderedWidth > 0 && viewBoxWidth > 0 ? renderedWidth / viewBoxWidth : 1;
+            const scaleY = renderedHeight > 0 && viewBoxHeight > 0 ? renderedHeight / viewBoxHeight : 1;
+            const knobRadiusX = scaleX > 0 ? 5 / scaleX : 5;
+            const knobRadiusY = scaleY > 0 ? 5 / scaleY : 5;
+            const circle = svg.querySelector('circle');
+            const ellipse = svg.querySelector('ellipse');
+            const knob = ellipse || circle;
+
+            if (!knob) return;
+
+            const knobCx = knob.getAttribute('cx') || '50%';
+            const knobCy = knob.getAttribute('cy') || '5';
+
+            if (circle) {
+              const replacement = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+              replacement.setAttribute('cx', knobCx);
+              replacement.setAttribute('cy', knobCy);
+              replacement.setAttribute('fill', circle.getAttribute('fill') || 'currentColor');
+              replacement.setAttribute('stroke', 'none');
+              circle.replaceWith(replacement);
+            }
+
+            const normalizedEllipse = svg.querySelector('ellipse');
+            if (!(normalizedEllipse instanceof SVGEllipseElement)) return;
+            normalizedEllipse.setAttribute('cx', knobCx);
+            normalizedEllipse.setAttribute('cy', knobCy);
+            normalizedEllipse.setAttribute('rx', `${knobRadiusX}`);
+            normalizedEllipse.setAttribute('ry', `${knobRadiusY}`);
+            normalizedEllipse.setAttribute('stroke', 'none');
           });
 
           const rangeRects = scope.querySelectorAll(
@@ -2871,6 +2915,13 @@
           rangeCircles.forEach((circle) => {
             circle.setAttribute('r', '5');
             circle.setAttribute('stroke', 'none');
+          });
+
+          const rangeEllipses = scope.querySelectorAll(
+            '.kl_reviews__summary__custom_question--range [role="img"] svg ellipse, .kl_reviews__custom_question_answer [role="img"] svg ellipse'
+          );
+          rangeEllipses.forEach((ellipse) => {
+            ellipse.setAttribute('stroke', 'none');
           });
         };
 
@@ -2999,7 +3050,10 @@
             const currentText = target.textContent;
             if (!currentText) return;
 
-            const nextText = replaceFirstIntegerToken(currentText, numberFormatter);
+            const parsedCount = parseLocalizedInteger(currentText);
+            if (!Number.isFinite(parsedCount)) return;
+
+            const nextText = reviewsCountTemplate.replace(/__COUNT__/g, numberFormatter.format(parsedCount));
 
             if (nextText !== currentText) {
               target.textContent = nextText;
@@ -3344,6 +3398,67 @@
       (() => {
         const root = document.documentElement;
         if (!(root instanceof HTMLElement)) return;
+        const visualViewport = window.visualViewport;
+        let dockReserveFrame = 0;
+
+        const getActiveMobileDocks = () =>
+          Array.from(
+            document.querySelectorAll(
+              '.sb-product-main__sticky-bottom-bar-wrap:not(.sb-product-main__sticky-bottom-bar-wrap--hidden), .sb-metronome-app-sticky-nav__bar'
+            )
+          ).filter((dock) => dock instanceof HTMLElement);
+
+        const updateMobileBottomDockReserve = () => {
+          dockReserveFrame = 0;
+
+          const viewportHeight = visualViewport ? visualViewport.height : window.innerHeight || 0;
+          let maxReserve = 0;
+
+          getActiveMobileDocks().forEach((dock) => {
+            const styles = window.getComputedStyle(dock);
+            if (styles.position !== 'fixed' || styles.display === 'none' || styles.visibility === 'hidden') return;
+            if (styles.pointerEvents === 'none' && Number.parseFloat(styles.opacity || '1') === 0) return;
+
+            const rect = dock.getBoundingClientRect();
+            if (rect.height <= 0) return;
+
+            const reserve = Math.max(0, viewportHeight - rect.top);
+            if (reserve > maxReserve) maxReserve = reserve;
+          });
+
+          root.style.setProperty('--sb-mobile-bottom-dock-reserve', `${Math.ceil(maxReserve)}px`);
+        };
+
+        const requestMobileBottomDockReserveUpdate = () => {
+          if (dockReserveFrame) return;
+          dockReserveFrame = window.requestAnimationFrame(updateMobileBottomDockReserve);
+        };
+
+        updateMobileBottomDockReserve();
+        window.addEventListener('resize', requestMobileBottomDockReserveUpdate, { passive: true });
+        window.addEventListener('orientationchange', requestMobileBottomDockReserveUpdate);
+        window.addEventListener('pageshow', requestMobileBottomDockReserveUpdate);
+        document.addEventListener('visibilitychange', () => {
+          if (!document.hidden) requestMobileBottomDockReserveUpdate();
+        });
+        document.addEventListener('shopify:section:load', requestMobileBottomDockReserveUpdate);
+        document.addEventListener('shopify:section:unload', requestMobileBottomDockReserveUpdate);
+
+        if (visualViewport) {
+          visualViewport.addEventListener('resize', requestMobileBottomDockReserveUpdate);
+          visualViewport.addEventListener('scroll', requestMobileBottomDockReserveUpdate);
+        }
+
+        if ('ResizeObserver' in window) {
+          const dockObserver = new ResizeObserver(requestMobileBottomDockReserveUpdate);
+          getActiveMobileDocks().forEach((dock) => dockObserver.observe(dock));
+        }
+      })();
+    </script>
+    <script>
+      (() => {
+        const root = document.documentElement;
+        if (!(root instanceof HTMLElement)) return;
 
         const host = window.location.hostname.toLowerCase();
         const isProductionHost = host === 'soundbrenner.com' || host === 'www.soundbrenner.com';
@@ -3413,6 +3528,16 @@
           {% if request.page_type == 'product' %}
             <button type="button" class="sb-theme-debug-toggle__button" data-debug-action="toggle-product-sticky">${debugProductStickyLabel}</button>
           {% endif %}
+          <div class="sb-theme-debug-toggle__viewport" data-debug-viewport>
+            <span data-debug-vv-offset>vv.top 0</span>
+            <span data-debug-vv-height>vv.h 0</span>
+            <span data-debug-window-height>win.h 0</span>
+            <span data-debug-doc-height>doc.h 0</span>
+            <span data-debug-dock-reserve>reserve 0px</span>
+            <span data-debug-dock-bottom>dock.bottom -</span>
+            <span data-debug-dock-padding>dock.pb -</span>
+            <span data-debug-dock-rect>dock.rect -</span>
+          </div>
         `;
 
         const updateActiveState = () => {
@@ -3422,6 +3547,41 @@
             const buttonMode = `${button.dataset.themeMode || ''}`.trim();
             button.classList.toggle('is-active', buttonMode === activeMode);
           });
+        };
+
+        const viewportDebugOffset = panel.querySelector('[data-debug-vv-offset]');
+        const viewportDebugHeight = panel.querySelector('[data-debug-vv-height]');
+        const windowHeightDebug = panel.querySelector('[data-debug-window-height]');
+        const documentHeightDebug = panel.querySelector('[data-debug-doc-height]');
+        const dockReserveDebug = panel.querySelector('[data-debug-dock-reserve]');
+        const dockBottomDebug = panel.querySelector('[data-debug-dock-bottom]');
+        const dockPaddingDebug = panel.querySelector('[data-debug-dock-padding]');
+        const dockRectDebug = panel.querySelector('[data-debug-dock-rect]');
+        const updateViewportDebugState = () => {
+          const viewport = window.visualViewport;
+          const vvOffsetTop = viewport ? viewport.offsetTop : 0;
+          const vvHeight = viewport ? viewport.height : 0;
+          const windowHeight = window.innerHeight || 0;
+          const documentHeight = document.documentElement.clientHeight || 0;
+          const dockReserve = getComputedStyle(root).getPropertyValue('--sb-mobile-bottom-dock-reserve').trim() || '0px';
+          const dock = document.querySelector(
+            '.sb-product-main__sticky-bottom-bar-wrap:not(.sb-product-main__sticky-bottom-bar-wrap--hidden), .sb-metronome-app-sticky-nav__bar'
+          );
+          const dockStyles = dock instanceof HTMLElement ? getComputedStyle(dock) : null;
+          const dockRect = dock instanceof HTMLElement ? dock.getBoundingClientRect() : null;
+
+          if (viewportDebugOffset) viewportDebugOffset.textContent = `vv.top ${Math.round(vvOffsetTop)}`;
+          if (viewportDebugHeight) viewportDebugHeight.textContent = `vv.h ${Math.round(vvHeight)}`;
+          if (windowHeightDebug) windowHeightDebug.textContent = `win.h ${Math.round(windowHeight)}`;
+          if (documentHeightDebug) documentHeightDebug.textContent = `doc.h ${Math.round(documentHeight)}`;
+          if (dockReserveDebug) dockReserveDebug.textContent = `reserve ${dockReserve}`;
+          if (dockBottomDebug) dockBottomDebug.textContent = `dock.bottom ${dockStyles ? dockStyles.bottom : '-'}`;
+          if (dockPaddingDebug) dockPaddingDebug.textContent = `dock.pb ${dockStyles ? dockStyles.paddingBottom : '-'}`;
+          if (dockRectDebug) {
+            dockRectDebug.textContent = dockRect
+              ? `dock.rect y:${Math.round(dockRect.y)} h:${Math.round(dockRect.height)}`
+              : 'dock.rect -';
+          }
         };
 
         panel.querySelectorAll('[data-theme-mode]').forEach((button) => {
@@ -3434,6 +3594,14 @@
             updateActiveState();
           });
         });
+
+        updateViewportDebugState();
+        window.addEventListener('resize', updateViewportDebugState, { passive: true });
+        window.addEventListener('scroll', updateViewportDebugState, { passive: true });
+        if (window.visualViewport) {
+          window.visualViewport.addEventListener('resize', updateViewportDebugState);
+          window.visualViewport.addEventListener('scroll', updateViewportDebugState);
+        }
 
         const klaviyoTriggerButton = panel.querySelector('[data-debug-action="open-klaviyo"]');
         if (klaviyoTriggerButton instanceof HTMLButtonElement) {

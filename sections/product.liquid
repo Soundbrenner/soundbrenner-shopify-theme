@@ -1940,7 +1940,7 @@
       background: var(--sb-color-neutral-100);
       border-radius: 24px;
       display: flex;
-      gap: 8px;
+      gap: var(--sb-space-8);
       height: 36px;
       min-inline-size: 0;
       max-width: none;
@@ -1998,7 +1998,7 @@
     }
 
     .sb-product-main__sticky-bottom-bar-wrap {
-      bottom: calc(12px + env(safe-area-inset-bottom));
+      bottom: 12px;
       display: block;
       left: var(--page-margin);
       opacity: 1;
@@ -2032,7 +2032,7 @@
       align-items: center;
       display: flex;
       flex: 1 1 auto;
-      gap: 8px;
+      gap: var(--sb-space-8);
       min-inline-size: 0;
     }
 
@@ -2073,7 +2073,7 @@
     .sb-product-main__sticky-bottom-price-stack {
       align-items: center;
       display: flex;
-      gap: 8px;
+      gap: var(--sb-space-8);
       min-inline-size: 0;
     }
 
@@ -2240,7 +2240,7 @@
       align-items: center;
       display: flex;
       flex-direction: row;
-      gap: 8px;
+      gap: var(--sb-space-8);
     }
 
     .sb-product-main__sticky-compare-price {
@@ -2742,7 +2742,8 @@
     display: inline-flex;
     justify-content: center;
     line-height: 1;
-    min-height: var(--sb-space-48);
+    height: 48px;
+    min-height: 48px;
     min-width: var(--sb-space-48);
     padding: 0 var(--sb-space-16);
     text-align: center;
@@ -2806,10 +2807,10 @@
     box-shadow: inset 0 0 0 2px transparent;
     cursor: pointer;
     display: inline-flex;
-    height: var(--sb-space-48);
+    height: 48px;
     justify-content: center;
     padding: 6px;
-    width: var(--sb-space-48);
+    width: 48px;
   }
 
   .sb-product-main__color-swatch:focus-visible {
@@ -3462,7 +3463,7 @@
     align-items: center;
     display: flex;
     flex-wrap: wrap;
-    gap: var(--sb-space-6);
+    gap: var(--sb-space-8);
   }
 
   .sb-product-main__addon-price {
@@ -3492,9 +3493,9 @@
     color: var(--sb-color-neutral-900);
     cursor: pointer;
     display: inline-flex;
-    height: var(--sb-space-36);
+    height: 36px;
     justify-content: center;
-    min-height: var(--sb-space-36);
+    min-height: 36px;
     min-width: var(--sb-space-36);
     padding-inline: var(--sb-space-12);
     white-space: nowrap;
@@ -3532,10 +3533,10 @@
     cursor: pointer;
     display: inline-flex;
     flex: 0 0 auto;
-    height: var(--sb-space-36);
+    height: 36px;
     justify-content: center;
     padding: 4px;
-    width: var(--sb-space-36);
+    width: 36px;
   }
 
   .sb-product-main__addon-color-swatch-fill {
