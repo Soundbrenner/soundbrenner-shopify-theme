@@ -24,11 +24,9 @@
       for carousel_item in carousel_items
         assign carousel_item_entry = carousel_item.value | default: carousel_item.reference.value | default: carousel_item.reference | default: carousel_item
         assign carousel_item_info_check = carousel_item_entry.info.value | default: carousel_item_entry.info | append: '' | strip
-        assign carousel_item_image_check = carousel_item_entry.image.value | default: carousel_item_entry.image
-        assign carousel_item_video_check_field = carousel_item_entry.video_url.value | default: carousel_item_entry.video_url
-        assign carousel_item_video_check = carousel_item_video_check_field.url | default: carousel_item_video_check_field.src | default: carousel_item_video_check_field | append: '' | strip
+        assign carousel_item_media_check = carousel_item_entry.media.value | default: carousel_item_entry.media
 
-        if carousel_item_info_check != blank or carousel_item_image_check != blank or carousel_item_video_check != blank
+        if carousel_item_info_check != blank or carousel_item_media_check != blank
           assign has_valid_item = true
           break
         endif
@@ -71,7 +69,19 @@
                 assign item_info = carousel_item_entry.info.value | default: carousel_item_entry.info
               endif
 
-              assign item_image = carousel_item_entry.image.value | default: carousel_item_entry.image
+              assign item_media = carousel_item_entry.media.value | default: carousel_item_entry.media
+              assign item_media_type = item_media.media_type | append: ''
+              assign item_image = blank
+              assign item_video_field = blank
+
+              if item_media != blank
+                if item_media_type contains 'video'
+                  assign item_video_field = item_media
+                elsif item_media_type == 'image'
+                  assign item_image = item_media
+                endif
+              endif
+
               assign item_image_url = blank
               assign item_image_request_width = 864
               if item_image != blank and item_image.width != blank
@@ -81,7 +91,6 @@
                 assign item_image_url = item_image.url | default: item_image.src | default: item_image
               endif
 
-              assign item_video_field = carousel_item_entry.video_url.value | default: carousel_item_entry.video_url
               assign item_video_url = blank
               if item_video_field != blank
                 if item_video_field.sources != blank

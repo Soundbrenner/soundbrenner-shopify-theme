@@ -1,0 +1,91 @@
+{% liquid
+  assign card_style_class = card_class | default: ''
+  assign category_tag = blank
+  assign fallback_tag = blank
+
+  for tag in article.tags
+    assign normalized_tag = tag | downcase
+    if normalized_tag contains 'by_product' or normalized_tag contains 'by_instrument'
+      assign category_tag = tag
+      break
+    elsif fallback_tag == blank
+      assign fallback_tag = tag
+    endif
+  endfor
+
+  if category_tag == blank and fallback_tag != blank
+    assign category_tag = fallback_tag
+  endif
+
+  capture category_text
+    render 'sb-blog-tag-label', tag: category_tag, blog_title: blog_title
+  endcapture
+  assign category_text = category_text | strip
+
+  assign card_title_class = 'font-body weight-bold'
+  assign card_meta_class = 'font-caption weight-semibold'
+  if card_style_class == 'sb-blog-npe-card--feature'
+    assign card_title_class = 'font-callout weight-bold'
+    assign card_meta_class = 'font-caption weight-semibold'
+  endif
+
+  assign card_image_sizes = image_sizes
+  assign card_image_widths = image_widths
+  assign card_image_request_width = image_request_width | default: 1200
+
+  if card_image_sizes == blank
+    assign card_image_sizes = '(max-width: 989px) calc(100vw - 40px), 800px'
+    if card_style_class == 'sb-blog-npe-card--half'
+      assign card_image_sizes = '(max-width: 989px) calc(100vw - 40px), 385px'
+    elsif card_style_class == 'sb-blog-npe-card--third'
+      assign card_image_sizes = '(max-width: 989px) calc(100vw - 40px), 246px'
+    endif
+  endif
+
+  if card_image_widths == blank
+    assign card_image_widths = '246,385,533,800,1200'
+  endif
+
+  if article.image != blank and article.image.width != blank
+    assign card_image_request_width = card_image_request_width | at_most: article.image.width
+  endif
+%}
+
+{% if article != blank %}
+  <article class="sb-blog-npe-card {{ card_style_class }}">
+    <a class="sb-blog-npe-card__media" href="{{ article.url }}">
+      {% if article.image != blank %}
+        {{
+          article.image
+          | image_url: width: card_image_request_width
+          | image_tag:
+            widths: card_image_widths,
+            sizes: card_image_sizes,
+            class: 'sb-blog-npe-card__image',
+            loading: 'lazy',
+            alt: article.title
+        }}
+      {% else %}
+        <div class="sb-blog-npe-card__image sb-blog-npe-card__image--placeholder" aria-hidden="true"></div>
+      {% endif %}
+    </a>
+
+    <div class="sb-blog-npe-card__content">
+      <p class="sb-blog-npe-card__category {{ card_meta_class }}">{{ category_text }}</p>
+
+      <h2 class="sb-blog-npe-card__title {{ card_title_class }}">
+        <a href="{{ article.url }}">{{ article.title }}</a>
+      </h2>
+
+      <p class="sb-blog-npe-card__date {{ card_meta_class }}">
+        {{ article.published_at | date: format: 'abbreviated_date' }}
+      </p>
+
+      {% if show_excerpt and article.excerpt_or_content != blank %}
+        <p class="sb-blog-npe-card__excerpt font-caption weight-regular">
+          {{ article.excerpt_or_content | strip_html | truncatewords: 30 }}
+        </p>
+      {% endif %}
+    </div>
+  </article>
+{% endif %}

@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
 const SHOPIFY_API_VERSION = process.env.SHOPIFY_API_VERSION || "2025-10";
-const HERO_TYPE = process.env.HERO_METAOBJECT_TYPE || "sbv2_product_page_header";
 const LARGE_FEATURE_TYPE = process.env.LARGE_FEATURE_METAOBJECT_TYPE || "sbv2_large_photo_video_feature";
+const FEATURE_CAROUSEL_ITEM_TYPE =
+  process.env.FEATURE_CAROUSEL_ITEM_METAOBJECT_TYPE || "sbv2_features_carousel_item";
 const DRY_RUN = process.argv.includes("--dry-run") || process.env.DRY_RUN === "true";
 
 const hasAdminAccessToken =
@@ -211,6 +212,7 @@ async function ensureFieldsOnDefinition(accessToken, type, fieldsToAdd) {
     create: {
       key: field.key,
       name: field.name,
+      description: field.description || "",
       required: false,
       type: "file_reference",
     },
@@ -312,66 +314,29 @@ async function migrateLargeFeatureEntries(accessToken) {
   return { total: entries.length, touched, skipped };
 }
 
-async function migrateHeroEntries(accessToken) {
-  const entries = await fetchAllMetaobjects(accessToken, HERO_TYPE);
+async function migrateFeatureCarouselEntries(accessToken) {
+  const entries = await fetchAllMetaobjects(accessToken, FEATURE_CAROUSEL_ITEM_TYPE);
   let touched = 0;
   let skipped = 0;
 
   for (const entry of entries) {
     const fieldMap = getFieldMap(entry);
-
-    const currentMedia = fieldMap.get("media") || "";
-    const currentMediaMobile = fieldMap.get("media_mobile") || "";
-    const updates = [];
-
-    let resolvedMedia = currentMedia;
-    if (isBlank(currentMedia)) {
-      const nextMedia = firstNonBlank(
-        fieldMap.get("video_url"),
-        fieldMap.get("video_desktop"),
-        fieldMap.get("video_file"),
-        fieldMap.get("image_url"),
-        fieldMap.get("image_desktop"),
-        fieldMap.get("background_image_desktop")
-      );
-      if (!isBlank(nextMedia)) {
-        updates.push({ key: "media", value: nextMedia });
-        resolvedMedia = nextMedia;
-      }
+    const mediaValue = fieldMap.get("media") || "";
+    if (!isBlank(mediaValue)) {
+      skipped += 1;
+      continue;
     }
 
-    if (isBlank(currentMediaMobile)) {
-      let nextMobileMedia = firstNonBlank(
-        fieldMap.get("video_url_mobile"),
-        fieldMap.get("video_mobile"),
-        fieldMap.get("mobile_video"),
-        fieldMap.get("video_file_mobile"),
-        fieldMap.get("image_url_mobile"),
-        fieldMap.get("image_mobile"),
-        fieldMap.get("background_image_mobile")
-      );
-
-      if (isBlank(nextMobileMedia) && !isBlank(resolvedMedia)) {
-        nextMobileMedia = resolvedMedia;
-      }
-
-      if (!isBlank(nextMobileMedia)) {
-        updates.push({ key: "media_mobile", value: nextMobileMedia });
-      }
-    }
-
-    if (!updates.length) {
+    const legacyValue = firstNonBlank(fieldMap.get("video_url"), fieldMap.get("image"));
+    if (isBlank(legacyValue)) {
       skipped += 1;
       continue;
     }
 
     touched += 1;
-    log(
-      "Hero header backfill",
-      `${entry.handle || entry.id}: ${updates.map((field) => field.key).join(", ")}`
-    );
+    log("Feature carousel backfill", `${entry.handle || entry.id}: media <= legacy`);
     if (!DRY_RUN) {
-      await updateMetaobjectFields(accessToken, entry.id, updates);
+      await updateMetaobjectFields(accessToken, entry.id, [{ key: "media", value: legacyValue }]);
     }
   }
 
@@ -385,22 +350,24 @@ async function main() {
   await ensureFieldsOnDefinition(accessToken, LARGE_FEATURE_TYPE, [
     { key: "media", name: "Media" },
   ]);
-
-  await ensureFieldsOnDefinition(accessToken, HERO_TYPE, [
-    { key: "media", name: "Media" },
-    { key: "media_mobile", name: "Media mobile" },
+  await ensureFieldsOnDefinition(accessToken, FEATURE_CAROUSEL_ITEM_TYPE, [
+    {
+      key: "media",
+      name: "Media",
+      description: "Photo or video media for feature carousel item",
+    },
   ]);
 
   const largeFeatureStats = await migrateLargeFeatureEntries(accessToken);
-  const heroStats = await migrateHeroEntries(accessToken);
+  const featureCarouselStats = await migrateFeatureCarouselEntries(accessToken);
 
   log(
     "Large feature result",
     `total=${largeFeatureStats.total}, updated=${largeFeatureStats.touched}, skipped=${largeFeatureStats.skipped}`
   );
   log(
-    "Hero header result",
-    `total=${heroStats.total}, updated=${heroStats.touched}, skipped=${heroStats.skipped}`
+    "Feature carousel result",
+    `total=${featureCarouselStats.total}, updated=${featureCarouselStats.touched}, skipped=${featureCarouselStats.skipped}`
   );
   log("Unified media migration complete");
 }

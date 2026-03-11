@@ -44,9 +44,9 @@
   if hide_section == false
     assign hero_video_anchor_link = '#sb-hero-video-product-' | append: product.id
 
-    assign hero_media_title = hero_header.title.value | default: hero_header.title | default: product.title
+    assign hero_media_title = product.title
 
-    assign hero_media_desktop_field = hero_header.media.value | default: hero_header.media | default: hero_header.media_desktop.value | default: hero_header.media_desktop
+    assign hero_media_desktop_field = hero_header.media.value | default: hero_header.media
     assign hero_media_mobile_field = hero_header.media_mobile.value | default: hero_header.media_mobile
 
     assign hero_media_desktop_type = hero_media_desktop_field.media_type | append: ''
@@ -68,20 +68,6 @@
         assign hero_video_mobile_field = hero_media_mobile_field
       elsif hero_media_mobile_type == 'image'
         assign hero_image_mobile_field = hero_media_mobile_field
-      endif
-    endif
-
-    if hero_video_desktop_field == blank and hero_image_desktop_field == blank
-      assign hero_video_desktop_field = hero_header.video_url.value | default: hero_header.video_url | default: hero_header.video_desktop.value | default: hero_header.video_desktop | default: hero_header.video_file.value | default: hero_header.video_file
-      if hero_video_desktop_field == blank
-        assign hero_image_desktop_field = hero_header.image_url.value | default: hero_header.image_url | default: hero_header.image_desktop.value | default: hero_header.image_desktop | default: hero_header.background_image_desktop.value | default: hero_header.background_image_desktop
-      endif
-    endif
-
-    if hero_video_mobile_field == blank and hero_image_mobile_field == blank
-      assign hero_video_mobile_field = hero_header.video_url_mobile.value | default: hero_header.video_url_mobile | default: hero_header.video_mobile.value | default: hero_header.video_mobile | default: hero_header.mobile_video.value | default: hero_header.mobile_video | default: hero_header.video_file_mobile.value | default: hero_header.video_file_mobile
-      if hero_video_mobile_field == blank
-        assign hero_image_mobile_field = hero_header.image_url_mobile.value | default: hero_header.image_url_mobile | default: hero_header.image_mobile.value | default: hero_header.image_mobile | default: hero_header.background_image_mobile.value | default: hero_header.background_image_mobile
       endif
     endif
 
