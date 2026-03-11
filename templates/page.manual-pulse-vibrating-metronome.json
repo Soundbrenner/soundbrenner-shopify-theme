@@ -146,13 +146,6 @@
             "text": "<p>Do not store your Pulse for extended periods (over 3 months) with an empty battery, as this may cause permanent battery damage.</p>"
           }
         },
-        "accordion_item_ynigGJ": {
-          "type": "accordion_item",
-          "settings": {
-            "question": "Pulse battery maintenance guide",
-            "answer": "<p>When your wearable is not in use, its battery slowly discharges over time. If the device is left unused for an extended period (for example, 3 months or longer), the battery may over-discharge. This can cause permanent damage to the battery’s electrodes and active materials. In severe cases, the battery and the wearable may stop working entirely. This behavior is typical for all modern lithium batteries.</p><p>To prevent this, <strong>charge and discharge the battery at least once every three months to keep it in good condition. If you use your wearable regularly (for example, at least once per week), you do not need to take any special steps to maintain the battery.</strong></p><h4>What happens if the battery in my wearable is permanently damaged?</h4><p>Currently, the battery in our wearables cannot be replaced. This is not an intentional design choice. Adhesives are used in the construction to improve water resistance. Opening the device would damage many of the internal components, which cannot be reused.</p><p>Making batteries replaceable in future products is an important goal. However, achieving this in a small and tightly packed device, similar to a smartwatch, is a complex engineering challenge.</p><p>If you believe the battery in your wearable has been damaged, please contact our support team and we will do our best to help: <a href=\"https://support.soundbrenner.com/hc/en-us/requests/new\" target=\"_blank\">contact support</a></p>"
-          }
-        },
         "text_8iMfyk": {
           "type": "text",
           "settings": {
@@ -165,9 +158,12 @@
             "text": "<p><strong>Fully charged</strong></p><p>When charging is complete, the soundwave turns solid green.</p>"
           }
         },
-        "divider_Jd6948": {
-          "type": "divider",
-          "settings": {}
+        "accordion_item_ynigGJ": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Pulse battery maintenance guide",
+            "answer": "<p>When your wearable is not in use, its battery slowly discharges over time. If the device is left unused for an extended period (for example, 3 months or longer), the battery may over-discharge. This can cause permanent damage to the battery’s electrodes and active materials. In severe cases, the battery and the wearable may stop working entirely. This behavior is typical for all modern lithium batteries.</p><p>To prevent this, <strong>charge and discharge the battery at least once every three months to keep it in good condition. If you use your wearable regularly (for example, at least once per week), you do not need to take any special steps to maintain the battery.</strong></p><h4>What happens if the battery in my wearable is permanently damaged?</h4><p>Currently, the battery in our wearables cannot be replaced. This is not an intentional design choice. Adhesives are used in the construction to improve water resistance. Opening the device would damage many of the internal components, which cannot be reused.</p><p>Making batteries replaceable in future products is an important goal. However, achieving this in a small and tightly packed device, similar to a smartwatch, is a complex engineering challenge.</p><p>If you believe the battery in your wearable has been damaged, please contact our support team and we will do our best to help: <a href=\"https://support.soundbrenner.com/hc/en-us/requests/new\" target=\"_blank\">contact support</a></p>"
+          }
         },
         "subheading_bFbL7r": {
           "type": "subheading",
@@ -564,10 +560,9 @@
         "body_5",
         "image_K3PQ6p",
         "text_p4WTmD",
-        "accordion_item_ynigGJ",
         "text_8iMfyk",
         "text_Je89EH",
-        "divider_Jd6948",
+        "accordion_item_ynigGJ",
         "subheading_bFbL7r",
         "text_B7JKP9",
         "button_iFYRgP",
