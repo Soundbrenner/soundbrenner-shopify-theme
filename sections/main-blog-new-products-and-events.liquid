@@ -1,5 +1,5 @@
 {% liquid
-  assign posts_per_page = 15
+  assign posts_per_page = 9
 %}
 
 <section class="sb-blog-overview">
@@ -56,26 +56,13 @@
 
       <header class="sb-blog-overview__header">
         <p class="sb-blog-overview__eyebrow font-caption weight-regular">
-          {% if paginate.current_page > 1 %}
-            {{ 'sb.blog.archive' | t }}
-          {% else %}
-            {{ 'sb.blog.latest' | t }}
-          {% endif %}
+          {{ 'sb.blog.latest' | t }}
         </p>
         <h1 class="sb-blog-overview__title font-title weight-bold">{{ blog_page_title }}</h1>
       </header>
 
       {% liquid
-        assign show_featured_layout = false
-        if paginate.current_page == 1
-          assign show_featured_layout = true
-        endif
-
-        assign archive_offset = 0
-        if show_featured_layout
-          assign archive_offset = 9
-        endif
-
+        assign show_featured_layout = true
         assign has_three_articles = false
         if blog.articles[2] != blank
           assign has_three_articles = true
@@ -232,39 +219,6 @@
             </div>
           {% endif %}
 
-          <div class="sb-blog-overview__archive{% unless show_featured_layout %} sb-blog-overview__archive--paginated{% endunless %}" aria-label="{{ 'sb.blog.archive' | t }}">
-            {% if show_featured_layout %}
-              <h2 class="sb-blog-overview__archive-title font-title weight-bold">{{ 'sb.blog.archive' | t }}</h2>
-            {% endif %}
-
-            <div class="sb-blog-overview__archive-list">
-              {% if show_featured_layout %}
-                {% for article in blog.articles offset: archive_offset %}
-                  {% render 'sb-blog-overview-article-card',
-                    article: article,
-                    blog_title: blog.title,
-                    card_class: 'sb-blog-overview-card--archive',
-                    show_excerpt: false
-                  %}
-                {% endfor %}
-              {% else %}
-                {% for article in blog.articles offset: archive_offset %}
-                  {% render 'sb-blog-overview-article-card',
-                    article: article,
-                    blog_title: blog.title,
-                    card_class: 'sb-blog-overview-card--archive',
-                    show_excerpt: false
-                  %}
-                  {% if sidebar_box_two_markup != blank and forloop.index == 5 %}
-                    <div class="sb-blog-overview__archive-insert" aria-label="{{ section.settings.sidebar_promo_title }}">
-                      {{ sidebar_box_two_markup }}
-                    </div>
-                  {% endif %}
-                {% endfor %}
-              {% endif %}
-            </div>
-          </div>
-
         </div>
 
         <aside class="sb-blog-overview__sidebar" aria-label="{{ 'sb.blog.sidebar_content' | t }}">
@@ -300,55 +254,6 @@
         </aside>
       </div>
 
-      {% if paginate.pages > 1 %}
-        <nav class="sb-blog-overview__pagination" aria-label="{{ 'sb.blog.pagination' | t }}">
-          {% if paginate.previous %}
-            <a
-              class="sb-blog-overview__pagination-arrow sb-blog-overview__pagination-arrow--prev"
-              href="{{ paginate.previous.url }}"
-              aria-label="{{ 'sb.blog.previous_page' | t }}"
-            >
-              <span class="sb-blog-overview__pagination-arrow-icon" aria-hidden="true">
-                {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
-              </span>
-            </a>
-          {% else %}
-            <span
-              class="sb-blog-overview__pagination-arrow sb-blog-overview__pagination-arrow--prev is-disabled"
-              aria-disabled="true"
-            >
-              <span class="sb-blog-overview__pagination-arrow-icon" aria-hidden="true">
-                {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
-              </span>
-            </span>
-          {% endif %}
-
-          <p class="sb-blog-overview__pagination-status font-body weight-semibold">
-            {{ paginate.current_page }} of {{ paginate.pages }}
-          </p>
-
-          {% if paginate.next %}
-            <a
-              class="sb-blog-overview__pagination-arrow sb-blog-overview__pagination-arrow--next"
-              href="{{ paginate.next.url }}"
-              aria-label="{{ 'sb.blog.next_page' | t }}"
-            >
-              <span class="sb-blog-overview__pagination-arrow-icon" aria-hidden="true">
-                {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
-              </span>
-            </a>
-          {% else %}
-            <span
-              class="sb-blog-overview__pagination-arrow sb-blog-overview__pagination-arrow--next is-disabled"
-              aria-disabled="true"
-            >
-              <span class="sb-blog-overview__pagination-arrow-icon" aria-hidden="true">
-                {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
-              </span>
-            </span>
-          {% endif %}
-        </nav>
-      {% endif %}
     {% endpaginate %}
   </div>
 </section>
