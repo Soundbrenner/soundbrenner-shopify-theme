@@ -1650,6 +1650,66 @@
       {% endfor %}
     }
   </script>
+  {% if selector_list_mode == 'multipack' %}
+    <script type="application/json" data-product-multipack-media-json>
+      {
+        {% assign multipack_media_entry_rendered = false %}
+        {% for multipack_item in product_multipack_items %}
+          {% liquid
+            assign multipack_entry = multipack_item.value | default: multipack_item.reference.value | default: multipack_item.reference | default: multipack_item
+            assign multipack_product = multipack_entry.product.value | default: multipack_entry.product
+            if multipack_product == blank
+              continue
+            endif
+            assign multipack_variant = multipack_product.selected_or_first_available_variant
+            if multipack_variant == blank
+              continue
+            endif
+
+            assign multipack_sticky_media = multipack_variant.featured_image | default: multipack_product.featured_image
+            assign multipack_sticky_image_url = blank
+            if multipack_sticky_media != blank
+              assign multipack_sticky_media_width = multipack_sticky_media.width | default: 192 | at_most: 192
+              assign multipack_sticky_image_url = multipack_sticky_media | image_url: width: multipack_sticky_media_width
+            endif
+            if multipack_sticky_image_url == blank
+              for multipack_product_media in multipack_product.media
+                if multipack_product_media.media_type == 'image'
+                  assign multipack_sticky_image_url = multipack_product_media | image_url: width: 192
+                  break
+                endif
+              endfor
+            endif
+
+            assign multipack_gallery_lead_url = blank
+            if multipack_variant.featured_image != blank
+              assign multipack_gallery_lead_url = multipack_variant.featured_image | image_url: width: 1440
+            elsif multipack_product.featured_image != blank
+              assign multipack_gallery_lead_url = multipack_product.featured_image | image_url: width: 1440
+            else
+              for multipack_gallery_media in multipack_product.media
+                if multipack_gallery_media.media_type == 'image'
+                  assign multipack_gallery_lead_url = multipack_gallery_media | image_url: width: 1440
+                  break
+                endif
+              endfor
+            endif
+
+            assign multipack_gallery_lead_token = blank
+            if multipack_gallery_lead_url != blank
+              assign multipack_gallery_lead_token = 'image::' | append: multipack_gallery_lead_url
+            endif
+          %}
+          {% if multipack_media_entry_rendered %},{% endif %}
+          "{{ multipack_variant.id }}": {
+            "stickyImage": {{ multipack_sticky_image_url | json }},
+            "galleryLeadToken": {{ multipack_gallery_lead_token | json }}
+          }
+          {% assign multipack_media_entry_rendered = true %}
+        {% endfor %}
+      }
+    </script>
+  {% endif %}
   {% if use_variant_media_gallery %}
     <script type="application/json" data-product-variant-media-json>
       {
@@ -3656,6 +3716,7 @@
       const variantSelect = root.querySelector('[data-product-variant-id]');
       const variantsJsonElement = root.querySelector('[data-product-variants-json]');
       const variantStickyImagesElement = root.querySelector('[data-product-variant-sticky-image-json]');
+      const multipackMediaElement = root.querySelector('[data-product-multipack-media-json]');
       const variantMediaElement = root.querySelector('[data-product-variant-media-json]');
       const variantMediaCaptionsElement = root.querySelector('[data-product-variant-media-captions-json]');
       const variantInTheBoxElement = root.querySelector('[data-product-variant-in-the-box-json]');
@@ -3718,6 +3779,14 @@
           variantInTheBoxMap = JSON.parse(variantInTheBoxElement.textContent || '{}');
         } catch (error) {
           variantInTheBoxMap = null;
+        }
+      }
+      let multipackMediaMap = null;
+      if (multipackMediaElement) {
+        try {
+          multipackMediaMap = JSON.parse(multipackMediaElement.textContent || '{}');
+        } catch (error) {
+          multipackMediaMap = null;
         }
       }
 
@@ -4321,6 +4390,17 @@
         return '';
       };
 
+      const getStickyImageSourceByVariantId = (variantId) => {
+        const normalizedVariantId = `${variantId || ''}`;
+        if (!normalizedVariantId) return '';
+
+        const multipackStickyImageSource = String(multipackMediaMap?.[normalizedVariantId]?.stickyImage || '').trim();
+        if (multipackStickyImageSource) return multipackStickyImageSource;
+
+        const variant = variants.find((entry) => `${entry.id}` === normalizedVariantId);
+        return getStickyImageFromVariant(variant);
+      };
+
       const stickyImagePreloadCache = new Set();
       const preloadStickyImageSource = (source) => {
         const normalizedSource = String(source || '').trim();
@@ -4335,10 +4415,15 @@
         variants.forEach((variant) => {
           preloadStickyImageSource(getStickyImageFromVariant(variant));
         });
+        if (multipackMediaMap && typeof multipackMediaMap === 'object') {
+          Object.values(multipackMediaMap).forEach((entry) => {
+            preloadStickyImageSource(entry?.stickyImage || '');
+          });
+        }
       };
 
-      const applyStickyImage = (variant) => {
-        const nextSource = getStickyImageFromVariant(variant);
+      const applyStickyImageSource = (source) => {
+        const nextSource = String(source || '').trim();
         if (!nextSource) return;
         preloadStickyImageSource(nextSource);
         [stickyImage, stickyBottomImage].forEach((imageElement) => {
@@ -4351,6 +4436,10 @@
           imageElement.style.backgroundPosition = 'center';
           imageElement.style.backgroundSize = 'cover';
         });
+      };
+
+      const applyStickyImage = (variant) => {
+        applyStickyImageSource(getStickyImageFromVariant(variant));
       };
 
       if (stickyImage && stickyImage.tagName === 'IMG') {
@@ -4480,6 +4569,54 @@
         return rawCaption.trim();
       };
 
+      const serializeMediaGridState = () => {
+        if (!mediaGrid) {
+          return {
+            tokens: [],
+            captions: null,
+          };
+        }
+
+        const tokens = [];
+        const captions = {};
+
+        Array.from(mediaGrid.querySelectorAll('.sb-product-main__media-item')).forEach((item) => {
+          let token = '';
+          const video = item.querySelector('[data-gallery-video]');
+          if (video instanceof HTMLVideoElement) {
+            const videoSource = video.getAttribute('src') || video.currentSrc || '';
+            const videoPoster =
+              video.getAttribute('poster')
+              || item.querySelector('[data-gallery-video-poster]')?.getAttribute('src')
+              || '';
+            if (videoSource) {
+              token = videoPoster ? `video::${videoSource}::${videoPoster}` : `video::${videoSource}`;
+            }
+          } else {
+            const image = item.querySelector('img.sb-product-main__media-asset');
+            const imageSource = image?.currentSrc || image?.getAttribute('src') || '';
+            if (imageSource) {
+              token = `image::${imageSource}`;
+            }
+          }
+
+          if (!token) return;
+
+          tokens.push(token);
+          const captionText = item.querySelector('.sb-product-main__media-caption')?.textContent?.trim() || '';
+          if (captionText) {
+            captions[`${tokens.length}`] = captionText;
+          }
+        });
+
+        return {
+          tokens,
+          captions: Object.keys(captions).length ? captions : null,
+        };
+      };
+
+      const initialMediaGridState = serializeMediaGridState();
+
       const renderMediaGallery = (tokens, captionsByPosition = null) => {
         if (!mediaGrid || !Array.isArray(tokens)) return;
         const normalizedTokens = tokens
@@ -4517,6 +4654,22 @@
         }
       };
 
+      const getBaseGalleryState = (variantId = currentVariantId) => {
+        const normalizedVariantId = `${variantId || ''}`;
+        const variantTokens = normalizedVariantId ? variantMediaMap?.[normalizedVariantId] : null;
+        if (Array.isArray(variantTokens) && variantTokens.length) {
+          return {
+            tokens: [...variantTokens],
+            captions: variantMediaCaptionsMap?.[normalizedVariantId] || null,
+          };
+        }
+
+        return {
+          tokens: [...(initialMediaGridState.tokens || [])],
+          captions: initialMediaGridState.captions || null,
+        };
+      };
+
       const renderVariantMediaById = (variantId) => {
         if (!variantMediaMap || !variantId) return;
         const tokens = variantMediaMap[`${variantId}`];
@@ -4524,6 +4677,34 @@
           const captionsByPosition = variantMediaCaptionsMap?.[`${variantId}`] || null;
           renderMediaGallery(tokens, captionsByPosition);
         }
+      };
+
+      const renderSelectorListMediaByVariantId = (variantId) => {
+        if (!mediaGrid || !hasMultipackSelectorList || !variantId) return;
+
+        const normalizedVariantId = `${variantId}`;
+        const baseVariant = variants.find((entry) => `${entry.id}` === normalizedVariantId);
+        if (baseVariant) {
+          const baseGalleryState = getBaseGalleryState(normalizedVariantId);
+          if (baseGalleryState.tokens.length) {
+            renderMediaGallery(baseGalleryState.tokens, baseGalleryState.captions);
+          }
+          return;
+        }
+
+        const multipackEntry = multipackMediaMap?.[normalizedVariantId];
+        const replacementLeadToken = String(multipackEntry?.galleryLeadToken || '').trim();
+        if (!replacementLeadToken) return;
+
+        const baseGalleryState = getBaseGalleryState();
+        const nextTokens = [...baseGalleryState.tokens];
+        if (nextTokens.length) {
+          nextTokens[0] = replacementLeadToken;
+        } else {
+          nextTokens.push(replacementLeadToken);
+        }
+
+        renderMediaGallery(nextTokens, baseGalleryState.captions);
       };
 
       const renderInTheBoxByVariantId = (variantId) => {
@@ -5027,10 +5208,6 @@
           addButton.setAttribute('aria-label', nextLabel);
         }
 
-        if (shopPayProxy) {
-          shopPayProxy.classList.toggle('is-unavailable', !purchaseData.available);
-        }
-
         if (stickyCurrentPriceElement) {
           stickyCurrentPriceElement.textContent = formatMoney(resolvedPricing.currentPriceCents);
         }
@@ -5073,10 +5250,7 @@
           stickyBottomAddButton.setAttribute('aria-label', nextLabel);
         }
 
-        const stickyVariant = variants.find((variant) => `${variant.id}` === `${purchaseData.id}`);
-        if (stickyVariant) {
-          applyStickyImage(stickyVariant);
-        }
+        applyStickyImageSource(getStickyImageSourceByVariantId(purchaseData.id));
       };
 
       const setGroupSelection = (group, selectedValue) => {
@@ -5105,6 +5279,7 @@
       const colorGroups = optionGroups.filter((group) => group.dataset.optionType === 'color');
       const nonColorGroups = optionGroups.filter((group) => group.dataset.optionType !== 'color');
       const optionCount = Array.isArray(variants[0]?.options) ? variants[0].options.length : 0;
+      const hasMultipackSelectorList = selectorListItems.some((item) => item.dataset.selectorListMode === 'multipack');
 
       const updateColorAvailability = () => {
         colorGroups.forEach((colorGroup) => {
@@ -5324,6 +5499,7 @@
           };
           variantSelect.value = `${purchaseData.id}`;
           applyPurchaseState(purchaseData);
+          renderSelectorListMediaByVariantId(purchaseData.id);
         };
 
         selectorListItems.forEach((item) => {
@@ -5344,7 +5520,6 @@
       }
 
       const initialVariant = variants.find((variant) => `${variant.id}` === `${currentVariantId}`) || variants[0];
-      const hasMultipackSelectorList = selectorListItems.some((item) => item.dataset.selectorListMode === 'multipack');
       if (initialVariant && !hasMultipackSelectorList && !hasVariantInitialized) {
         applyVariant(initialVariant, {
           sourceId: 'initial',
