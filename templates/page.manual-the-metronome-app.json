@@ -127,6 +127,12 @@
             "text": "<p><strong>Library</strong></p><p>Here you can save songs and organize them into setlists. You can also share them using a convenient sharing link. With Soundbrenner Plus, your library is automatically backed up to the cloud and synced across all your devices.</p>"
           }
         },
+        "text_1B8gQm": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Practice tracking</strong></p><p>You can track practice sessions in the app, review them later in your history, and use them to build streaks and practice calendar progress.</p>"
+          }
+        },
         "divider_6nmcYR": {
           "type": "divider",
           "settings": {}
@@ -211,7 +217,7 @@
           "type": "accordion_item",
           "settings": {
             "question": "How to cancel the Soundbrenner Plus subscription?",
-            "answer": "<p>We hate when we need to jump through a lot of hoops to cancel a subscription. Hence we made it easy and frictionless for you.</p><p>You can cancel auto-renewal of your Soundbrenner Plus subscription any time. Once you cancelled:</p><ul><li>You won't be charged again</li><li>You can still enjoy the subscription benefits until the next renewal would have been due</li></ul><p>We currently do not offer the ability to subscribe directly from us. Instead we rely on Apple & Google to sell our subscription, collect payments and provide customer support relating to the payments. Please note if you contact us, we are unable to cancel the subscription for you since we are not granted these rights by Apple and Google - you will have to cancel at the place of your purchase. Luckily this is very easy!</p><p><strong>Cancel if you subscribed via Apple:</strong></p><p>Simply follow the steps outlined by Apple here:</p><p><a href=\"https://support.apple.com/en-us/HT202039\">https://support.apple.com/en-us/HT202039</a> </p><p><strong>Cancel if you subscribed via Google:</strong></p><p>Simply follow the steps outlined by Google here:</p><p><a href=\"https://support.google.com/googleplay/answer/7018481\">https://support.google.com/googleplay/answer/7018481</a> </p>"
+            "answer": "<p>We hate when we need to jump through a lot of hoops to cancel a subscription. Hence we made it easy and frictionless for you.</p><p>You can cancel auto-renewal of your Soundbrenner Plus subscription any time. Once you cancel:</p><ul><li>You won't be charged again</li><li>You can still enjoy the subscription benefits until the next renewal would have been due</li></ul><p>We currently do not offer the ability to subscribe directly from us. Instead we rely on Apple & Google to sell our subscription, collect payments and provide customer support relating to the payments. Please note if you contact us, we are unable to cancel the subscription for you since we are not granted these rights by Apple and Google - you will have to cancel at the place of your purchase. Luckily this is very easy!</p><p><strong>Cancel if you subscribed via Apple:</strong></p><p>Simply follow the steps outlined by Apple here:</p><p><a href=\"https://support.apple.com/en-us/HT202039\">https://support.apple.com/en-us/HT202039</a> </p><p><strong>Cancel if you subscribed via Google:</strong></p><p>Simply follow the steps outlined by Google here:</p><p><a href=\"https://support.google.com/googleplay/answer/7018481\">https://support.google.com/googleplay/answer/7018481</a> </p>"
           }
         },
         "accordion_5": {
@@ -238,6 +244,7 @@
         "heading_4",
         "text_4",
         "text_9XTRJP",
+        "text_1B8gQm",
         "divider_6nmcYR",
         "heading_HRr34p",
         "text_Ucnxic",
