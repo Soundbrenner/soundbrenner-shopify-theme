@@ -8,7 +8,6 @@
       {% liquid
         assign active_tag_handle = ''
         assign blog_page_title = blog.title
-        assign popular_heading = 'sb.blog.most_popular' | t
 
         if current_tags != blank
           assign active_tag_handle = current_tags.first | handleize
@@ -63,97 +62,6 @@
 
       {% liquid
         assign show_featured_layout = true
-        assign has_three_articles = false
-        if blog.articles[2] != blank
-          assign has_three_articles = true
-        endif
-      %}
-
-      {% capture sidebar_box_one_markup %}
-        {% if show_featured_layout %}
-          {% capture sidebar_popular_items_markup %}
-            {% for item_index in (1..5) %}
-              {% liquid
-                assign article_key = 'sidebar_popular_item_' | append: item_index | append: '_article'
-                assign selected_article = section.settings[article_key]
-                assign item_title = ''
-                assign item_url = ''
-
-                assign fallback_index = item_index | minus: 1
-                assign fallback_article = blog.articles[fallback_index]
-                assign popular_icon_asset = 'icon-blog-popular-rank-' | append: item_index | append: '.svg'
-
-                if selected_article != blank
-                  assign item_title = selected_article.title
-                  assign item_url = selected_article.url
-                elsif fallback_article != blank
-                  assign item_title = fallback_article.title
-                  assign item_url = fallback_article.url
-                endif
-              %}
-
-              {% if item_title != blank and item_url != blank %}
-                <li class="sb-blog-sidebar-box__popular-item">
-                  <a class="sb-blog-sidebar-box__popular-link font-body weight-semibold" href="{{ item_url }}">
-                    <span
-                      class="sb-blog-sidebar-box__popular-rank"
-                      aria-hidden="true"
-                      style="--sb-popular-rank-icon: url('{{ popular_icon_asset | asset_url }}');"
-                    >
-                      <span class="sb-blog-sidebar-box__popular-rank-icon"></span>
-                    </span>
-                    <span class="sb-blog-sidebar-box__popular-link-text">{{ item_title }}</span>
-                  </a>
-                </li>
-              {% endif %}
-            {% endfor %}
-          {% endcapture %}
-
-          {% if sidebar_popular_items_markup != blank %}
-            <section class="sb-blog-sidebar-box sb-blog-sidebar-box--popular" aria-label="{{ popular_heading }}">
-              <h3 class="sb-blog-sidebar-box__heading font-callout weight-bold">{{ popular_heading }}</h3>
-              <ol class="sb-blog-sidebar-box__popular-list" role="list">
-                {{ sidebar_popular_items_markup }}
-              </ol>
-            </section>
-          {% endif %}
-        {% endif %}
-      {% endcapture %}
-
-      {% capture sidebar_box_two_markup %}
-        {% liquid
-          assign promo_title = section.settings.sidebar_promo_title | strip
-          assign promo_text = section.settings.sidebar_promo_text | strip
-          assign promo_button_label = section.settings.sidebar_promo_button_label | strip
-          assign promo_button_link = section.settings.sidebar_promo_button_link
-        %}
-
-        {% if promo_title != blank or promo_text != blank or promo_button_label != blank %}
-          <section class="sb-blog-sidebar-box sb-blog-sidebar-box--promo" aria-label="{{ promo_title }}">
-            {% if promo_title != blank %}
-              <h3 class="sb-blog-sidebar-box__promo-title font-callout weight-bold">{{ promo_title }}</h3>
-            {% endif %}
-
-            {% if promo_text != blank %}
-              <p class="sb-blog-sidebar-box__promo-text font-body weight-regular">{{ promo_text }}</p>
-            {% endif %}
-
-            {% if promo_button_label != blank and promo_button_link != blank %}
-              <a class="sb-blog-sidebar-box__promo-button font-caption weight-bold" href="{{ promo_button_link }}">
-                {{ promo_button_label }}
-              </a>
-            {% elsif promo_button_label != blank %}
-              <span class="sb-blog-sidebar-box__promo-button font-caption weight-bold">
-                {{ promo_button_label }}
-              </span>
-            {% endif %}
-          </section>
-        {% endif %}
-      {% endcapture %}
-
-      {% liquid
-        assign sidebar_box_one_markup = sidebar_box_one_markup | strip
-        assign sidebar_box_two_markup = sidebar_box_two_markup | strip
       %}
 
       <div class="sb-blog-overview__layout">
@@ -182,12 +90,6 @@
                 {% endfor %}
               </div>
 
-              {% if sidebar_box_one_markup != blank and has_three_articles %}
-                <div class="sb-blog-overview__mobile-insert" aria-label="{{ popular_heading }}">
-                  {{ sidebar_box_one_markup }}
-                </div>
-              {% endif %}
-
               <div class="sb-blog-overview__row sb-blog-overview__row--third" data-sb-third-row-anchor>
                 {% for article in blog.articles limit: 3 offset: 3 %}
                   {% render 'sb-blog-overview-article-card',
@@ -210,48 +112,10 @@
                 {% endfor %}
               </div>
 
-              {% if sidebar_box_two_markup != blank and has_three_articles %}
-                <div class="sb-blog-overview__mobile-insert" aria-label="{{ section.settings.sidebar_promo_title }}">
-                  {{ sidebar_box_two_markup }}
-                </div>
-              {% endif %}
-
             </div>
           {% endif %}
 
         </div>
-
-        <aside class="sb-blog-overview__sidebar" aria-label="{{ 'sb.blog.sidebar_content' | t }}">
-          <div
-            class="sb-blog-overview__sidebar-stack{% if sidebar_box_one_markup != blank and sidebar_box_two_markup != blank %} sb-blog-overview__sidebar-stack--handoff{% endif %}"
-            data-sb-blog-sidebar-stack
-          >
-            {% if sidebar_box_one_markup != blank and sidebar_box_two_markup != blank %}
-              <div class="sb-blog-overview__sidebar-phase sb-blog-overview__sidebar-phase--1" data-sb-sidebar-phase-1>
-                <div class="sb-blog-overview__sidebar-card-wrap" data-sb-sidebar-sticky-card>
-                  {{ sidebar_box_one_markup }}
-                </div>
-              </div>
-              <div class="sb-blog-overview__sidebar-phase sb-blog-overview__sidebar-phase--2" data-sb-sidebar-phase-2>
-                <div class="sb-blog-overview__sidebar-card-wrap" data-sb-sidebar-sticky-card>
-                  {{ sidebar_box_two_markup }}
-                </div>
-              </div>
-            {% elsif sidebar_box_one_markup != blank %}
-              <div class="sb-blog-overview__sidebar-phase sb-blog-overview__sidebar-phase--1" data-sb-sidebar-phase-1>
-                <div class="sb-blog-overview__sidebar-card-wrap" data-sb-sidebar-sticky-card>
-                  {{ sidebar_box_one_markup }}
-                </div>
-              </div>
-            {% elsif sidebar_box_two_markup != blank %}
-              <div class="sb-blog-overview__sidebar-phase sb-blog-overview__sidebar-phase--1" data-sb-sidebar-phase-1>
-                <div class="sb-blog-overview__sidebar-card-wrap" data-sb-sidebar-sticky-card>
-                  {{ sidebar_box_two_markup }}
-                </div>
-              </div>
-            {% endif %}
-          </div>
-        </aside>
       </div>
 
     {% endpaginate %}
