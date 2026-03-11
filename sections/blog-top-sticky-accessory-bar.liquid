@@ -450,7 +450,7 @@
 </section>
 
 {% stylesheet %}
-  #header-group + .shopify-section[id*='template--']:has(> .sb-blog-top-sticky-accessory-bar),
+  #header-group ~ .shopify-section[id*='template--']:has(> .sb-blog-top-sticky-accessory-bar),
   .shopify-section.shopify-section-group-header-group ~ .shopify-section[id*='template--']:has(> .sb-blog-top-sticky-accessory-bar),
   .shopify-section:has(> .header) ~ .shopify-section[id*='template--']:has(> .sb-blog-top-sticky-accessory-bar),
   .shopify-section:has(> .sb-blog-top-sticky-accessory-bar) {
@@ -463,9 +463,9 @@
     z-index: 49;
   }
 
-  #header-group:has(#header-component[data-sticky-mode='always']) + .shopify-section[id*='template--']:has(> .sb-blog-top-sticky-accessory-bar),
+  #header-group:has(#header-component[data-sticky-mode='always']) ~ .shopify-section[id*='template--']:has(> .sb-blog-top-sticky-accessory-bar),
   #header-group:has(#header-component[data-sticky-mode='scroll-up'][data-sticky-state='active'])
-    + .shopify-section[id*='template--']:has(> .sb-blog-top-sticky-accessory-bar) {
+    ~ .shopify-section[id*='template--']:has(> .sb-blog-top-sticky-accessory-bar) {
     top: var(--sb-header-height);
   }
 

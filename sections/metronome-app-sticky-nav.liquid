@@ -21,7 +21,7 @@
 </section>
 
 {% stylesheet %}
-  #header-group + .shopify-section[id*='template--']:has(> .sb-metronome-app-sticky-nav),
+  #header-group ~ .shopify-section[id*='template--']:has(> .sb-metronome-app-sticky-nav),
   .shopify-section.shopify-section-group-header-group ~ .shopify-section[id*='template--']:has(> .sb-metronome-app-sticky-nav),
   .shopify-section:has(> .header) ~ .shopify-section[id*='template--']:has(> .sb-metronome-app-sticky-nav),
   .shopify-section:has(> .sb-metronome-app-sticky-nav) {
@@ -69,9 +69,9 @@
       z-index: 49;
     }
 
-    #header-group:has(#header-component[data-sticky-mode='always']) + .shopify-section[id*='template--']:has(> .sb-metronome-app-sticky-nav),
+    #header-group:has(#header-component[data-sticky-mode='always']) ~ .shopify-section[id*='template--']:has(> .sb-metronome-app-sticky-nav),
     #header-group:has(#header-component[data-sticky-mode='scroll-up'][data-sticky-state='active'])
-      + .shopify-section[id*='template--']:has(> .sb-metronome-app-sticky-nav) {
+      ~ .shopify-section[id*='template--']:has(> .sb-metronome-app-sticky-nav) {
       top: var(--sb-header-height);
     }
 
