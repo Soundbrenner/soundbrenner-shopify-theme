@@ -87,18 +87,18 @@
           "type": "divider",
           "settings": {}
         },
-        "subheading_QhB4a6": {
+        "subheading_GQMQBy": {
           "type": "subheading",
           "settings": {
-            "heading": "In the box Core 2"
+            "heading": "In the box"
           }
         },
         "image_grid_4fY4mP": {
           "type": "image_grid",
           "settings": {
             "fetch_whats_in_the_box_from_product": true,
-            "hide_accordion_and_title": true,
-            "accordion_title": "In the box",
+            "hide_accordion_and_title": false,
+            "accordion_title": "Core 2",
             "source_metaobject": "core-2-stone-gray",
             "item_1_text": "Item 1",
             "item_2_text": "Item 2",
@@ -111,22 +111,12 @@
             "item_9_text": ""
           }
         },
-        "divider_jQ6mVx": {
-          "type": "divider",
-          "settings": {}
-        },
-        "heading_small_Fm2iKk": {
-          "type": "subheading",
-          "settings": {
-            "heading": "In the box Core Steel 2"
-          }
-        },
         "image_grid_p9DgQa": {
           "type": "image_grid",
           "settings": {
             "fetch_whats_in_the_box_from_product": true,
-            "hide_accordion_and_title": true,
-            "accordion_title": "In the box",
+            "hide_accordion_and_title": false,
+            "accordion_title": "Core Steel 2",
             "source_metaobject": "core-steel-2-jet-black",
             "item_1_text": "Item 1",
             "item_2_text": "Item 2",
@@ -139,22 +129,12 @@
             "item_9_text": ""
           }
         },
-        "divider_zR4pLd": {
-          "type": "divider",
-          "settings": {}
-        },
-        "heading_small_HQzjNP": {
-          "type": "subheading",
-          "settings": {
-            "heading": "In the box Spark"
-          }
-        },
         "image_grid_8fFLQn": {
           "type": "image_grid",
           "settings": {
             "fetch_whats_in_the_box_from_product": true,
-            "hide_accordion_and_title": true,
-            "accordion_title": "In the box",
+            "hide_accordion_and_title": false,
+            "accordion_title": "Spark",
             "source_metaobject": "spark-berry-blue",
             "item_1_text": "Item 1",
             "item_2_text": "Item 2",
@@ -166,10 +146,6 @@
             "item_8_text": "",
             "item_9_text": ""
           }
-        },
-        "divider_3": {
-          "type": "divider",
-          "settings": {}
         },
         "subheading_sH2mX4": {
           "type": "subheading",
@@ -1210,15 +1186,10 @@
         "body_2",
         "vimeo_video_YefAQq",
         "divider_2",
-        "subheading_QhB4a6",
+        "subheading_GQMQBy",
         "image_grid_4fY4mP",
-        "divider_jQ6mVx",
-        "heading_small_Fm2iKk",
         "image_grid_p9DgQa",
-        "divider_zR4pLd",
-        "heading_small_HQzjNP",
         "image_grid_8fFLQn",
-        "divider_3",
         "subheading_sH2mX4",
         "tech_specs_item_core2_1",
         "tech_specs_item_core2_2",
