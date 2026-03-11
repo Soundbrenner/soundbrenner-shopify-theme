@@ -2,7 +2,7 @@
   assign posts_per_page = 9
 %}
 
-<section class="sb-blog-overview">
+<section class="sb-blog-overview sb-blog-overview--new-products-and-events">
   <div class="sb-blog-overview__inner">
     {% paginate blog.articles by posts_per_page %}
       {% liquid
@@ -286,7 +286,7 @@
     margin: 0;
   }
 
-  .sb-blog-overview__layout {
+  .sb-blog-overview--new-products-and-events .sb-blog-overview__layout {
     display: block;
   }
 
@@ -556,7 +556,7 @@
     }
   }
 
-  .sb-blog-overview__sidebar {
+  .sb-blog-overview--new-products-and-events .sb-blog-overview__sidebar {
     display: none !important;
   }
 
@@ -878,7 +878,7 @@
       margin-bottom: 0;
     }
 
-    .sb-blog-overview__archive-insert {
+    .sb-blog-overview--new-products-and-events .sb-blog-overview__archive-insert {
       display: none !important;
       margin: 0;
     }
@@ -983,7 +983,7 @@
       display: none !important;
     }
 
-    .sb-blog-overview__mobile-insert {
+    .sb-blog-overview--new-products-and-events .sb-blog-overview__mobile-insert {
       display: none !important;
       margin-bottom: 0;
     }
