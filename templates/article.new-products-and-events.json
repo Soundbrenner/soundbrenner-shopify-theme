@@ -1,0 +1,61 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-blog-post",
+      "settings": {
+        "sidebar_promo_title": "The Metronome app by Soundbrenner",
+        "sidebar_promo_text": "Make music practice addictive. Try it free.",
+        "sidebar_promo_button_label": "Learn more",
+        "sidebar_promo_button_link": "",
+        "about_box_content": "<p><strong>About Soundbrenner</strong></p><p>We're on a mission to make music practice addictive. Our products are the ultimate companion for every practice session. And they're made for you. We serve all musicians, across all instruments and from beginners to professionals. Click&nbsp;<a href=\"/collections/all\" title=\"Soundbrenner shop\">here</a>&nbsp;to learn more.<br/><br/>Do you have a question about Soundbrenner&nbsp;or our products? <a href=\"/pages/contact-us\" title=\"Contact us\">Contact us</a>, we'd love to hear from you!</p>"
+      }
+    },
+    "seasonal_hero": {
+      "type": "hero-card",
+      "settings": {
+        "use_seasonal_hero_card": false,
+        "use_resource_title_description": false,
+        "use_product_page_metaobjects": false,
+        "background_image_desktop": "shopify://shop_images/Property_1_The_Metronome_1.jpg",
+        "background_image_mobile": "shopify://shop_images/Property_1_The_Metronome_1_mobile.jpg",
+        "kicker": "The Metronome app",
+        "headline": "Make music practice addictive. Try it free.",
+        "subheadline": "",
+        "show_button": true,
+        "button_label": "Learn more",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": "shopify://pages/the-metronome-app",
+        "show_app_download_qr": false,
+        "show_app_download_app_store": true,
+        "show_app_download_google_play": true,
+        "show_app_download_china": false
+      }
+    },
+    "often_bought_together": {
+      "type": "often-bought-together",
+      "settings": {
+        "title": "Bestsellers",
+        "use_manual_products": true,
+        "manual_product_1": "wave-in-ear-monitors",
+        "manual_product_2": "wave-pro-in-ear-monitors",
+        "manual_product_3": "pulse-vibrating-metronome",
+        "manual_product_4": "core-2-practice-companion"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "seasonal_hero",
+    "often_bought_together"
+  ]
+}
