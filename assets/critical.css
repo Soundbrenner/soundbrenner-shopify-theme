@@ -1646,38 +1646,6 @@ video.sb-product-main__media-asset {
   --sb-button-hover-lift: -2px;
 }
 
-.sb-button-radiant--shop-pay {
-  background: var(--sb-color-shop-pay-500) !important;
-  border-color: var(--sb-color-shop-pay-500) !important;
-  box-shadow:
-    0 -10px 20px 0 var(--sb-color-shop-pay-500-25),
-    0 0 0 1px var(--sb-color-shop-pay-700) inset,
-    0 -20px 20px 0 var(--sb-color-always-white-50) inset,
-    0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
-}
-
-.sb-button-radiant--shop-pay:focus-visible {
-  box-shadow:
-    0 -18px 30px 0 var(--sb-color-shop-pay-500-25),
-    0 -6px 14px 0 var(--sb-color-shop-pay-500-25),
-    0 -10px 20px 0 var(--sb-color-shop-pay-500-25),
-    0 0 0 1px var(--sb-color-shop-pay-700) inset,
-    0 -20px 20px 0 var(--sb-color-always-white-50) inset,
-    0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .sb-button-radiant--shop-pay:hover {
-    box-shadow:
-      0 -18px 30px 0 var(--sb-color-shop-pay-500-25),
-      0 -6px 14px 0 var(--sb-color-shop-pay-500-25),
-      0 -10px 20px 0 var(--sb-color-shop-pay-500-25),
-      0 0 0 1px var(--sb-color-shop-pay-700) inset,
-      0 -20px 20px 0 var(--sb-color-always-white-50) inset,
-      0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
-  }
-}
-
 .sb-button-radiant--blue {
   --sb-button-radiant-bg: var(--sb-color-blue-500);
   --sb-button-radiant-border: var(--sb-color-blue-500);
@@ -1720,28 +1688,6 @@ video.sb-product-main__media-asset {
     }
   }
 
-  .sb-button-radiant--shop-pay:focus-visible {
-    box-shadow:
-      0 -12px 20px 0 var(--sb-color-shop-pay-500-25),
-      0 -4px 10px 0 var(--sb-color-shop-pay-500-25),
-      0 -8px 14px 0 var(--sb-color-shop-pay-500-25),
-      0 0 0 1px var(--sb-color-shop-pay-700) inset,
-      0 -14px 14px 0 var(--sb-color-always-white-50) inset,
-      0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .sb-button-radiant--shop-pay:hover {
-      box-shadow:
-        0 -12px 20px 0 var(--sb-color-shop-pay-500-25),
-        0 -4px 10px 0 var(--sb-color-shop-pay-500-25),
-        0 -8px 14px 0 var(--sb-color-shop-pay-500-25),
-        0 0 0 1px var(--sb-color-shop-pay-700) inset,
-        0 -14px 14px 0 var(--sb-color-always-white-50) inset,
-        0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
-    }
-  }
-
   .sb-button-radiant--medium {
     --sb-button-hover-lift: -2px;
   }
@@ -1771,30 +1717,6 @@ video.sb-product-main__media-asset {
         0 -6px 14px 0 var(--sb-button-radiant-hover-glow, var(--sb-color-primary-300-25)),
         0 -10px 20px 0 var(--sb-button-radiant-glow, var(--sb-color-primary-500-25)),
         0 0 0 1px var(--sb-button-radiant-ring, var(--sb-color-primary-700)) inset,
-        0 -20px 20px 0 var(--sb-color-always-white-50) inset,
-        0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
-      transform: translateY(var(--sb-button-hover-lift));
-    }
-  }
-
-  .sb-button-radiant--medium.sb-button-radiant--shop-pay:focus-visible {
-    box-shadow:
-      0 -18px 30px 0 var(--sb-color-shop-pay-500-25),
-      0 -6px 14px 0 var(--sb-color-shop-pay-500-25),
-      0 -10px 20px 0 var(--sb-color-shop-pay-500-25),
-      0 0 0 1px var(--sb-color-shop-pay-700) inset,
-      0 -20px 20px 0 var(--sb-color-always-white-50) inset,
-      0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
-    transform: translateY(var(--sb-button-hover-lift));
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .sb-button-radiant--medium.sb-button-radiant--shop-pay:hover {
-      box-shadow:
-        0 -18px 30px 0 var(--sb-color-shop-pay-500-25),
-        0 -6px 14px 0 var(--sb-color-shop-pay-500-25),
-        0 -10px 20px 0 var(--sb-color-shop-pay-500-25),
-        0 0 0 1px var(--sb-color-shop-pay-700) inset,
         0 -20px 20px 0 var(--sb-color-always-white-50) inset,
         0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
       transform: translateY(var(--sb-button-hover-lift));
@@ -1836,29 +1758,6 @@ video.sb-product-main__media-asset {
     }
   }
 
-  .sb-button-radiant--large.sb-button-radiant--shop-pay:focus-visible {
-    box-shadow:
-      0 -18px 30px 0 var(--sb-color-shop-pay-500-25),
-      0 -6px 14px 0 var(--sb-color-shop-pay-500-25),
-      0 -10px 20px 0 var(--sb-color-shop-pay-500-25),
-      0 0 0 1px var(--sb-color-shop-pay-700) inset,
-      0 -20px 20px 0 var(--sb-color-always-white-50) inset,
-      0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
-    transform: translateY(var(--sb-button-hover-lift));
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .sb-button-radiant--large.sb-button-radiant--shop-pay:hover {
-      box-shadow:
-        0 -18px 30px 0 var(--sb-color-shop-pay-500-25),
-        0 -6px 14px 0 var(--sb-color-shop-pay-500-25),
-        0 -10px 20px 0 var(--sb-color-shop-pay-500-25),
-        0 0 0 1px var(--sb-color-shop-pay-700) inset,
-        0 -20px 20px 0 var(--sb-color-always-white-50) inset,
-        0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
-      transform: translateY(var(--sb-button-hover-lift));
-    }
-  }
 }
 
 @media (hover: none), (pointer: coarse) {
@@ -1877,17 +1776,6 @@ video.sb-product-main__media-asset {
     transform: translateY(var(--sb-button-hover-lift));
   }
 
-  .sb-button-radiant--medium.sb-button-radiant--shop-pay:focus-visible {
-    box-shadow:
-      0 -18px 30px 0 var(--sb-color-shop-pay-500-25),
-      0 -6px 14px 0 var(--sb-color-shop-pay-500-25),
-      0 -10px 20px 0 var(--sb-color-shop-pay-500-25),
-      0 0 0 1px var(--sb-color-shop-pay-700) inset,
-      0 -20px 20px 0 var(--sb-color-always-white-50) inset,
-      0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
-    transform: translateY(var(--sb-button-hover-lift));
-  }
-
   .sb-button-radiant--large:focus-visible {
     box-shadow:
       0 -18px 30px 0 var(--sb-button-radiant-hover-glow, var(--sb-color-primary-300-25)),
@@ -1899,16 +1787,6 @@ video.sb-product-main__media-asset {
     transform: translateY(var(--sb-button-hover-lift));
   }
 
-  .sb-button-radiant--large.sb-button-radiant--shop-pay:focus-visible {
-    box-shadow:
-      0 -18px 30px 0 var(--sb-color-shop-pay-500-25),
-      0 -6px 14px 0 var(--sb-color-shop-pay-500-25),
-      0 -10px 20px 0 var(--sb-color-shop-pay-500-25),
-      0 0 0 1px var(--sb-color-shop-pay-700) inset,
-      0 -20px 20px 0 var(--sb-color-always-white-50) inset,
-      0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
-    transform: translateY(var(--sb-button-hover-lift));
-  }
 }
 
 .sb-button-radiant__label,
