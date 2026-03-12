@@ -206,10 +206,11 @@
     })();
   </script>
 {% else %}
-  <div class="sb-hero-card-section" data-sb-reveal>
+  <div class="sb-hero-card-section" data-sb-motion="reveal">
     <div
       class="sb-framing-card{% if hero_card_product_mode %} sb-framing-card--product-mode{% endif %}"
-      data-sb-reveal-item
+      data-sb-motion-item
+
       {% if hero_card_product_mode %}
         data-hero-card-product-mode
         data-product-id="{{ product.id }}"

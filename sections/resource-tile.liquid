@@ -1,4 +1,4 @@
-<div class="sb-resource-tile" data-sb-reveal>
+<div class="sb-resource-tile">
   {% if section.settings.title != blank %}
     <h2 class="sb-resource-tile__title font-title weight-bold">{{ section.settings.title }}</h2>
   {% endif %}
@@ -11,7 +11,7 @@
         {% assign tile_href = '#' %}
       {% endif %}
 
-      <article class="sb-resource-tile__item" data-sb-reveal-item {{ block.shopify_attributes }}>
+      <article class="sb-resource-tile__item" {{ block.shopify_attributes }}>
         <a class="sb-resource-tile__link" href="{{ tile_href }}">
           <div class="sb-resource-tile__media">
             {% if block.settings.image != blank %}

@@ -42,9 +42,9 @@
     })();
   </script>
 {% else %}
-  <section class="sb-top-feature-highlights" id="sb-top-feature-highlights-{{ section.id }}" data-sb-reveal>
+  <section class="sb-top-feature-highlights" id="sb-top-feature-highlights-{{ section.id }}" data-sb-motion="reveal" data-sb-motion-item>
     {% if section_title != blank %}
-      <h2 class="sb-top-feature-highlights__title font-title weight-bold" data-sb-reveal-item>
+      <h2 class="sb-top-feature-highlights__title font-title weight-bold">
         {{ section_title }}
       </h2>
     {% endif %}
@@ -100,7 +100,7 @@
               <article
                 class="sb-top-feature-highlights__item"
                 style="--sb-highlight-gradient: {{ usp_gradient }}; --sb-highlight-mask-url: url('{{ icon_url }}');"
-                data-sb-reveal-item
+
               >
                 <div class="sb-top-feature-highlights__icon" aria-hidden="true">
                   <span class="sb-top-feature-highlights__icon-glyph"></span>
@@ -129,7 +129,7 @@
           <article
             class="sb-top-feature-highlights__item"
             style="--sb-highlight-gradient: {{ block.settings.gradient_value }}; --sb-highlight-mask-url: url('{{ icon_url }}');"
-            data-sb-reveal-item
+
             {{ block.shopify_attributes }}
           >
             <div class="sb-top-feature-highlights__icon" aria-hidden="true">

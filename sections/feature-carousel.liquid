@@ -53,9 +53,10 @@
     })();
   </script>
 {% else %}
-  <section class="sb-feature-carousel" data-sb-carousel data-sb-reveal>
+  <section class="sb-feature-carousel" data-sb-carousel data-sb-motion="reveal">
+    <div class="sb-feature-carousel__motion" data-sb-motion-item>
     {% if section_title != blank %}
-      <h2 class="sb-feature-carousel__title font-title weight-bold" data-sb-reveal-item>{{ section_title }}</h2>
+      <h2 class="sb-feature-carousel__title font-title weight-bold">{{ section_title }}</h2>
     {% endif %}
 
     <div class="sb-feature-carousel__viewport" data-sb-carousel-viewport>
@@ -143,13 +144,19 @@
               endif
 
               assign item_alt = item_image.alt | default: item_info | strip_html | strip
+              assign item_media_loading = 'lazy'
+              assign item_video_preload = 'metadata'
+              if request.page_type == 'product' and forloop.index <= 2 and item_video_use_iframe == false
+                assign item_media_loading = 'eager'
+                assign item_video_preload = 'auto'
+              endif
             %}
 
             {% if item_info == blank and item_image_url == blank and item_video_url == blank %}
               {% continue %}
             {% endif %}
 
-            <article class="sb-feature-carousel__item" data-sb-carousel-item data-sb-reveal-item>
+            <article class="sb-feature-carousel__item" data-sb-carousel-item>
               <div class="sb-feature-carousel__media">
                 {% if item_video_url != blank %}
                   {% if item_video_use_iframe and item_video_embed_url != blank %}
@@ -168,7 +175,7 @@
                       loop
                       muted
                       playsinline
-                      preload="metadata"
+                      preload="{{ item_video_preload }}"
                       {% if item_image_url != blank %}
                         poster="{{ item_image_url }}"
                       {% endif %}
@@ -180,7 +187,7 @@
                   <img
                     src="{{ item_image_url }}"
                     alt="{{ item_alt | default: feature_media_alt_fallback | escape }}"
-                    loading="lazy"
+                    loading="{{ item_media_loading }}"
                     width="283"
                     height="283"
                   >
@@ -189,7 +196,7 @@
                   <img
                     src="{{ 'placeholder-feature-carousel.jpg' | asset_url }}"
                     alt="{{ item_alt | default: feature_media_alt_fallback | escape }}"
-                    loading="lazy"
+                    loading="{{ item_media_loading }}"
                     width="283"
                     height="283"
                   >
@@ -206,6 +213,12 @@
           {% for block in section.blocks %}
             {% assign item_image = block.settings.image %}
             {% assign item_video = block.settings.video %}
+            {% assign item_media_loading = 'lazy' %}
+            {% assign item_video_preload = 'metadata' %}
+            {% if request.page_type == 'product' and forloop.index <= 2 %}
+              {% assign item_media_loading = 'eager' %}
+              {% assign item_video_preload = 'auto' %}
+            {% endif %}
             {% if item_image != blank %}
               {% assign item_image_request_width = item_image.width | at_most: 864 %}
               {% assign item_image_url = item_image | image_url: width: item_image_request_width %}
@@ -213,7 +226,7 @@
               {% assign item_image_url = 'placeholder-feature-carousel.jpg' | asset_url %}
             {% endif %}
 
-            <article class="sb-feature-carousel__item" data-sb-carousel-item data-sb-reveal-item {{ block.shopify_attributes }}>
+            <article class="sb-feature-carousel__item" data-sb-carousel-item {{ block.shopify_attributes }}>
               <div class="sb-feature-carousel__media">
                 {% if item_video != blank %}
                   {{
@@ -226,14 +239,14 @@
                       muted: true,
                       playsinline: true,
                       image_size: '864x',
-                      preload: 'metadata'
+                      preload: item_video_preload
                   }}
                 {% else %}
                   {% # theme-check-disable RemoteAsset %}
                   <img
                     src="{{ item_image_url }}"
                     alt="{{ item_image.alt | default: block.settings.body | strip_html | truncate: 80 | escape }}"
-                    loading="lazy"
+                    loading="{{ item_media_loading }}"
                     width="283"
                     height="283"
                   >
@@ -262,6 +275,7 @@
         </span>
       </button>
     </div>
+    </div>
   </section>
 {% endif %}
 
@@ -269,6 +283,10 @@
   .sb-feature-carousel {
     --sb-carousel-gap: var(--sb-space-36);
     --sb-carousel-bleed-inline: var(--page-margin);
+    width: 100%;
+  }
+
+  .sb-feature-carousel__motion {
     width: 100%;
   }
 
@@ -312,7 +330,7 @@
   }
 
   .sb-feature-carousel__media {
-    background: var(--sb-color-neutral-200);
+    background: transparent;
     border-radius: 24px;
     box-shadow: 0 0 10px 0 var(--sb-color-always-black-12);
     overflow: hidden;

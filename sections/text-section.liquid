@@ -1,29 +1,29 @@
-<section class="sb-text-section" data-sb-reveal>
-  <div class="sb-text-section__content">
+<section class="sb-text-section" data-sb-motion="reveal">
+  <div class="sb-text-section__content" data-sb-motion-item>
     {% for block in section.blocks %}
       {% case block.type %}
         {% when 'header_large' %}
           {% if block.settings.heading != blank %}
-            <h2 class="sb-text-section__header-large font-title weight-bold" data-sb-reveal-item {{ block.shopify_attributes }}>
+            <h2 class="sb-text-section__header-large font-title weight-bold" {{ block.shopify_attributes }}>
               {{ block.settings.heading }}
             </h2>
           {% endif %}
 
         {% when 'body' %}
           {% if block.settings.text != blank %}
-            <div class="sb-text-section__body font-body weight-regular rte{% if block.settings.disable_link_color %} sb-text-section__body--neutral-links{% endif %}" data-sb-reveal-item {{ block.shopify_attributes }}>
+            <div class="sb-text-section__body font-body weight-regular rte{% if block.settings.disable_link_color %} sb-text-section__body--neutral-links{% endif %}" {{ block.shopify_attributes }}>
               {% render 'localized-richtext-links', content: block.settings.text %}
             </div>
           {% endif %}
 
         {% when 'divider' %}
-          <div class="sb-text-section__divider-wrap" data-sb-reveal-item {{ block.shopify_attributes }}>
+          <div class="sb-text-section__divider-wrap" {{ block.shopify_attributes }}>
             <hr class="sb-text-section__divider">
           </div>
 
         {% when 'button' %}
           {% if block.settings.label != blank %}
-            <div class="sb-text-section__button-wrap" data-sb-reveal-item {{ block.shopify_attributes }}>
+            <div class="sb-text-section__button-wrap" {{ block.shopify_attributes }}>
               {% render 'radiant-button',
                 label: block.settings.label,
                 link: block.settings.link,
@@ -34,7 +34,7 @@
           {% endif %}
 
         {% when 'social_icons' %}
-          <div class="sb-text-section__social" data-sb-reveal-item {{ block.shopify_attributes }}>
+          <div class="sb-text-section__social" {{ block.shopify_attributes }}>
             <a class="sb-text-section__social-link" href="https://www.instagram.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="{{ 'sb.social.instagram' | t }}">
               {{ 'social-media-instagram.svg' | inline_asset_content }}
             </a>

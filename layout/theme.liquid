@@ -1311,6 +1311,8 @@
 
     {% # Load and preload the critical CSS %}
     {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'motion.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'section-motion.js' | asset_url }}" defer></script>
     <script src="{{ 'product-thumbnail-section-init.js' | asset_url }}" defer></script>
 
     {% # Social, title, etc. %}

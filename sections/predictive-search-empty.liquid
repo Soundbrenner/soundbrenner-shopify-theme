@@ -14,6 +14,7 @@
       <ul class="sb-search-shortcut-results__grid" role="list">
         {% for product in default_collection.products limit: 4 %}
           {% liquid
+            assign product_image_loading = 'eager'
             assign product_primary_media = blank
             if product.media != blank
               for product_media in product.media
@@ -127,7 +128,7 @@
                           widths: '120, 160, 200, 240, 320, 420, 584',
                           sizes: '(min-width: 990px) 160px, 30vw',
                           class: 'sb-search-shortcut-card__image sb-search-shortcut-card__image--primary',
-                          loading: 'lazy',
+                          loading: product_image_loading,
                           alt: product.title
                       }}
                       {% if product_hover_image_url != blank %}

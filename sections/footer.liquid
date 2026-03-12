@@ -27,8 +27,8 @@
   {% assign trustpilot_rating_text = section.settings.trustpilot_rating %}
 {% endif %}
 
-<footer class="sb-footer full-width{% if footer_is_metronome_app_page %} sb-footer--metronome-app-page{% endif %}{% if footer_is_product_page %} sb-footer--product-page{% endif %}{% if footer_is_product_page_segmented %} sb-footer--product-page-segmented{% else %}{% if footer_is_product_page %} sb-footer--product-page-standard{% endif %}{% endif %}" data-sb-reveal style="--sb-footer-newsletter-arrow-icon-url: url('{{ footer_newsletter_arrow_icon_url }}');">
-  <div class="sb-footer__masthead" data-sb-reveal-item style="--sb-reveal-delay: 0ms;" aria-hidden="true">
+<footer class="sb-footer full-width{% if footer_is_metronome_app_page %} sb-footer--metronome-app-page{% endif %}{% if footer_is_product_page %} sb-footer--product-page{% endif %}{% if footer_is_product_page_segmented %} sb-footer--product-page-segmented{% else %}{% if footer_is_product_page %} sb-footer--product-page-standard{% endif %}{% endif %}" style="--sb-footer-newsletter-arrow-icon-url: url('{{ footer_newsletter_arrow_icon_url }}');" data-sb-motion="reveal" data-sb-motion-item>
+  <div class="sb-footer__masthead" aria-hidden="true">
     <img
       class="sb-footer__masthead-image sb-footer__masthead-image--dark"
       src="{{ 'masthead-master-your-craft-dark.png' | asset_url }}"
@@ -47,7 +47,7 @@
     >
   </div>
 
-  <div class="sb-footer__card" data-sb-reveal-item style="--sb-reveal-delay: 60ms;">
+  <div class="sb-footer__card">
     <div class="sb-footer__glow" aria-hidden="true"></div>
 
     <div class="sb-footer__upper-row">
@@ -161,7 +161,7 @@
     </div>
   </div>
 
-  <div class="sb-footer__legal font-caption weight-regular" data-sb-reveal-item style="--sb-reveal-delay: 120ms;">
+  <div class="sb-footer__legal font-caption weight-regular">
     <p>{{ section.settings.legal_left }}</p>
     <div class="sb-footer__legal-links">
       {% if legal_menu != blank and legal_menu.links.size > 0 %}

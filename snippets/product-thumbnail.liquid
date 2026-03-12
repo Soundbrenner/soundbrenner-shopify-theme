@@ -106,6 +106,7 @@
   elsif thumbnail_static_media == 'false' or thumbnail_static_media == 0 or thumbnail_static_media == '0'
     assign thumbnail_static_media = false
   endif
+  assign thumbnail_image_loading = image_loading | default: 'lazy'
   assign selected_swatch_value = selected_swatch | default: 1 | plus: 0
   assign swatch_payload_entry_delimiter = '^^^sb-entry^^^'
   assign swatch_payload_field_delimiter = '^^^sb-field^^^'
@@ -570,7 +571,7 @@
           class="sb-product-thumbnail__image sb-product-thumbnail__media-item"
           src="{{ thumbnail_image | image_url: width: thumbnail_image_request_width }}"
           alt="{{ thumbnail_image.alt | default: thumbnail_name | escape }}"
-          loading="lazy"
+          loading="{{ thumbnail_image_loading }}"
           width="292"
           height="292"
         >

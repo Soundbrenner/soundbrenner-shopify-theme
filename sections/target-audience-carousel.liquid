@@ -44,17 +44,19 @@
     })();
   </script>
 {% else %}
-  <section class="sb-target-audience-carousel" data-sb-carousel data-sb-reveal>
+  <section class="sb-target-audience-carousel" data-sb-carousel data-sb-motion="reveal">
+    <div class="sb-target-audience-carousel__motion" data-sb-motion-item>
     {% if section_title != blank %}
-      <h2 class="sb-target-audience-carousel__title font-title weight-bold" data-sb-reveal-item>{{ section_title }}</h2>
+      <h2 class="sb-target-audience-carousel__title font-title weight-bold">{{ section_title }}</h2>
     {% endif %}
 
     {% if section_subtitle != blank %}
-      <p class="sb-target-audience-carousel__subtitle font-body weight-semibold" data-sb-reveal-item>{{ section_subtitle }}</p>
+      <p class="sb-target-audience-carousel__subtitle font-body weight-semibold">{{ section_subtitle }}</p>
     {% endif %}
 
     <div class="sb-target-audience-carousel__viewport" data-sb-carousel-viewport>
       <div class="sb-target-audience-carousel__track" data-sb-carousel-track>
+        {% assign rendered_member_count = 0 %}
         {% for item in member_items %}
           {% liquid
             assign member_entry = item.value | default: item.reference.value | default: item.reference | default: item
@@ -79,7 +81,15 @@
             {% continue %}
           {% endif %}
 
-          <article class="sb-target-audience-carousel__item" data-sb-carousel-item data-sb-reveal-item>
+          {% liquid
+            assign rendered_member_count = rendered_member_count | plus: 1
+            assign member_photo_loading = 'lazy'
+            if rendered_member_count <= 2
+              assign member_photo_loading = 'eager'
+            endif
+          %}
+
+          <article class="sb-target-audience-carousel__item" data-sb-carousel-item>
             {% if member_has_link %}
               <a
                 class="sb-target-audience-carousel__media-link"
@@ -89,15 +99,13 @@
               >
                 <div class="sb-target-audience-carousel__media">
                   {% if member_photo != blank %}
-                    {{
-                      member_photo
-                      | image_url: width: member_photo_request_width
-                      | image_tag:
-                        alt: member_name | default: member_subtitle,
-                        loading: 'lazy',
-                        width: 283,
-                        height: 283
-                    }}
+                    <img
+                      src="{{ member_photo | image_url: width: member_photo_request_width }}"
+                      alt="{{ member_name | default: member_subtitle | escape }}"
+                      loading="{{ member_photo_loading }}"
+                      width="283"
+                      height="283"
+                    >
                   {% else %}
                     <div class="sb-target-audience-carousel__media-placeholder" aria-hidden="true"></div>
                   {% endif %}
@@ -106,15 +114,13 @@
             {% else %}
               <div class="sb-target-audience-carousel__media">
                 {% if member_photo != blank %}
-                  {{
-                    member_photo
-                    | image_url: width: member_photo_request_width
-                    | image_tag:
-                      alt: member_name | default: member_subtitle,
-                      loading: 'lazy',
-                      width: 283,
-                      height: 283
-                  }}
+                  <img
+                    src="{{ member_photo | image_url: width: member_photo_request_width }}"
+                    alt="{{ member_name | default: member_subtitle | escape }}"
+                    loading="{{ member_photo_loading }}"
+                    width="283"
+                    height="283"
+                  >
                 {% else %}
                   <div class="sb-target-audience-carousel__media-placeholder" aria-hidden="true"></div>
                 {% endif %}
@@ -160,6 +166,7 @@
         </span>
       </button>
     </div>
+    </div>
   </section>
 {% endif %}
 
@@ -168,6 +175,10 @@
     --sb-carousel-gap: 36px;
     --sb-carousel-bleed-inline: var(--page-margin);
     --sb-carousel-hover-bleed-block: 0px;
+    width: 100%;
+  }
+
+  .sb-target-audience-carousel__motion {
     width: 100%;
   }
 

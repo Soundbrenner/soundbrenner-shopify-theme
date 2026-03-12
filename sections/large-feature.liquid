@@ -52,7 +52,7 @@
     })();
   </script>
 {% else %}
-  <section class="sb-large-feature" data-sb-reveal>
+  <section class="sb-large-feature">
     <div class="sb-large-feature__stack">
       {% if use_product_metaobjects %}
         {% for feature_item in meta_feature_items %}
@@ -137,8 +137,8 @@
             {% continue %}
           {% endif %}
 
-          <div class="sb-large-feature__layout {% if feature_media_right %}sb-large-feature__layout--media-right{% endif %}">
-            <div class="sb-large-feature__media" data-sb-reveal-item>
+          <div class="sb-large-feature__layout {% if feature_media_right %}sb-large-feature__layout--media-right{% endif %}" data-sb-motion="reveal" data-sb-motion-item>
+            <div class="sb-large-feature__media">
               {% if feature_video_media != blank %}
                 {{
                   feature_video_media
@@ -175,7 +175,7 @@
               {% endif %}
             </div>
 
-            <div class="sb-large-feature__content" data-sb-reveal-item>
+            <div class="sb-large-feature__content">
               {% if feature_title_primary != blank or feature_title_accent != blank %}
                 <h2 class="sb-large-feature__title font-title weight-bold">
                   {% if feature_title_primary != blank %}
@@ -224,8 +224,8 @@
           </div>
         {% endfor %}
       {% else %}
-        <div class="sb-large-feature__layout {% if section.settings.media_position == 'right' %}sb-large-feature__layout--media-right{% endif %}">
-          <div class="sb-large-feature__media" data-sb-reveal-item>
+        <div class="sb-large-feature__layout {% if section.settings.media_position == 'right' %}sb-large-feature__layout--media-right{% endif %}" data-sb-motion="reveal" data-sb-motion-item>
+          <div class="sb-large-feature__media">
             {% assign media_alt = section.settings.media.alt | default: section.settings.title_part_one | strip %}
             {% if media_alt == blank %}
               {% assign media_alt = 'sb.large_feature.image_alt' | t %}
@@ -266,7 +266,7 @@
             {% endif %}
           </div>
 
-          <div class="sb-large-feature__content" data-sb-reveal-item>
+          <div class="sb-large-feature__content">
             {% if section.settings.show_icon_and_kicker %}
               {% assign large_feature_kicker_text = section.settings.kicker_text | default: large_feature_kicker_fallback %}
               {% if section.settings.kicker_icon != blank %}

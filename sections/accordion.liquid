@@ -143,11 +143,11 @@
     })();
   </script>
 {% else %}
-  <section class="sb-accordion{% if section_media != blank %} sb-accordion--with-media{% endif %}" id="sb-accordion-{{ section.id }}">
-    <div class="sb-accordion__intro" data-sb-reveal>
-      <h2 class="sb-accordion__title font-title weight-bold" data-sb-reveal-item>{{ section_title }}</h2>
+  <section class="sb-accordion{% if section_media != blank %} sb-accordion--with-media{% endif %}" id="sb-accordion-{{ section.id }}" data-sb-motion="reveal" data-sb-motion-item>
+    <div class="sb-accordion__intro">
+      <h2 class="sb-accordion__title font-title weight-bold">{{ section_title }}</h2>
       {% if section.settings.show_subtitle %}
-        <p class="sb-accordion__subtitle font-body weight-semibold" data-sb-reveal-item>
+        <p class="sb-accordion__subtitle font-body weight-semibold">
           {{ 'sb.accordion.contact_prompt_html' | t: url: contact_page_url }}
         </p>
       {% endif %}
@@ -155,7 +155,7 @@
 
     <div class="sb-accordion__layout{% if section_media != blank %} sb-accordion__layout--with-media{% endif %}">
       {% if section_media != blank %}
-        <div class="sb-accordion__media-wrap" data-sb-reveal>
+        <div class="sb-accordion__media-wrap">
           {% assign section_media_width = section_media.width | default: 2400 %}
           {{
             section_media
@@ -207,13 +207,13 @@
                   {% continue %}
                 {% endif %}
 
-                <article class="sb-accordion__item" data-sb-reveal>
+                <article class="sb-accordion__item">
                   <button
                     type="button"
                     class="sb-accordion__trigger"
                     aria-expanded="false"
                     data-accordion-trigger
-                    data-sb-reveal-item
+
                   >
                     <span class="sb-accordion__question font-body weight-bold">{{ group_title }}</span>
                     <span class="sb-accordion__icon" aria-hidden="true">
@@ -221,7 +221,7 @@
                       <span class="sb-accordion__icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
                     </span>
                   </button>
-                  <div class="sb-accordion__answer sb-accordion__answer--tech-specs" data-accordion-answer data-sb-reveal-item>
+                  <div class="sb-accordion__answer sb-accordion__answer--tech-specs" data-accordion-answer>
                     {% for raw_line in group_items %}
                       {% liquid
                         assign line_entry = raw_line.value | default: raw_line.reference.value | default: raw_line.reference | default: raw_line
@@ -242,17 +242,17 @@
                       </div>
                     {% endfor %}
                   </div>
-                  <hr class="sb-accordion__divider" data-sb-reveal-item>
+                  <hr class="sb-accordion__divider">
                 </article>
               {% endfor %}
             {% else %}
-              <article class="sb-accordion__item" data-sb-reveal>
+              <article class="sb-accordion__item">
                 <button
                   type="button"
                   class="sb-accordion__trigger"
                   aria-expanded="false"
                   data-accordion-trigger
-                  data-sb-reveal-item
+
                 >
                     <span class="sb-accordion__question font-body weight-bold">{{ tech_specs_title | default: tech_specs_fallback_title }}</span>
                   <span class="sb-accordion__icon" aria-hidden="true">
@@ -260,7 +260,7 @@
                     <span class="sb-accordion__icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
                   </span>
                 </button>
-                <div class="sb-accordion__answer sb-accordion__answer--tech-specs" data-accordion-answer data-sb-reveal-item>
+                <div class="sb-accordion__answer sb-accordion__answer--tech-specs" data-accordion-answer>
                   {% for raw_item in tech_specs_items %}
                     {% liquid
                       assign item_entry = raw_item.value | default: raw_item.reference.value | default: raw_item.reference | default: raw_item
@@ -281,7 +281,7 @@
                     </div>
                   {% endfor %}
                 </div>
-                <hr class="sb-accordion__divider" data-sb-reveal-item>
+                <hr class="sb-accordion__divider">
               </article>
             {% endif %}
           {% endif %}
@@ -301,13 +301,13 @@
               {% if faq_title == blank and faq_answer == blank %}
                 {% continue %}
               {% endif %}
-              <article class="sb-accordion__item" data-sb-reveal>
+              <article class="sb-accordion__item">
                 <button
                   type="button"
                   class="sb-accordion__trigger"
                   aria-expanded="false"
                   data-accordion-trigger
-                  data-sb-reveal-item
+
                 >
                   <span class="sb-accordion__question font-body weight-bold">{{ faq_title }}</span>
                   <span class="sb-accordion__icon" aria-hidden="true">
@@ -315,10 +315,10 @@
                     <span class="sb-accordion__icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
                   </span>
                 </button>
-                <div class="sb-accordion__answer font-body weight-regular rte" data-accordion-answer data-sb-reveal-item>
+                <div class="sb-accordion__answer font-body weight-regular rte" data-accordion-answer>
                   {% render 'localized-richtext-links', content: faq_answer %}
                 </div>
-                <hr class="sb-accordion__divider" data-sb-reveal-item>
+                <hr class="sb-accordion__divider">
               </article>
             {% endfor %}
           {% endif %}
@@ -332,13 +332,13 @@
             {% if block_question == blank and block_answer == blank %}
               {% continue %}
             {% endif %}
-            <article class="sb-accordion__item" data-sb-reveal {{ block.shopify_attributes }}>
+            <article class="sb-accordion__item" {{ block.shopify_attributes }}>
               <button
                 type="button"
                 class="sb-accordion__trigger"
                 aria-expanded="false"
                 data-accordion-trigger
-                data-sb-reveal-item
+
               >
                 <span class="sb-accordion__question font-body weight-bold">{{ block.settings.question }}</span>
                 <span class="sb-accordion__icon" aria-hidden="true">
@@ -346,10 +346,10 @@
                   <span class="sb-accordion__icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
                 </span>
               </button>
-              <div class="sb-accordion__answer font-body weight-regular rte" data-accordion-answer data-sb-reveal-item>
+              <div class="sb-accordion__answer font-body weight-regular rte" data-accordion-answer>
                 {% render 'localized-richtext-links', content: block.settings.answer %}
               </div>
-              <hr class="sb-accordion__divider" data-sb-reveal-item>
+              <hr class="sb-accordion__divider">
             </article>
           {% endfor %}
         {% endif %}

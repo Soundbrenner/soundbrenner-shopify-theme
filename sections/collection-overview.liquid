@@ -51,58 +51,59 @@
 
 <section
   class="sb-collection-overview"
-  data-sb-reveal
   data-sb-thumbnail-section
+  data-sb-motion="reveal"
 >
-  <div class="sb-collection-overview__header-wrap">
-    <div class="sb-collection-overview__header" data-sb-reveal-item>
-      <div
-        class="sb-collection-overview__stars"
-        role="img"
-        aria-label="{{ 'sb.rating.out_of_five_stars' | t: rating: rating_display }}"
-        data-sb-rating-value="{{ all_reviews_rating_number }}"
-        data-sb-rating-template="{{ 'sb.rating.out_of_five_stars' | t: rating: '__RATING__' | escape }}"
-        style="--sb-collection-overview-star-url: url('{{ star_icon_url }}');"
-      >
-        {% for star_index in (1..5) %}
-          {% liquid
-            assign star_offset = star_index | minus: 1
-            assign star_fill = all_reviews_rating_number | minus: star_offset
-            if star_fill < 0
-              assign star_fill = 0
-            endif
-            if star_fill > 1
-              assign star_fill = 1
-            endif
-            assign star_fill_percent = star_fill | times: 100
-          %}
-          <span class="sb-collection-overview__star" style="--sb-collection-overview-star-fill: {{ star_fill_percent }}%;"></span>
-        {% endfor %}
+  <div class="sb-collection-overview__motion" data-sb-motion-item>
+    <div class="sb-collection-overview__header-wrap">
+      <div class="sb-collection-overview__header">
+        <div
+          class="sb-collection-overview__stars"
+          role="img"
+          aria-label="{{ 'sb.rating.out_of_five_stars' | t: rating: rating_display }}"
+          data-sb-rating-value="{{ all_reviews_rating_number }}"
+          data-sb-rating-template="{{ 'sb.rating.out_of_five_stars' | t: rating: '__RATING__' | escape }}"
+          style="--sb-collection-overview-star-url: url('{{ star_icon_url }}');"
+        >
+          {% for star_index in (1..5) %}
+            {% liquid
+              assign star_offset = star_index | minus: 1
+              assign star_fill = all_reviews_rating_number | minus: star_offset
+              if star_fill < 0
+                assign star_fill = 0
+              endif
+              if star_fill > 1
+                assign star_fill = 1
+              endif
+              assign star_fill_percent = star_fill | times: 100
+            %}
+            <span class="sb-collection-overview__star" style="--sb-collection-overview-star-fill: {{ star_fill_percent }}%;"></span>
+          {% endfor %}
+        </div>
+
+        <p
+          class="sb-collection-overview__summary font-caption weight-regular"
+          data-sb-rating-value="{{ all_reviews_rating_number }}"
+          data-sb-count-value="{{ all_reviews_count_number }}"
+          data-sb-summary-template="{{ 'sb.collection_overview.rating_summary' | t: rating: '__RATING__', count: '__COUNT__' | escape }}"
+        >
+          {{ 'sb.collection_overview.rating_summary' | t: rating: rating_display, count: all_reviews_count_display }}
+        </p>
       </div>
 
-      <p
-        class="sb-collection-overview__summary font-caption weight-regular"
-        data-sb-rating-value="{{ all_reviews_rating_number }}"
-        data-sb-count-value="{{ all_reviews_count_number }}"
-        data-sb-summary-template="{{ 'sb.collection_overview.rating_summary' | t: rating: '__RATING__', count: '__COUNT__' | escape }}"
-      >
-        {{ 'sb.collection_overview.rating_summary' | t: rating: rating_display, count: all_reviews_count_display }}
-      </p>
+      <a class="sb-collection-overview__read-all font-caption2 weight-semibold" href="{{ read_all_url }}">
+        <span>{{ 'sb.collection_overview.read_all' | t }}</span>
+        <span
+          class="sb-collection-overview__read-all-arrow"
+          aria-hidden="true"
+          style="--sb-collection-overview-arrow-url: url('{{ read_all_arrow_icon_url }}');"
+        ></span>
+      </a>
     </div>
 
-    <a class="sb-collection-overview__read-all font-caption2 weight-semibold" href="{{ read_all_url }}" data-sb-reveal-item>
-      <span>{{ 'sb.collection_overview.read_all' | t }}</span>
-      <span
-        class="sb-collection-overview__read-all-arrow"
-        aria-hidden="true"
-        style="--sb-collection-overview-arrow-url: url('{{ read_all_arrow_icon_url }}');"
-      ></span>
-    </a>
-  </div>
+    <div class="sb-collection-overview__section-divider" aria-hidden="true"></div>
 
-  <div class="sb-collection-overview__section-divider" aria-hidden="true" data-sb-reveal-item></div>
-
-  <div class="sb-collection-overview__rows">
+    <div class="sb-collection-overview__rows">
     {% if section.blocks.size > 0 %}
       {% for block in section.blocks %}
         {% liquid
@@ -150,10 +151,10 @@
 
         <article class="sb-collection-overview__row{% unless forloop.first %} sb-collection-overview__row--with-divider{% endunless %}" {{ block.shopify_attributes }}>
           {% unless forloop.first %}
-            <div class="sb-collection-overview__section-divider" aria-hidden="true" data-sb-reveal-item></div>
+            <div class="sb-collection-overview__section-divider" aria-hidden="true"></div>
           {% endunless %}
 
-          <div class="sb-collection-overview__heading-row" data-sb-reveal-item>
+          <div class="sb-collection-overview__heading-row">
             <h2 class="sb-collection-overview__collection-title font-title weight-bold">{{ collection_title }}</h2>
 
             <div class="sb-collection-overview__actions">
@@ -172,7 +173,7 @@
             </div>
           </div>
 
-          <div class="sb-collection-overview__carousel" data-sb-carousel data-sb-reveal-item>
+          <div class="sb-collection-overview__carousel" data-sb-carousel>
             <div class="sb-collection-overview__carousel-viewport" data-sb-carousel-viewport>
               <div class="sb-collection-overview__carousel-track" data-sb-carousel-track>
                 {% if manual_products_count > 0 %}
@@ -257,7 +258,7 @@
       {% endfor %}
     {% else %}
       <article class="sb-collection-overview__row">
-        <div class="sb-collection-overview__heading-row" data-sb-reveal-item>
+        <div class="sb-collection-overview__heading-row">
           <h2 class="sb-collection-overview__collection-title font-title weight-bold">{{ 'sb.collection_overview.collection_name' | t }}</h2>
           <div class="sb-collection-overview__actions">
             {% render 'radiant-button',
@@ -269,7 +270,7 @@
           </div>
         </div>
 
-        <div class="sb-collection-overview__carousel" data-sb-carousel data-sb-reveal-item>
+        <div class="sb-collection-overview__carousel" data-sb-carousel>
           <div class="sb-collection-overview__carousel-viewport" data-sb-carousel-viewport>
             <div class="sb-collection-overview__carousel-track" data-sb-carousel-track>
               {% for placeholder_index in (1..6) %}
@@ -304,11 +305,16 @@
         </div>
       </article>
     {% endif %}
+    </div>
   </div>
 </section>
 
 {% stylesheet %}
   .sb-collection-overview {
+    width: 100%;
+  }
+
+  .sb-collection-overview__motion {
     width: 100%;
   }
 

@@ -9,8 +9,8 @@
   assign hero_video_mobile_embed_url = blank
   assign hero_video_embed_provider = blank
   assign hero_video_mobile_embed_provider = blank
-  assign hero_video_embed_youtube_id = blank
-  assign hero_video_mobile_embed_youtube_id = blank
+  assign hero_has_youtube_embed = false
+  assign hero_has_vimeo_embed = false
   assign hero_use_iframe_video = false
   assign hero_mobile_use_iframe_video = false
   assign hero_media_desktop_field = blank
@@ -137,7 +137,6 @@
         if hero_youtube_id != blank
           assign hero_video_embed_url = 'https://www.youtube.com/embed/' | append: hero_youtube_id
           assign hero_video_embed_provider = 'youtube'
-          assign hero_video_embed_youtube_id = hero_youtube_id
           assign hero_use_iframe_video = true
         endif
       elsif hero_video_desktop_downcase contains 'youtu.be/'
@@ -146,7 +145,6 @@
         if hero_youtube_id != blank
           assign hero_video_embed_url = 'https://www.youtube.com/embed/' | append: hero_youtube_id
           assign hero_video_embed_provider = 'youtube'
-          assign hero_video_embed_youtube_id = hero_youtube_id
           assign hero_use_iframe_video = true
         endif
       elsif hero_video_desktop_downcase contains 'vimeo.com/'
@@ -169,7 +167,6 @@
         if hero_mobile_youtube_id != blank
           assign hero_video_mobile_embed_url = 'https://www.youtube.com/embed/' | append: hero_mobile_youtube_id
           assign hero_video_mobile_embed_provider = 'youtube'
-          assign hero_video_mobile_embed_youtube_id = hero_mobile_youtube_id
           assign hero_mobile_use_iframe_video = true
         endif
       elsif hero_video_mobile_downcase contains 'youtu.be/'
@@ -178,7 +175,6 @@
         if hero_mobile_youtube_id != blank
           assign hero_video_mobile_embed_url = 'https://www.youtube.com/embed/' | append: hero_mobile_youtube_id
           assign hero_video_mobile_embed_provider = 'youtube'
-          assign hero_video_mobile_embed_youtube_id = hero_mobile_youtube_id
           assign hero_mobile_use_iframe_video = true
         endif
       elsif hero_video_mobile_downcase contains 'vimeo.com/'
@@ -194,14 +190,19 @@
     if hero_video_embed_url == blank and hero_video_mobile_embed_url != blank
       assign hero_video_embed_url = hero_video_mobile_embed_url
       assign hero_video_embed_provider = hero_video_mobile_embed_provider
-      assign hero_video_embed_youtube_id = hero_video_mobile_embed_youtube_id
       assign hero_use_iframe_video = hero_mobile_use_iframe_video
     endif
     if hero_video_mobile_embed_url == blank and hero_video_embed_url != blank
       assign hero_video_mobile_embed_url = hero_video_embed_url
       assign hero_video_mobile_embed_provider = hero_video_embed_provider
-      assign hero_video_mobile_embed_youtube_id = hero_video_embed_youtube_id
       assign hero_mobile_use_iframe_video = hero_use_iframe_video
+    endif
+
+    if hero_video_embed_provider == 'youtube' or hero_video_mobile_embed_provider == 'youtube'
+      assign hero_has_youtube_embed = true
+    endif
+    if hero_video_embed_provider == 'vimeo' or hero_video_mobile_embed_provider == 'vimeo'
+      assign hero_has_vimeo_embed = true
     endif
 
     if hero_has_video == false
@@ -298,104 +299,31 @@
     })();
   </script>
 {% else %}
-  <style>
-    .sb-product-page-hero__media {
-      aspect-ratio: 1240 / 600;
-      overflow: hidden;
-      position: relative;
-      width: 100%;
-    }
-
-    .sb-product-page-hero__media-image,
-    .sb-product-page-hero__media-video,
-    .sb-product-page-hero__media-iframe-poster,
-    .sb-product-page-hero__media-iframe {
-      display: block;
-      height: 100%;
-      object-fit: cover;
-      object-position: center center;
-      width: 100%;
-    }
-
-    .sb-product-page-hero__media-iframe-poster {
-      inset: 0;
-      position: absolute;
-      z-index: 2;
-    }
-
-    .sb-product-page-hero__media-iframe {
-      position: relative;
-      z-index: 1;
-    }
-
-    .sb-product-page-hero__media-video--mobile,
-    .sb-product-page-hero__media-iframe--mobile,
-    .sb-product-page-hero__media-iframe-poster--mobile {
-      display: none;
-    }
-
-    @media (max-width: 749px) {
-      .sb-product-page-hero__media {
-        aspect-ratio: 402 / 369;
-      }
-
-      .sb-product-page-hero__media-video--desktop,
-      .sb-product-page-hero__media-iframe--desktop,
-      .sb-product-page-hero__media-iframe-poster--desktop {
-        display: none;
-      }
-
-      .sb-product-page-hero__media-video--mobile,
-      .sb-product-page-hero__media-iframe--mobile,
-      .sb-product-page-hero__media-iframe-poster--mobile {
-        display: block;
-      }
-    }
-  </style>
+  {% # theme-check-disable RemoteAsset %}
+  {% if hero_has_youtube_embed %}
+    <link rel="preconnect" href="https://www.youtube.com">
+    <link rel="preconnect" href="https://i.ytimg.com" crossorigin>
+  {% endif %}
+  {% if hero_has_vimeo_embed %}
+    <link rel="preconnect" href="https://player.vimeo.com">
+    <link rel="preconnect" href="https://i.vimeocdn.com" crossorigin>
+  {% endif %}
+  {% # theme-check-enable RemoteAsset %}
   <section
     class="sb-product-page-hero"
-    data-sb-reveal
     data-product-hero
     data-product-id="{{ product.id }}"
-    data-hero-video-url="{{ hero_video_desktop_url | escape }}"
-    data-hero-video-url-mobile="{{ hero_video_mobile_url | escape }}"
   >
-    <div class="sb-product-page-hero__media-wrap" data-sb-reveal-item>
-      {% # theme-check-disable RemoteAsset %}
+    <div class="sb-product-page-hero__media-wrap">
       <div class="sb-product-page-hero__media" id="sb-product-page-hero-media-{{ section.id }}">
         {% if hero_has_video %}
           {% if hero_use_iframe_video and hero_video_embed_url != blank and hero_mobile_use_iframe_video and hero_video_mobile_embed_url != blank and hero_video_mobile_embed_url != hero_video_embed_url %}
-            {% if hero_video_embed_provider == 'youtube' and hero_video_embed_youtube_id != blank %}
-              <img
-                class="sb-product-page-hero__media-iframe-poster sb-product-page-hero__media-iframe-poster--desktop"
-                data-product-hero-iframe-poster="desktop"
-                src="https://i.ytimg.com/vi/{{ hero_video_embed_youtube_id }}/hqdefault.jpg"
-                alt="{{ hero_media_title | escape }}"
-                loading="eager"
-                fetchpriority="high"
-                width="{{ hero_media_desktop_width }}"
-                height="{{ hero_media_desktop_height }}"
-              >
-            {% endif %}
-            {% if hero_video_mobile_embed_provider == 'youtube' and hero_video_mobile_embed_youtube_id != blank %}
-              <img
-                class="sb-product-page-hero__media-iframe-poster sb-product-page-hero__media-iframe-poster--mobile"
-                data-product-hero-iframe-poster="mobile"
-                src="https://i.ytimg.com/vi/{{ hero_video_mobile_embed_youtube_id }}/hqdefault.jpg"
-                alt="{{ hero_media_title | escape }}"
-                loading="lazy"
-                width="{{ hero_media_mobile_width }}"
-                height="{{ hero_media_mobile_height }}"
-              >
-            {% endif %}
             <iframe
               class="sb-product-page-hero__media-iframe sb-product-page-hero__media-iframe--desktop"
               src="about:blank"
               data-embed-src="{{ hero_video_embed_url | escape }}"
-              data-embed-provider="{{ hero_video_embed_provider | escape }}"
-              data-product-hero-iframe="desktop"
               title="{{ hero_media_title | escape }}"
-              loading="lazy"
+              loading="eager"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowfullscreen
             ></iframe>
@@ -403,41 +331,23 @@
               class="sb-product-page-hero__media-iframe sb-product-page-hero__media-iframe--mobile"
               src="about:blank"
               data-embed-src="{{ hero_video_mobile_embed_url | escape }}"
-              data-embed-provider="{{ hero_video_mobile_embed_provider | escape }}"
-              data-product-hero-iframe="mobile"
               title="{{ hero_media_title | escape }}"
-              loading="lazy"
+              loading="eager"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowfullscreen
             ></iframe>
           {% elsif hero_use_iframe_video and hero_video_embed_url != blank %}
-            {% if hero_video_embed_provider == 'youtube' and hero_video_embed_youtube_id != blank %}
-              <img
-                class="sb-product-page-hero__media-iframe-poster"
-                data-product-hero-iframe-poster="default"
-                src="https://i.ytimg.com/vi/{{ hero_video_embed_youtube_id }}/hqdefault.jpg"
-                alt="{{ hero_media_title | escape }}"
-                loading="eager"
-                fetchpriority="high"
-                width="{{ hero_media_desktop_width }}"
-                height="{{ hero_media_desktop_height }}"
-              >
-            {% endif %}
             <iframe
               class="sb-product-page-hero__media-iframe"
-              src="about:blank"
-              data-embed-src="{{ hero_video_embed_url | escape }}"
-              data-embed-provider="{{ hero_video_embed_provider | escape }}"
-              data-product-hero-iframe="default"
+              src="{{ hero_video_embed_url | escape }}"
               title="{{ hero_media_title | escape }}"
-              loading="lazy"
+              loading="eager"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowfullscreen
             ></iframe>
           {% elsif hero_video_mobile_url != blank and hero_video_mobile_url != hero_video_desktop_url %}
             <video
               class="sb-product-page-hero__media-video sb-product-page-hero__media-video--desktop"
-              data-product-hero-video-player
               autoplay
               loop
               muted
@@ -449,7 +359,6 @@
             ></video>
             <video
               class="sb-product-page-hero__media-video sb-product-page-hero__media-video--mobile"
-              data-product-hero-video-player
               autoplay
               loop
               muted
@@ -462,7 +371,6 @@
           {% else %}
             <video
               class="sb-product-page-hero__media-video"
-              data-product-hero-video-player
               autoplay
               loop
               muted
@@ -488,18 +396,17 @@
           </picture>
         {% endif %}
       </div>
-      {% # theme-check-enable RemoteAsset %}
     </div>
 
     <div class="sb-product-page-hero__content">
-      <h1 class="sb-product-page-hero__name font-body weight-semibold" data-sb-reveal-item>{{ product.title }}</h1>
+      <h1 class="sb-product-page-hero__name font-body weight-semibold">{{ product.title }}</h1>
 
       {% if hero_product_tagline_html != blank %}
-        <div class="sb-product-page-hero__tagline sb-product-page-hero__tagline--rich font-title weight-bold rte" data-sb-reveal-item>
+        <div class="sb-product-page-hero__tagline sb-product-page-hero__tagline--rich font-title weight-bold rte">
           {{ hero_product_tagline_html }}
         </div>
       {% elsif hero_product_tagline != blank %}
-        <p class="sb-product-page-hero__tagline font-title weight-bold" data-sb-reveal-item>{{ hero_product_tagline }}</p>
+        <p class="sb-product-page-hero__tagline font-title weight-bold">{{ hero_product_tagline }}</p>
       {% endif %}
 
       <div
@@ -511,7 +418,7 @@
         data-initial-variant-id="{{ hero_selected_variant.id }}"
         data-initial-price="{{ hero_selected_variant.price | default: 0 }}"
         data-initial-compare-price="{{ hero_selected_variant.compare_at_price | default: 0 }}"
-        data-sb-reveal-item
+
       >
         <p
           class="sb-product-page-hero__price sb-product-page-hero__price--compare font-body weight-regular"
@@ -528,7 +435,7 @@
       </div>
 
       {% if hero_has_linked_videos %}
-        <div class="sb-product-page-hero__actions" data-sb-reveal-item>
+        <div class="sb-product-page-hero__actions">
           {% render 'radiant-button',
             label: 'Watch video',
             link: hero_video_anchor_link,
@@ -644,47 +551,9 @@
         applyVariantPrice(variant);
       });
 
-      const connectedHosts = new Set();
-      const mediaIframes = Array.from(heroRoot.querySelectorAll('.sb-product-page-hero__media-iframe[data-embed-src]'));
-      const mediaPosters = Array.from(heroRoot.querySelectorAll('[data-product-hero-iframe-poster]'));
+      const responsiveMediaIframes = Array.from(heroRoot.querySelectorAll('.sb-product-page-hero__media-iframe[data-embed-src]'));
       const mobileMediaQuery = window.matchMedia('(max-width: 749px)');
-      let pendingEmbedSyncFrame = 0;
-
-      const ensurePreconnect = (href, withCrossOrigin = false) => {
-        if (!href || connectedHosts.has(href)) return;
-        connectedHosts.add(href);
-        const link = document.createElement('link');
-        link.rel = 'preconnect';
-        link.href = href;
-        if (withCrossOrigin) {
-          link.crossOrigin = 'anonymous';
-        }
-        document.head.appendChild(link);
-      };
-
-      const preconnectEmbedProvider = (provider) => {
-        if (provider === 'youtube') {
-          ensurePreconnect('https://www.youtube.com');
-          ensurePreconnect('https://i.ytimg.com', true);
-          return;
-        }
-        if (provider === 'vimeo') {
-          ensurePreconnect('https://player.vimeo.com');
-          ensurePreconnect('https://i.vimeocdn.com', true);
-        }
-      };
-
-      const getPosterForFrame = (frame) => {
-        const frameKey = (frame.dataset.productHeroIframe || '').trim() || 'default';
-        return mediaPosters.find((poster) => (poster.dataset.productHeroIframePoster || '').trim() === frameKey) || null;
-      };
-
-      const hidePosterForFrame = (frame) => {
-        const poster = getPosterForFrame(frame);
-        if (poster) {
-          poster.hidden = true;
-        }
-      };
+      const EMPTY_IFRAME_SRC = 'about:blank';
 
       const isFrameActiveForViewport = (frame) => {
         if (frame.classList.contains('sb-product-page-hero__media-iframe--mobile')) {
@@ -696,71 +565,35 @@
         return true;
       };
 
-      const hydrateFrame = (frame) => {
-        if (!(frame instanceof HTMLIFrameElement)) return;
-        if (!isFrameActiveForViewport(frame)) return;
-        const embedSource = (frame.dataset.embedSrc || '').trim();
-        if (!embedSource) return;
-        preconnectEmbedProvider((frame.dataset.embedProvider || '').trim());
-        if (frame.getAttribute('src') !== embedSource) {
-          frame.setAttribute('src', embedSource);
-        }
-      };
+      const syncResponsiveHeroEmbeds = () => {
+        if (responsiveMediaIframes.length < 2) return;
 
-      const initializeHeroEmbeds = () => {
-        if (!mediaIframes.length) return;
+        responsiveMediaIframes.forEach((frame) => {
+          if (!(frame instanceof HTMLIFrameElement)) return;
+          const embedSource = (frame.dataset.embedSrc || '').trim();
+          if (!embedSource) return;
 
-        mediaIframes.forEach((frame) => {
-          frame.addEventListener('load', () => {
-            hidePosterForFrame(frame);
-          });
-        });
-
-        if (!('IntersectionObserver' in window)) {
-          mediaIframes.forEach((frame) => {
-            hydrateFrame(frame);
-          });
-          return;
-        }
-
-        const observer = new IntersectionObserver((entries, observerInstance) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            const frame = entry.target;
-            if (!(frame instanceof HTMLIFrameElement)) return;
-            hydrateFrame(frame);
-            if (frame.getAttribute('src') === (frame.dataset.embedSrc || '').trim()) {
-              observerInstance.unobserve(frame);
+          if (isFrameActiveForViewport(frame)) {
+            if (frame.getAttribute('src') !== embedSource) {
+              frame.setAttribute('src', embedSource);
             }
-          });
-        }, {
-          rootMargin: '900px 0px',
-          threshold: 0.01,
+            return;
+          }
+
+          if (frame.getAttribute('src') !== EMPTY_IFRAME_SRC) {
+            frame.setAttribute('src', EMPTY_IFRAME_SRC);
+          }
         });
-
-        mediaIframes.forEach((frame) => {
-          observer.observe(frame);
-        });
-
-        const scheduleActiveFrameSync = () => {
-          if (pendingEmbedSyncFrame) return;
-          pendingEmbedSyncFrame = window.requestAnimationFrame(() => {
-            pendingEmbedSyncFrame = 0;
-            mediaIframes.forEach((frame) => {
-              hydrateFrame(frame);
-            });
-          });
-        };
-
-        if (typeof mobileMediaQuery.addEventListener === 'function') {
-          mobileMediaQuery.addEventListener('change', scheduleActiveFrameSync);
-        } else if (typeof mobileMediaQuery.addListener === 'function') {
-          mobileMediaQuery.addListener(scheduleActiveFrameSync);
-        }
-        window.addEventListener('resize', scheduleActiveFrameSync);
       };
 
-      initializeHeroEmbeds();
+      if (responsiveMediaIframes.length > 1) {
+        syncResponsiveHeroEmbeds();
+        if (typeof mobileMediaQuery.addEventListener === 'function') {
+          mobileMediaQuery.addEventListener('change', syncResponsiveHeroEmbeds);
+        } else if (typeof mobileMediaQuery.addListener === 'function') {
+          mobileMediaQuery.addListener(syncResponsiveHeroEmbeds);
+        }
+      }
 
       if (watchVideoButton) {
         const watchVideoActions = watchVideoButton.closest('.sb-product-page-hero__actions');
@@ -841,7 +674,6 @@
 
   .sb-product-page-hero__media-image,
   .sb-product-page-hero__media-video,
-  .sb-product-page-hero__media-iframe-poster,
   .sb-product-page-hero__media-iframe {
     border: 0;
     display: block;
@@ -851,20 +683,12 @@
     width: 100%;
   }
 
-  .sb-product-page-hero__media-iframe-poster {
-    inset: 0;
-    position: absolute;
-    z-index: 2;
-  }
-
   .sb-product-page-hero__media-iframe {
     position: relative;
-    z-index: 1;
   }
 
   .sb-product-page-hero__media-video--mobile,
-  .sb-product-page-hero__media-iframe--mobile,
-  .sb-product-page-hero__media-iframe-poster--mobile {
+  .sb-product-page-hero__media-iframe--mobile {
     display: none;
   }
 
@@ -998,14 +822,12 @@
     }
 
     .sb-product-page-hero__media-video--desktop,
-    .sb-product-page-hero__media-iframe--desktop,
-    .sb-product-page-hero__media-iframe-poster--desktop {
+    .sb-product-page-hero__media-iframe--desktop {
       display: none;
     }
 
     .sb-product-page-hero__media-video--mobile,
-    .sb-product-page-hero__media-iframe--mobile,
-    .sb-product-page-hero__media-iframe-poster--mobile {
+    .sb-product-page-hero__media-iframe--mobile {
       display: block;
     }
 

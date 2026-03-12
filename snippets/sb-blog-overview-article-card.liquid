@@ -50,6 +50,8 @@
   if article.image != blank and article.image.width != blank
     assign card_image_request_width = card_image_request_width | at_most: article.image.width
   endif
+
+  assign card_image_loading = image_loading | default: 'lazy'
 %}
 
 {% if article != blank %}
@@ -63,7 +65,7 @@
             widths: card_image_widths,
             sizes: card_image_sizes,
             class: 'sb-blog-overview-card__image',
-            loading: 'lazy',
+            loading: card_image_loading,
             alt: article.title
         }}
       {% else %}

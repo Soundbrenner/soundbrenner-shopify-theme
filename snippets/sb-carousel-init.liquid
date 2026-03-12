@@ -35,11 +35,19 @@
         const viewportPaddingStart = () => px(getComputedStyle(viewport).paddingLeft);
         const viewportPaddingEnd = () => px(getComputedStyle(viewport).paddingRight);
         const items = () => track.querySelectorAll('[data-sb-carousel-item]');
-        const itemStartOffset = (item) => Math.max(0, item.offsetLeft - viewportPaddingStart());
+        const itemStartOffset = (item) =>
+          Math.max(0, item.getBoundingClientRect().left - track.getBoundingClientRect().left);
         const itemEndOffset = (item) =>
-          Math.max(0, item.offsetLeft + item.getBoundingClientRect().width - (viewport.clientWidth - viewportPaddingEnd()));
+          Math.max(
+            0,
+            itemStartOffset(item)
+              + viewportPaddingStart()
+              + item.getBoundingClientRect().width
+              - (viewport.clientWidth - viewportPaddingEnd())
+          );
 
         const scrollEpsilon = 2;
+        const snapTolerance = 24;
         const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const shouldClampToBounds = () => window.matchMedia('(hover: hover) and (pointer: fine)').matches;
         const arrowFeedbackDuration = 220;
@@ -49,6 +57,11 @@
         const arrowFeedbackTimers = new WeakMap();
 
         const currentMaxScroll = () => maxScroll;
+        const currentScrollOffset = () => Math.max(0, Math.min(viewport.scrollLeft, currentMaxScroll()));
+        const effectiveScrollOffset = () =>
+          pendingTarget === null
+            ? currentScrollOffset()
+            : Math.max(0, Math.min(pendingTarget, currentMaxScroll()));
         const clearNativeEndOffset = () => {
           track.style.removeProperty('--sb-carousel-native-end-offset');
           track.style.paddingRight = '';
@@ -97,6 +110,56 @@
 
           return Array.from(new Set(normalized)).sort((a, b) => a - b);
         };
+        const getClosestSnap = (offset, max) => {
+          const points = getSnapPoints(max);
+          if (!points.length) return { index: 0, point: 0, distance: Math.abs(offset) };
+
+          let closestIndex = 0;
+          let closestPoint = points[0];
+          let closestDistance = Math.abs(points[0] - offset);
+
+          points.forEach((point, index) => {
+            const distance = Math.abs(point - offset);
+            if (distance < closestDistance) {
+              closestIndex = index;
+              closestPoint = point;
+              closestDistance = distance;
+            }
+          });
+
+          return { index: closestIndex, point: closestPoint, distance: closestDistance };
+        };
+        const captureLayoutState = () => {
+          const max = currentMaxScroll();
+          const offset = effectiveScrollOffset();
+
+          if (max <= scrollEpsilon || offset <= scrollEpsilon) {
+            return { type: 'start' };
+          }
+
+          const { index, point, distance } = getClosestSnap(offset, max);
+          const list = items();
+          const isEndSnap = point >= max - scrollEpsilon || index >= list.length;
+
+          if (pendingTarget !== null || distance <= snapTolerance) {
+            if (isEndSnap) return { type: 'end' };
+            return { type: 'item', index };
+          }
+
+          return { type: 'offset', value: offset };
+        };
+        const resolveLayoutState = (state, max) => {
+          if (!state || max <= scrollEpsilon) return 0;
+          if (state.type === 'start') return 0;
+          if (state.type === 'end') return max;
+          if (state.type === 'offset') return Math.max(0, Math.min(state.value, max));
+
+          const list = Array.from(items());
+          if (!list.length) return 0;
+
+          const index = Math.max(0, Math.min(state.index, list.length - 1));
+          return Math.max(0, Math.min(itemStartOffset(list[index]), max));
+        };
 
         const getNextSnap = (current, max) => {
           const points = getSnapPoints(max);
@@ -126,10 +189,8 @@
             if (viewport.scrollLeft > max + scrollEpsilon) viewport.scrollLeft = max;
             if (viewport.scrollLeft < -scrollEpsilon) viewport.scrollLeft = 0;
           }
-          const current = Math.max(0, Math.min(viewport.scrollLeft, max));
-          const effectiveCurrent = pendingTarget === null
-            ? current
-            : Math.max(0, Math.min(pendingTarget, max));
+          const current = currentScrollOffset();
+          const effectiveCurrent = effectiveScrollOffset();
           root.classList.toggle('is-overflowing', overflowing);
           root.classList.toggle('is-not-overflowing', !overflowing);
 
@@ -149,7 +210,7 @@
           }
         };
 
-        const refreshLayout = () => {
+        const refreshLayout = ({ preserveState = null } = {}) => {
           setBleed();
           clearNativeEndOffset();
           track.style.transform = '';
@@ -188,11 +249,16 @@
 
           if (maxScroll <= scrollEpsilon) {
             if (Math.abs(viewport.scrollLeft) > scrollEpsilon) viewport.scrollLeft = 0;
+          } else if (preserveState) {
+            viewport.scrollLeft = resolveLayoutState(preserveState, maxScroll);
           } else if (shouldClampToBounds() && viewport.scrollLeft > maxScroll) {
             viewport.scrollLeft = maxScroll;
           }
 
           syncState();
+        };
+        const refreshLayoutPreservingState = () => {
+          refreshLayout({ preserveState: captureLayoutState() });
         };
 
         const scrollToOffset = (value, { animate = false } = {}) => {
@@ -267,24 +333,24 @@
         );
 
         if ('ResizeObserver' in window) {
-          const observer = new ResizeObserver(() => refreshLayout());
+          const observer = new ResizeObserver(() => refreshLayoutPreservingState());
           observer.observe(viewport);
           observer.observe(track);
         }
 
         track.querySelectorAll('img').forEach((img) => {
           if (!img.complete) {
-            img.addEventListener('load', refreshLayout, { once: true });
-            img.addEventListener('error', refreshLayout, { once: true });
+            img.addEventListener('load', refreshLayoutPreservingState, { once: true });
+            img.addEventListener('error', refreshLayoutPreservingState, { once: true });
           }
         });
 
         window.addEventListener('load', refreshLayout);
-        window.addEventListener('resize', refreshLayout);
+        window.addEventListener('resize', refreshLayoutPreservingState);
         refreshLayout();
-        window.requestAnimationFrame(refreshLayout);
-        window.setTimeout(refreshLayout, 120);
-        window.setTimeout(refreshLayout, 360);
+        window.requestAnimationFrame(refreshLayoutPreservingState);
+        window.setTimeout(refreshLayoutPreservingState, 120);
+        window.setTimeout(refreshLayoutPreservingState, 360);
       });
     };
 

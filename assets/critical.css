@@ -1583,35 +1583,35 @@ body .sb-page-content__body .rte > * + * {
 
 /* Shared thumbnail loading placeholder background */
 .sb-product-thumbnail__media-item {
-  background: var(--sb-color-neutral-200);
+  background: var(--sb-color-always-white);
 }
 
 .sb-product-thumbnail__carousel {
-  background: var(--sb-color-neutral-200);
+  background: var(--sb-color-always-white);
 }
 
 .sb-product-thumbnail__carousel-track {
-  background: var(--sb-color-neutral-200);
+  background: var(--sb-color-always-white);
 }
 
 .sb-product-thumbnail__carousel-slide {
-  background: var(--sb-color-neutral-200);
+  background: var(--sb-color-always-white);
   overflow: hidden;
 }
 
 .sb-product-thumbnail__carousel-slide > .sb-product-thumbnail__video.sb-product-thumbnail__media-item {
-  background: var(--sb-color-neutral-200);
+  background: var(--sb-color-always-white);
 }
 
 /* Keep video edges from showing default black compositor background */
 .sb-product-thumbnail__video.sb-product-thumbnail__media-item,
 video.sb-product-main__media-asset {
-  background: var(--sb-color-neutral-200);
+  background: var(--sb-color-always-white);
   display: block;
 }
 
 .sb-product-main__media-item {
-  background: var(--sb-color-neutral-200);
+  background: var(--sb-color-always-white);
 }
 
 /* Prevent thin edge artifacts on gallery videos while sliding */
@@ -2852,6 +2852,43 @@ html[data-sb-page-segment='learn-more'] .shopify-section:has(> .sb-product-main)
   color: var(--sb-color-neutral-900) !important;
 }
 
+.kl_reviews__lightbox__container {
+  grid-template-columns: auto minmax(320px, 40vw) !important;
+  max-width: calc(100vw - 48px) !important;
+  width: fit-content !important;
+}
+
+.kl_reviews__lightbox__left {
+  align-items: center !important;
+  display: flex !important;
+  justify-content: center !important;
+  justify-self: start !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  width: auto !important;
+}
+
+.kl_reviews__lightbox__left img {
+  display: block !important;
+  height: auto !important;
+  max-height: min(80vh, 720px) !important;
+  max-width: min(640px, 100%) !important;
+  width: auto !important;
+}
+
+@media only screen and (max-width: 699px) {
+  .kl_reviews__lightbox__container {
+    grid-template-columns: 1fr !important;
+    max-width: calc(100vw - 32px) !important;
+    width: calc(100vw - 32px) !important;
+  }
+
+  .kl_reviews__lightbox__left img {
+    max-height: 50vh !important;
+    max-width: 100% !important;
+  }
+}
+
 .kl_reviews__lightbox__container strong,
 .kl_reviews__lightbox__container p {
   color: var(--sb-color-neutral-900) !important;
@@ -3853,6 +3890,19 @@ html[data-sb-page-segment='learn-more'] .shopify-section:has(> .sb-product-main)
 }
 
 /* Hard target the actual lightbox close button */
+.kl_reviews__lightbox__content_wrapper {
+  position: relative !important;
+}
+
+.kl_reviews__lightbox__content_wrapper > button.kl_reviews__close_button,
+.kl_reviews__lightbox__content_wrapper > button[aria-label='Modal close button'] {
+  left: 12px !important;
+  margin: 0 !important;
+  position: absolute !important;
+  top: 12px !important;
+  z-index: 3 !important;
+}
+
 .kl_reviews__lightbox__container .kl_reviews__close_button {
   align-items: center !important;
   display: inline-flex !important;

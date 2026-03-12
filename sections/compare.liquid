@@ -29,11 +29,12 @@
 {% else %}
 <section
   class="sb-compare"
-  data-sb-reveal
+  data-sb-motion="reveal"
+  data-sb-motion-item
   data-sb-thumbnail-section
 >
   {% if compare_title != blank %}
-    <h2 class="sb-compare__title font-title weight-bold" data-sb-reveal-item>{{ compare_title }}</h2>
+    <h2 class="sb-compare__title font-title weight-bold">{{ compare_title }}</h2>
   {% endif %}
 
   <div class="sb-compare__grid">
@@ -51,7 +52,7 @@
           {% if compare_meta_products_rendered > 4 %}
             {% break %}
           {% endif %}
-        <article class="sb-compare__column" data-sb-reveal-item>
+        <article class="sb-compare__column">
           <div class="sb-compare__selector-wrap" style="--sb-compare-chevron-url: url('{{ compare_chevron_icon_url }}');">
             <select class="sb-compare__selector sb-compare__selector-input font-caption weight-semibold" data-compare-select>
               {% assign selector_option_index = 0 %}

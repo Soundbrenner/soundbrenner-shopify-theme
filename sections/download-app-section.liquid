@@ -8,14 +8,14 @@
   assign download_app_china_link = 'https://files.soundbrenner.com/downloads/TheMetronome.apk'
 %}
 
-<section id="sb-download-app-section" class="sb-download-app-section" data-sb-reveal>
+<section id="sb-download-app-section" class="sb-download-app-section">
   <div class="sb-content-width">
     <div class="sb-download-app-section__inner">
       {% if download_app_title != blank %}
-        <h2 class="sb-download-app-section__title font-title weight-bold" data-sb-reveal-item>{{ download_app_title }}</h2>
+        <h2 class="sb-download-app-section__title font-title weight-bold">{{ download_app_title }}</h2>
       {% endif %}
 
-      <div class="sb-download-app-section__buttons" data-sb-reveal-item>
+      <div class="sb-download-app-section__buttons">
         <a
           class="sb-button-radiant sb-button-radiant--large sb-download-app-section__button"
           href="{{ download_app_app_store_link }}"

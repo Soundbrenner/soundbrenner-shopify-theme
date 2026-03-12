@@ -459,7 +459,7 @@
 
 <section
   class="sb-product-main{% unless product_has_page_header %} sb-product-main--no-page-header{% endunless %}"
-  data-sb-reveal
+
   data-product-id="{{ product.id }}"
   data-product-title="{{ product.title | escape }}"
   data-selector-list-option-position="{{ selector_list_option_position }}"
@@ -610,7 +610,7 @@
                     {% endif %}
                   {% endfor %}
                 {% endif %}
-                <div class="sb-product-main__media-item{% if media_token_type == 'video' %} sb-product-main__media-item--video{% endif %}" data-sb-reveal-item>
+                <div class="sb-product-main__media-item{% if media_token_type == 'video' %} sb-product-main__media-item--video{% endif %}">
                   {% if media_caption_text != blank %}
                     <span class="sb-product-main__media-caption font-caption weight-semibold">{{ media_caption_text | escape }}</span>
                   {% endif %}
@@ -630,7 +630,7 @@
                       <video
                         class="sb-product-main__media-asset sb-product-main__media-asset--video"
                         data-gallery-video
-                        style="background: var(--sb-color-neutral-200);"
+                        style="background: var(--sb-color-always-white);"
                         autoplay
                         loop
                         muted
@@ -674,7 +674,7 @@
                     {% endif %}
                   {% endfor %}
                 {% endif %}
-                <div class="sb-product-main__media-item{% if media.media_type == 'video' %} sb-product-main__media-item--video{% endif %}" data-sb-reveal-item>
+                <div class="sb-product-main__media-item{% if media.media_type == 'video' %} sb-product-main__media-item--video{% endif %}">
                   {% if media_caption_text != blank %}
                     <span class="sb-product-main__media-caption font-caption weight-semibold">{{ media_caption_text | escape }}</span>
                   {% endif %}
@@ -709,7 +709,7 @@
                         media
                         | video_tag:
                           class: 'sb-product-main__media-asset sb-product-main__media-asset--video',
-                          style: 'background: var(--sb-color-neutral-200);',
+                          style: 'background: var(--sb-color-always-white);',
                           autoplay: true,
                           loop: true,
                           muted: true,
@@ -733,7 +733,7 @@
     <div class="sb-product-main__info-column">
       <div class="sb-product-main__info-top{% if product_badge_label == blank %} sb-product-main__info-top--no-badge{% endif %}{% if product_hide_reviews %} sb-product-main__info-top--no-reviews{% endif %}">
         {% unless product_hide_reviews %}
-          <div class="sb-product-main__rating" data-sb-reveal-item>
+          <div class="sb-product-main__rating">
             {% for block in section.blocks %}
               {% liquid
                 assign is_product_reviews_block = false
@@ -756,25 +756,25 @@
         {% endunless %}
 
         {% if product_badge_label != blank %}
-          <div class="sb-product-main__badge-wrap" data-sb-reveal-item>
+          <div class="sb-product-main__badge-wrap">
             <span class="sb-product-main__badge sb-product-main__badge--{{ product_badge_type }} font-caption weight-semibold">
               {{ product_badge_label }}
             </span>
           </div>
         {% endif %}
 
-        <h1 class="sb-product-main__title font-title weight-bold" data-sb-reveal-item>{{ product.title }}</h1>
+        <h1 class="sb-product-main__title font-title weight-bold">{{ product.title }}</h1>
         {% if product_tagline_html != blank %}
-          <div class="sb-product-main__tagline font-body weight-regular rte" data-sb-reveal-item>
+          <div class="sb-product-main__tagline font-body weight-regular rte">
             {{ product_tagline_html }}
           </div>
         {% elsif product_tagline != blank %}
-          <p class="sb-product-main__tagline font-body weight-regular" data-sb-reveal-item>{{ product_tagline }}</p>
+          <p class="sb-product-main__tagline font-body weight-regular">{{ product_tagline }}</p>
         {% endif %}
       </div>
 
       {% if product_usps_values_collection != blank %}
-        <div class="sb-product-main__feature-pills" data-sb-reveal-item>
+        <div class="sb-product-main__feature-pills">
           {% for usp_item in product_usps_values_collection %}
             {% liquid
               assign usp_entry = usp_item.value | default: usp_item.reference.value | default: usp_item.reference | default: usp_item
@@ -828,7 +828,7 @@
         </div>
       {% endif %}
 
-      <div class="sb-product-main__purchase" data-sb-reveal-item>
+      <div class="sb-product-main__purchase">
         {% form 'product', product, class: 'sb-product-main__form' %}
           <input type="hidden" name="id" value="{{ form_variant_id }}" data-product-variant-id>
 
@@ -1469,31 +1469,14 @@
                       </div>
                     </div>
 
-                    <div class="sb-product-main__video-story-modal" data-video-story-modal hidden>
-                      <button
-                        type="button"
-                        class="sb-product-main__video-story-modal-backdrop"
-                        data-video-story-close
-                        aria-label="{{ 'sb.media.close_video' | t }}"
-                      ></button>
-                      <div class="sb-product-main__video-story-modal-panel" role="dialog" aria-modal="true" aria-label="{{ 'sb.media.video_story_player' | t }}">
-                        <button
-                          type="button"
-                          class="sb-product-main__video-story-modal-close"
-                          data-video-story-close
-                          aria-label="{{ 'sb.media.close_video' | t }}"
-                        >
-                          ×
-                        </button>
-                        <video
-                          class="sb-product-main__video-story-player"
-                          data-video-story-player
-                          controls
-                          playsinline
-                          preload="metadata"
-                        ></video>
-                      </div>
-                    </div>
+                    <video
+                      class="sb-product-main__video-story-player"
+                      data-video-story-player
+                      playsinline
+                      webkit-playsinline="true"
+                      preload="metadata"
+                      hidden
+                    ></video>
                   {% endif %}
                 {% endif %}
 
@@ -3157,60 +3140,30 @@
     }
   }
 
-  .sb-product-main__video-story-modal {
-    inset: 0;
+  .sb-product-main__video-story-player {
+    background: var(--sb-color-always-black);
+    border: 0;
+    display: block;
+    height: 1px;
+    left: -9999px;
+    object-fit: contain;
     position: fixed;
-    z-index: 60;
+    top: 0;
+    width: 1px;
   }
 
-  .sb-product-main__video-story-modal[hidden] {
+  .sb-product-main__video-story-player[hidden] {
     display: none;
   }
 
-  .sb-product-main__video-story-modal-backdrop {
-    background: var(--sb-color-always-black-50);
-    border: 0;
-    inset: 0;
-    margin: 0;
-    padding: 0;
-    position: absolute;
+  .sb-product-main__video-story-player:fullscreen,
+  .sb-product-main__video-story-player:-webkit-full-screen {
+    background: var(--sb-color-always-black);
+    height: 100%;
+    left: auto;
+    object-fit: contain;
+    top: auto;
     width: 100%;
-  }
-
-  .sb-product-main__video-story-modal-panel {
-    background: var(--sb-color-neutral-900);
-    border-radius: 24px;
-    inset: 50% auto auto 50%;
-    max-width: min(90vw, var(--sb-space-640));
-    overflow: hidden;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    width: 100%;
-  }
-
-  .sb-product-main__video-story-player {
-    display: block;
-    height: auto;
-    max-height: 80vh;
-    width: 100%;
-  }
-
-  .sb-product-main__video-story-modal-close {
-    align-items: center;
-    background: var(--sb-color-always-black-50);
-    border: 0;
-    border-radius: 999px;
-    color: var(--sb-color-always-white);
-    cursor: pointer;
-    display: inline-flex;
-    font-size: var(--font-size-body);
-    height: var(--sb-space-32);
-    justify-content: center;
-    position: absolute;
-    right: var(--sb-space-12);
-    top: var(--sb-space-12);
-    width: var(--sb-space-32);
-    z-index: 2;
   }
 
   .sb-product-main__in-the-box {
@@ -3707,7 +3660,35 @@
       variantUpdate: 'variant:update',
     };
     const initializedRoots = new WeakSet();
-    let isVideoStoryEscapeBound = false;
+    const videoStoryFullscreenCleanupMap = new WeakMap();
+
+    const cleanupVideoStoryFullscreenTracking = (player) => {
+      if (!(player instanceof HTMLVideoElement)) return;
+      const cleanup = videoStoryFullscreenCleanupMap.get(player);
+      if (typeof cleanup === 'function') cleanup();
+      videoStoryFullscreenCleanupMap.delete(player);
+    };
+
+    const requestElementFullscreen = (element) => {
+      if (!(element instanceof HTMLElement)) return false;
+
+      try {
+        if (typeof element.requestFullscreen === 'function') {
+          const requestPromise = element.requestFullscreen();
+          if (requestPromise && typeof requestPromise.catch === 'function') {
+            requestPromise.catch(() => {});
+          }
+          return true;
+        }
+
+        if (typeof element.webkitRequestFullscreen === 'function') {
+          element.webkitRequestFullscreen();
+          return true;
+        }
+      } catch (_) {}
+
+      return false;
+    };
 
     const initProductRoot = (root) => {
       if (!root || initializedRoots.has(root)) return;
@@ -3729,9 +3710,7 @@
       const optionGroups = Array.from(root.querySelectorAll('[data-option-position]'));
       const selectorListItems = Array.from(root.querySelectorAll('[data-selector-list-item]'));
       const videoStoryTriggers = Array.from(root.querySelectorAll('[data-video-story-trigger]'));
-      const videoStoryModal = root.querySelector('[data-video-story-modal]');
       const videoStoryPlayer = root.querySelector('[data-video-story-player]');
-      const videoStoryCloseButtons = Array.from(root.querySelectorAll('[data-video-story-close]'));
       const selectorListOptionPosition = Number.parseInt(root.dataset.selectorListOptionPosition || '', 10);
       const selectorListOptionIndex =
         Number.isFinite(selectorListOptionPosition) && selectorListOptionPosition > 0
@@ -4265,50 +4244,84 @@
         );
       };
 
-      const closeVideoStoryModal = () => {
-        if (!videoStoryModal || !videoStoryPlayer) return;
+      const stopVideoStoryPlayback = () => {
+        if (!(videoStoryPlayer instanceof HTMLVideoElement)) return;
+        cleanupVideoStoryFullscreenTracking(videoStoryPlayer);
         videoStoryPlayer.pause();
+        videoStoryPlayer.controls = false;
+        videoStoryPlayer.removeAttribute('controls');
+        videoStoryPlayer.playsInline = true;
+        videoStoryPlayer.setAttribute('playsinline', '');
+        videoStoryPlayer.setAttribute('webkit-playsinline', 'true');
+        videoStoryPlayer.hidden = true;
         videoStoryPlayer.removeAttribute('src');
         videoStoryPlayer.load();
-        videoStoryModal.hidden = true;
-        document.body.classList.remove('sb-video-story-modal-open');
       };
 
-      if (videoStoryModal && videoStoryPlayer && videoStoryTriggers.length) {
-        if (videoStoryModal.parentElement !== document.body) {
-          document.body.appendChild(videoStoryModal);
-        }
+      const trackVideoStoryFullscreenExit = () => {
+        if (!(videoStoryPlayer instanceof HTMLVideoElement)) return;
 
+        cleanupVideoStoryFullscreenTracking(videoStoryPlayer);
+
+        const onDocumentFullscreenChange = () => {
+          const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
+          if (fullscreenElement === videoStoryPlayer) return;
+          stopVideoStoryPlayback();
+        };
+
+        const onVideoFullscreenExit = () => {
+          stopVideoStoryPlayback();
+        };
+
+        document.addEventListener('fullscreenchange', onDocumentFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', onDocumentFullscreenChange);
+        videoStoryPlayer.addEventListener('webkitendfullscreen', onVideoFullscreenExit);
+
+        videoStoryFullscreenCleanupMap.set(videoStoryPlayer, () => {
+          document.removeEventListener('fullscreenchange', onDocumentFullscreenChange);
+          document.removeEventListener('webkitfullscreenchange', onDocumentFullscreenChange);
+          videoStoryPlayer.removeEventListener('webkitendfullscreen', onVideoFullscreenExit);
+        });
+      };
+
+      if (videoStoryPlayer) {
+        videoStoryPlayer.addEventListener('ended', stopVideoStoryPlayback);
+      }
+
+      if (videoStoryPlayer && videoStoryTriggers.length) {
         videoStoryTriggers.forEach((trigger) => {
           trigger.addEventListener('click', () => {
-            const videoUrl = trigger.dataset.videoStoryUrl || '';
+            const videoUrl = (trigger.dataset.videoStoryUrl || '').trim();
             if (!videoUrl) return;
-            videoStoryPlayer.src = videoUrl;
-            videoStoryModal.hidden = false;
-            document.body.classList.add('sb-video-story-modal-open');
+            stopVideoStoryPlayback();
+            videoStoryPlayer.setAttribute('src', videoUrl);
+            videoStoryPlayer.load();
+            videoStoryPlayer.currentTime = 0;
+            videoStoryPlayer.defaultMuted = false;
+            videoStoryPlayer.muted = false;
+            videoStoryPlayer.loop = false;
+            videoStoryPlayer.controls = true;
+            videoStoryPlayer.setAttribute('controls', 'controls');
+            videoStoryPlayer.playsInline = false;
+            videoStoryPlayer.removeAttribute('playsinline');
+            videoStoryPlayer.removeAttribute('webkit-playsinline');
+            videoStoryPlayer.hidden = false;
             const playPromise = videoStoryPlayer.play();
             if (playPromise && typeof playPromise.catch === 'function') {
               playPromise.catch(() => {});
             }
-          });
-        });
-
-        videoStoryCloseButtons.forEach((button) => {
-          button.addEventListener('click', closeVideoStoryModal);
-        });
-
-        if (!isVideoStoryEscapeBound) {
-          document.addEventListener('keydown', (event) => {
-            if (event.key !== 'Escape') return;
-            const openModal = document.querySelector('[data-video-story-modal]:not([hidden])');
-            if (!openModal) return;
-            const closeButton = openModal.querySelector('[data-video-story-close]');
-            if (closeButton instanceof HTMLElement) {
-              closeButton.click();
+            trackVideoStoryFullscreenExit();
+            if (typeof videoStoryPlayer.webkitEnterFullscreen === 'function') {
+              try {
+                videoStoryPlayer.webkitEnterFullscreen();
+              } catch (_) {
+                requestElementFullscreen(videoStoryPlayer);
+              }
+            } else {
+              requestElementFullscreen(videoStoryPlayer);
             }
           });
-          isVideoStoryEscapeBound = true;
-        }
+        });
       }
 
       const formatMoney = (centsValue) => {
@@ -4641,10 +4654,10 @@
                 ? `<img class=\"sb-product-main__media-video-poster\" data-gallery-video-poster src=\"${escapeHtml(poster)}\" alt=\"${escapeHtml(productTitle)}\" loading=\"lazy\" width=\"720\" height=\"720\">`
                 : '';
               const posterAttribute = poster ? ` poster=\"${escapeHtml(poster)}\"` : '';
-              return `<div class=\"sb-product-main__media-item sb-product-main__media-item--video\" data-sb-reveal-item>${captionMarkup}${posterMarkup}<video class=\"sb-product-main__media-asset sb-product-main__media-asset--video\" data-gallery-video style=\"background: var(--sb-color-neutral-200);\" autoplay loop muted playsinline preload=\"metadata\"${posterAttribute} src=\"${escapeHtml(source)}\"></video></div>`;
+              return `<div class=\"sb-product-main__media-item sb-product-main__media-item--video\">${captionMarkup}${posterMarkup}<video class=\"sb-product-main__media-asset sb-product-main__media-asset--video\" data-gallery-video style=\"background: var(--sb-color-always-white);\" autoplay loop muted playsinline preload=\"metadata\"${posterAttribute} src=\"${escapeHtml(source)}\"></video></div>`;
             }
 
-            return `<div class=\"sb-product-main__media-item\" data-sb-reveal-item>${captionMarkup}<img class=\"sb-product-main__media-asset\" src=\"${escapeHtml(source)}\" alt=\"${escapeHtml(productTitle)}\" loading=\"lazy\" width=\"720\" height=\"720\"></div>`;
+            return `<div class=\"sb-product-main__media-item\">${captionMarkup}<img class=\"sb-product-main__media-asset\" src=\"${escapeHtml(source)}\" alt=\"${escapeHtml(productTitle)}\" loading=\"lazy\" width=\"720\" height=\"720\"></div>`;
           })
           .join('');
 

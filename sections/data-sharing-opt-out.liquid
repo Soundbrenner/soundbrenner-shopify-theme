@@ -1,14 +1,14 @@
-<section class="sb-data-sharing-opt-out" data-sb-reveal>
-  <div class="sb-data-sharing-opt-out__title" data-sb-reveal-item>
+<section class="sb-data-sharing-opt-out">
+  <div class="sb-data-sharing-opt-out__title">
     <h1 class="font-title weight-bold">{{ page.title | default: '' | strip | downcase | capitalize }}</h1>
   </div>
 
-  <div class="sb-data-sharing-opt-out__content rte font-body weight-regular sb-flow-24" data-sb-reveal-item>
+  <div class="sb-data-sharing-opt-out__content rte font-body weight-regular sb-flow-24">
     {{ page.content }}
   </div>
 
   {% unless page.content contains 'pc--optOutFormContainer' or page.content contains 'pc--opt-out-form-container' %}
-    <div id="pc--optOutFormContainer" data-sb-reveal-item></div>
+    <div id="pc--optOutFormContainer"></div>
   {% endunless %}
 </section>
 

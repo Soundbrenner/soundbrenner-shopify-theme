@@ -4,20 +4,24 @@
 
 <section class="sb-list-collections" aria-label="{{ 'collections.title' | t | escape }}">
   <div class="sb-list-collections__container page-width">
-    <header class="sb-list-collections__header" data-sb-reveal-item>
+    <header class="sb-list-collections__header">
       <h1 class="sb-list-collections__title font-title weight-bold">{{ 'collections.title' | t }}</h1>
     </header>
 
-    <div class="sb-list-collections__grid" data-sb-reveal>
+    <div class="sb-list-collections__grid">
       {% for collection in collections limit: max_items %}
         {% liquid
           assign collection_image = collection.featured_image
+          assign collection_image_loading = 'lazy'
+          if forloop.index <= 4
+            assign collection_image_loading = 'eager'
+          endif
           if collection_image == blank and collection.products.first != blank
             assign collection_image = collection.products.first.featured_image
           endif
         %}
 
-        <article class="sb-list-collections__card" data-sb-reveal-item>
+        <article class="sb-list-collections__card">
           <a class="sb-list-collections__media-link" href="{{ collection.url }}" aria-label="{{ collection.title | escape }}">
             <span class="sb-list-collections__media">
             {% if collection_image != blank %}
@@ -34,7 +38,7 @@
                 src="{{ collection_image | image_url: width: collection_image_1x_width, height: collection_image_1x_height, crop: 'center' }}"
                 srcset="{{ collection_image | image_url: width: collection_image_1x_width, height: collection_image_1x_height, crop: 'center' }} 1x, {{ collection_image | image_url: width: collection_image_2x_width, height: collection_image_2x_height, crop: 'center' }} 2x"
                 alt="{{ collection.title | escape }}"
-                loading="lazy"
+                loading="{{ collection_image_loading }}"
                 width="{{ collection_image_1x_width }}"
                 height="{{ collection_image_1x_height }}"
               >

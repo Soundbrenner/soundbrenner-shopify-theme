@@ -145,8 +145,14 @@
           <section class="sb-search__group sb-search__group--products" aria-label="{{ 'search.group_products' | t }}">
             <ul class="sb-search__grid" role="list">
               {% for result in product_results %}
+                {% liquid
+                  assign result_image_loading = 'lazy'
+                  if forloop.index <= 4
+                    assign result_image_loading = 'eager'
+                  endif
+                %}
                 <li class="sb-search__item sb-search__item--product">
-                  {% render 'product-thumbnail', product: result, product_name: result.title %}
+                  {% render 'product-thumbnail', product: result, product_name: result.title, image_loading: result_image_loading %}
                 </li>
               {% endfor %}
             </ul>
@@ -157,6 +163,12 @@
           <section class="sb-search__group sb-search__group--pages" aria-label="{{ 'search.group_pages' | t }}">
             <ul class="sb-search__grid" role="list">
               {% for result in page_results %}
+                {% liquid
+                  assign result_image_loading = 'lazy'
+                  if forloop.index <= 4
+                    assign result_image_loading = 'eager'
+                  endif
+                %}
                 {% assign page_excerpt = result.content | strip_html | strip | truncatewords: 24 %}
                 {% assign page_social_image = result.metafields.custom.social_media_image.value | default: result.metafields.custom.social_media_image %}
                 {% assign page_social_ratio = page_social_image.aspect_ratio %}
@@ -184,7 +196,7 @@
                             widths: '180, 240, 292, 360, 480, 584',
                             sizes: '(min-width: 990px) 292px, (min-width: 750px) calc((100vw - 96px) / 3), calc((100vw - 56px) / 2)',
                             class: 'sb-blog-overview-card__image',
-                            loading: 'lazy',
+                            loading: result_image_loading,
                             alt: result.title
                         }}
                       {% else %}
@@ -211,12 +223,19 @@
             <ul class="sb-search__grid" role="list">
               {% for result in article_results %}
                 {% assign search_article_blog_title = result.blog.title | default: 'sb.blog.blog' | t %}
+                {% liquid
+                  assign result_image_loading = 'lazy'
+                  if forloop.index <= 4
+                    assign result_image_loading = 'eager'
+                  endif
+                %}
                 <li class="sb-search__item sb-search__item--article">
                   {% render 'sb-blog-overview-article-card',
                     article: result,
                     blog_title: search_article_blog_title,
                     card_class: 'sb-blog-overview-card--third',
                     show_excerpt: false,
+                    image_loading: result_image_loading,
                     image_request_width: 584,
                     image_widths: '180, 240, 292, 360, 480, 584',
                     image_sizes: '(min-width: 990px) 292px, (min-width: 750px) calc((100vw - 96px) / 3), calc((100vw - 56px) / 2)'
@@ -671,7 +690,7 @@
   }
 
   .sb-search__thumbnail {
-    background: var(--sb-color-neutral-200);
+    background: var(--sb-color-always-white);
     border-radius: var(--sb-space-24);
     display: block;
     overflow: hidden;

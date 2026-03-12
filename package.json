@@ -6,6 +6,7 @@
   "scripts": {
     "visual:capture": "node scripts/visual-capture.mjs",
     "visual:install": "playwright install chromium",
+    "qa:motion": "node scripts/check-motion-contract.mjs",
     "qa:snap": "node scripts/qa-snap.mjs",
     "qa:stop": "node scripts/qa-snap.mjs --stop"
   },

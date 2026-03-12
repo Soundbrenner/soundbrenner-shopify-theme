@@ -179,7 +179,8 @@
                     article: article,
                     blog_title: blog.title,
                     card_class: 'sb-blog-overview-card--feature',
-                    show_excerpt: false
+                    show_excerpt: false,
+                    image_loading: 'eager'
                   %}
                 {% endfor %}
               </div>
@@ -190,7 +191,8 @@
                     article: article,
                     blog_title: blog.title,
                     card_class: 'sb-blog-overview-card--half',
-                    show_excerpt: false
+                    show_excerpt: false,
+                    image_loading: 'eager'
                   %}
                 {% endfor %}
               </div>
@@ -249,11 +251,18 @@
                 {% endfor %}
               {% else %}
                 {% for article in blog.articles offset: archive_offset %}
+                  {% liquid
+                    assign archive_image_loading = 'lazy'
+                    if forloop.index <= 3
+                      assign archive_image_loading = 'eager'
+                    endif
+                  %}
                   {% render 'sb-blog-overview-article-card',
                     article: article,
                     blog_title: blog.title,
                     card_class: 'sb-blog-overview-card--archive',
-                    show_excerpt: false
+                    show_excerpt: false,
+                    image_loading: archive_image_loading
                   %}
                   {% if sidebar_box_two_markup != blank and forloop.index == 5 %}
                     <div class="sb-blog-overview__archive-insert" aria-label="{{ section.settings.sidebar_promo_title }}">

@@ -14,10 +14,10 @@
 {% if source_collection != blank %}
   <section
     class="sb-collection-products sb-collection-combo"
-    data-sb-reveal
+
     data-sb-thumbnail-section
   >
-    <header class="sb-collection-combo__header" data-sb-reveal-item>
+    <header class="sb-collection-combo__header">
       <h2 class="sb-collection-combo__title font-title weight-bold">
         <a class="sb-collection-combo__title-link link-neutral-900" href="{{ source_collection.url }}">{{ source_collection.title }}</a>
       </h2>
@@ -28,8 +28,14 @@
       {% endif %}
     </header>
 
-    <div class="sb-collection-products__grid" data-sb-reveal-item>
+    <div class="sb-collection-products__grid">
       {% for product in source_collection.products limit: 250 %}
+        {% liquid
+          assign product_thumbnail_loading = 'lazy'
+          if forloop.index <= 4
+            assign product_thumbnail_loading = 'eager'
+          endif
+        %}
         {% if forloop.index == 4 and collection_testimonial_ref != blank %}
           <article class="sb-collection-products__item sb-collection-products__item--testimonial">
             {% render 'collection-testimonial',
@@ -40,7 +46,7 @@
           </article>
         {% endif %}
         <article class="sb-collection-products__item">
-          {% render 'product-thumbnail', product: product, product_name: product.title %}
+          {% render 'product-thumbnail', product: product, product_name: product.title, image_loading: product_thumbnail_loading %}
         </article>
       {% endfor %}
     </div>

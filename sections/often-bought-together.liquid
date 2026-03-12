@@ -47,14 +47,14 @@
       {% if recommendations.performed and recommended_products != blank %}
         <section
           class="sb-often-bought-together{% if request.page_type == 'search' %} sb-often-bought-together--search{% endif %}"
-          data-sb-reveal
+
           data-sb-thumbnail-section
         >
-          <h2 class="sb-often-bought-together__title font-title weight-bold" data-sb-reveal-item>
+          <h2 class="sb-often-bought-together__title font-title weight-bold">
             {{ section.settings.title }}
           </h2>
 
-          <div class="sb-often-bought-together__grid" data-sb-reveal-item>
+          <div class="sb-often-bought-together__grid">
             {% for recommended_product in recommended_products limit: 4 %}
               {% render 'often-bought-together-product-card', product_item: recommended_product %}
             {% endfor %}
@@ -65,14 +65,14 @@
   {% elsif has_manual_products %}
     <section
       class="sb-often-bought-together{% if request.page_type == 'search' %} sb-often-bought-together--search{% endif %}"
-      data-sb-reveal
+
       data-sb-thumbnail-section
     >
-      <h2 class="sb-often-bought-together__title font-title weight-bold" data-sb-reveal-item>
+      <h2 class="sb-often-bought-together__title font-title weight-bold">
         {{ section.settings.title }}
       </h2>
 
-      <div class="sb-often-bought-together__grid" data-sb-reveal-item>
+      <div class="sb-often-bought-together__grid">
         {% for manual_product_index in (1..4) %}
           {% liquid
             assign manual_product = blank

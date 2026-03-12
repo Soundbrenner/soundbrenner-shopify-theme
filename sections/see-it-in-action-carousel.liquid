@@ -108,15 +108,16 @@
     style="--sb-see-action-play-icon-url: url('{{ 'play_arrow.svg' | asset_url }}');"
     data-see-action-carousel
     data-sb-carousel
-    data-sb-reveal
+    data-sb-motion="reveal"
   >
+    <div class="sb-see-action-carousel__motion" data-sb-motion-item>
     {% if section_title != blank or section_subtitle != blank %}
       <div class="sb-see-action-carousel__header">
         {% if section_title != blank %}
-          <h2 class="sb-see-action-carousel__title font-title weight-bold" data-sb-reveal-item>{{ section_title }}</h2>
+          <h2 class="sb-see-action-carousel__title font-title weight-bold">{{ section_title }}</h2>
         {% endif %}
         {% if section_subtitle != blank %}
-          <p class="sb-see-action-carousel__subtitle font-body weight-semibold" data-sb-reveal-item>{{ section_subtitle }}</p>
+          <p class="sb-see-action-carousel__subtitle font-body weight-semibold">{{ section_subtitle }}</p>
         {% endif %}
       </div>
     {% endif %}
@@ -181,19 +182,19 @@
                 if item_video_url_downcase contains 'youtube.com/watch'
                   assign item_youtube_id = item_video_url | split: 'v=' | last | split: '&' | first
                   if item_youtube_id != blank
-                    assign item_video_embed_url = 'https://www.youtube.com/embed/' | append: item_youtube_id | append: '?autoplay=1&playsinline=1&controls=0&rel=0'
+                    assign item_video_embed_url = 'https://www.youtube.com/embed/' | append: item_youtube_id | append: '?autoplay=1&playsinline=1&controls=1&rel=0&fs=1'
                     assign item_video_use_iframe = true
                   endif
                 elsif item_video_url_downcase contains 'youtu.be/'
                   assign item_youtube_id = item_video_url | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first
                   if item_youtube_id != blank
-                    assign item_video_embed_url = 'https://www.youtube.com/embed/' | append: item_youtube_id | append: '?autoplay=1&playsinline=1&controls=0&rel=0'
+                    assign item_video_embed_url = 'https://www.youtube.com/embed/' | append: item_youtube_id | append: '?autoplay=1&playsinline=1&controls=1&rel=0&fs=1'
                     assign item_video_use_iframe = true
                   endif
                 elsif item_video_url_downcase contains 'vimeo.com/'
                   assign item_vimeo_id = item_video_url | split: 'vimeo.com/' | last | split: '?' | first | split: '&' | first | split: '/' | first
                   if item_vimeo_id != blank
-                    assign item_video_embed_url = 'https://player.vimeo.com/video/' | append: item_vimeo_id | append: '?autoplay=1&playsinline=1'
+                    assign item_video_embed_url = 'https://player.vimeo.com/video/' | append: item_vimeo_id | append: '?autoplay=1&playsinline=1&controls=1'
                     assign item_video_use_iframe = true
                   endif
                 endif
@@ -206,7 +207,7 @@
               {% continue %}
             {% endif %}
 
-            <article class="sb-see-action-carousel__item" data-sb-carousel-item data-sb-reveal-item>
+            <article class="sb-see-action-carousel__item" data-sb-carousel-item>
               <div class="sb-see-action-carousel__media" data-see-action-media>
                 {% assign item_thumbnail_url = item_image_url %}
                 {% if item_thumbnail_url == blank %}
@@ -325,7 +326,7 @@
               {% assign item_image_url = 'placeholder-feature-carousel.jpg' | asset_url %}
             {% endif %}
 
-            <article class="sb-see-action-carousel__item" data-sb-carousel-item data-sb-reveal-item {{ block.shopify_attributes }}>
+            <article class="sb-see-action-carousel__item" data-sb-carousel-item {{ block.shopify_attributes }}>
               <div class="sb-see-action-carousel__media" data-see-action-media>
                 {% if item_video_url != blank %}
                   <button
@@ -402,6 +403,7 @@
         </span>
       </button>
     </div>
+    </div>
   </section>
 {% endif %}
 
@@ -414,6 +416,10 @@
     --sb-see-action-play-icon-width: 22px;
     --sb-see-action-play-icon-height: 28px;
     --sb-see-action-play-icon-offset-x: 3px;
+    width: 100%;
+  }
+
+  .sb-see-action-carousel__motion {
     width: 100%;
   }
 
@@ -571,12 +577,12 @@
   }
 
   .sb-see-action-carousel__item:focus-within .sb-see-action-carousel__media-play {
-    transform: translate(-50%, -50%) scale(var(--sb-hover-scale-factor, 1.015));
+    transform: translate(-50%, -50%) scale(1.1);
   }
 
   @media (hover: hover) and (pointer: fine) {
     .sb-see-action-carousel__item:hover .sb-see-action-carousel__media-play {
-      transform: translate(-50%, -50%) scale(var(--sb-hover-scale-factor, 1.015));
+      transform: translate(-50%, -50%) scale(1.1);
     }
   }
 
@@ -606,6 +612,7 @@
 
   .sb-see-action-carousel__media.is-playing .sb-see-action-carousel__media-trigger {
     inset: 0;
+    pointer-events: none;
     position: absolute;
     z-index: 4;
   }
@@ -628,8 +635,32 @@
     z-index: 4;
   }
 
-  .sb-see-action-carousel__media.is-preview-playing .sb-see-action-carousel__media-trigger > img {
+  .sb-see-action-carousel__media.is-preview-ready .sb-see-action-carousel__media-trigger > img {
     opacity: 0;
+  }
+
+  .sb-see-action-carousel__media.is-playing .sb-see-action-carousel__media-video,
+  .sb-see-action-carousel__media.is-playing .sb-see-action-carousel__media-iframe {
+    pointer-events: auto;
+  }
+
+  .sb-see-action-carousel__media-video:fullscreen,
+  .sb-see-action-carousel__media-video:-webkit-full-screen {
+    background: var(--sb-color-always-black);
+    height: 100%;
+    inset: auto;
+    object-fit: contain;
+    position: static;
+    width: 100%;
+  }
+
+  .sb-see-action-carousel__media-iframe:fullscreen,
+  .sb-see-action-carousel__media-iframe:-webkit-full-screen {
+    background: var(--sb-color-always-black);
+    height: 100%;
+    inset: auto;
+    position: static;
+    width: 100%;
   }
 
   .sb-see-action-carousel__body {
@@ -736,27 +767,96 @@
     const initializedSections = new WeakSet();
     const sectionStateMap = new WeakMap();
     const initializedRoots = new Set();
+    const fullscreenCleanupMap = new WeakMap();
     const EMPTY_IFRAME_SRC = 'about:blank';
     const EMPTY_VIDEO_SRC = '';
     const playVideoLabel = {{ 'sb.media.play_video' | t | json }};
     const pauseVideoLabel = {{ 'sb.media.pause_video' | t | json }};
-    const MIN_PREVIEW_INTERSECTION_RATIO = 0.35;
+    const PREVIEW_ROOT_MARGIN = `${Math.max(window.innerHeight || document.documentElement.clientHeight || 0, 640)}px 0px`;
     const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const shouldRespectSaveData = navigator.connection && navigator.connection.saveData;
 
     const shouldAutoplayPreview = () => !document.hidden && !prefersReducedMotion && !shouldRespectSaveData;
 
-    const stopMedia = (media) => {
+    const cleanupFullscreenTracking = (media) => {
       if (!(media instanceof HTMLElement)) return;
+      const cleanup = fullscreenCleanupMap.get(media);
+      if (typeof cleanup === 'function') cleanup();
+      fullscreenCleanupMap.delete(media);
+    };
+
+    const requestElementFullscreen = (element) => {
+      if (!(element instanceof HTMLElement)) return false;
+
+      try {
+        if (typeof element.requestFullscreen === 'function') {
+          const requestPromise = element.requestFullscreen();
+          if (requestPromise && typeof requestPromise.catch === 'function') {
+            requestPromise.catch(() => {});
+          }
+          return true;
+        }
+
+        if (typeof element.webkitRequestFullscreen === 'function') {
+          element.webkitRequestFullscreen();
+          return true;
+        }
+      } catch (_) {}
+
+      return false;
+    };
+
+    const trackFullscreenExit = (media, target) => {
+      if (!(media instanceof HTMLElement) || !(target instanceof EventTarget)) return;
+
+      cleanupFullscreenTracking(media);
+
+      const onDocumentFullscreenChange = () => {
+        const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
+        if (fullscreenElement === target) return;
+        stopMedia(media);
+      };
+
+      const onVideoFullscreenExit = () => {
+        stopMedia(media);
+      };
+
+      document.addEventListener('fullscreenchange', onDocumentFullscreenChange);
+      document.addEventListener('webkitfullscreenchange', onDocumentFullscreenChange);
+
+      if (target instanceof HTMLVideoElement) {
+        target.addEventListener('webkitendfullscreen', onVideoFullscreenExit);
+      }
+
+      fullscreenCleanupMap.set(media, () => {
+        document.removeEventListener('fullscreenchange', onDocumentFullscreenChange);
+        document.removeEventListener('webkitfullscreenchange', onDocumentFullscreenChange);
+        if (target instanceof HTMLVideoElement) {
+          target.removeEventListener('webkitendfullscreen', onVideoFullscreenExit);
+        }
+      });
+    };
+
+    const stopMedia = (media, { preserveVideoSource = false } = {}) => {
+      if (!(media instanceof HTMLElement)) return;
+      cleanupFullscreenTracking(media);
       media.classList.remove('is-playing');
       media.classList.remove('is-preview-playing');
+      media.classList.remove('is-preview-ready');
 
       const videoPlayer = media.querySelector('[data-see-action-inline-video]');
       if (videoPlayer instanceof HTMLVideoElement) {
         videoPlayer.pause();
+        videoPlayer.controls = false;
+        videoPlayer.removeAttribute('controls');
         videoPlayer.hidden = true;
-        videoPlayer.removeAttribute('src');
-        videoPlayer.load();
+        videoPlayer.playsInline = true;
+        videoPlayer.setAttribute('playsinline', '');
+        videoPlayer.setAttribute('webkit-playsinline', 'true');
+        if (!preserveVideoSource) {
+          videoPlayer.removeAttribute('src');
+          videoPlayer.load();
+        }
       }
 
       const iframePlayer = media.querySelector('[data-see-action-inline-iframe]');
@@ -769,6 +869,7 @@
       if (trigger instanceof HTMLElement) {
         trigger.setAttribute('aria-pressed', 'false');
         trigger.setAttribute('aria-label', playVideoLabel);
+        trigger.removeAttribute('tabindex');
       }
     };
 
@@ -800,7 +901,7 @@
     const stopPreviewForRoot = (root) => {
       const state = sectionStateMap.get(root);
       if (!state || !(state.previewMedia instanceof HTMLElement)) return;
-      stopMedia(state.previewMedia);
+      stopMedia(state.previewMedia, { preserveVideoSource: true });
       state.previewMedia = null;
     };
 
@@ -827,6 +928,7 @@
 
       media.classList.remove('is-playing');
       media.classList.add('is-preview-playing');
+      media.classList.remove('is-preview-ready');
 
       if (videoPlayer.getAttribute('src') !== previewVideoUrl) {
         videoPlayer.setAttribute('src', previewVideoUrl || EMPTY_VIDEO_SRC);
@@ -841,10 +943,22 @@
       videoPlayer.playsInline = true;
       videoPlayer.hidden = false;
 
+      const markPreviewReady = () => {
+        if (state.previewMedia !== media || media.classList.contains('is-preview-playing') == false) return;
+        media.classList.add('is-preview-ready');
+      };
+
+      if (videoPlayer.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+        markPreviewReady();
+      } else {
+        videoPlayer.addEventListener('loadeddata', markPreviewReady, { once: true });
+      }
+
       const trigger = media.querySelector('[data-see-action-video-trigger]');
       if (trigger instanceof HTMLElement) {
         trigger.setAttribute('aria-pressed', 'false');
         trigger.setAttribute('aria-label', playVideoLabel);
+        trigger.removeAttribute('tabindex');
       }
 
       const playPromise = videoPlayer.play();
@@ -901,6 +1015,7 @@
           media.classList.remove('is-preview-playing');
           trigger.setAttribute('aria-pressed', 'true');
           trigger.setAttribute('aria-label', pauseVideoLabel);
+          trigger.setAttribute('tabindex', '-1');
 
           const videoPlayer = media.querySelector('[data-see-action-inline-video]');
           const iframePlayer = media.querySelector('[data-see-action-inline-iframe]');
@@ -914,6 +1029,8 @@
             }
             iframePlayer.hidden = false;
             iframePlayer.setAttribute('src', embedUrl);
+            trackFullscreenExit(media, iframePlayer);
+            requestElementFullscreen(iframePlayer);
             return;
           }
 
@@ -931,13 +1048,25 @@
             videoPlayer.defaultMuted = false;
             videoPlayer.muted = false;
             videoPlayer.loop = false;
-            videoPlayer.controls = false;
-            videoPlayer.removeAttribute('controls');
-            videoPlayer.playsInline = true;
+            videoPlayer.controls = true;
+            videoPlayer.setAttribute('controls', 'controls');
+            videoPlayer.playsInline = false;
+            videoPlayer.removeAttribute('playsinline');
+            videoPlayer.removeAttribute('webkit-playsinline');
             videoPlayer.hidden = false;
             const playPromise = videoPlayer.play();
             if (playPromise && typeof playPromise.catch === 'function') {
               playPromise.catch(() => {});
+            }
+            trackFullscreenExit(media, videoPlayer);
+            if (typeof videoPlayer.webkitEnterFullscreen === 'function') {
+              try {
+                videoPlayer.webkitEnterFullscreen();
+              } catch (_) {
+                requestElementFullscreen(videoPlayer);
+              }
+            } else {
+              requestElementFullscreen(videoPlayer);
             }
           }
         });
@@ -961,7 +1090,7 @@
             entries.forEach((entry) => {
               if (entry.target !== root) return;
 
-              const nextInView = entry.isIntersecting && entry.intersectionRatio >= MIN_PREVIEW_INTERSECTION_RATIO;
+              const nextInView = entry.isIntersecting;
               state.inView = nextInView;
 
               if (!nextInView) {
@@ -973,7 +1102,8 @@
             });
           },
           {
-            threshold: [0, MIN_PREVIEW_INTERSECTION_RATIO, 1],
+            rootMargin: PREVIEW_ROOT_MARGIN,
+            threshold: [0, 1],
           }
         );
         state.observer.observe(root);

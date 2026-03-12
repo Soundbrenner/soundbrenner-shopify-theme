@@ -68,7 +68,7 @@
   <style>
     .sb-hero-video__frame-wrap {
       aspect-ratio: 16 / 9;
-      background: var(--sb-color-neutral-200);
+      background: transparent;
       overflow: hidden;
       position: relative;
       width: 100%;
@@ -83,7 +83,7 @@
 
     .sb-hero-video__thumb-frame {
       aspect-ratio: 16 / 9;
-      background: var(--sb-color-neutral-200);
+      background: transparent;
       overflow: hidden;
       width: 100%;
     }
@@ -98,15 +98,16 @@
   <section
     id="{{ hero_video_anchor_id }}"
     class="sb-hero-video"
-    data-sb-reveal
+    style="--sb-hero-video-play-icon-url: url('{{ 'play_arrow.svg' | asset_url }}');"
+    data-sb-motion="reveal"
     data-hero-video-anchor
     {% if request.page_type == 'product' and product != blank %}
       data-product-id="{{ product.id }}"
     {% endif %}
   >
-    <div class="sb-hero-video__inner">
+    <div class="sb-hero-video__inner" data-sb-motion-item>
       {% if hero_video_source_mode == 'setting' and hero_video_fallback_youtube_id != blank %}
-        <div class="sb-hero-video__single" data-sb-reveal-item>
+        <div class="sb-hero-video__single">
           <div class="sb-hero-video__frame-wrap">
             <iframe
               class="sb-hero-video__frame"
@@ -119,7 +120,7 @@
           </div>
         </div>
       {% elsif hero_video_count == 1 %}
-        <div class="sb-hero-video__single" data-sb-reveal-item>
+        <div class="sb-hero-video__single">
           {% for hero_video_item in hero_video_items limit: 4 %}
             {% liquid
               assign hero_video_entry = hero_video_item.value | default: hero_video_item.reference.value | default: hero_video_item.reference | default: hero_video_item
@@ -182,7 +183,7 @@
                   break
                 endif
               %}
-              <div class="sb-hero-video__double-item" data-sb-reveal-item>
+              <div class="sb-hero-video__double-item">
                 <div class="sb-hero-video__frame-wrap">
                   <iframe
                     class="sb-hero-video__frame"
@@ -243,7 +244,7 @@
           {% if hero_video_featured_title == blank %}
             {% assign hero_video_featured_title = 'sb.hero_video.title' | t %}
           {% endif %}
-          <div class="sb-hero-video__featured-wrap" data-hero-video-gallery data-sb-reveal-item>
+          <div class="sb-hero-video__featured-wrap" data-hero-video-gallery>
             <div class="sb-hero-video__frame-wrap sb-hero-video__frame-wrap--featured">
               <iframe
                 class="sb-hero-video__frame"
@@ -302,6 +303,9 @@
                       width="1280"
                       height="720"
                     >
+                    <span class="sb-hero-video__thumb-play" aria-hidden="true">
+                      <span class="sb-hero-video__thumb-play-icon"></span>
+                    </span>
                   </span>
                   <span class="sb-hero-video__thumb-title font-body weight-semibold">{{ hero_video_title }}</span>
                 </button>
@@ -317,6 +321,11 @@
 
 {% stylesheet %}
   .sb-hero-video {
+    --sb-hero-video-play-size: 36px;
+    --sb-hero-video-play-icon-box-size: 30px;
+    --sb-hero-video-play-icon-width: 11px;
+    --sb-hero-video-play-icon-height: 14px;
+    --sb-hero-video-play-icon-offset-x: 2px;
     width: 100%;
   }
 
@@ -344,7 +353,7 @@
 
   .sb-hero-video__frame-wrap {
     aspect-ratio: 16 / 9;
-    background: var(--sb-color-neutral-200);
+    background: transparent;
     border-radius: 24px;
     overflow: hidden;
     position: relative;
@@ -386,10 +395,11 @@
 
   .sb-hero-video__thumb-frame {
     aspect-ratio: 16 / 9;
-    background: var(--sb-color-neutral-200);
+    background: transparent;
     border-radius: 16px;
     display: block;
     overflow: hidden;
+    position: relative;
     width: 100%;
   }
 
@@ -407,10 +417,46 @@
     text-align: center;
   }
 
+  .sb-hero-video__thumb-play {
+    -webkit-backdrop-filter: blur(2px);
+    align-items: center;
+    backdrop-filter: blur(2px);
+    background: var(--rare-always-black-50, var(--sb-color-always-black-50));
+    border-radius: 999px;
+    display: inline-flex;
+    height: var(--sb-hero-video-play-size);
+    justify-content: center;
+    left: 50%;
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: var(--sb-hero-video-play-size);
+  }
+
+  .sb-hero-video__thumb-play-icon {
+    -webkit-mask-image: var(--sb-hero-video-play-icon-url);
+    -webkit-mask-position: calc(50% + var(--sb-hero-video-play-icon-offset-x)) 50%;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: var(--sb-hero-video-play-icon-width) var(--sb-hero-video-play-icon-height);
+    background: var(--sb-color-always-white);
+    display: block;
+    height: var(--sb-hero-video-play-icon-box-size);
+    mask-image: var(--sb-hero-video-play-icon-url);
+    mask-position: calc(50% + var(--sb-hero-video-play-icon-offset-x)) 50%;
+    mask-repeat: no-repeat;
+    mask-size: var(--sb-hero-video-play-icon-width) var(--sb-hero-video-play-icon-height);
+    width: var(--sb-hero-video-play-icon-box-size);
+  }
+
   @media (hover: hover) and (pointer: fine) {
     .sb-hero-video__thumb:hover .sb-hero-video__thumb-image,
     .sb-hero-video__thumb:hover .sb-hero-video__thumb-title {
       opacity: 0.75;
+    }
+
+    .sb-hero-video__thumb:hover .sb-hero-video__thumb-play {
+      transform: translate(-50%, -50%) scale(1.1);
     }
   }
 
@@ -422,6 +468,10 @@
     outline: 2px solid var(--sb-color-blue-500);
     outline-offset: 4px;
     border-radius: 20px;
+  }
+
+  .sb-hero-video__thumb:focus-visible .sb-hero-video__thumb-play {
+    transform: translate(-50%, -50%) scale(1.1);
   }
 
   @media (max-width: 989px) {

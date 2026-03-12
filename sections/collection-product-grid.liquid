@@ -12,11 +12,17 @@
   %}
   <section
     class="sb-collection-products"
-    data-sb-reveal
+
     data-sb-thumbnail-section
   >
-    <div class="sb-collection-products__grid" data-sb-reveal-item>
+    <div class="sb-collection-products__grid">
       {% for product in collection.products %}
+        {% liquid
+          assign product_thumbnail_loading = 'lazy'
+          if forloop.index <= 4
+            assign product_thumbnail_loading = 'eager'
+          endif
+        %}
         {% if forloop.index == 4 and collection_testimonial_ref != blank %}
           <article class="sb-collection-products__item sb-collection-products__item--testimonial">
             {% render 'collection-testimonial',
@@ -27,7 +33,7 @@
           </article>
         {% endif %}
         <article class="sb-collection-products__item">
-          {% render 'product-thumbnail', product: product, product_name: product.title %}
+          {% render 'product-thumbnail', product: product, product_name: product.title, image_loading: product_thumbnail_loading %}
         </article>
       {% endfor %}
     </div>

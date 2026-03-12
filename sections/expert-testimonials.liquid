@@ -45,14 +45,16 @@
     })();
   </script>
 {% else %}
-  <section class="sb-expert-testimonials-carousel" data-sb-carousel data-sb-reveal>
+  <section class="sb-expert-testimonials-carousel" data-sb-carousel data-sb-motion="reveal">
+    <div class="sb-expert-testimonials-carousel__motion" data-sb-motion-item>
     {% if section_title != blank %}
-      <h2 class="sb-expert-testimonials-carousel__title font-title weight-bold" data-sb-reveal-item>{{ section_title }}</h2>
+      <h2 class="sb-expert-testimonials-carousel__title font-title weight-bold">{{ section_title }}</h2>
     {% endif %}
 
     <div class="sb-expert-testimonials-carousel__viewport" data-sb-carousel-viewport>
       <div class="sb-expert-testimonials-carousel__track" data-sb-carousel-track>
         {% if use_product_metaobjects %}
+          {% assign rendered_expert_count = 0 %}
           {% for item in section_items %}
             {% liquid
               assign expert_entry = item.value | default: item.reference.value | default: item.reference | default: item
@@ -67,18 +69,24 @@
               endif
             %}
 
-            <article class="sb-expert-testimonials-carousel__item" data-sb-carousel-item data-sb-reveal-item>
+            {% liquid
+              assign rendered_expert_count = rendered_expert_count | plus: 1
+              assign expert_image_loading = 'lazy'
+              if rendered_expert_count <= 2
+                assign expert_image_loading = 'eager'
+              endif
+            %}
+
+            <article class="sb-expert-testimonials-carousel__item" data-sb-carousel-item>
               <div class="sb-expert-testimonials-carousel__media">
                 {% if expert_image != blank %}
-                  {{
-                    expert_image
-                    | image_url: width: expert_image_request_width
-                    | image_tag:
-                      alt: expert_name | default: expert_title | default: expert_quote,
-                      loading: 'lazy',
-                      width: 283,
-                      height: 283
-                  }}
+                  <img
+                    src="{{ expert_image | image_url: width: expert_image_request_width }}"
+                    alt="{{ expert_name | default: expert_title | default: expert_quote | escape }}"
+                    loading="{{ expert_image_loading }}"
+                    width="283"
+                    height="283"
+                  >
                 {% else %}
                   <div class="sb-expert-testimonials-carousel__media-placeholder" aria-hidden="true"></div>
                 {% endif %}
@@ -96,6 +104,7 @@
             </article>
           {% endfor %}
         {% else %}
+          {% assign rendered_expert_count = 0 %}
           {% for block in section.blocks %}
             {% liquid
               assign expert_entry = block.settings.testimonial.value | default: block.settings.testimonial.reference.value | default: block.settings.testimonial.reference | default: block.settings.testimonial
@@ -116,18 +125,24 @@
               endif
             %}
 
-            <article class="sb-expert-testimonials-carousel__item" data-sb-carousel-item data-sb-reveal-item {{ block.shopify_attributes }}>
+            {% liquid
+              assign rendered_expert_count = rendered_expert_count | plus: 1
+              assign expert_image_loading = 'lazy'
+              if rendered_expert_count <= 2
+                assign expert_image_loading = 'eager'
+              endif
+            %}
+
+            <article class="sb-expert-testimonials-carousel__item" data-sb-carousel-item {{ block.shopify_attributes }}>
               <div class="sb-expert-testimonials-carousel__media">
                 {% if expert_image != blank %}
-                  {{
-                    expert_image
-                    | image_url: width: expert_image_request_width
-                    | image_tag:
-                      alt: expert_name | default: expert_title | default: expert_quote,
-                      loading: 'lazy',
-                      width: 283,
-                      height: 283
-                  }}
+                  <img
+                    src="{{ expert_image | image_url: width: expert_image_request_width }}"
+                    alt="{{ expert_name | default: expert_title | default: expert_quote | escape }}"
+                    loading="{{ expert_image_loading }}"
+                    width="283"
+                    height="283"
+                  >
                 {% else %}
                   <div class="sb-expert-testimonials-carousel__media-placeholder" aria-hidden="true"></div>
                 {% endif %}
@@ -161,6 +176,7 @@
         </span>
       </button>
     </div>
+    </div>
   </section>
 {% endif %}
 
@@ -168,6 +184,10 @@
   .sb-expert-testimonials-carousel {
     --sb-carousel-gap: var(--sb-space-36);
     --sb-carousel-bleed-inline: var(--page-margin);
+    width: 100%;
+  }
+
+  .sb-expert-testimonials-carousel__motion {
     width: 100%;
   }
 

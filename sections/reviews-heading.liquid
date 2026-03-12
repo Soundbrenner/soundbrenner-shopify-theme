@@ -20,13 +20,25 @@
 %}
 
 {% unless hide_reviews_heading %}
-  <section class="sb-reviews-heading" data-sb-reveal>
+  <section class="sb-reviews-heading" data-sb-motion="reveal" data-sb-motion-item data-sb-motion-link="next-reviews-app">
     {% render 'reviews-title',
       title: reviews_heading_text,
-      class_name: 'sb-reviews-heading__title font-title weight-bold',
-      reveal_item: true
+      class_name: 'sb-reviews-heading__title font-title weight-bold'
     %}
   </section>
+
+  <style>
+    @media (prefers-reduced-motion: no-preference) {
+      #shopify-section-{{ section.id }} + .shopify-section:has(> .shopify-app-block[id*='klaviyo_reviews_product_reviews']):not([data-sb-motion-linked-state]),
+      #shopify-section-{{ section.id }} + .shopify-section:has(> .shopify-app-block[id*='klaviyo_reviews_all_reviews']):not([data-sb-motion-linked-state]),
+      #shopify-section-{{ section.id }} + .shopify-section:has(> .shopify-app-block > #fulfilled-reviews-all):not([data-sb-motion-linked-state]),
+      #shopify-section-{{ section.id }} + .shopify-section:has(> .shopify-app-block > #klaviyo-reviews-all):not([data-sb-motion-linked-state]),
+      #shopify-section-{{ section.id }} + .shopify-section:has(> .shopify-app-block > #klaviyo-product-reviews-wrapper):not([data-sb-motion-linked-state]) {
+        opacity: 0;
+        transform: translateY(60px);
+      }
+    }
+  </style>
 {% endunless %}
 
 {% if hide_reviews_heading %}

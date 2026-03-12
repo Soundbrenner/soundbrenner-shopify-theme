@@ -137,19 +137,20 @@
 {% else %}
   <section
     class="sb-value-breakdown"
+    data-sb-motion="reveal"
+    data-sb-motion-item
     data-value-breakdown
     data-product-id="{{ product.id }}"
     data-currency="{{ value_breakdown_currency_code }}"
     data-initial-variant-id="{{ current_variant.id }}"
     data-extra-compare-sum-cents="{{ extra_compare_sum_cents }}"
-    data-sb-reveal
   >
     {% if section_title != blank %}
-      <h2 class="sb-value-breakdown__title font-title weight-bold" data-sb-reveal-item>{{ section_title }}</h2>
+      <h2 class="sb-value-breakdown__title font-title weight-bold">{{ section_title }}</h2>
     {% endif %}
 
     <div class="sb-value-breakdown__layout">
-      <div class="sb-value-breakdown__media-wrap" data-sb-reveal-item>
+      <div class="sb-value-breakdown__media-wrap">
         {% if section_media != blank %}
           {% assign section_media_width = section_media.width | default: 1240 | at_most: 1240 %}
           {{
@@ -174,7 +175,7 @@
         {% endif %}
       </div>
 
-      <div class="sb-value-breakdown__right" data-sb-reveal-item>
+      <div class="sb-value-breakdown__right">
         <div class="sb-value-breakdown__line-item">
           <div class="sb-value-breakdown__line-item-top">
             <p class="sb-value-breakdown__line-item-title font-body weight-bold">{{ product.title }}</p>

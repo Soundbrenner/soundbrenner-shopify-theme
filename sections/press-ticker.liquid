@@ -56,10 +56,11 @@
   <section
     class="sb-press-ticker full-width"
     style="--sb-press-ticker-background: {{ section_background_color }}; --sb-press-ticker-content-color: {{ section_content_color }};"
-    data-sb-reveal
+    data-sb-motion="reveal"
+    data-sb-motion-item
   >
     <div class="sb-press-ticker__inner">
-      <h2 class="sb-press-ticker__title font-title weight-bold" data-sb-reveal-item>{{ 'sb.press_ticker.title' | t }}</h2>
+      <h2 class="sb-press-ticker__title font-title weight-bold">{{ 'sb.press_ticker.title' | t }}</h2>
 
       <div class="sb-press-ticker__marquee" aria-label="{{ 'sb.press_ticker.logos_aria_label' | t }}">
         <div class="sb-press-ticker__track">
@@ -73,7 +74,7 @@
                 <li class="sb-press-ticker__logo-item">
                   <span
                     class="sb-press-ticker__logo"
-                    style="--sb-press-logo-width: {{ logo_width }}px; --sb-press-logo-url: url('{{ logo_asset | asset_url }}');"
+                    style="--sb-press-logo-width: {{ logo_width }}px; --sb-press-logo-asset: url('{{ logo_asset | asset_url }}');"
                     aria-hidden="true"
                   ></span>
                 </li>
@@ -149,19 +150,20 @@
   }
 
   .sb-press-ticker__logo {
-    background: var(--sb-press-ticker-content-color);
-    display: inline-block;
+    background-color: currentColor;
+    color: var(--sb-press-ticker-content-color);
+    display: block;
     flex-shrink: 0;
     height: var(--sb-space-48);
-    mask-image: var(--sb-press-logo-url);
-    mask-position: center;
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    -webkit-mask-image: var(--sb-press-logo-url);
-    -webkit-mask-position: center;
-    -webkit-mask-repeat: no-repeat;
-    -webkit-mask-size: contain;
     width: var(--sb-press-logo-width);
+    -webkit-mask-image: var(--sb-press-logo-asset);
+    mask-image: var(--sb-press-logo-asset);
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-size: contain;
   }
 
   @keyframes sb-press-ticker-scroll {

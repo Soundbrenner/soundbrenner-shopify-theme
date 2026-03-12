@@ -15,7 +15,7 @@
 {% endif %}
 
 <section class="sb-manual-chapters" id="sb-manual-{{ section.id }}">
-  <aside class="sb-manual-chapters__sidebar" data-sb-reveal>
+  <aside class="sb-manual-chapters__sidebar">
     <nav class="sb-manual-chapters__nav" aria-label="{{ 'sb.manual.product_manual' | t }}">
       {% assign first_chapter_link = true %}
       {% for block in section.blocks %}
@@ -25,7 +25,7 @@
           <a
             class="sb-manual-chapters__nav-link font-caption weight-semibold{% if first_chapter_link %} is-active{% endif %}"
             href="#{{ chapter_id }}"
-            data-sb-reveal-item
+
             data-manual-link
             data-target="{{ chapter_id }}"
             data-manual-label="{{ block.settings.heading | default: manual_chapter_fallback | escape }}"
@@ -50,10 +50,10 @@
   <div
     class="sb-manual-chapters__sticky-nav-wrap sb-manual-chapters__sticky-nav-wrap--mobile"
     aria-label="{{ 'sb.manual.sticky_navigation' | t }}"
-    data-sb-reveal
+
     data-manual-top-bar
   >
-    <div class="sb-manual-chapters__sticky-nav sb-manual-chapters__sticky-nav--mobile" data-sb-reveal-item>
+    <div class="sb-manual-chapters__sticky-nav sb-manual-chapters__sticky-nav--mobile">
       <div class="sb-manual-chapters__sticky-dropdown" data-manual-chapter-dropdown>
         <button
           type="button"
@@ -107,7 +107,7 @@
                       <a
                         class="sb-manual-chapters__sticky-filter-option menu-drawer__animated-element font-caption{% if first_mobile_chapter_link %} is-active{% endif %}"
                         href="#{{ chapter_id }}"
-                        data-sb-reveal-item
+
                         data-manual-link
                         data-target="{{ chapter_id }}"
                         data-manual-label="{{ block.settings.heading | default: manual_chapter_fallback | escape }}"
@@ -139,21 +139,21 @@
       {% if block.type == 'heading' %}
         {% assign raw_anchor = block.settings.heading | append: '-' | append: block.id %}
         {% assign chapter_id = raw_anchor | handleize %}
-        <article id="{{ chapter_id }}" class="sb-manual-chapters__chapter" data-sb-reveal {{ block.shopify_attributes }}>
-          <h2 class="sb-manual-chapters__heading font-title weight-bold" data-sb-reveal-item>{{ block.settings.heading }}</h2>
+        <article id="{{ chapter_id }}" class="sb-manual-chapters__chapter" {{ block.shopify_attributes }}>
+          <h2 class="sb-manual-chapters__heading font-title weight-bold">{{ block.settings.heading }}</h2>
         </article>
       {% elsif block.type == 'text' %}
-        <div class="sb-manual-chapters__body font-body weight-regular rte" data-sb-reveal {{ block.shopify_attributes }}>
-          <div data-sb-reveal-item>
+        <div class="sb-manual-chapters__body font-body weight-regular rte" {{ block.shopify_attributes }}>
+          <div>
             {% render 'localized-richtext-links', content: block.settings.text %}
           </div>
         </div>
       {% elsif block.type == 'subheading' %}
-        <h3 class="sb-manual-chapters__heading-medium font-callout weight-bold" data-sb-reveal {{ block.shopify_attributes }}>
-          <span data-sb-reveal-item>{{ block.settings.heading }}</span>
+        <h3 class="sb-manual-chapters__heading-medium font-callout weight-bold" {{ block.shopify_attributes }}>
+          <span>{{ block.settings.heading }}</span>
         </h3>
       {% elsif block.type == 'image' %}
-        <figure class="sb-manual-chapters__media" data-sb-reveal {{ block.shopify_attributes }}>
+        <figure class="sb-manual-chapters__media" {{ block.shopify_attributes }}>
           {% if block.settings.image != blank %}
             {{
               block.settings.image
@@ -279,7 +279,7 @@
                     endunless
                   endif
                 %}
-                <figure class="sb-manual-chapters__image-grid-item" data-sb-reveal-item>
+                <figure class="sb-manual-chapters__image-grid-item">
                   <span class="sb-manual-chapters__image-grid-media">
                     {% if image_grid_media_url != blank %}
                       {% # theme-check-disable RemoteAsset %}
@@ -315,7 +315,7 @@
                   assign image_grid_item_text = block.settings[text_setting_key] | strip
                 %}
                 {% if image_grid_item_image != blank or image_grid_item_text != blank %}
-                  <figure class="sb-manual-chapters__image-grid-item" data-sb-reveal-item>
+                  <figure class="sb-manual-chapters__image-grid-item">
                     <span class="sb-manual-chapters__image-grid-media">
                       {% if image_grid_item_image != blank %}
                         {{
@@ -348,17 +348,17 @@
 
           {% if image_grid_items_markup != blank %}
             {% if image_grid_hide_accordion_and_title %}
-              <div class="sb-manual-chapters__image-grid" data-sb-reveal {{ block.shopify_attributes }}>
+              <div class="sb-manual-chapters__image-grid" {{ block.shopify_attributes }}>
                 {{ image_grid_items_markup }}
               </div>
             {% else %}
-              <article class="sb-manual-chapters__accordion" data-sb-reveal {{ block.shopify_attributes }}>
+              <article class="sb-manual-chapters__accordion" {{ block.shopify_attributes }}>
                 <button
                   type="button"
                   class="sb-manual-chapters__accordion-trigger"
                   aria-expanded="false"
                   data-manual-accordion-trigger
-                  data-sb-reveal-item
+
                 >
                   <span class="sb-manual-chapters__accordion-question font-body weight-bold">{{ image_grid_accordion_title }}</span>
                   <span class="sb-manual-chapters__accordion-icon" aria-hidden="true">
@@ -366,12 +366,12 @@
                     <span class="sb-manual-chapters__accordion-icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
                   </span>
                 </button>
-                <div class="sb-manual-chapters__accordion-answer" data-manual-accordion-answer data-sb-reveal-item>
+                <div class="sb-manual-chapters__accordion-answer" data-manual-accordion-answer>
                   <div class="sb-manual-chapters__image-grid">
                     {{ image_grid_items_markup }}
                   </div>
                 </div>
-                <hr class="sb-manual-chapters__accordion-divider" data-sb-reveal-item>
+                <hr class="sb-manual-chapters__accordion-divider">
               </article>
             {% endif %}
           {% endif %}
@@ -454,7 +454,7 @@
 
         {% if tech_specs_has_content %}
           {% assign hide_accordion_and_title = block.settings.hide_accordion_and_title %}
-          <div class="sb-manual-chapters__tech-specs" data-sb-reveal {{ block.shopify_attributes }}>
+          <div class="sb-manual-chapters__tech-specs" {{ block.shopify_attributes }}>
             {% if tech_specs_is_grouped %}
               {% for tech_specs_group_raw in tech_specs_groups %}
                 {% liquid
@@ -494,7 +494,7 @@
                 {% endif %}
 
                 {% if hide_accordion_and_title %}
-                  <section class="sb-manual-chapters__tech-specs-group" data-sb-reveal-item>
+                  <section class="sb-manual-chapters__tech-specs-group">
                     {% if tech_specs_group_title != blank and tech_specs_group_title_normalized != 'tech specs' %}
                       <h3 class="sb-manual-chapters__tech-specs-title font-body weight-bold">{{ tech_specs_group_title }}</h3>
                     {% endif %}
@@ -527,7 +527,7 @@
                       class="sb-manual-chapters__accordion-trigger"
                       aria-expanded="false"
                       data-manual-accordion-trigger
-                      data-sb-reveal-item
+
                     >
                       <span class="sb-manual-chapters__accordion-question font-body weight-bold">{{ tech_specs_group_title }}</span>
                       <span class="sb-manual-chapters__accordion-icon" aria-hidden="true">
@@ -535,7 +535,7 @@
                         <span class="sb-manual-chapters__accordion-icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
                       </span>
                     </button>
-                    <div class="sb-manual-chapters__accordion-answer" data-manual-accordion-answer data-sb-reveal-item>
+                    <div class="sb-manual-chapters__accordion-answer" data-manual-accordion-answer>
                       {% for tech_specs_line_raw in tech_specs_group_items %}
                         {% liquid
                           assign tech_specs_line_entry = tech_specs_line_raw.value | default: tech_specs_line_raw.reference.value | default: tech_specs_line_raw.reference | default: tech_specs_line_raw
@@ -556,7 +556,7 @@
                         </div>
                       {% endfor %}
                     </div>
-                    <hr class="sb-manual-chapters__accordion-divider" data-sb-reveal-item>
+                    <hr class="sb-manual-chapters__accordion-divider">
                   </article>
                 {% endif %}
               {% endfor %}
@@ -570,7 +570,7 @@
                 assign tech_specs_title_normalized = tech_specs_title | downcase | strip
               %}
               {% if hide_accordion_and_title %}
-                <section class="sb-manual-chapters__tech-specs-group" data-sb-reveal-item>
+                <section class="sb-manual-chapters__tech-specs-group">
                   {% if tech_specs_title != blank and tech_specs_title_normalized != 'tech specs' %}
                     <h3 class="sb-manual-chapters__tech-specs-title font-body weight-bold">{{ tech_specs_title }}</h3>
                   {% endif %}
@@ -603,7 +603,7 @@
                     class="sb-manual-chapters__accordion-trigger"
                     aria-expanded="false"
                     data-manual-accordion-trigger
-                    data-sb-reveal-item
+
                   >
                     <span class="sb-manual-chapters__accordion-question font-body weight-bold">{{ tech_specs_title }}</span>
                     <span class="sb-manual-chapters__accordion-icon" aria-hidden="true">
@@ -611,7 +611,7 @@
                       <span class="sb-manual-chapters__accordion-icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
                     </span>
                   </button>
-                  <div class="sb-manual-chapters__accordion-answer" data-manual-accordion-answer data-sb-reveal-item>
+                  <div class="sb-manual-chapters__accordion-answer" data-manual-accordion-answer>
                     {% for tech_specs_line_raw in tech_specs_groups %}
                       {% liquid
                         assign tech_specs_line_entry = tech_specs_line_raw.value | default: tech_specs_line_raw.reference.value | default: tech_specs_line_raw.reference | default: tech_specs_line_raw
@@ -632,7 +632,7 @@
                       </div>
                     {% endfor %}
                   </div>
-                  <hr class="sb-manual-chapters__accordion-divider" data-sb-reveal-item>
+                  <hr class="sb-manual-chapters__accordion-divider">
                 </article>
               {% endif %}
             {% endif %}
@@ -675,13 +675,13 @@
         %}
 
         {% if tech_specs_item_has_rows %}
-          <article class="sb-manual-chapters__accordion" data-sb-reveal {{ block.shopify_attributes }}>
+          <article class="sb-manual-chapters__accordion" {{ block.shopify_attributes }}>
             <button
               type="button"
               class="sb-manual-chapters__accordion-trigger"
               aria-expanded="false"
               data-manual-accordion-trigger
-              data-sb-reveal-item
+
             >
               <span class="sb-manual-chapters__accordion-question font-body weight-bold">{{ tech_specs_item_title }}</span>
               <span class="sb-manual-chapters__accordion-icon" aria-hidden="true">
@@ -689,7 +689,7 @@
                 <span class="sb-manual-chapters__accordion-icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
               </span>
             </button>
-            <div class="sb-manual-chapters__accordion-answer" data-manual-accordion-answer data-sb-reveal-item>
+            <div class="sb-manual-chapters__accordion-answer" data-manual-accordion-answer>
               {% for tech_specs_line_raw in tech_specs_item_rows %}
                 {% liquid
                   assign tech_specs_line_entry = tech_specs_line_raw.value | default: tech_specs_line_raw.reference.value | default: tech_specs_line_raw.reference | default: tech_specs_line_raw
@@ -710,18 +710,17 @@
                 </div>
               {% endfor %}
             </div>
-            <hr class="sb-manual-chapters__accordion-divider" data-sb-reveal-item>
+            <hr class="sb-manual-chapters__accordion-divider">
           </article>
         {% endif %}
       {% elsif block.type == 'button' %}
-        <div class="sb-manual-chapters__button-wrap" data-sb-reveal {{ block.shopify_attributes }}>
+        <div class="sb-manual-chapters__button-wrap" {{ block.shopify_attributes }}>
           {% render 'radiant-button',
             label: block.settings.label,
             link: block.settings.link,
             size: block.settings.button_size,
-            icon_position: block.settings.icon_position,
-            reveal: true
-          %}
+            icon_position: block.settings.icon_position
+            %}
         </div>
       {% elsif block.type == 'vimeo_video' %}
         {% liquid
@@ -744,7 +743,7 @@
         {% if manual_vimeo_embed_url != blank %}
           <figure
             class="sb-manual-chapters__video"
-            data-sb-reveal
+
             {{ block.shopify_attributes }}
           >
             <iframe
@@ -758,13 +757,13 @@
           </figure>
         {% endif %}
       {% elsif block.type == 'accordion_item' %}
-        <article class="sb-manual-chapters__accordion" data-sb-reveal {{ block.shopify_attributes }}>
+        <article class="sb-manual-chapters__accordion" {{ block.shopify_attributes }}>
           <button
             type="button"
             class="sb-manual-chapters__accordion-trigger"
             aria-expanded="false"
             data-manual-accordion-trigger
-            data-sb-reveal-item
+
           >
             <span class="sb-manual-chapters__accordion-question font-body weight-bold">{{ block.settings.question }}</span>
             <span class="sb-manual-chapters__accordion-icon" aria-hidden="true">
@@ -772,14 +771,14 @@
               <span class="sb-manual-chapters__accordion-icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
             </span>
           </button>
-          <div class="sb-manual-chapters__accordion-answer font-body weight-regular rte" data-manual-accordion-answer data-sb-reveal-item>
+          <div class="sb-manual-chapters__accordion-answer font-body weight-regular rte" data-manual-accordion-answer>
             {% render 'localized-richtext-links', content: block.settings.answer %}
           </div>
-          <hr class="sb-manual-chapters__accordion-divider" data-sb-reveal-item>
+          <hr class="sb-manual-chapters__accordion-divider">
         </article>
       {% elsif block.type == 'divider' %}
-        <div data-sb-reveal>
-          <hr class="sb-manual-chapters__divider" data-sb-reveal-item {{ block.shopify_attributes }}>
+        <div>
+          <hr class="sb-manual-chapters__divider" {{ block.shopify_attributes }}>
         </div>
       {% endif %}
     {% endfor %}
@@ -1105,12 +1104,12 @@
     color: var(--sb-color-neutral-900);
   }
 
-  .sb-manual-chapters__body [data-sb-reveal-item] > *,
+  .sb-manual-chapters__body > div > *,
   .sb-manual-chapters__accordion-answer > * {
     margin: 0;
   }
 
-  .sb-manual-chapters__body [data-sb-reveal-item] > * + *,
+  .sb-manual-chapters__body > div > * + *,
   .sb-manual-chapters__accordion-answer > * + * {
     margin-top: var(--sb-space-24);
   }

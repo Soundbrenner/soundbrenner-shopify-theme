@@ -24,3 +24,11 @@
 - For new copy, add keys in `locales/en.default.json` and reference those keys in code so Shopify Translate & Adapt (or equivalent apps) can manage locale translations.
 - For quotation marks around dynamic text (for example search terms), do not hard-code quote characters in Liquid/JS. Put the full sentence, including opening/closing quotes, in locale strings so each language can choose correct punctuation.
 - Default English quote style is curly double quotes: `“{{ term }}”`. Other locales should define their own native quote style in translation files/apps.
+
+## Motion
+
+- Keep motion opt-in and use the shared motion system only (`assets/section-motion.js` and `assets/motion.css`).
+- Use `data-sb-motion="reveal"` on the motion root and `data-sb-motion-item` on the child wrappers that should animate.
+- Limit motion to premium storytelling content. Do not animate primary buy UI, navigation, footer, repeated product grids, filters, or other utility UI unless the user explicitly asks.
+- Keep the effect subtle: opacity plus small translate only. Do not add parallax, section-specific scroll handlers, or extra animation frameworks.
+- Content must remain visible without JavaScript, and reduced-motion users and Theme Editor sessions must see content immediately.

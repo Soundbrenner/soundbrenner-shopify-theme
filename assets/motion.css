@@ -1,0 +1,36 @@
+[data-sb-motion='reveal'] {
+  --sb-motion-distance: 60px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-sb-motion='reveal'][data-sb-motion-state='pending'][data-sb-motion-item],
+  [data-sb-motion='reveal'][data-sb-motion-state='pending'] [data-sb-motion-item],
+  [data-sb-motion-linked-state='pending'] {
+    opacity: 0;
+    transform: translateY(var(--sb-motion-distance, 60px));
+  }
+
+  [data-sb-motion='reveal'][data-sb-motion-state='animating'][data-sb-motion-item],
+  [data-sb-motion='reveal'][data-sb-motion-state='animating'] [data-sb-motion-item],
+  [data-sb-motion-linked-state='animating'] {
+    opacity: 0;
+    transform: translateY(var(--sb-motion-distance, 60px));
+    will-change: opacity, transform;
+  }
+
+  [data-sb-motion='reveal'][data-sb-motion-state='revealed'][data-sb-motion-item],
+  [data-sb-motion='reveal'][data-sb-motion-state='revealed'] [data-sb-motion-item],
+  [data-sb-motion-linked-state='revealed'] {
+    opacity: 1;
+    transform: translateY(0);
+    will-change: auto;
+  }
+
+  [data-sb-motion='reveal'][data-sb-motion-state='static'][data-sb-motion-item],
+  [data-sb-motion='reveal'][data-sb-motion-state='static'] [data-sb-motion-item],
+  [data-sb-motion-linked-state='static'] {
+    opacity: 1;
+    transform: translateY(0);
+    will-change: auto;
+  }
+}
