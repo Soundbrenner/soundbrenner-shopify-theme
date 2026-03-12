@@ -10,6 +10,7 @@
   ];
 
   const normalizeText = (value) => String(value || '').replace(/\s+/g, ' ').trim();
+  const escapeRegExp = (value) => String(value || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
   const applyTemplate = (template, replacements = {}) => {
     let output = String(template || '');
@@ -54,7 +55,7 @@
     const normalizedText = normalizeText(text);
     if (!normalizedText) return '';
 
-    const match = normalizedText.match(/^(a|an|\d+)\s+(minute|minutes|hour|hours|day|days|week|weeks|month|months|year|years)\s+ago$/i);
+    const match = normalizedText.match(/(?:^|\b)(a|an|\d+)\s+(minute|minutes|hour|hours|day|days|week|weeks|month|months|year|years)\s+ago(?:\b|$)/i);
     if (!match) return '';
 
     const [, countToken, unitToken] = match;
@@ -124,6 +125,7 @@
   };
 
   const optionCopy = {
+    'all variants': () => locale.allVariants,
     'most recent': () => locale.mostRecent,
     'highest rating': () => locale.highestRating,
     'lowest rating': () => locale.lowestRating,
@@ -134,6 +136,13 @@
     '3 stars': () => locale.threeStars,
     '4 stars': () => locale.fourStars,
     '5 stars': () => locale.fiveStars,
+  };
+
+  const inlineCopy = {
+    'sound quality': () => locale.soundQuality,
+    comfort: () => locale.comfort,
+    poor: () => locale.poor,
+    excellent: () => locale.excellent,
   };
 
   const localizeSelect = (select) => {
@@ -158,9 +167,10 @@
   const localizePurchasedTimestamp = (element) => {
     if (!(element instanceof HTMLElement)) return;
     const text = normalizeText(element.textContent);
-    if (!text.toLowerCase().startsWith('purchased ')) return;
+    const purchasedMatch = text.match(/purchased\s+((?:a|an|\d+)\s+(?:minute|minutes|hour|hours|day|days|week|weeks|month|months|year|years)\s+ago)/i);
+    if (!purchasedMatch) return;
 
-    const relativeTime = text.slice('Purchased '.length);
+    const relativeTime = purchasedMatch[1];
     const localizedRelativeTime = localizeRelativeTime(relativeTime);
     if (!localizedRelativeTime) return;
     const nextValue = applyTemplate(locale.purchasedRelativeTime, { relative_time: localizedRelativeTime });
@@ -170,12 +180,39 @@
   const localizeResponseTitle = (element) => {
     if (!(element instanceof HTMLElement)) return;
     const text = normalizeText(element.textContent);
-    const match = text.match(/^(.*?) replied (.+)$/i);
-    if (!match) return;
+    const englishMatch = text.match(/(.*?)\s+replied\s+((?:a|an|\d+)\s+(?:minute|minutes|hour|hours|day|days|week|weeks|month|months|year|years)\s+ago)/i);
 
-    const [, brand, relativeTime] = match;
+    if (englishMatch) {
+      const [, brand, relativeTime] = englishMatch;
+      const localizedRelativeTime = localizeRelativeTime(relativeTime);
+      if (!localizedRelativeTime) return;
+      const nextValue = applyTemplate(locale.responseTitle, {
+        brand: normalizeText(brand),
+        relative_time: localizedRelativeTime,
+      });
+      setTextContent(element, nextValue);
+      return;
+    }
+
+    const trailingRelativeMatch = text.match(/((?:a|an|\d+)\s+(?:minute|minutes|hour|hours|day|days|week|weeks|month|months|year|years)\s+ago)$/i);
+    if (!trailingRelativeMatch) return;
+
+    const relativeTime = trailingRelativeMatch[1];
     const localizedRelativeTime = localizeRelativeTime(relativeTime);
     if (!localizedRelativeTime) return;
+
+    const responseTemplate = String(locale.responseTitle || '');
+    const [beforeBrand = '', afterBrandToken = ''] = responseTemplate.split('__BRAND__');
+    const [betweenBrandAndTime = '', afterTime = ''] = afterBrandToken.split('__RELATIVE_TIME__');
+
+    const localizedPattern = new RegExp(
+      `^${escapeRegExp(beforeBrand)}(.+?)${escapeRegExp(betweenBrandAndTime)}${escapeRegExp(localizedRelativeTime)}${escapeRegExp(afterTime)}\\s+${escapeRegExp(relativeTime)}$`,
+      'i'
+    );
+    const localizedMatch = text.match(localizedPattern);
+    if (!localizedMatch) return;
+
+    const [, brand] = localizedMatch;
     const nextValue = applyTemplate(locale.responseTitle, {
       brand: normalizeText(brand),
       relative_time: localizedRelativeTime,
@@ -216,6 +253,20 @@
     }
   };
 
+  const localizeInlineCopy = (root) => {
+    if (!(root instanceof HTMLElement)) return;
+
+    root.querySelectorAll('*').forEach((element) => {
+      if (!(element instanceof HTMLElement)) return;
+      if (element.children.length > 0) return;
+
+      const replacement = inlineCopy[normalizeText(element.textContent).toLowerCase()];
+      if (typeof replacement !== 'function') return;
+
+      setTextContent(element, replacement());
+    });
+  };
+
   const localizeRoot = (root) => {
     if (!(root instanceof HTMLElement)) return;
 
@@ -252,7 +303,7 @@
     });
 
     root.querySelectorAll('.kl_reviews__review__order_timestamp').forEach(localizePurchasedTimestamp);
-    root.querySelectorAll('.kl_reviews__review__timestamp, .kl_reviews__time_badge').forEach((element) => {
+    root.querySelectorAll('.kl_reviews__review__timestamp, .kl_reviews__time_badge, .kl_reviews__lightbox__timestamp, .kl_reviews__lightbox__time_badge').forEach((element) => {
       const localized = localizeRelativeTime(element.textContent);
       if (!localized) return;
       setTextContent(element, localized);
@@ -289,6 +340,8 @@
       setTextPreservingChildren(button, locale.clearAllFilters);
       setAttribute(button, 'aria-label', locale.clearAllFilters);
     });
+
+    localizeInlineCopy(root);
   };
 
   let scheduled = false;

@@ -3323,6 +3323,7 @@ html[data-sb-page-segment='learn-more'] .shopify-section:has(> .sb-product-main)
 :is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) .kl_reviews__review__author > div,
 :is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) .kl_reviews__review__verified,
 :is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) .kl_reviews__store_review_badge,
+:is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) .kl_reviews__time_badge,
 :is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) .kl_reviews__review__order_timestamp,
 :is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) .kl_reviews__review__timestamp,
 :is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) .kl_reviews__review__variant,
