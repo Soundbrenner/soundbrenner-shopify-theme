@@ -3563,9 +3563,11 @@ html[data-sb-page-segment='learn-more'] .shopify-section:has(> .sb-product-main)
 
 :is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) .kl_reviews__search {
   column-gap: 8px !important;
-  width: calc(
+  flex: 0 1 auto !important;
+  min-width: calc(
     var(--sb-space-128) + var(--sb-space-64) + var(--sb-space-16) + var(--sb-space-8) + var(--sb-space-4)
   ) !important;
+  width: fit-content !important;
 }
 
 :is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) .kl_reviews__search_icon {

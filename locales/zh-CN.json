@@ -403,7 +403,7 @@
       "purchased_relative_time": "{{ relative_time }}前购买",
       "questions_tab": "问题",
       "relative_time_ago": "{{ count}}{{ unit }}前",
-      "response_title": "{{ brand }}于{{ relative_time }}前回复",
+      "response_title": "{{ brand }}于{{ relative_time }}回复",
       "reviews_tab": "评价",
       "search_label": "搜索评价",
       "search_placeholder": "搜索评价",

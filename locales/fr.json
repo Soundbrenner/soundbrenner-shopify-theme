@@ -400,7 +400,7 @@
       "no_matching_reviews": "Aucun avis correspondant",
       "one_star": "1 étoile",
       "product_tabs_label": "Onglets des avis et questions produit",
-      "purchased_relative_time": "Acheté il y a {{ relative_time }}",
+      "purchased_relative_time": "Acheté {{ relative_time }}",
       "questions_tab": "Questions",
       "relative_time_ago": "il y a {{ count }} {{ unit }}",
       "response_title": "{{ brand }} a répondu {{ relative_time }}",

@@ -400,7 +400,7 @@
       "no_matching_reviews": "Keine passenden Bewertungen",
       "one_star": "1 Stern",
       "product_tabs_label": "Tabs für Bewertungen und Fragen",
-      "purchased_relative_time": "Gekauft vor {{ relative_time }}",
+      "purchased_relative_time": "Gekauft {{ relative_time }}",
       "questions_tab": "Fragen",
       "relative_time_ago": "vor {{ count }} {{ unit }}",
       "response_title": "{{ brand }} antwortete {{ relative_time }}",
