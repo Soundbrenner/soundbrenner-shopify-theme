@@ -3942,53 +3942,46 @@ html[data-sb-page-segment='learn-more'] .shopify-section:has(> .sb-product-main)
   border: 0 !important;
   border-radius: 0 !important;
   box-shadow: none !important;
-  color: var(--sb-color-always-white) !important;
+  color: var(--sb-color-neutral-200) !important;
   cursor: pointer !important;
   display: inline-flex !important;
   font-size: 0 !important;
-  height: var(--sb-space-20) !important;
+  height: var(--sb-space-30) !important;
   justify-content: center !important;
   left: 24px !important;
   line-height: 0 !important;
   margin: 0 !important;
-  min-height: var(--sb-space-20) !important;
-  min-width: var(--sb-space-20) !important;
+  min-height: var(--sb-space-30) !important;
+  min-width: var(--sb-space-30) !important;
   overflow: visible !important;
   padding: 0 !important;
   position: absolute !important;
   top: 24px !important;
-  width: var(--sb-space-20) !important;
+  width: var(--sb-space-30) !important;
   z-index: 3 !important;
 }
 
 .kl_reviews__lightbox__content_wrapper > button.kl_reviews__close_button svg,
 .kl_reviews__lightbox__content_wrapper > button[aria-label='Modal close button'] svg {
-  display: block !important;
-  flex: 0 0 var(--sb-space-20) !important;
-  filter:
-    drop-shadow(0 0 24px var(--sb-color-always-black))
-    drop-shadow(0 0 24px var(--sb-color-always-black))
-    drop-shadow(0 0 24px var(--sb-color-always-black)) !important;
-  height: var(--sb-space-20) !important;
-  max-height: var(--sb-space-20) !important;
-  max-width: var(--sb-space-20) !important;
-  min-height: var(--sb-space-20) !important;
-  min-width: var(--sb-space-20) !important;
-  overflow: visible !important;
-  width: var(--sb-space-20) !important;
-}
-
-.kl_reviews__lightbox__content_wrapper > button.kl_reviews__close_button::before,
-.kl_reviews__lightbox__content_wrapper > button.kl_reviews__close_button::after,
-.kl_reviews__lightbox__content_wrapper > button[aria-label='Modal close button']::before,
-.kl_reviews__lightbox__content_wrapper > button[aria-label='Modal close button']::after {
-  content: none !important;
   display: none !important;
 }
 
-.kl_reviews__lightbox__content_wrapper > button.kl_reviews__close_button svg path,
-.kl_reviews__lightbox__content_wrapper > button[aria-label='Modal close button'] svg path {
-  fill: currentColor !important;
+.kl_reviews__lightbox__content_wrapper > button.kl_reviews__close_button::before,
+.kl_reviews__lightbox__content_wrapper > button[aria-label='Modal close button']::before {
+  -webkit-mask-image: url("icon-cancel-circle.svg");
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: var(--sb-space-30) var(--sb-space-30);
+  background: currentColor !important;
+  content: '' !important;
+  display: block !important;
+  height: var(--sb-space-30) !important;
+  mask-image: url("icon-cancel-circle.svg");
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: var(--sb-space-30) var(--sb-space-30);
+  pointer-events: none !important;
+  width: var(--sb-space-30) !important;
 }
 
 .kl_reviews__lightbox__content_wrapper > button.kl_reviews__close_button:focus-visible,

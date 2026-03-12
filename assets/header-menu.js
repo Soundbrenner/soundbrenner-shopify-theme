@@ -4,7 +4,8 @@
   window.SBHeaderInitializers.push((context) => {
     const { header, addRuntimeEventListener, findHeaderRef, onAbort, shared } = context;
 
-    const isDesktopViewport = shared.isDesktopViewport || (() => window.matchMedia('(min-width: 990px)').matches);
+    const isDesktopViewport = shared.isDesktopViewport || (() => window.matchMedia('(min-width: 990px)').matches && window.matchMedia('(hover: hover) and (pointer: fine)').matches);
+    const isMobileViewport = shared.isMobileViewport || (() => !isDesktopViewport());
     const headerInnerElement = findHeaderRef(header, 'headerInner', '.header__inner');
     const desktopMenu = findHeaderRef(header, 'headerMenu', '.header__menu');
     const desktopMenuItems = desktopMenu ? Array.from(desktopMenu.querySelectorAll('.header__menu-item')) : [];
@@ -222,7 +223,7 @@
 
       const updatePrimaryOpenState = () => {
         const isPrimaryOpen = Boolean(activeDropdownItem || localizationDropdownOpen || searchShortcutOpen);
-        if (window.matchMedia('(max-width: 989px)').matches) {
+        if (isMobileViewport()) {
           clearPrimaryClosingTimer();
           clearPrimaryBackdropOpenFrame();
           header.classList.remove('is-primary-closing');
@@ -495,7 +496,7 @@
       if (headerInner) {
         addRuntimeEventListener(headerInner, 'mousemove', (event) => {
           if (!activeDropdownItem) return;
-          if (window.matchMedia('(max-width: 989px)').matches) return;
+          if (isMobileViewport()) return;
           const trackBounds = getDropdownTrackBounds();
           if (!trackBounds) return;
 

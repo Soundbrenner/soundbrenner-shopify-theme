@@ -47,10 +47,13 @@
     const mobileMenuPreloadedSources = new Set();
     const primaryMenuPreloadedSources = new Set();
 
-    const isDesktopViewport = () => window.matchMedia('(min-width: 990px)').matches;
+    const supportsDesktopHoverNavigation = () => window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const isDesktopViewport = () => window.matchMedia('(min-width: 990px)').matches && supportsDesktopHoverNavigation();
+    const isMobileViewport = () => !isDesktopViewport();
     const isMobileMenuOpen = () => Boolean(mobileMenuDrawer && mobileMenuDrawer.classList.contains('menu-open'));
 
     shared.isDesktopViewport = isDesktopViewport;
+    shared.isMobileViewport = isMobileViewport;
     shared.isMobileMenuOpen = isMobileMenuOpen;
     shared.getScrollLockY = () => pageScrollLockY;
     shared.isScrollLocked = () => document.body.dataset.sbScrollLocked === 'true';
@@ -241,7 +244,7 @@
         && headerElement.classList.contains('is-primary-open');
       if (desktopPrimaryMenuOpen) return 'overflow';
 
-      const mobileSearchShortcutOpen = window.matchMedia('(max-width: 989px)').matches
+      const mobileSearchShortcutOpen = isMobileViewport()
         && document.documentElement.classList.contains('sb-search-shortcut-open');
       if (mobileSearchShortcutOpen) return 'fixed';
 
