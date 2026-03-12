@@ -1314,6 +1314,55 @@
     {{ 'motion.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'section-motion.js' | asset_url }}" defer></script>
     <script src="{{ 'product-thumbnail-section-init.js' | asset_url }}" defer></script>
+    <script>
+      window.SBKlaviyoReviewsLocale = {
+        allRatings: {{ 'sb.klaviyo_reviews.all_ratings' | t | json }},
+        clearAll: {{ 'sb.klaviyo_reviews.clear_all' | t | json }},
+        clearAllFilters: {{ 'sb.klaviyo_reviews.clear_all_filters' | t | json }},
+        customerReviews: {{ 'sb.klaviyo_reviews.customer_reviews' | t | json }},
+        filterBy: {{ 'sb.klaviyo_reviews.filter_by' | t | json }},
+        fiveStars: {{ 'sb.klaviyo_reviews.five_stars' | t | json }},
+        fourStars: {{ 'sb.klaviyo_reviews.four_stars' | t | json }},
+        highestRating: {{ 'sb.klaviyo_reviews.highest_rating' | t | json }},
+        lowestRating: {{ 'sb.klaviyo_reviews.lowest_rating' | t | json }},
+        mostRecent: {{ 'sb.klaviyo_reviews.most_recent' | t | json }},
+        mostRelevant: {{ 'sb.klaviyo_reviews.most_relevant' | t | json }},
+        noMatchingReviews: {{ 'sb.klaviyo_reviews.no_matching_reviews' | t | json }},
+        oneStar: {{ 'sb.klaviyo_reviews.one_star' | t | json }},
+        dayPlural: {{ 'sb.klaviyo_reviews.day_plural' | t | json }},
+        daySingular: {{ 'sb.klaviyo_reviews.day_singular' | t | json }},
+        productTabsLabel: {{ 'sb.klaviyo_reviews.product_tabs_label' | t | json }},
+        purchasedRelativeTime: {{ 'sb.klaviyo_reviews.purchased_relative_time' | t: relative_time: '__RELATIVE_TIME__' | json }},
+        hourPlural: {{ 'sb.klaviyo_reviews.hour_plural' | t | json }},
+        hourSingular: {{ 'sb.klaviyo_reviews.hour_singular' | t | json }},
+        minutePlural: {{ 'sb.klaviyo_reviews.minute_plural' | t | json }},
+        minuteSingular: {{ 'sb.klaviyo_reviews.minute_singular' | t | json }},
+        monthPlural: {{ 'sb.klaviyo_reviews.month_plural' | t | json }},
+        monthSingular: {{ 'sb.klaviyo_reviews.month_singular' | t | json }},
+        questionsTab: {{ 'sb.klaviyo_reviews.questions_tab' | t | json }},
+        relativeTimeAgo: {{ 'sb.klaviyo_reviews.relative_time_ago' | t: count: '__COUNT__', unit: '__UNIT__' | json }},
+        responseTitle: {{ 'sb.klaviyo_reviews.response_title' | t: brand: '__BRAND__', relative_time: '__RELATIVE_TIME__' | json }},
+        reviewsTab: {{ 'sb.klaviyo_reviews.reviews_tab' | t | json }},
+        searchLabel: {{ 'sb.klaviyo_reviews.search_label' | t | json }},
+        searchPlaceholder: {{ 'sb.klaviyo_reviews.search_placeholder' | t | json }},
+        showMore: {{ 'sb.klaviyo_reviews.show_more' | t | json }},
+        sortBy: {{ 'sb.klaviyo_reviews.sort_by' | t | json }},
+        storeReview: {{ 'sb.klaviyo_reviews.store_review' | t | json }},
+        threeStars: {{ 'sb.klaviyo_reviews.three_stars' | t | json }},
+        tryAnotherSearch: {{ 'sb.klaviyo_reviews.try_another_search' | t | json }},
+        twoStars: {{ 'sb.klaviyo_reviews.two_stars' | t | json }},
+        variantLabel: {{ 'sb.product.variant' | t | json }},
+        verifiedBuyer: {{ 'sb.common.verified_buyer' | t | json }},
+        weekPlural: {{ 'sb.klaviyo_reviews.week_plural' | t | json }},
+        weekSingular: {{ 'sb.klaviyo_reviews.week_singular' | t | json }},
+        withMedia: {{ 'sb.klaviyo_reviews.with_media' | t | json }},
+        writeAReview: {{ 'sb.klaviyo_reviews.write_a_review' | t | json }},
+        writeAReviewAria: {{ 'sb.klaviyo_reviews.write_a_review_aria' | t | json }},
+        yearPlural: {{ 'sb.klaviyo_reviews.year_plural' | t | json }},
+        yearSingular: {{ 'sb.klaviyo_reviews.year_singular' | t | json }},
+      };
+    </script>
+    <script src="{{ 'klaviyo-reviews-localization.js' | asset_url }}" defer></script>
 
     {% # Social, title, etc. %}
     {% render 'meta-tags' %}
