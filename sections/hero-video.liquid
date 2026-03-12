@@ -63,6 +63,8 @@
   </script>
 {% else %}
   {% # theme-check-disable RemoteAsset %}
+  <link rel="preconnect" href="https://www.youtube.com">
+  <link rel="preconnect" href="https://i.ytimg.com" crossorigin>
   <style>
     .sb-hero-video__frame-wrap {
       aspect-ratio: 16 / 9;
@@ -72,21 +74,10 @@
       width: 100%;
     }
 
-    .sb-hero-video__frame-poster {
-      display: block;
-      height: 100%;
-      inset: 0;
-      position: absolute;
-      width: 100%;
-      z-index: 2;
-    }
-
-    .sb-hero-video__frame-poster-image,
     .sb-hero-video__frame {
       border: 0;
       display: block;
       height: 100%;
-      object-fit: cover;
       width: 100%;
     }
 
@@ -117,23 +108,11 @@
       {% if hero_video_source_mode == 'setting' and hero_video_fallback_youtube_id != blank %}
         <div class="sb-hero-video__single" data-sb-reveal-item>
           <div class="sb-hero-video__frame-wrap">
-            <span class="sb-hero-video__frame-poster" aria-hidden="true">
-              <img
-                class="sb-hero-video__frame-poster-image"
-                src="https://i.ytimg.com/vi/{{ hero_video_fallback_youtube_id }}/hqdefault.jpg"
-                alt=""
-                loading="lazy"
-                width="1280"
-                height="720"
-              >
-            </span>
             <iframe
               class="sb-hero-video__frame"
-              src="about:blank"
-              data-embed-src="https://www.youtube.com/embed/{{ hero_video_fallback_youtube_id }}?rel=0"
-              data-embed-provider="youtube"
+              src="https://www.youtube.com/embed/{{ hero_video_fallback_youtube_id }}?rel=0"
               title="{{ 'sb.hero_video.title' | t }}"
-              loading="lazy"
+              loading="eager"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowfullscreen
             ></iframe>
@@ -145,6 +124,7 @@
             {% liquid
               assign hero_video_entry = hero_video_item.value | default: hero_video_item.reference.value | default: hero_video_item.reference | default: hero_video_item
               assign hero_video_youtube_id = hero_video_entry.youtube_id.value | default: hero_video_entry.youtube_id | append: '' | strip
+              assign hero_video_title = hero_video_entry.video_title.value | default: hero_video_entry.video_title | append: '' | strip
 
               if hero_video_youtube_id contains 'youtube.com/watch'
                 assign hero_video_youtube_id = hero_video_youtube_id | split: 'v=' | last | split: '&' | first
@@ -156,25 +136,17 @@
               if hero_video_youtube_id == blank
                 continue
               endif
+
+              if hero_video_title == blank
+                assign hero_video_title = 'sb.hero_video.title' | t
+              endif
             %}
             <div class="sb-hero-video__frame-wrap">
-              <span class="sb-hero-video__frame-poster" aria-hidden="true">
-                <img
-                  class="sb-hero-video__frame-poster-image"
-                  src="https://i.ytimg.com/vi/{{ hero_video_youtube_id }}/hqdefault.jpg"
-                  alt=""
-                  loading="lazy"
-                  width="1280"
-                  height="720"
-                >
-              </span>
               <iframe
                 class="sb-hero-video__frame"
-                src="about:blank"
-                data-embed-src="https://www.youtube.com/embed/{{ hero_video_youtube_id }}?rel=0"
-                data-embed-provider="youtube"
-                title="{{ 'sb.hero_video.title' | t }}"
-                loading="lazy"
+                src="https://www.youtube.com/embed/{{ hero_video_youtube_id }}?rel=0"
+                title="{{ hero_video_title | escape }}"
+                loading="eager"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowfullscreen
               ></iframe>
@@ -187,47 +159,39 @@
           {% assign hero_video_valid_index = 0 %}
           {% for hero_video_item in hero_video_items limit: 4 %}
             {% liquid
-              assign hero_video_entry = hero_video_item.value | default: hero_video_item.reference.value | default: hero_video_item.reference | default: hero_video_item
-              assign hero_video_youtube_id = hero_video_entry.youtube_id.value | default: hero_video_entry.youtube_id | append: '' | strip
+                assign hero_video_entry = hero_video_item.value | default: hero_video_item.reference.value | default: hero_video_item.reference | default: hero_video_item
+                assign hero_video_youtube_id = hero_video_entry.youtube_id.value | default: hero_video_entry.youtube_id | append: '' | strip
+                assign hero_video_title = hero_video_entry.video_title.value | default: hero_video_entry.video_title | append: '' | strip
 
-              if hero_video_youtube_id contains 'youtube.com/watch'
-                assign hero_video_youtube_id = hero_video_youtube_id | split: 'v=' | last | split: '&' | first
-              elsif hero_video_youtube_id contains 'youtu.be/'
-                assign hero_video_youtube_id = hero_video_youtube_id | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first
+                if hero_video_youtube_id contains 'youtube.com/watch'
+                  assign hero_video_youtube_id = hero_video_youtube_id | split: 'v=' | last | split: '&' | first
+                elsif hero_video_youtube_id contains 'youtu.be/'
+                  assign hero_video_youtube_id = hero_video_youtube_id | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first
               endif
               assign hero_video_youtube_id = hero_video_youtube_id | split: '?' | first | split: '&' | first | split: '/' | last
 
-              if hero_video_youtube_id == blank
-                continue
-              endif
+                if hero_video_youtube_id == blank
+                  continue
+                endif
 
-              assign hero_video_valid_index = hero_video_valid_index | plus: 1
-              if hero_video_valid_index > 2
-                break
-              endif
-            %}
-            <div class="sb-hero-video__double-item" data-sb-reveal-item>
-              <div class="sb-hero-video__frame-wrap">
-                <span class="sb-hero-video__frame-poster" aria-hidden="true">
-                  <img
-                    class="sb-hero-video__frame-poster-image"
-                    src="https://i.ytimg.com/vi/{{ hero_video_youtube_id }}/hqdefault.jpg"
-                    alt=""
-                    loading="lazy"
-                    width="1280"
-                    height="720"
-                  >
-                </span>
-                <iframe
-                  class="sb-hero-video__frame"
-                  src="about:blank"
-                  data-embed-src="https://www.youtube.com/embed/{{ hero_video_youtube_id }}?rel=0"
-                  data-embed-provider="youtube"
-                  title="{{ 'sb.hero_video.title_index' | t: index: hero_video_valid_index }}"
-                  loading="lazy"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowfullscreen
-                ></iframe>
+                assign hero_video_valid_index = hero_video_valid_index | plus: 1
+                if hero_video_title == blank
+                  assign hero_video_title = 'sb.hero_video.title_index' | t: index: hero_video_valid_index
+                endif
+                if hero_video_valid_index > 2
+                  break
+                endif
+              %}
+              <div class="sb-hero-video__double-item" data-sb-reveal-item>
+                <div class="sb-hero-video__frame-wrap">
+                  <iframe
+                    class="sb-hero-video__frame"
+                    src="https://www.youtube.com/embed/{{ hero_video_youtube_id }}?rel=0"
+                    title="{{ hero_video_title | escape }}"
+                    loading="eager"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                  ></iframe>
               </div>
             </div>
           {% endfor %}
@@ -256,26 +220,37 @@
         {% endfor %}
 
         {% if hero_video_featured_id != blank %}
+          {% assign hero_video_featured_title = blank %}
+          {% for hero_video_item in hero_video_items limit: 4 %}
+            {% liquid
+              assign hero_video_entry = hero_video_item.value | default: hero_video_item.reference.value | default: hero_video_item.reference | default: hero_video_item
+              assign hero_video_youtube_id = hero_video_entry.youtube_id.value | default: hero_video_entry.youtube_id | append: '' | strip
+              assign hero_video_title = hero_video_entry.video_title.value | default: hero_video_entry.video_title | append: '' | strip
+
+              if hero_video_youtube_id contains 'youtube.com/watch'
+                assign hero_video_youtube_id = hero_video_youtube_id | split: 'v=' | last | split: '&' | first
+              elsif hero_video_youtube_id contains 'youtu.be/'
+                assign hero_video_youtube_id = hero_video_youtube_id | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first
+              endif
+              assign hero_video_youtube_id = hero_video_youtube_id | split: '?' | first | split: '&' | first | split: '/' | last
+
+              if hero_video_youtube_id == hero_video_featured_id
+                assign hero_video_featured_title = hero_video_title
+                break
+              endif
+            %}
+          {% endfor %}
+          {% if hero_video_featured_title == blank %}
+            {% assign hero_video_featured_title = 'sb.hero_video.title' | t %}
+          {% endif %}
           <div class="sb-hero-video__featured-wrap" data-hero-video-gallery data-sb-reveal-item>
             <div class="sb-hero-video__frame-wrap sb-hero-video__frame-wrap--featured">
-              <span class="sb-hero-video__frame-poster" aria-hidden="true">
-                <img
-                  class="sb-hero-video__frame-poster-image"
-                  src="https://i.ytimg.com/vi/{{ hero_video_featured_id }}/hqdefault.jpg"
-                  alt=""
-                  loading="lazy"
-                  width="1280"
-                  height="720"
-                >
-              </span>
               <iframe
                 class="sb-hero-video__frame"
                 data-hero-video-featured-frame
-                src="about:blank"
-                data-embed-src="https://www.youtube.com/embed/{{ hero_video_featured_id }}?rel=0"
-                data-embed-provider="youtube"
-                title="{{ 'sb.hero_video.title' | t }}"
-                loading="lazy"
+                src="https://www.youtube.com/embed/{{ hero_video_featured_id }}?rel=0"
+                title="{{ hero_video_featured_title | escape }}"
+                loading="eager"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowfullscreen
               ></iframe>
@@ -376,33 +351,11 @@
     width: 100%;
   }
 
-  .sb-hero-video__frame-poster {
-    display: block;
-    height: 100%;
-    inset: 0;
-    position: absolute;
-    width: 100%;
-    z-index: 2;
-  }
-
-  .sb-hero-video__frame-poster-image {
-    display: block;
-    height: 100%;
-    object-fit: cover;
-    width: 100%;
-  }
-
   .sb-hero-video__frame {
     border: 0;
     display: block;
     height: 100%;
-    position: relative;
     width: 100%;
-    z-index: 1;
-  }
-
-  .sb-hero-video__frame-wrap.is-embed-ready .sb-hero-video__frame-poster {
-    display: none;
   }
 
   .sb-hero-video__thumb-grid {
@@ -522,56 +475,40 @@
       }
     };
 
-    const markEmbedReady = (frame) => {
-      const frameWrap = frame && frame.closest ? frame.closest('.sb-hero-video__frame-wrap') : null;
-      if (frameWrap) {
-        frameWrap.classList.add('is-embed-ready');
-      }
-    };
+    const initializeHeroVideoImages = (root = document) => {
+      const images = Array.from(root.querySelectorAll('img[data-hero-video-thumb-image]'));
+      if (!images.length) return;
 
-    const hydrateEmbedFrame = (frame, sourceOverride = '') => {
-      if (!(frame instanceof HTMLIFrameElement)) return;
-      const frameSource = sourceOverride || (frame.dataset.embedSrc || '').trim();
-      if (!frameSource) return;
+      preconnectEmbedProvider('youtube');
 
-      preconnectEmbedProvider((frame.dataset.embedProvider || '').trim());
-      if (frame.getAttribute('src') !== frameSource) {
-        frame.setAttribute('src', frameSource);
-      }
-    };
+      images.forEach((image) => {
+        if (!(image instanceof HTMLImageElement) || image.dataset.heroVideoImageInit === 'true') return;
+        image.dataset.heroVideoImageInit = 'true';
 
-    const initializeHeroVideoEmbeds = (root = document) => {
-      const embedFrames = Array.from(root.querySelectorAll('iframe[data-embed-src]'));
-      if (!embedFrames.length) return;
+        const fallbackQueue = [image.dataset.fallbackPrimary, image.dataset.fallbackSecondary, image.dataset.fallbackTertiary].filter(Boolean);
+        let fallbackIndex = 0;
 
-      embedFrames.forEach((frame) => {
-        frame.addEventListener('load', () => {
-          markEmbedReady(frame);
+        const applyFallback = () => {
+          if (fallbackIndex >= fallbackQueue.length) return;
+          const nextSource = fallbackQueue[fallbackIndex];
+          fallbackIndex += 1;
+          if (!nextSource) return;
+
+          image.setAttribute('srcset', '');
+          image.src = nextSource;
+        };
+
+        image.addEventListener('load', () => {
+          const currentSource = image.currentSrc || image.src || '';
+          const isMaxResCandidate = currentSource.indexOf('/maxresdefault.') > -1;
+          if (isMaxResCandidate && image.naturalWidth < 1000) {
+            applyFallback();
+          }
         });
-      });
 
-      if (!('IntersectionObserver' in window)) {
-        embedFrames.forEach((frame) => {
-          hydrateEmbedFrame(frame);
+        image.addEventListener('error', () => {
+          applyFallback();
         });
-        return;
-      }
-
-      const observer = new IntersectionObserver((entries, observerInstance) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          const frame = entry.target;
-          if (!(frame instanceof HTMLIFrameElement)) return;
-          hydrateEmbedFrame(frame);
-          observerInstance.unobserve(frame);
-        });
-      }, {
-        rootMargin: '900px 0px',
-        threshold: 0.01,
-      });
-
-      embedFrames.forEach((frame) => {
-        observer.observe(frame);
       });
     };
 
@@ -585,35 +522,7 @@
 
         const featuredFrame = galleryRoot.querySelector('[data-hero-video-featured-frame]');
         const thumbnails = Array.from(galleryRoot.querySelectorAll('[data-hero-video-thumb]'));
-        const thumbnailImages = Array.from(galleryRoot.querySelectorAll('[data-hero-video-thumb-image]'));
         if (!featuredFrame || !thumbnails.length) return;
-
-        thumbnailImages.forEach((image) => {
-          const fallbackQueue = [image.dataset.fallbackPrimary, image.dataset.fallbackSecondary, image.dataset.fallbackTertiary].filter(Boolean);
-          let fallbackIndex = 0;
-
-          const applyFallback = () => {
-            if (fallbackIndex >= fallbackQueue.length) return;
-            const nextSource = fallbackQueue[fallbackIndex];
-            fallbackIndex += 1;
-            if (!nextSource) return;
-
-            image.setAttribute('srcset', '');
-            image.src = nextSource;
-          };
-
-          image.addEventListener('load', () => {
-            const currentSource = image.currentSrc || image.src || '';
-            const isMaxResCandidate = currentSource.indexOf('/maxresdefault.') > -1;
-            if (isMaxResCandidate && image.naturalWidth < 1000) {
-              applyFallback();
-            }
-          });
-
-          image.addEventListener('error', () => {
-            applyFallback();
-          });
-        });
 
         thumbnails.forEach((thumbnail) => {
           thumbnail.addEventListener('click', () => {
@@ -621,8 +530,9 @@
             if (!youtubeId) return;
 
             const nextSource = `https://www.youtube.com/embed/${youtubeId}?rel=0&autoplay=1`;
-            featuredFrame.dataset.embedSrc = `https://www.youtube.com/embed/${youtubeId}?rel=0`;
-            hydrateEmbedFrame(featuredFrame, nextSource);
+            if (featuredFrame.getAttribute('src') !== nextSource) {
+              featuredFrame.setAttribute('src', nextSource);
+            }
 
             const nextTitle = (thumbnail.dataset.heroVideoTitle || '').trim();
             if (nextTitle) {
@@ -638,7 +548,7 @@
     };
 
     const initializeAll = (scope = document) => {
-      initializeHeroVideoEmbeds(scope);
+      initializeHeroVideoImages(scope);
       initializeHeroVideoGalleries(scope);
     };
 

@@ -1,5 +1,20 @@
+{% liquid
+  assign manual_chapter_fallback = 'sb.manual.chapter' | t
+  assign manual_has_vimeo_video = false
+
+  for block in section.blocks
+    if block.type == 'vimeo_video' and block.settings.video_source != blank
+      assign manual_has_vimeo_video = true
+      break
+    endif
+  endfor
+%}
+{% if manual_has_vimeo_video %}
+  <link rel="preconnect" href="https://player.vimeo.com">
+  <link rel="preconnect" href="https://i.vimeocdn.com" crossorigin>
+{% endif %}
+
 <section class="sb-manual-chapters" id="sb-manual-{{ section.id }}">
-  {% assign manual_chapter_fallback = 'sb.manual.chapter' | t %}
   <aside class="sb-manual-chapters__sidebar" data-sb-reveal>
     <nav class="sb-manual-chapters__nav" aria-label="{{ 'sb.manual.product_manual' | t }}">
       {% assign first_chapter_link = true %}
@@ -709,22 +724,39 @@
           %}
         </div>
       {% elsif block.type == 'vimeo_video' %}
-        <figure
-          class="sb-manual-chapters__video"
-          data-sb-reveal
-          data-manual-vimeo
-          data-vimeo-source="{{ block.settings.video_source | escape }}"
-          {{ block.shopify_attributes }}
-        >
-          <iframe
-            title="{{ 'sb.media.vimeo_video' | t }}"
-            loading="lazy"
-            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-            allowfullscreen
-            referrerpolicy="strict-origin-when-cross-origin"
-            data-manual-vimeo-frame
-          ></iframe>
-        </figure>
+        {% liquid
+          assign manual_vimeo_source = block.settings.video_source | append: '' | strip
+          assign manual_vimeo_id = manual_vimeo_source
+
+          if manual_vimeo_id contains 'player.vimeo.com/video/'
+            assign manual_vimeo_id = manual_vimeo_id | split: 'player.vimeo.com/video/' | last
+          elsif manual_vimeo_id contains 'vimeo.com/'
+            assign manual_vimeo_id = manual_vimeo_id | split: 'vimeo.com/' | last
+          endif
+
+          assign manual_vimeo_id = manual_vimeo_id | split: '?' | first | split: '&' | first | split: '#' | first | split: '/' | last | strip
+          assign manual_vimeo_embed_url = blank
+
+          if manual_vimeo_id != blank
+            assign manual_vimeo_embed_url = 'https://player.vimeo.com/video/' | append: manual_vimeo_id | append: '?title=0&byline=0&portrait=0'
+          endif
+        %}
+        {% if manual_vimeo_embed_url != blank %}
+          <figure
+            class="sb-manual-chapters__video"
+            data-sb-reveal
+            {{ block.shopify_attributes }}
+          >
+            <iframe
+              src="{{ manual_vimeo_embed_url }}"
+              title="{{ 'sb.media.vimeo_video' | t }}"
+              loading="eager"
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+              allowfullscreen
+              referrerpolicy="strict-origin-when-cross-origin"
+            ></iframe>
+          </figure>
+        {% endif %}
       {% elsif block.type == 'accordion_item' %}
         <article class="sb-manual-chapters__accordion" data-sb-reveal {{ block.shopify_attributes }}>
           <button
@@ -877,7 +909,7 @@
   .sb-manual-chapters__video {
     margin: 0;
     max-width: 400px;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 9 / 16;
     width: 100%;
   }
 
@@ -1711,51 +1743,6 @@
           trigger.setAttribute('aria-expanded', 'true');
         }
       });
-    });
-
-    root.querySelectorAll('[data-manual-vimeo]').forEach((video) => {
-      const source = (video.getAttribute('data-vimeo-source') || '').trim();
-      const frame = video.querySelector('[data-manual-vimeo-frame]');
-      if (!source || !frame) return;
-
-      const extractVimeoId = (value) => {
-        if (/^\d+$/.test(value)) return value;
-        const match = value.match(/(\d{6,})/);
-        return match ? match[1] : '';
-      };
-
-      const applyFrameSrc = (videoId) => {
-        if (!videoId) return;
-        frame.src = `https://player.vimeo.com/video/${videoId}?title=0&byline=0&portrait=0`;
-      };
-
-      const applyAspectRatio = (width, height) => {
-        if (!width || !height) return;
-        const w = Number(width);
-        const h = Number(height);
-        if (!Number.isFinite(w) || !Number.isFinite(h) || w <= 0 || h <= 0) return;
-        video.style.aspectRatio = `${w} / ${h}`;
-      };
-
-      const directId = extractVimeoId(source);
-      if (directId) {
-        applyFrameSrc(directId);
-      }
-
-      fetch(`https://vimeo.com/api/oembed.json?url=${encodeURIComponent(source)}`)
-        .then((response) => {
-          if (!response.ok) throw new Error('oEmbed request failed');
-          return response.json();
-        })
-        .then((data) => {
-          if (!frame.src && data && data.video_id) {
-            applyFrameSrc(String(data.video_id));
-          }
-          applyAspectRatio(data?.width, data?.height);
-        })
-        .catch(() => {
-          if (directId && !frame.src) applyFrameSrc(directId);
-        });
     });
 
     window.addEventListener(
