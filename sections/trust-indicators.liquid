@@ -12,7 +12,6 @@
     assign trustpilot_rating_raw = 'X.X'
   endif
   assign trustpilot_summary = 'sb.trustpilot.trustscore_summary' | t: rating: trustpilot_rating_raw
-  assign trustpilot_indicator_icon_url = 'trustpilot-star-ratings-indicator.svg' | asset_url
 
   assign metronome_rating_raw = trustpilot_entry.the_metronome_app_review_rating.value | default: trustpilot_entry.the_metronome_app_review_rating
   assign metronome_count_raw = trustpilot_entry.the_metronome_app_review_count.value | default: trustpilot_entry.the_metronome_app_review_count
@@ -100,9 +99,7 @@
             endif
 
             assign item_icon_url = blank
-            if item_show_trustpilot
-              assign item_icon_url = trustpilot_indicator_icon_url
-            elsif item_icon != blank
+            if item_icon != blank
               if item_icon.width != blank
                 assign item_icon_width = item_icon.width | at_most: 200
                 assign item_icon_url = item_icon | image_url: width: item_icon_width

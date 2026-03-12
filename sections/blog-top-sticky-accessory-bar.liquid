@@ -433,7 +433,12 @@
               </div>
             </div>
           </div>
-          <div class="menu-drawer__backdrop menu-drawer__backdrop--local sb-blog-overview__sticky-backdrop" data-sb-blog-filter-backdrop aria-hidden="true"></div>
+          <div
+            class="menu-drawer__backdrop menu-drawer__backdrop--local sb-blog-overview__sticky-backdrop"
+            data-sb-blog-filter-backdrop
+            data-sb-blog-filter-backdrop-scope="mobile"
+            aria-hidden="true"
+          ></div>
         </div>
       </div>
       {%
@@ -446,7 +451,30 @@
     </div>
   </div>
 
-  <div class="sb-blog-overview__sticky-backdrop" data-sb-blog-filter-backdrop aria-hidden="true"></div>
+  <svg class="sb-blog-overview__sticky-backdrop-mask" aria-hidden="true" focusable="false" width="0" height="0">
+    <defs>
+      <mask id="BlogStickyBackdropMask-{{ section.id }}" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse">
+        <rect data-sb-blog-filter-backdrop-mask-viewport x="0" y="0" width="0" height="0" fill="white"></rect>
+        <rect data-sb-blog-filter-backdrop-mask-header x="0" y="0" width="0" height="0" fill="black"></rect>
+        <rect
+          data-sb-blog-filter-backdrop-mask-nav
+          x="0"
+          y="0"
+          width="0"
+          height="0"
+          rx="24"
+          ry="24"
+          fill="black"
+        ></rect>
+      </mask>
+    </defs>
+  </svg>
+  <div
+    class="sb-blog-overview__sticky-backdrop"
+    data-sb-blog-filter-backdrop
+    data-sb-blog-filter-backdrop-scope="desktop"
+    aria-hidden="true"
+  ></div>
 </section>
 
 {% stylesheet %}
@@ -478,6 +506,10 @@
 
   .sb-blog-overview__sticky-nav-wrap {
     display: none;
+  }
+
+  .sb-blog-overview__sticky-backdrop-mask {
+    position: absolute;
   }
 
   .sb-blog-overview__sticky-backdrop {
@@ -913,17 +945,46 @@
     const blogFilterBackdrops = Array.from(root.querySelectorAll('[data-sb-blog-filter-backdrop]'));
     const blogFilterMobileQuery = window.matchMedia('(max-width: 989px)');
     const desktopStickyNavWrap = root.querySelector('.sb-blog-overview__sticky-nav-wrap--desktop');
+    const desktopStickyNav = desktopStickyNavWrap ? desktopStickyNavWrap.querySelector('.sb-blog-overview__sticky-nav') : null;
+    const desktopBackdropMaskViewport = root.querySelector('[data-sb-blog-filter-backdrop-mask-viewport]');
+    const desktopBackdropMaskHeader = root.querySelector('[data-sb-blog-filter-backdrop-mask-header]');
+    const desktopBackdropMaskNav = root.querySelector('[data-sb-blog-filter-backdrop-mask-nav]');
+    const desktopBackdropMaskId = 'BlogStickyBackdropMask-{{ section.id }}';
     let lastIsMobileViewport = blogFilterMobileQuery.matches;
+    const blogDrawerOpenFrames = new WeakMap();
     if (!blogFilterDropdowns.length && !blogFilterBackdrops.length) return;
+
+    const cancelBlogDrawerOpenFrame = (drawerContainer) => {
+      if (!drawerContainer) return;
+      const openFrame = blogDrawerOpenFrames.get(drawerContainer);
+      if (!openFrame) return;
+      window.cancelAnimationFrame(openFrame);
+      blogDrawerOpenFrames.delete(drawerContainer);
+    };
 
     const syncDesktopBlogFilterLayout = () => {
       const isMobileViewport = blogFilterMobileQuery.matches;
 
-      if (isMobileViewport || !desktopStickyNavWrap) {
+      if (isMobileViewport || !desktopStickyNavWrap || !desktopStickyNav) {
         blogFilterBackdrops.forEach((backdrop) => {
-          backdrop.style.removeProperty('top');
-          backdrop.style.removeProperty('bottom');
+          backdrop.style.removeProperty('-webkit-mask');
+          backdrop.style.removeProperty('mask');
         });
+
+        if (desktopBackdropMaskViewport) {
+          desktopBackdropMaskViewport.setAttribute('width', '0');
+          desktopBackdropMaskViewport.setAttribute('height', '0');
+        }
+        if (desktopBackdropMaskHeader) {
+          desktopBackdropMaskHeader.setAttribute('width', '0');
+          desktopBackdropMaskHeader.setAttribute('height', '0');
+        }
+        if (desktopBackdropMaskNav) {
+          desktopBackdropMaskNav.setAttribute('x', '0');
+          desktopBackdropMaskNav.setAttribute('y', '0');
+          desktopBackdropMaskNav.setAttribute('width', '0');
+          desktopBackdropMaskNav.setAttribute('height', '0');
+        }
 
         blogFilterDropdowns.forEach((dropdown) => {
           const panel = dropdown.querySelector('[data-sb-blog-filter-panel]');
@@ -933,13 +994,41 @@
         return;
       }
 
-      const stickyNavRect = desktopStickyNavWrap.getBoundingClientRect();
-      const stickyNavBottom = Math.max(0, stickyNavRect.bottom);
+      const rootRect = root.getBoundingClientRect();
+      const stickyNavRect = desktopStickyNav.getBoundingClientRect();
+      const sectionTop = Math.min(window.innerHeight, Math.max(0, rootRect.top));
+      const stickyNavLeft = Math.min(window.innerWidth, Math.max(0, stickyNavRect.left));
+      const stickyNavTop = Math.min(window.innerHeight, Math.max(sectionTop, stickyNavRect.top));
+      const stickyNavRight = Math.min(window.innerWidth, Math.max(stickyNavLeft, stickyNavRect.right));
+      const stickyNavBottom = Math.min(window.innerHeight, Math.max(stickyNavTop, stickyNavRect.bottom));
+      const stickyNavWidth = Math.max(0, stickyNavRight - stickyNavLeft);
+      const stickyNavHeight = Math.max(0, stickyNavBottom - stickyNavTop);
 
       blogFilterBackdrops.forEach((backdrop) => {
-        backdrop.style.top = `${stickyNavBottom}px`;
-        backdrop.style.bottom = '0px';
+        const scope = backdrop.dataset.sbBlogFilterBackdropScope || '';
+        if (scope !== 'desktop') {
+          backdrop.style.removeProperty('-webkit-mask');
+          backdrop.style.removeProperty('mask');
+          return;
+        }
+        backdrop.style.setProperty('-webkit-mask', `url(#${desktopBackdropMaskId})`);
+        backdrop.style.setProperty('mask', `url(#${desktopBackdropMaskId})`);
       });
+
+      if (desktopBackdropMaskViewport) {
+        desktopBackdropMaskViewport.setAttribute('width', String(window.innerWidth));
+        desktopBackdropMaskViewport.setAttribute('height', String(window.innerHeight));
+      }
+      if (desktopBackdropMaskHeader) {
+        desktopBackdropMaskHeader.setAttribute('width', String(window.innerWidth));
+        desktopBackdropMaskHeader.setAttribute('height', String(sectionTop));
+      }
+      if (desktopBackdropMaskNav) {
+        desktopBackdropMaskNav.setAttribute('x', String(stickyNavLeft));
+        desktopBackdropMaskNav.setAttribute('y', String(stickyNavTop));
+        desktopBackdropMaskNav.setAttribute('width', String(stickyNavWidth));
+        desktopBackdropMaskNav.setAttribute('height', String(stickyNavHeight));
+      }
 
       blogFilterDropdowns.forEach((dropdown) => {
         const panel = dropdown.querySelector('[data-sb-blog-filter-panel]');
@@ -962,6 +1051,7 @@
       trigger.setAttribute('aria-expanded', 'false');
       dropdown.removeAttribute('data-open');
       if (drawerContainer) {
+        cancelBlogDrawerOpenFrame(drawerContainer);
         drawerContainer.classList.remove('menu-open');
         drawerContainer.classList.add('is-closing');
         window.clearTimeout(Number(drawerContainer.dataset.blogDrawerCloseTimer || 0));
@@ -1001,14 +1091,18 @@
     const updateBlogFilterBackdropState = () => {
       if (!blogFilterBackdrops.length) return;
       const hasOpenDropdown = blogFilterDropdowns.some((dropdown) => dropdown.getAttribute('data-open') === 'true');
+      const isMobileViewport = blogFilterMobileQuery.matches;
+      const shouldLockScroll = hasOpenDropdown && blogFilterMobileQuery.matches;
       blogFilterBackdrops.forEach((backdrop) => {
-        backdrop.classList.toggle('is-active', hasOpenDropdown);
+        const scope = backdrop.dataset.sbBlogFilterBackdropScope || '';
+        const isMatchingScope = (scope === 'mobile' && isMobileViewport) || (scope === 'desktop' && !isMobileViewport);
+        backdrop.classList.toggle('is-active', hasOpenDropdown && isMatchingScope);
       });
       syncDesktopBlogFilterLayout();
       root.classList.toggle('is-filter-open', hasOpenDropdown);
-      document.documentElement.classList.toggle('is-blog-filter-open', hasOpenDropdown);
+      document.documentElement.classList.toggle('is-blog-filter-open', shouldLockScroll);
       if (document.body) {
-        document.body.classList.toggle('is-blog-filter-open', hasOpenDropdown);
+        document.body.classList.toggle('is-blog-filter-open', shouldLockScroll);
       }
     };
 
@@ -1025,8 +1119,15 @@
       dropdown.setAttribute('data-open', 'true');
       if (drawerContainer) {
         window.clearTimeout(Number(drawerContainer.dataset.blogDrawerCloseTimer || 0));
+        cancelBlogDrawerOpenFrame(drawerContainer);
         drawerContainer.classList.remove('is-closing');
-        drawerContainer.classList.add('menu-open');
+        drawerContainer.classList.remove('menu-open');
+        const openFrame = window.requestAnimationFrame(() => {
+          if (dropdown.getAttribute('data-open') !== 'true') return;
+          drawerContainer.classList.add('menu-open');
+          blogDrawerOpenFrames.delete(drawerContainer);
+        });
+        blogDrawerOpenFrames.set(drawerContainer, openFrame);
         delete drawerContainer.dataset.blogDrawerCloseTimer;
       } else {
         panel.classList.remove('is-closing');

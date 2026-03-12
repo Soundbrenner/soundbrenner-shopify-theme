@@ -2852,41 +2852,165 @@ html[data-sb-page-segment='learn-more'] .shopify-section:has(> .sb-product-main)
   color: var(--sb-color-neutral-900) !important;
 }
 
+.kl_reviews__lightbox_background.klaviyo-swiper-wrapper {
+  align-items: center !important;
+  background: transparent !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  justify-content: center !important;
+  overflow-y: auto !important;
+  padding: var(--sb-space-30) !important;
+}
+
+@media (min-width: 750px) {
+  .kl_reviews__lightbox_background.klaviyo-swiper-wrapper {
+    background: var(--sb-color-always-black-25) !important;
+    -webkit-backdrop-filter: blur(var(--sb-space-8)) !important;
+    backdrop-filter: blur(var(--sb-space-8)) !important;
+  }
+}
+
+.kl_reviews__lightbox__content_wrapper,
+.kl_reviews__lightbox__image_list {
+  flex: 0 0 auto !important;
+  max-width: 960px !important;
+  width: 100% !important;
+}
+
+.kl_reviews__lightbox__image_list {
+  display: none !important;
+}
+
+.kl_reviews__lightbox__content_wrapper {
+  background: transparent !important;
+  display: block !important;
+  height: 100% !important;
+  margin-top: 0 !important;
+  max-height: 640px !important;
+}
+
 .kl_reviews__lightbox__container {
-  grid-template-columns: auto minmax(320px, 40vw) !important;
-  max-width: calc(100vw - 48px) !important;
-  width: fit-content !important;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  width: 100% !important;
 }
 
 .kl_reviews__lightbox__left {
-  align-items: center !important;
-  display: flex !important;
-  justify-content: center !important;
-  justify-self: start !important;
-  min-width: 0 !important;
+  grid-column: 1 / 2 !important;
+}
+
+.kl_reviews__lightbox__right {
+  grid-column: 2 / 3 !important;
   overflow: hidden !important;
-  width: auto !important;
 }
 
-.kl_reviews__lightbox__left img {
-  display: block !important;
-  height: auto !important;
-  max-height: min(80vh, 720px) !important;
-  max-width: min(640px, 100%) !important;
-  width: auto !important;
+@media (min-width: 750px) {
+  .kl_reviews__lightbox__right {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+
+  .kl_reviews__lightbox__right::-webkit-scrollbar {
+    display: none !important;
+    height: 0 !important;
+    width: 0 !important;
+  }
 }
 
-@media only screen and (max-width: 699px) {
+@media (max-width: 749px) {
+  .kl_reviews__lightbox_background.klaviyo-swiper-wrapper {
+    align-items: stretch !important;
+    gap: 0 !important;
+    justify-content: flex-start !important;
+    padding: 0 !important;
+  }
+
+  .kl_reviews__lightbox__content_wrapper {
+    height: auto !important;
+    max-height: none !important;
+    max-width: none !important;
+  }
+
   .kl_reviews__lightbox__container {
-    grid-template-columns: 1fr !important;
-    max-width: calc(100vw - 32px) !important;
-    width: calc(100vw - 32px) !important;
+    border-radius: 0 !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    height: auto !important;
   }
 
-  .kl_reviews__lightbox__left img {
-    max-height: 50vh !important;
-    max-width: 100% !important;
+  .kl_reviews__lightbox__left,
+  .kl_reviews__lightbox__right {
+    border-radius: 0 !important;
+    grid-column: auto !important;
   }
+
+  .kl_reviews__lightbox__left {
+    aspect-ratio: 1 / 1 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    width: 100% !important;
+  }
+
+  .kl_reviews__lightbox__left .swiper,
+  .kl_reviews__lightbox__left .swiper-wrapper,
+  .kl_reviews__lightbox__left .swiper-slide,
+  .kl_reviews__lightbox__left .kl_reviews__gallery_lightbox_thumbnail_container {
+    height: 100% !important;
+    min-height: 0 !important;
+    width: 100% !important;
+  }
+
+  .kl_reviews__lightbox__right {
+    overflow: visible !important;
+  }
+
+  .kl_reviews__lightbox__content_wrapper > button.kl_reviews__close_button,
+  .kl_reviews__lightbox__content_wrapper > button[aria-label='Modal close button'] {
+    left: 20px !important;
+    top: 20px !important;
+  }
+}
+
+.kl_reviews__lightbox__left .kl_lightbox__backgroundImage {
+  display: none !important;
+}
+
+.kl_reviews__lightbox__left .swiper-wrapper {
+  overflow: hidden !important;
+}
+
+.kl_reviews__lightbox__left .swiper-slide {
+  align-items: stretch !important;
+  display: flex !important;
+  height: 100% !important;
+  justify-content: center !important;
+  width: 100% !important;
+}
+
+.kl_reviews__lightbox__left .kl_reviews__gallery_lightbox_thumbnail_container {
+  display: block !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  position: relative !important;
+  width: 100% !important;
+}
+
+.kl_reviews__lightbox__left .kl_reviews__gallery_lightbox_thumbnail_container img {
+  display: block !important;
+  height: 100% !important;
+  inset: 0 !important;
+  max-height: none !important;
+  max-width: none !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  position: absolute !important;
+  width: 100% !important;
 }
 
 .kl_reviews__lightbox__container strong,
@@ -2897,6 +3021,24 @@ html[data-sb-page-segment='learn-more'] .shopify-section:has(> .sb-product-main)
 .kl_reviews__lightbox__container .kl_reviews__lightbox__timestamp,
 .kl_reviews__lightbox__container .kl_reviews__lightbox__time_badge {
   color: var(--sb-color-neutral-800) !important;
+}
+
+.kl_reviews__lightbox__container .kl_reviews__lightbox__right__header {
+  align-items: flex-start !important;
+  column-gap: 16px !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: space-between !important;
+  row-gap: 16px !important;
+}
+
+.kl_reviews__lightbox__container .kl_reviews__lightbox__right__header > :first-child {
+  min-width: 0 !important;
+}
+
+.kl_reviews__lightbox__container .kl_reviews__lightbox__time_badge {
+  flex: 0 0 auto !important;
+  white-space: nowrap !important;
 }
 
 .kl_reviews__lightbox__container .kl_reviews__star--fill {
@@ -2947,23 +3089,6 @@ html[data-sb-page-segment='learn-more'] .shopify-section:has(> .sb-product-main)
   mask: center / contain no-repeat url("icon-klaviyo-cart.svg");
   width: 16px;
   -webkit-mask: center / contain no-repeat url("icon-klaviyo-cart.svg");
-}
-
-/* Replace lightbox close icon with theme asset */
-.kl_reviews__lightbox__container button[aria-label*='close' i] svg,
-.kl_reviews__lightbox__container button[class*='close'] svg {
-  display: none !important;
-}
-
-.kl_reviews__lightbox__container button[aria-label*='close' i]::before,
-.kl_reviews__lightbox__container button[class*='close']::before {
-  background-color: var(--sb-color-neutral-800);
-  content: '';
-  display: inline-block;
-  height: 16px;
-  mask: center / contain no-repeat url("icon-cancel.svg");
-  width: 16px;
-  -webkit-mask: center / contain no-repeat url("icon-cancel.svg");
 }
 
 /* Author row spacing + name weight normalization */
@@ -3412,59 +3537,6 @@ html[data-sb-page-segment='learn-more'] .shopify-section:has(> .sb-product-main)
   }
 }
 
-.kl_reviews__lightbox__container button[aria-label*='close' i],
-.kl_reviews__lightbox__container button[class*='close'] {
-  position: relative;
-}
-
-.kl_reviews__lightbox__container button[aria-label*='close' i] svg,
-.kl_reviews__lightbox__container button[class*='close'] svg {
-  display: none !important;
-}
-
-.kl_reviews__lightbox__container button[aria-label*='close' i]::before,
-.kl_reviews__lightbox__container button[class*='close']::before,
-.kl_reviews__lightbox__container button[aria-label*='close' i]::after,
-.kl_reviews__lightbox__container button[class*='close']::after {
-  content: '' !important;
-  display: block !important;
-  height: 32px !important;
-  left: 50%;
-  pointer-events: none;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 32px !important;
-}
-
-.kl_reviews__lightbox__container button[aria-label*='close' i]::before,
-.kl_reviews__lightbox__container button[class*='close']::before {
-  background-color: var(--sb-color-neutral-800) !important;
-  mask: center / contain no-repeat url("icon-cancel-with-padding.svg") !important;
-  -webkit-mask: center / contain no-repeat url("icon-cancel-with-padding.svg") !important;
-}
-
-.kl_reviews__lightbox__container button[aria-label*='close' i]::after,
-.kl_reviews__lightbox__container button[class*='close']::after {
-  display: none !important;
-}
-
-.kl_reviews__lightbox__container button[aria-label*='close' i]:focus-visible::before,
-.kl_reviews__lightbox__container button[aria-label*='close' i]:focus-visible::after,
-.kl_reviews__lightbox__container button[class*='close']:focus-visible::before,
-.kl_reviews__lightbox__container button[class*='close']:focus-visible::after {
-  background-color: var(--sb-color-primary-500) !important;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .kl_reviews__lightbox__container button[aria-label*='close' i]:hover::before,
-  .kl_reviews__lightbox__container button[aria-label*='close' i]:hover::after,
-  .kl_reviews__lightbox__container button[class*='close']:hover::before,
-  .kl_reviews__lightbox__container button[class*='close']:hover::after {
-    background-color: var(--sb-color-primary-500) !important;
-  }
-}
-
 /* Final filter-pill layout normalization */
 :is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) .kl_reviews__filters {
   align-items: center !important;
@@ -3837,40 +3909,6 @@ html[data-sb-page-segment='learn-more'] .shopify-section:has(> .sb-product-main)
   }
 }
 
-.kl_reviews__lightbox__container button[aria-label*='close' i]::before,
-.kl_reviews__lightbox__container button[class*='close']::before {
-  background-color: var(--sb-color-neutral-800) !important;
-}
-
-.kl_reviews__lightbox__container button[aria-label*='close' i]::after,
-.kl_reviews__lightbox__container button[class*='close']::after {
-  background-color: var(--sb-color-neutral-200) !important;
-}
-
-.kl_reviews__lightbox__container button[aria-label*='close' i]:focus-visible::before,
-.kl_reviews__lightbox__container button[class*='close']:focus-visible::before {
-  background-color: var(--sb-color-neutral-800) !important;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .kl_reviews__lightbox__container button[aria-label*='close' i]:hover::before,
-  .kl_reviews__lightbox__container button[class*='close']:hover::before {
-    background-color: var(--sb-color-neutral-800) !important;
-  }
-}
-
-.kl_reviews__lightbox__container button[aria-label*='close' i]:focus-visible::after,
-.kl_reviews__lightbox__container button[class*='close']:focus-visible::after {
-  background-color: var(--sb-color-primary-500) !important;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .kl_reviews__lightbox__container button[aria-label*='close' i]:hover::after,
-  .kl_reviews__lightbox__container button[class*='close']:hover::after {
-    background-color: var(--sb-color-primary-500) !important;
-  }
-}
-
 /* Edited icon replacement (main widget + lightbox) */
 :is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) svg[aria-label='Edited'],
 .kl_reviews__lightbox__container svg[aria-label='Edited'] {
@@ -3896,151 +3934,71 @@ html[data-sb-page-segment='learn-more'] .shopify-section:has(> .sb-product-main)
 
 .kl_reviews__lightbox__content_wrapper > button.kl_reviews__close_button,
 .kl_reviews__lightbox__content_wrapper > button[aria-label='Modal close button'] {
-  left: 12px !important;
-  margin: 0 !important;
-  position: absolute !important;
-  top: 12px !important;
-  z-index: 3 !important;
-}
-
-.kl_reviews__lightbox__container .kl_reviews__close_button {
-  align-items: center !important;
-  display: inline-flex !important;
-  height: 32px !important;
-  justify-content: center !important;
-  min-height: 32px !important;
-  min-width: 32px !important;
-  overflow: visible !important;
-  position: relative !important;
-  width: 32px !important;
-}
-
-.kl_reviews__lightbox__container .kl_reviews__close_button svg {
-  display: none !important;
-}
-
-.kl_reviews__lightbox__container .kl_reviews__close_button::before,
-.kl_reviews__lightbox__container .kl_reviews__close_button::after {
-  content: '' !important;
-  display: block !important;
-  height: 32px !important;
-  left: 50%;
-  pointer-events: none;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 32px !important;
-}
-
-.kl_reviews__lightbox__container .kl_reviews__close_button::before {
-  background-color: var(--sb-color-neutral-800) !important;
-  mask: center / contain no-repeat url("icon-cancel-with-padding.svg") !important;
-  z-index: 1;
-  -webkit-mask: center / contain no-repeat url("icon-cancel-with-padding.svg") !important;
-}
-
-.kl_reviews__lightbox__container .kl_reviews__close_button::after {
-  display: none !important;
-}
-
-.kl_reviews__lightbox__container .kl_reviews__close_button:focus-visible::before {
-  background-color: var(--sb-color-neutral-800) !important;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .kl_reviews__lightbox__container .kl_reviews__close_button:hover::before {
-    background-color: var(--sb-color-neutral-800) !important;
-  }
-}
-
-.kl_reviews__lightbox__container .kl_reviews__close_button:focus-visible::after {
-  background-color: var(--sb-color-primary-500) !important;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .kl_reviews__lightbox__container .kl_reviews__close_button:hover::after {
-    background-color: var(--sb-color-primary-500) !important;
-  }
-}
-
-/* Global hard target in case close button is rendered outside expected container */
-button.kl_reviews__close_button,
-button[aria-label='Modal close button'] {
   align-items: center !important;
   background: transparent !important;
   border: 0 !important;
-  color: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  color: var(--sb-color-always-white) !important;
+  cursor: pointer !important;
   display: inline-flex !important;
   font-size: 0 !important;
-  height: 32px !important;
+  height: var(--sb-space-20) !important;
   justify-content: center !important;
-  min-height: 32px !important;
-  min-width: 32px !important;
+  left: 24px !important;
+  line-height: 0 !important;
+  margin: 0 !important;
+  min-height: var(--sb-space-20) !important;
+  min-width: var(--sb-space-20) !important;
   overflow: visible !important;
   padding: 0 !important;
-  position: relative !important;
-  width: 32px !important;
-}
-
-button.kl_reviews__close_button svg,
-button[aria-label='Modal close button'] svg {
-  display: none !important;
-}
-
-button.kl_reviews__close_button::before,
-button.kl_reviews__close_button::after,
-button[aria-label='Modal close button']::before,
-button[aria-label='Modal close button']::after {
-  content: '' !important;
-  display: block !important;
-  height: 32px !important;
-  left: 50% !important;
-  pointer-events: none !important;
   position: absolute !important;
-  top: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  width: 32px !important;
+  top: 24px !important;
+  width: var(--sb-space-20) !important;
+  z-index: 3 !important;
 }
 
-button.kl_reviews__close_button::before,
-button[aria-label='Modal close button']::before {
-  background-color: var(--sb-color-neutral-800) !important;
-  mask: center / contain no-repeat url("icon-cancel-with-padding.svg") !important;
-  z-index: 1 !important;
-  -webkit-mask: center / contain no-repeat url("icon-cancel-with-padding.svg") !important;
+.kl_reviews__lightbox__content_wrapper > button.kl_reviews__close_button svg,
+.kl_reviews__lightbox__content_wrapper > button[aria-label='Modal close button'] svg {
+  display: block !important;
+  flex: 0 0 var(--sb-space-20) !important;
+  filter:
+    drop-shadow(0 0 24px var(--sb-color-always-black))
+    drop-shadow(0 0 24px var(--sb-color-always-black))
+    drop-shadow(0 0 24px var(--sb-color-always-black)) !important;
+  height: var(--sb-space-20) !important;
+  max-height: var(--sb-space-20) !important;
+  max-width: var(--sb-space-20) !important;
+  min-height: var(--sb-space-20) !important;
+  min-width: var(--sb-space-20) !important;
+  overflow: visible !important;
+  width: var(--sb-space-20) !important;
 }
 
-button.kl_reviews__close_button::after,
-button[aria-label='Modal close button']::after {
+.kl_reviews__lightbox__content_wrapper > button.kl_reviews__close_button::before,
+.kl_reviews__lightbox__content_wrapper > button.kl_reviews__close_button::after,
+.kl_reviews__lightbox__content_wrapper > button[aria-label='Modal close button']::before,
+.kl_reviews__lightbox__content_wrapper > button[aria-label='Modal close button']::after {
+  content: none !important;
   display: none !important;
 }
 
-button.kl_reviews__close_button:focus-visible::before,
-button[aria-label='Modal close button']:focus-visible::before {
-  background-color: var(--sb-color-neutral-800) !important;
+.kl_reviews__lightbox__content_wrapper > button.kl_reviews__close_button svg path,
+.kl_reviews__lightbox__content_wrapper > button[aria-label='Modal close button'] svg path {
+  fill: currentColor !important;
 }
 
-button.kl_reviews__close_button:active::before,
-button[aria-label='Modal close button']:active::before {
-  background-color: var(--sb-color-primary-500) !important;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  button.kl_reviews__close_button:hover::before,
-  button[aria-label='Modal close button']:hover::before {
-    background-color: var(--sb-color-neutral-800) !important;
-  }
-}
-
-button.kl_reviews__close_button:focus-visible::after,
-button[aria-label='Modal close button']:focus-visible::after {
-  background-color: var(--sb-color-primary-500) !important;
+.kl_reviews__lightbox__content_wrapper > button.kl_reviews__close_button:focus-visible,
+.kl_reviews__lightbox__content_wrapper > button[aria-label='Modal close button']:focus-visible,
+.kl_reviews__lightbox__content_wrapper > button.kl_reviews__close_button:active,
+.kl_reviews__lightbox__content_wrapper > button[aria-label='Modal close button']:active {
+  color: var(--sb-color-primary-500) !important;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  button.kl_reviews__close_button:hover::after,
-  button[aria-label='Modal close button']:hover::after {
-    background-color: var(--sb-color-primary-500) !important;
+  .kl_reviews__lightbox__content_wrapper > button.kl_reviews__close_button:hover,
+  .kl_reviews__lightbox__content_wrapper > button[aria-label='Modal close button']:hover {
+    color: var(--sb-color-primary-500) !important;
   }
 }
 
@@ -4051,13 +4009,85 @@ button[aria-label='Modal close button']:focus-visible::after {
   border-radius: 24px !important;
 }
 
+@media (max-width: 749px) {
+  html:has(body.kl_reviews__modal_open),
+  body.kl_reviews__modal_open {
+    overflow: hidden !important;
+    overscroll-behavior: none !important;
+  }
+
+  .kl_reviews__lightbox_background.klaviyo-swiper-wrapper {
+    inset: 0 !important;
+    height: 100svh !important;
+    height: 100dvh !important;
+    overflow: hidden !important;
+    position: fixed !important;
+    width: 100vw !important;
+  }
+
+  .kl_reviews__lightbox__content_wrapper {
+    align-self: stretch !important;
+    background: var(--sb-color-neutral-200) !important;
+    bottom: 0 !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex: 1 0 auto !important;
+    flex-direction: column !important;
+    inset: 0 !important;
+    left: 0 !important;
+    margin: 0 !important;
+    margin-inline: 0 !important;
+    max-height: none !important;
+    min-height: 100svh !important;
+    min-height: 100dvh !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    padding: 0 !important;
+    padding-bottom: 0 !important;
+    padding-top: 0 !important;
+    position: absolute !important;
+    right: 0 !important;
+    top: 0 !important;
+    transform: none !important;
+    width: 100% !important;
+  }
+
+  .kl_reviews__lightbox__content_wrapper > button.kl_reviews__close_button,
+  .kl_reviews__lightbox__content_wrapper > button[aria-label='Modal close button'] {
+    left: 20px !important;
+    position: fixed !important;
+    top: 20px !important;
+    z-index: 1000 !important;
+  }
+
+  .kl_reviews__lightbox__container {
+    align-content: start !important;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    min-height: 0 !important;
+  }
+
+  .kl_reviews__lightbox_background.klaviyo-swiper-wrapper,
+  .kl_reviews__lightbox__content_wrapper,
+  .kl_reviews__lightbox__container,
+  .kl_reviews__lightbox__left,
+  .kl_reviews__lightbox__right,
+  .kl_reviews__lightbox__left .swiper,
+  .kl_reviews__lightbox__left .swiper-wrapper,
+  .kl_reviews__lightbox__left .swiper-slide,
+  .kl_reviews__lightbox__left .kl_reviews__gallery_lightbox_thumbnail_container,
+  .kl_reviews__lightbox__left .kl_reviews__gallery_lightbox_thumbnail_container img {
+    border-radius: 0 !important;
+  }
+}
+
 /* Edited-tooltip background */
 .kl_reviews__review__edited__tooltip,
 #tooltip-content.kl_reviews__review__edited__tooltip[role='tooltip'] {
   background-color: var(--sb-color-neutral-200) !important;
   border-color: var(--sb-color-neutral-200) !important;
   border-radius: 24px !important;
-  color: var(--sb-color-neutral-900) !important;
+  color: var(--sb-color-neutral-800) !important;
   font-family: var(--font-primary--family) !important;
   font-size: var(--font-size-caption) !important;
   font-style: normal !important;
@@ -4253,6 +4283,17 @@ button[aria-label='Modal close button']:focus-visible::after {
   .kl_reviews__lightbox__container .kl_reviews__stars_badge:hover svg,
   .klaviyo-star-rating-widget .kl_reviews__stars_badge:hover svg {
     opacity: 0.75 !important;
+  }
+}
+
+/* Lightbox stars are not interactive: keep them fully visible */
+.kl_reviews__lightbox__container .kl_reviews__stars_badge:focus-within svg {
+  opacity: 1 !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .kl_reviews__lightbox__container .kl_reviews__stars_badge:hover svg {
+    opacity: 1 !important;
   }
 }
 

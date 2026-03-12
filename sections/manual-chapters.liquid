@@ -1575,6 +1575,7 @@
     };
 
     let ticking = false;
+    const manualDrawerOpenFrames = new WeakMap();
     const syncActive = () => {
       setActive(getActiveChapterId());
     };
@@ -1587,6 +1588,15 @@
         ticking = false;
       });
     };
+
+    const cancelManualDrawerOpenFrame = (drawerContainer) => {
+      if (!drawerContainer) return;
+      const openFrame = manualDrawerOpenFrames.get(drawerContainer);
+      if (!openFrame) return;
+      window.cancelAnimationFrame(openFrame);
+      manualDrawerOpenFrames.delete(drawerContainer);
+    };
+
     const findChapterById = (id) => chapterData.find((chapter) => chapter.id === id) || null;
     const navigateToChapter = (targetId, { updateHash = true } = {}) => {
       const nextId = `${targetId || ''}`.trim();
@@ -1634,6 +1644,7 @@
       trigger.setAttribute('aria-expanded', 'false');
       dropdown.removeAttribute('data-open');
       if (drawerContainer) {
+        cancelManualDrawerOpenFrame(drawerContainer);
         drawerContainer.classList.remove('menu-open');
         drawerContainer.classList.add('is-closing');
         window.clearTimeout(Number(drawerContainer.dataset.manualDrawerCloseTimer || 0));
@@ -1667,8 +1678,15 @@
       dropdown.setAttribute('data-open', 'true');
       if (drawerContainer) {
         window.clearTimeout(Number(drawerContainer.dataset.manualDrawerCloseTimer || 0));
+        cancelManualDrawerOpenFrame(drawerContainer);
         drawerContainer.classList.remove('is-closing');
-        drawerContainer.classList.add('menu-open');
+        drawerContainer.classList.remove('menu-open');
+        const openFrame = window.requestAnimationFrame(() => {
+          if (dropdown.getAttribute('data-open') !== 'true') return;
+          drawerContainer.classList.add('menu-open');
+          manualDrawerOpenFrames.delete(drawerContainer);
+        });
+        manualDrawerOpenFrames.set(drawerContainer, openFrame);
         delete drawerContainer.dataset.manualDrawerCloseTimer;
       }
       updateChapterBackdropState();

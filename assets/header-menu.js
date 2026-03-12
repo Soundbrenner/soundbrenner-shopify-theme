@@ -87,6 +87,7 @@
       let closeMenuTimer = null;
       let primarySwitchTimer = null;
       let primaryClosingTimer = null;
+      let primaryBackdropOpenFrame = null;
       let hoverOpenTimer = null;
       let hoverOpenCandidateItem = null;
       let hoverOpenPointerStartX = 0;
@@ -140,6 +141,21 @@
         if (!primaryClosingTimer) return;
         window.clearTimeout(primaryClosingTimer);
         primaryClosingTimer = null;
+      };
+
+      const clearPrimaryBackdropOpenFrame = () => {
+        if (!primaryBackdropOpenFrame) return;
+        window.cancelAnimationFrame(primaryBackdropOpenFrame);
+        primaryBackdropOpenFrame = null;
+      };
+
+      const schedulePrimaryBackdropOpen = () => {
+        clearPrimaryBackdropOpenFrame();
+        primaryBackdrops.forEach((backdrop) => backdrop.classList.remove('is-active'));
+        primaryBackdropOpenFrame = window.requestAnimationFrame(() => {
+          primaryBackdropOpenFrame = null;
+          primaryBackdrops.forEach((backdrop) => backdrop.classList.add('is-active'));
+        });
       };
 
       const clearPrimarySwitchInlineWidths = () => {
@@ -208,6 +224,7 @@
         const isPrimaryOpen = Boolean(activeDropdownItem || localizationDropdownOpen || searchShortcutOpen);
         if (window.matchMedia('(max-width: 989px)').matches) {
           clearPrimaryClosingTimer();
+          clearPrimaryBackdropOpenFrame();
           header.classList.remove('is-primary-closing');
           if (activeDropdownItem) activeDropdownItem.classList.remove('is-open');
           activeDropdownItem = null;
@@ -226,8 +243,9 @@
           header.classList.remove('is-primary-closing');
           header.classList.add('is-primary-open');
           syncPrimaryBackdropTop();
-          primaryBackdrops.forEach((backdrop) => backdrop.classList.add('is-active'));
+          schedulePrimaryBackdropOpen();
         } else {
+          clearPrimaryBackdropOpenFrame();
           header.classList.remove('is-primary-open');
           clearPrimaryClosingTimer();
           header.classList.add('is-primary-closing');

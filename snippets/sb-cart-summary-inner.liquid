@@ -316,17 +316,19 @@
         </button>
       </form>
     {% else %}
-      {% assign checkout_url = routes.root_url | append: 'checkout' %}
-      <a
-        class="{{ checkout_button_class }} sb-button-radiant sb-button-radiant--large sb-button-radiant--leading-icon font-caption weight-bold sb-cart-summary__checkout-button"
-        href="{{ checkout_url }}"
-        data-cart-checkout-button
-      >
-        <span class="sb-button-radiant__icon" aria-hidden="true">
-          <span class="sb-cart-summary__checkout-icon">{{ 'icon-checkout-lock.svg' | inline_asset_content }}</span>
-        </span>
-        <span class="sb-button-radiant__label">{{ 'sb.cart.secure_checkout' | t }}</span>
-      </a>
+      <form action="{{ routes.cart_url }}" method="post" class="sb-cart-summary__checkout-form">
+        <button
+          type="submit"
+          class="{{ checkout_button_class }} sb-button-radiant sb-button-radiant--large sb-button-radiant--leading-icon font-caption weight-bold sb-cart-summary__checkout-button"
+          name="checkout"
+          data-cart-checkout-button
+        >
+          <span class="sb-button-radiant__icon" aria-hidden="true">
+            <span class="sb-cart-summary__checkout-icon">{{ 'icon-checkout-lock.svg' | inline_asset_content }}</span>
+          </span>
+          <span class="sb-button-radiant__label">{{ 'sb.cart.secure_checkout' | t }}</span>
+        </button>
+      </form>
     {% endif %}
 
     {% render 'sb-cart-payment-icons', list_class: sb_cart_payment_list_class, item_class: sb_cart_payment_item_class %}
