@@ -1,6 +1,6 @@
 <section class="sb-data-sharing-opt-out">
   <div class="sb-data-sharing-opt-out__title">
-    <h1 class="font-title weight-bold">{{ page.title | default: '' | strip | downcase | capitalize }}</h1>
+    <h1 class="font-title weight-bold">{{ page.title | default: '' | strip }}</h1>
   </div>
 
   <div class="sb-data-sharing-opt-out__content rte font-body weight-regular sb-flow-24">
@@ -229,10 +229,6 @@
     text-align: left !important;
   }
 
-  .sb-data-sharing-opt-out #pc--opt-out-success {
-    display: none !important;
-  }
-
   .sb-data-sharing-opt-out .pc--opt-out-form-message--success .icon-success {
     display: none !important;
     margin: 0 !important;
@@ -345,9 +341,6 @@
       const primarySuccessMessage = root.querySelector('#pc--opt-out-message.pc--opt-out-form-message--success');
       const secondarySuccessMessage = root.querySelector('#pc--opt-out-success.pc--opt-out-form-message--success');
       const errorMessage = root.querySelector('#pc--opt-out-error.pc--opt-out-form-message');
-      if (primarySuccessMessage && secondarySuccessMessage && secondarySuccessMessage.style.display !== 'none') {
-        secondarySuccessMessage.style.display = 'none';
-      }
 
       [primarySuccessMessage, secondarySuccessMessage].forEach((messageNode) => {
         if (!messageNode) return;

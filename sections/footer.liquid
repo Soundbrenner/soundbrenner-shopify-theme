@@ -821,6 +821,14 @@
     align-items: center;
   }
 
+  .sb-footer__legal-links a[href*='/pages/data-sharing-opt-out'] {
+    display: none;
+  }
+
+  .sb-footer__legal-separator:has(+ a[href*='/pages/data-sharing-opt-out']) {
+    display: none;
+  }
+
   .sb-footer__legal-separator {
     white-space: pre;
   }
