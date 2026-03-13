@@ -8,6 +8,7 @@
     '#klaviyo-product-reviews-wrapper',
     '.kl_reviews__lightbox__container',
   ];
+  const DESKTOP_LIGHTBOX_MEDIA_QUERY = '(min-width: 750px)';
 
   const normalizeText = (value) => String(value || '').replace(/\s+/g, ' ').trim();
   const escapeRegExp = (value) => String(value || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -368,6 +369,28 @@
     });
   };
 
+  const isDesktopLightboxViewport = () => {
+    if (!window.matchMedia) return false;
+    return window.matchMedia(DESKTOP_LIGHTBOX_MEDIA_QUERY).matches;
+  };
+
+  const handleDesktopLightboxBackdropClick = (event) => {
+    if (!isDesktopLightboxViewport()) return;
+    if (!(event.target instanceof Element)) return;
+
+    const background = event.target.closest('.kl_reviews__lightbox_background.klaviyo-swiper-wrapper');
+    if (!(background instanceof HTMLElement)) return;
+
+    const contentWrapper = background.querySelector('.kl_reviews__lightbox__content_wrapper');
+    if (!(contentWrapper instanceof HTMLElement)) return;
+    if (contentWrapper.contains(event.target)) return;
+
+    const closeButton = contentWrapper.querySelector('button.kl_reviews__close_button, button[aria-label="Modal close button"]');
+    if (!(closeButton instanceof HTMLButtonElement)) return;
+
+    closeButton.click();
+  };
+
   const observer = new MutationObserver(() => {
     scheduleLocalization();
   });
@@ -386,6 +409,7 @@
     scheduleLocalization();
     scheduleInitialRetries();
   }, { once: true });
+  document.addEventListener('click', handleDesktopLightboxBackdropClick);
   observer.observe(document.documentElement, {
     attributes: true,
     characterData: true,
