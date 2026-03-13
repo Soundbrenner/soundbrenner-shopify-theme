@@ -5,6 +5,7 @@
 {% assign trustpilot_entry = metaobjects.trustpilot.values | first %}
 {% assign trustpilot_rating_value = trustpilot_entry.rating.value | default: trustpilot_entry.rating %}
 {% assign footer_newsletter_arrow_icon_url = 'arrow-reduced-padding.svg' | asset_url %}
+{% assign footer_glow_image_url = 'footer-glow-teal.svg' | asset_url %}
 {% assign trustpilot_rating_template = '' %}
 {% assign footer_is_metronome_app_page = false %}
 {% assign footer_is_product_page = false %}
@@ -27,7 +28,7 @@
   {% assign trustpilot_rating_text = section.settings.trustpilot_rating %}
 {% endif %}
 
-<footer class="sb-footer full-width{% if footer_is_metronome_app_page %} sb-footer--metronome-app-page{% endif %}{% if footer_is_product_page %} sb-footer--product-page{% endif %}{% if footer_is_product_page_segmented %} sb-footer--product-page-segmented{% else %}{% if footer_is_product_page %} sb-footer--product-page-standard{% endif %}{% endif %}" style="--sb-footer-newsletter-arrow-icon-url: url('{{ footer_newsletter_arrow_icon_url }}');" data-sb-motion="reveal" data-sb-motion-item>
+<footer class="sb-footer full-width{% if footer_is_metronome_app_page %} sb-footer--metronome-app-page{% endif %}{% if footer_is_product_page %} sb-footer--product-page{% endif %}{% if footer_is_product_page_segmented %} sb-footer--product-page-segmented{% else %}{% if footer_is_product_page %} sb-footer--product-page-standard{% endif %}{% endif %}" style="--sb-footer-newsletter-arrow-icon-url: url('{{ footer_newsletter_arrow_icon_url }}'); --sb-footer-glow-image-url: url('{{ footer_glow_image_url }}');" data-sb-motion="reveal" data-sb-motion-item>
   <div class="sb-footer__masthead" aria-hidden="true">
     <img
       class="sb-footer__masthead-image sb-footer__masthead-image--dark"
@@ -203,6 +204,7 @@
 
   .sb-footer__masthead {
     margin: 0;
+    overflow: hidden;
     overflow: clip;
     width: 100%;
     line-height: 0;
@@ -243,15 +245,18 @@
   }
 
   .sb-footer__glow {
-    background: var(--sb-color-primary-500);
-    bottom: -120px;
-    filter: blur(80px);
-    height: 240px;
-    left: 0;
+    background-image: var(--sb-footer-glow-image-url);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    aspect-ratio: 2 / 1;
+    bottom: 0;
+    left: 50%;
     opacity: 1;
     pointer-events: none;
     position: absolute;
-    width: 100%;
+    transform: translate(-50%, 50%);
+    width: 1760px;
   }
 
   .sb-footer__upper-row {
@@ -837,11 +842,7 @@
     }
 
     .sb-footer__glow {
-      bottom: -180px;
-      filter: blur(130px);
-      height: 360px;
-      left: 0;
-      width: 100%;
+      bottom: 0;
     }
 
     .sb-footer .sb-footer__lower-row {

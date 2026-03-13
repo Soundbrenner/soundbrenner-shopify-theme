@@ -1945,6 +1945,7 @@ video.sb-product-main__media-asset {
 }
 
 :is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) .kl_reviews__list__tabs > .kl_reviews__list__tab_buttons {
+  cursor: auto !important;
   display: flex !important;
   flex: 1 1 auto !important;
   grid-column: auto !important;
@@ -1989,6 +1990,36 @@ video.sb-product-main__media-asset {
   line-height: 1.35 !important;
   margin: 0 !important;
   padding-top: 4px !important;
+}
+
+:is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) .kl_reviews_tabs__reviews_tab {
+  cursor: auto !important;
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  user-select: none !important;
+}
+
+:is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) button.kl_reviews_tabs__reviews_tab,
+:is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) button.kl_reviews_tabs__reviews_tab:hover,
+:is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) button.kl_reviews_tabs__reviews_tab:focus,
+:is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) button.kl_reviews_tabs__reviews_tab:focus-visible,
+:is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) button.kl_reviews_tabs__reviews_tab:active,
+:is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) button.kl_reviews_tabs__reviews_tab:disabled {
+  cursor: auto !important;
+  pointer-events: none !important;
+  opacity: 1 !important;
+}
+
+:is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) .kl_reviews_tabs__reviews_tab *,
+:is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) .kl_reviews_tabs__reviews_tab::before,
+:is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) .kl_reviews_tabs__reviews_tab::after {
+  cursor: auto !important;
+}
+
+:is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) .kl_reviews_tabs__reviews_tab:focus,
+:is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) .kl_reviews_tabs__reviews_tab:focus-visible,
+:is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) .kl_reviews_tabs__reviews_tab:active {
+  outline: none !important;
 }
 
 /* Klaviyo reviews token mapping to theme tokens */
