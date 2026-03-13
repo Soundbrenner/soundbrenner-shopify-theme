@@ -292,6 +292,11 @@
     visibility: hidden;
   }
 
+  .sb-compare.sb-compare--stacked-reviews .sb-product-thumbnail__reviews {
+    flex-basis: 100%;
+    white-space: normal;
+  }
+
   @media (min-width: 750px) {
     .sb-compare__grid {
       display: flex;
@@ -461,10 +466,43 @@
           root.classList.toggle('sb-compare--no-visible-swatches', !anyVisibleSwatches);
         };
 
+        const syncReviewWrapState = () => {
+          const stackedReviewsClass = 'sb-compare--stacked-reviews';
+          const hadStackedReviews = root.classList.contains(stackedReviewsClass);
+          if (hadStackedReviews) {
+            root.classList.remove(stackedReviewsClass);
+          }
+
+          const shouldStackReviews = getVisibleThumbnails().some((thumbnail) => {
+            const ratingRow = thumbnail.querySelector('.sb-product-thumbnail__rating-row');
+            const stars = ratingRow ? ratingRow.querySelector('.sb-product-thumbnail__stars') : null;
+            const reviews = ratingRow ? ratingRow.querySelector('.sb-product-thumbnail__reviews') : null;
+            if (!ratingRow || !stars || !reviews) return false;
+
+            const starsTop = Math.round(stars.getBoundingClientRect().top);
+            const reviewsTop = Math.round(reviews.getBoundingClientRect().top);
+            return reviewsTop > starsTop;
+          });
+
+          root.classList.toggle(stackedReviewsClass, shouldStackReviews);
+        };
+
         const scheduleAlignment = () => {
+          syncReviewWrapState();
           syncSwatchSpacing();
           syncCoreRowHeights();
           syncMetaRowHeights();
+        };
+
+        const queueAlignment = () => {
+          if (root.__sbCompareAlignmentFrame) {
+            window.cancelAnimationFrame(root.__sbCompareAlignmentFrame);
+          }
+
+          root.__sbCompareAlignmentFrame = window.requestAnimationFrame(() => {
+            root.__sbCompareAlignmentFrame = null;
+            scheduleAlignment();
+          });
         };
 
         const applySelectorVisibility = () => {
@@ -504,23 +542,55 @@
             });
             applyReviewFormatting(column);
             scheduleAlignment();
-            requestAnimationFrame(() => scheduleAlignment());
+            queueAlignment();
           });
         });
 
         root.addEventListener('sb:thumbnail-purchase-state', (event) => {
           if (!root.contains(event.target)) return;
           scheduleAlignment();
-          requestAnimationFrame(() => scheduleAlignment());
+          queueAlignment();
         });
 
+        const observeReviewCountUpdates = () => {
+          if (typeof MutationObserver !== 'function') return;
+
+          const reviewCountNodes = root.querySelectorAll('[data-thumbnail-reviews-count]');
+          if (!reviewCountNodes.length) return;
+
+          const observer = new MutationObserver((mutations) => {
+            const shouldRealign = mutations.some((mutation) => {
+              const mutationTarget = mutation.target instanceof Element
+                ? mutation.target
+                : mutation.target.parentElement;
+
+              return mutationTarget && mutationTarget.closest('[data-thumbnail-reviews-count]');
+            });
+
+            if (!shouldRealign) return;
+            scheduleAlignment();
+            queueAlignment();
+          });
+
+          reviewCountNodes.forEach((node) => {
+            observer.observe(node, {
+              characterData: true,
+              childList: true,
+              subtree: true,
+            });
+          });
+
+          root.__sbCompareReviewObserver = observer;
+        };
+
+        applyReviewFormatting(root);
         applySelectorVisibility();
         scheduleAlignment();
         requestAnimationFrame(() => {
           scheduleAlignment();
           setTimeout(() => scheduleAlignment(), 0);
         });
-        applyReviewFormatting(root);
+        observeReviewCountUpdates();
 
         root.__sbCompareRelayout = () => {
           applySelectorVisibility();
@@ -534,6 +604,12 @@
       window.addEventListener('resize', () => {
         compareRoots.forEach((root) => {
           if (!document.contains(root)) {
+            if (root.__sbCompareReviewObserver) {
+              root.__sbCompareReviewObserver.disconnect();
+            }
+            if (root.__sbCompareAlignmentFrame) {
+              window.cancelAnimationFrame(root.__sbCompareAlignmentFrame);
+            }
             compareRoots.delete(root);
             return;
           }

@@ -105,7 +105,7 @@
       [role='dialog'][aria-modal='true'] {
         --sb-klaviyo-popup-edge-padding: var(--sb-space-30);
         --sb-klaviyo-popup-element-gap: var(--sb-space-24);
-        --sb-klaviyo-popup-close-size: 20px;
+        --sb-klaviyo-popup-close-size: 30px;
       }
 
       [data-testid='POPUP'] form[data-testid^='klaviyo-form-'] {
@@ -467,20 +467,20 @@
         color: var(--sb-color-neutral-200) !important;
         cursor: pointer !important;
         display: inline-flex !important;
-        height: var(--sb-klaviyo-popup-close-size, 20px) !important;
+        height: var(--sb-klaviyo-popup-close-size, 30px) !important;
         justify-content: center !important;
         line-height: 0 !important;
         margin: 0 !important;
         margin-right: 0 !important;
         margin-top: 0 !important;
-        min-height: var(--sb-klaviyo-popup-close-size, 20px) !important;
-        min-width: var(--sb-klaviyo-popup-close-size, 20px) !important;
+        min-height: var(--sb-klaviyo-popup-close-size, 30px) !important;
+        min-width: var(--sb-klaviyo-popup-close-size, 30px) !important;
         padding: 0 !important;
         pointer-events: auto !important;
         position: absolute !important;
         right: var(--sb-klaviyo-popup-edge-padding, var(--sb-space-30)) !important;
         top: var(--sb-klaviyo-popup-edge-padding, var(--sb-space-30)) !important;
-        width: var(--sb-klaviyo-popup-close-size, 20px) !important;
+        width: var(--sb-klaviyo-popup-close-size, 30px) !important;
         z-index: 8 !important;
       }
 
@@ -509,21 +509,21 @@
         -webkit-mask-image: url('{{ 'icon-cancel-circle.svg' | asset_url }}');
         -webkit-mask-position: center;
         -webkit-mask-repeat: no-repeat;
-        -webkit-mask-size: var(--sb-klaviyo-popup-close-size, 20px) var(--sb-klaviyo-popup-close-size, 20px);
+        -webkit-mask-size: var(--sb-klaviyo-popup-close-size, 30px) var(--sb-klaviyo-popup-close-size, 30px);
         background: currentColor;
         content: '';
         display: block;
-        height: var(--sb-klaviyo-popup-close-size, 20px);
+        height: var(--sb-klaviyo-popup-close-size, 30px);
         left: 50%;
         mask-image: url('{{ 'icon-cancel-circle.svg' | asset_url }}');
         mask-position: center;
         mask-repeat: no-repeat;
-        mask-size: var(--sb-klaviyo-popup-close-size, 20px) var(--sb-klaviyo-popup-close-size, 20px);
+        mask-size: var(--sb-klaviyo-popup-close-size, 30px) var(--sb-klaviyo-popup-close-size, 30px);
         pointer-events: none;
         position: absolute;
         top: 50%;
         transform: translate(-50%, -50%);
-        width: var(--sb-klaviyo-popup-close-size, 20px);
+        width: var(--sb-klaviyo-popup-close-size, 30px);
         z-index: 1;
       }
 
@@ -532,13 +532,13 @@
         border-radius: 999px;
         content: '';
         display: block;
-        height: calc(var(--sb-klaviyo-popup-close-size, 20px) - 2px);
+        height: calc(var(--sb-klaviyo-popup-close-size, 30px) - 2px);
         left: 50%;
         pointer-events: none;
         position: absolute;
         top: 50%;
         transform: translate(-50%, -50%);
-        width: calc(var(--sb-klaviyo-popup-close-size, 20px) - 2px);
+        width: calc(var(--sb-klaviyo-popup-close-size, 30px) - 2px);
         z-index: 0;
       }
 
@@ -551,33 +551,6 @@
         [data-testid='POPUP'] .klaviyo-close-form:hover::after {
           background: var(--sb-color-primary-500);
         }
-      }
-
-      :is([data-testid='POPUP'], [role='dialog'][aria-modal='true']) .klaviyo-close-form:focus-visible::before {
-        background: var(--sb-color-primary-500);
-      }
-
-      @media (hover: hover) and (pointer: fine) {
-        :is([data-testid='POPUP'], [role='dialog'][aria-modal='true']) .klaviyo-close-form:hover::before {
-          background: var(--sb-color-primary-500);
-        }
-      }
-
-      :is([data-testid='POPUP'], [role='dialog'][aria-modal='true']).sb-klaviyo-popup--initial .klaviyo-close-form:focus-visible::before,
-      :is([data-testid='POPUP'], [role='dialog'][aria-modal='true']).sb-klaviyo-popup--success .klaviyo-close-form:focus-visible::before {
-        background: var(--sb-color-primary-500) !important;
-      }
-
-      @media (hover: hover) and (pointer: fine) {
-        :is([data-testid='POPUP'], [role='dialog'][aria-modal='true']).sb-klaviyo-popup--initial .klaviyo-close-form:hover::before,
-        :is([data-testid='POPUP'], [role='dialog'][aria-modal='true']).sb-klaviyo-popup--success .klaviyo-close-form:hover::before {
-          background: var(--sb-color-primary-500) !important;
-        }
-      }
-
-      :is([data-testid='POPUP'], [role='dialog'][aria-modal='true']) .klaviyo-close-form:active::before {
-        background: var(--sb-color-primary-500);
-        transform: none;
       }
 
       .sb-theme-debug-toggle {
