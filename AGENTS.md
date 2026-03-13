@@ -7,6 +7,7 @@
 - Avoid hacky or brittle workarounds that go against the spirit of Shopify's system.
 - Keep implementations simple, maintainable, and idiomatic to Online Store 2.0.
 - When multiple approaches are possible, choose the one that is most native to Shopify and easiest for merchants to manage in the Theme Editor.
+- Question the value of every feature or workaround before implementing it. Prefer the simplest acceptable solution, and push back on low-value complexity or edge-case code that adds ongoing maintenance cost.
 - Use color variables only for colors in CSS. Do not hard-code color values in sections/components.
 - Use scaling spacing tokens only when explicitly requested by the user. Otherwise prefer fixed, non-scaling spacing values that match existing component behavior.
 - Use sentence case for UI copy labels and headings (for example `Section title`).

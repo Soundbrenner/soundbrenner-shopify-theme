@@ -245,24 +245,10 @@
   const localizeTabButton = (button) => {
     if (!(button instanceof HTMLButtonElement)) return;
     const tabText = normalizeText(button.textContent);
+
     if (!tabText) return;
 
     if (tabText.startsWith('Reviews')) {
-      button.disabled = true;
-      button.tabIndex = -1;
-      button.setAttribute('aria-disabled', 'true');
-      button.style.cursor = 'auto';
-      button.addEventListener('mousedown', (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        button.blur();
-      });
-      button.addEventListener('click', (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        button.blur();
-      });
-      button.blur();
       setLeadingTextNode(button, locale.reviewsTab);
     } else if (tabText.startsWith('Questions')) {
       setLeadingTextNode(button, locale.questionsTab);
