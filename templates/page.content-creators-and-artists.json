@@ -133,8 +133,8 @@
         "accordion_item_6n7PDU": {
           "type": "accordion_item",
           "settings": {
-            "question": "How do I get credit for sales?",
-            "answer": "<p>We make sure you receive credit for every sale you generate.</p><p>When someone clicks your referral link, they are automatically tracked for 30 days. This means that even if they don’t buy right away, any purchase they make within that period will still be attributed to you.</p><p>Your referral discount is also automatically applied to their cart, making it easy for customers to complete their purchase.</p>"
+            "question": "When and how do I get paid?",
+            "answer": "<p>You can set up automatic payouts in Shopify Collabs directly to your bank account or PayPal.<br/><br/>There is a 30-day holding period to ensure orders are not refunded. After that, payouts are processed twice per month, provided your balance exceeds $25.</p>"
           }
         },
         "accordion_item_iWFLNJ": {
