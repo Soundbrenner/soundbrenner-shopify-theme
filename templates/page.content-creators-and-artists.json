@@ -123,39 +123,11 @@
     "accordion": {
       "type": "accordion",
       "blocks": {
-        "accordion_item_1": {
-          "type": "accordion_item",
-          "settings": {
-            "question": "Who is eligible to join?",
-            "answer": "<p>We welcome content creators, artists, and music teachers with an active, authentic audience. You don't need millions of followers, but we do look for consistent engagement and high-quality content.</p>"
-          }
-        },
         "accordion_item_PTwnG4": {
           "type": "accordion_item",
           "settings": {
-            "question": "How does the program work?",
-            "answer": "<p>Once approved, you’ll get a personal affiliate link and a unique discount code. Share these with your audience. When they buy using your link or code, they get a discount, and you earn a commission.</p>"
-          }
-        },
-        "accordion_item_ecWwGk": {
-          "type": "accordion_item",
-          "settings": {
-            "question": "What is the commission rate?",
-            "answer": "<p>You earn a 20% commission on every successful sale. Your audience also gets a discount on our products that exceeds our seasonal deals, so they are always incentivized to use your code. It’s a win-win.</p>"
-          }
-        },
-        "accordion_item_j4XC86": {
-          "type": "accordion_item",
-          "settings": {
-            "question": "Are there any restrictions on promotion?",
-            "answer": "<p>Yes. You can't run paid ads (Google, Facebook, Instagram, etc.) using our brand keywords. Additionally, posting your discount code on \"coupon farm\" sites is strictly prohibited and will result in an immediate ban from the program.</p>"
-          }
-        },
-        "accordion_item_LFKXfx": {
-          "type": "accordion_item",
-          "settings": {
-            "question": "Do I get free gear?",
-            "answer": "<p>We offer sponsored gear to select partners based on performance and audience fit. All affiliates usually start with a special discount on personal gear to get them started.</p>"
+            "question": "How does the affiliate program work?",
+            "answer": "<p>Once you’re approved, you’ll receive a personal affiliate link and a unique discount code.</p><p>Share these with your audience through your content, social media, or newsletter. When someone clicks your link or uses your code to make a purchase, they receive a discount and you earn a commission on the sale.</p><p>Sales are tracked automatically through Shopify Collabs, where you’ll have access to a personal dashboard to monitor your clicks, sales, and earnings in real time. Affiliate links are tracked for 30 days, meaning that if someone clicks your link and purchases within that window, the sale will still be attributed to you.</p>"
           }
         },
         "accordion_item_6n7PDU": {
@@ -171,16 +143,36 @@
             "question": "How are sales tracked and how do I get paid?",
             "answer": "<p>Sales are tracked securely through Shopify Collabs. You will have access to a personal dashboard where you can monitor your clicks, sales, and earnings in real time.</p><p>Within Shopify Collabs, you can set up automatic payouts directly to your bank account or PayPal. A standard 30-day holding period applies to ensure orders are not refunded. Once this period has passed, payouts are processed twice per month, provided your balance exceeds $25.</p>"
           }
+        },
+        "accordion_item_1": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Who is eligible to join?",
+            "answer": "<p>We welcome content creators, artists, and music teachers with an active, authentic audience. You don't need millions of followers, but we do look for consistent engagement and high-quality content.</p>"
+          }
+        },
+        "accordion_item_j4XC86": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Are there any restrictions on promotion?",
+            "answer": "<p>Yes. You can't run paid ads (Google, Facebook, Instagram, etc.) using our brand keywords. Additionally, posting your discount code on \"coupon farm\" sites is strictly prohibited and will result in an immediate ban from the program.</p>"
+          }
+        },
+        "accordion_item_LFKXfx": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Do I get free gear?",
+            "answer": "<p>We offer sponsored gear to select partners based on performance and audience fit. All affiliates usually start with a special discount on personal gear to get them started.</p>"
+          }
         }
       },
       "block_order": [
-        "accordion_item_1",
         "accordion_item_PTwnG4",
-        "accordion_item_ecWwGk",
-        "accordion_item_j4XC86",
-        "accordion_item_LFKXfx",
         "accordion_item_6n7PDU",
-        "accordion_item_iWFLNJ"
+        "accordion_item_iWFLNJ",
+        "accordion_item_1",
+        "accordion_item_j4XC86",
+        "accordion_item_LFKXfx"
       ],
       "settings": {
         "use_product_metaobjects": false,
