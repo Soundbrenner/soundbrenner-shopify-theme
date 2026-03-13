@@ -137,13 +137,6 @@
             "answer": "<p>You can set up automatic payouts in Shopify Collabs directly to your bank account or PayPal.<br/><br/>There is a 30-day holding period to ensure orders are not refunded. After that, payouts are processed twice per month, provided your balance exceeds $25.</p>"
           }
         },
-        "accordion_item_iWFLNJ": {
-          "type": "accordion_item",
-          "settings": {
-            "question": "How are sales tracked and how do I get paid?",
-            "answer": "<p>Sales are tracked securely through Shopify Collabs. You will have access to a personal dashboard where you can monitor your clicks, sales, and earnings in real time.</p><p>Within Shopify Collabs, you can set up automatic payouts directly to your bank account or PayPal. A standard 30-day holding period applies to ensure orders are not refunded. Once this period has passed, payouts are processed twice per month, provided your balance exceeds $25.</p>"
-          }
-        },
         "accordion_item_1": {
           "type": "accordion_item",
           "settings": {
@@ -169,7 +162,6 @@
       "block_order": [
         "accordion_item_PTwnG4",
         "accordion_item_6n7PDU",
-        "accordion_item_iWFLNJ",
         "accordion_item_1",
         "accordion_item_j4XC86",
         "accordion_item_LFKXfx"
