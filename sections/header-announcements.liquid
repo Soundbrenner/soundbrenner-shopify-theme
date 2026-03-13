@@ -8,7 +8,7 @@
   assign sitewide_seasonal_discount_depth = settings.sitewide_seasonal_discount_depth | default: 48 | strip
   assign sitewide_affiliate_discount_depth = settings.sitewide_affiliate_discount_depth | default: 20 | strip
   assign affiliate_announcement_gradient_value = 'linear-gradient(90deg, #67E8F9 0%, #1E293B 33%, #1E293B 66%, #67E8F9 100%)'
-  assign affiliate_discount_cookie_duration_hours = 336
+  assign affiliate_discount_cookie_duration_hours = 720
 
   assign header_affiliate_metaobject = blank
   if request.page_type == 'page' and page != blank

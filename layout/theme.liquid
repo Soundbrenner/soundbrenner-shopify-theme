@@ -461,10 +461,10 @@
 
       [data-testid='POPUP'] .klaviyo-close-form {
         align-items: center !important;
-        background: transparent url('{{ 'icon-cancel.svg' | asset_url }}') center / var(--sb-klaviyo-popup-close-size, 20px) var(--sb-klaviyo-popup-close-size, 20px) no-repeat !important;
+        background: transparent !important;
         border: 0 !important;
         border-radius: 0 !important;
-        color: var(--sb-color-always-white) !important;
+        color: var(--sb-color-neutral-200) !important;
         cursor: pointer !important;
         display: inline-flex !important;
         height: var(--sb-klaviyo-popup-close-size, 20px) !important;
@@ -506,32 +506,51 @@
       }
 
       [data-testid='POPUP'] .klaviyo-close-form::before {
-        -webkit-mask-image: url('{{ 'icon-cancel.svg' | asset_url }}');
+        -webkit-mask-image: url('{{ 'icon-cancel-circle.svg' | asset_url }}');
         -webkit-mask-position: center;
         -webkit-mask-repeat: no-repeat;
         -webkit-mask-size: var(--sb-klaviyo-popup-close-size, 20px) var(--sb-klaviyo-popup-close-size, 20px);
-        background: var(--sb-color-always-white);
+        background: currentColor;
         content: '';
         display: block;
-        filter: drop-shadow(0 0 20px var(--sb-color-always-black));
         height: var(--sb-klaviyo-popup-close-size, 20px);
-        mask-image: url('{{ 'icon-cancel.svg' | asset_url }}');
+        left: 50%;
+        mask-image: url('{{ 'icon-cancel-circle.svg' | asset_url }}');
         mask-position: center;
         mask-repeat: no-repeat;
         mask-size: var(--sb-klaviyo-popup-close-size, 20px) var(--sb-klaviyo-popup-close-size, 20px);
         pointer-events: none;
-        transition:
-          background 160ms ease,
-          filter 160ms ease;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
         width: var(--sb-klaviyo-popup-close-size, 20px);
+        z-index: 1;
       }
 
-      :is([data-testid='POPUP'], [role='dialog'][aria-modal='true']).sb-klaviyo-popup--initial .klaviyo-close-form::before {
-        background: var(--sb-color-always-white);
-      }
-
-      :is([data-testid='POPUP'], [role='dialog'][aria-modal='true']).sb-klaviyo-popup--success .klaviyo-close-form::before {
+      [data-testid='POPUP'] .klaviyo-close-form::after {
         background: var(--sb-color-neutral-900);
+        border-radius: 999px;
+        content: '';
+        display: block;
+        height: calc(var(--sb-klaviyo-popup-close-size, 20px) - 2px);
+        left: 50%;
+        pointer-events: none;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: calc(var(--sb-klaviyo-popup-close-size, 20px) - 2px);
+        z-index: 0;
+      }
+
+      [data-testid='POPUP'] .klaviyo-close-form:focus-visible::after,
+      [data-testid='POPUP'] .klaviyo-close-form:active::after {
+        background: var(--sb-color-primary-500);
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        [data-testid='POPUP'] .klaviyo-close-form:hover::after {
+          background: var(--sb-color-primary-500);
+        }
       }
 
       :is([data-testid='POPUP'], [role='dialog'][aria-modal='true']) .klaviyo-close-form:focus-visible::before {
