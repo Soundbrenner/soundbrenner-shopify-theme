@@ -158,18 +158,18 @@
             "answer": "<p>We offer sponsored gear to select partners based on performance and audience fit. All affiliates usually start with a special discount on personal gear to get them started.</p>"
           }
         },
+        "accordion_item_6n7PDU": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "How do I get credit for sales?",
+            "answer": "<p>We make sure you receive credit for every sale you generate.</p><p>When someone clicks your referral link, they are automatically tracked for 30 days. This means that even if they don’t buy right away, any purchase they make within that period will still be attributed to you.</p><p>Your referral discount is also automatically applied to their cart, making it easy for customers to complete their purchase.</p>"
+          }
+        },
         "accordion_item_iWFLNJ": {
           "type": "accordion_item",
           "settings": {
             "question": "How are sales tracked and how do I get paid?",
             "answer": "<p>Sales are tracked securely through Shopify Collabs. You will have access to a personal dashboard where you can monitor your clicks, sales, and earnings in real time.</p><p>Within Shopify Collabs, you can set up automatic payouts directly to your bank account or PayPal. A standard 30-day holding period applies to ensure orders are not refunded. Once this period has passed, payouts are processed twice per month, provided your balance exceeds $25.</p>"
-          }
-        },
-        "accordion_item_6n7PDU": {
-          "type": "accordion_item",
-          "settings": {
-            "question": "How long does my cookie last?",
-            "answer": "<p>Referrals are tracked for 30 days. If a customer clicks your link and purchases within that window, you get the commission.</p>"
           }
         }
       },
@@ -179,8 +179,8 @@
         "accordion_item_ecWwGk",
         "accordion_item_j4XC86",
         "accordion_item_LFKXfx",
-        "accordion_item_iWFLNJ",
-        "accordion_item_6n7PDU"
+        "accordion_item_6n7PDU",
+        "accordion_item_iWFLNJ"
       ],
       "settings": {
         "use_product_metaobjects": false,
