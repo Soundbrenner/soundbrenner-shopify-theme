@@ -50,7 +50,7 @@
     align-items: flex-start;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 24px;
     max-width: 400px;
     text-align: left;
     width: 100%;
@@ -124,6 +124,7 @@
   }
 
   .sb-data-sharing-opt-out #pc--opt-out-email_input {
+    align-self: center;
     background: var(--sb-color-always-white) !important;
     border: 0 !important;
     border-radius: 999px !important;
@@ -133,10 +134,11 @@
     font-family: var(--font-primary--family) !important;
     font-size: var(--font-size-form-input) !important;
     font-weight: 400 !important;
-    height: var(--sb-space-48);
-    line-height: var(--sb-space-48);
+    height: 48px;
+    line-height: 48px;
     max-width: 400px;
     padding-inline: var(--sb-space-20);
+    text-align: center;
     width: min(100%, 400px);
     -webkit-appearance: none !important;
     appearance: none !important;
@@ -145,6 +147,7 @@
   .sb-data-sharing-opt-out #pc--opt-out-email_input::placeholder {
     color: var(--sb-color-neutral-800);
     opacity: 1;
+    text-align: center;
   }
 
   .sb-data-sharing-opt-out #pc--opt-out-email_input:focus,
@@ -204,7 +207,6 @@
   .sb-data-sharing-opt-out .pc--opt-out-form-message--success {
     align-items: center;
     color: var(--sb-color-primary-500) !important;
-    display: inline-flex !important;
     font-family: var(--font-primary--family) !important;
     font-size: var(--font-size-body) !important;
     font-weight: 700 !important;
@@ -217,7 +219,6 @@
   .sb-data-sharing-opt-out #pc--opt-out-error.pc--opt-out-form-message {
     align-items: center;
     color: var(--sb-color-red-500) !important;
-    display: inline-flex !important;
     font-family: var(--font-primary--family) !important;
     font-size: var(--font-size-body) !important;
     font-weight: 700 !important;

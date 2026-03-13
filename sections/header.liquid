@@ -573,11 +573,12 @@
             </span>
           </a>
         {% endif %}
-        <a
+        <button
+          type="button"
           class="header__icon-link header__icon-link--cart"
-          href="{{ routes.cart_url }}"
           data-header-cart-link
           data-header-cart-page="{% if request.page_type == 'cart' %}true{% else %}false{% endif %}"
+          aria-haspopup="dialog"
           aria-label="{{ 'cart.title' | t }}"
           aria-expanded="false"
           style="align-items: center; display: inline-flex; height: 20px; justify-content: center; min-height: 20px; min-width: 20px; width: 20px;"
@@ -588,7 +589,7 @@
           <span class="header__icon-asset" aria-hidden="true" style="align-items: center; display: inline-flex; height: 20px; justify-content: center; width: 20px;">
             {{ 'icon-primary-navigation-cart.svg' | inline_asset_content }}
           </span>
-        </a>
+        </button>
       </div>
     </div>
   </div>

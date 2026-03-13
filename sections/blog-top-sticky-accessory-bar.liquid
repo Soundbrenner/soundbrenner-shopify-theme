@@ -274,166 +274,6 @@
             {{ 'icon-chevron.svg' | inline_asset_content }}
           </span>
         </button>
-        <div class="menu-drawer-container sb-blog-overview__drawer-container" data-sb-blog-filter-drawer-container>
-          <div
-            id="SbBlogTopBarCategoriesPanel-{{ section.id }}"
-            class="menu-drawer sb-blog-overview__sticky-filter-panel sb-blog-overview__sticky-filter-panel--mobile"
-            data-sb-blog-filter-panel
-          >
-            <div class="sb-blog-overview__sticky-filter-panel-surface">
-              <div class="sb-blog-overview__sticky-filter-panel-inner sb-blog-overview__sticky-filter-panel-inner--mobile">
-                <div class="sb-blog-overview__sticky-filter-panel-header">
-                  <button
-                    type="button"
-                    class="menu-drawer__close-button sb-blog-overview__sticky-filter-close"
-                    data-sb-blog-filter-close
-                    aria-label="{{ 'sb.blog.close_categories' | t }}"
-                  >
-                    <span class="menu-drawer__close-icon sb-blog-overview__sticky-filter-close-icon" aria-hidden="true">
-                      {{ 'icon-cancel.svg' | inline_asset_content }}
-                    </span>
-                  </button>
-                  <p
-                    class="sb-blog-overview__sticky-filter-panel-title menu-drawer__animated-element font-callout weight-bold"
-                    style="--menu-drawer-animation-index: 1;"
-                  >
-                    {{ 'sb.blog.categories' | t }}
-                  </p>
-                </div>
-
-                <div class="sb-blog-overview__sticky-filter-panel-list">
-                  {% assign mobile_filter_animation_index = 2 %}
-                  <a
-                    class="sb-blog-overview__sticky-filter-option menu-drawer__animated-element font-caption{% if all_filter_is_active %} is-active{% endif %}"
-                    href="{{ blog.url }}"
-                    style="--menu-drawer-animation-index: {{ mobile_filter_animation_index }};"
-                  >
-                    {{ 'sb.blog.all' | t }}
-                  </a>
-                  {% assign mobile_filter_animation_index = mobile_filter_animation_index | plus: 1 %}
-                  <a
-                    class="sb-blog-overview__sticky-filter-option menu-drawer__animated-element font-caption{% if active_tag_handle == 'company-news' %} is-active{% endif %}"
-                    href="{{ blog.url }}/tagged/company-news"
-                    style="--menu-drawer-animation-index: {{ mobile_filter_animation_index }};"
-                  >
-                    {{ 'sb.blog.company_news' | t }}
-                  </a>
-                  {% assign mobile_filter_animation_index = mobile_filter_animation_index | plus: 1 %}
-                  <a
-                    class="sb-blog-overview__sticky-filter-option menu-drawer__animated-element font-caption{% if active_tag_handle == 'music-insights' %} is-active{% endif %}"
-                    href="{{ blog.url }}/tagged/music-insights"
-                    style="--menu-drawer-animation-index: {{ mobile_filter_animation_index }};"
-                  >
-                    {{ 'sb.blog.music_insights' | t }}
-                  </a>
-                  {% assign mobile_filter_animation_index = mobile_filter_animation_index | plus: 1 %}
-                  <a
-                    class="sb-blog-overview__sticky-filter-option menu-drawer__animated-element font-caption{% if active_tag_handle == 'product-insights' or active_tag_handle == 'product-tips' %} is-active{% endif %}"
-                    href="{{ blog.url }}/tagged/product-tips"
-                    style="--menu-drawer-animation-index: {{ mobile_filter_animation_index }};"
-                  >
-                    {{ 'sb.blog.product_tips' | t }}
-                  </a>
-                  {% assign mobile_filter_animation_index = mobile_filter_animation_index | plus: 1 %}
-                  <a
-                    class="sb-blog-overview__sticky-filter-option menu-drawer__animated-element font-caption{% if active_tag_handle == 'gift-guides' %} is-active{% endif %}"
-                    href="{{ blog.url }}/tagged/gift-guides"
-                    style="--menu-drawer-animation-index: {{ mobile_filter_animation_index }};"
-                  >
-                    {{ 'sb.blog.gift_guides' | t }}
-                  </a>
-                  {% assign mobile_filter_animation_index = mobile_filter_animation_index | plus: 1 %}
-
-                  {% if has_product_tag_filters %}
-                    <span
-                      class="sb-blog-overview__sticky-filter-option sb-blog-overview__sticky-filter-option--group menu-drawer__animated-element font-caption"
-                      style="--menu-drawer-animation-index: {{ mobile_filter_animation_index }};"
-                    >
-                      {{ 'sb.blog.by_product' | t }}
-                    </span>
-                    {% assign mobile_filter_animation_index = mobile_filter_animation_index | plus: 1 %}
-                    <div class="sb-blog-overview__sticky-filter-option-children">
-                      {% for tag in blog.all_tags %}
-                        {% liquid
-                          assign tag_value = tag | strip
-                          assign tag_value_handle = tag_value | handleize
-                          assign tag_value_downcase = tag_value | downcase
-                          assign tag_prefix = tag_value_downcase | slice: 0, 10
-                          assign option_label = ''
-
-                          if tag_prefix == 'by_product'
-                            assign option_label = tag_value | slice: 10, tag_value.size
-                            assign leading_char = option_label | slice: 0, 1
-                            if leading_char == '_' or leading_char == '-' or leading_char == ':' or leading_char == '|'
-                              assign option_label = option_label | slice: 1, option_label.size
-                            endif
-                            assign option_label = option_label | strip
-                            if option_label == blank
-                              assign option_label = tag_value
-                            endif
-                          endif
-                        %}
-                        {% if option_label != blank %}
-                          <a
-                            class="sb-blog-overview__sticky-filter-option menu-drawer__animated-element font-caption{% if active_tag_handle == tag_value_handle %} is-active{% endif %}"
-                            href="{{ blog.url }}/tagged/{{ tag_value_handle }}"
-                            style="--menu-drawer-animation-index: {{ mobile_filter_animation_index }};"
-                          >
-                            {{ option_label | escape }}
-                          </a>
-                          {% assign mobile_filter_animation_index = mobile_filter_animation_index | plus: 1 %}
-                        {% endif %}
-                      {% endfor %}
-                    </div>
-                  {% endif %}
-
-                  {% if has_instrument_tag_filters %}
-                    <span
-                      class="sb-blog-overview__sticky-filter-option sb-blog-overview__sticky-filter-option--group menu-drawer__animated-element font-caption"
-                      style="--menu-drawer-animation-index: {{ mobile_filter_animation_index }};"
-                    >
-                      {{ 'sb.blog.by_instrument' | t }}
-                    </span>
-                    {% assign mobile_filter_animation_index = mobile_filter_animation_index | plus: 1 %}
-                    <div class="sb-blog-overview__sticky-filter-option-children">
-                      {% for tag in blog.all_tags %}
-                        {% liquid
-                          assign tag_value = tag | strip
-                          assign tag_value_handle = tag_value | handleize
-                          assign tag_value_downcase = tag_value | downcase
-                          assign tag_prefix = tag_value_downcase | slice: 0, 13
-                          assign option_label = ''
-
-                          if tag_prefix == 'by_instrument'
-                            assign option_label = tag_value | slice: 13, tag_value.size
-                            assign leading_char = option_label | slice: 0, 1
-                            if leading_char == '_' or leading_char == '-' or leading_char == ':' or leading_char == '|'
-                              assign option_label = option_label | slice: 1, option_label.size
-                            endif
-                            assign option_label = option_label | strip
-                            if option_label == blank
-                              assign option_label = tag_value
-                            endif
-                          endif
-                        %}
-                        {% if option_label != blank %}
-                          <a
-                            class="sb-blog-overview__sticky-filter-option menu-drawer__animated-element font-caption{% if active_tag_handle == tag_value_handle %} is-active{% endif %}"
-                            href="{{ blog.url }}/tagged/{{ tag_value_handle }}"
-                            style="--menu-drawer-animation-index: {{ mobile_filter_animation_index }};"
-                          >
-                            {{ option_label | escape }}
-                          </a>
-                          {% assign mobile_filter_animation_index = mobile_filter_animation_index | plus: 1 %}
-                        {% endif %}
-                      {% endfor %}
-                    </div>
-                  {% endif %}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
       {%
         render 'radiant-button',
@@ -445,7 +285,173 @@
     </div>
   </div>
 
-  <div class="sb-blog-overview__interaction-overlay" data-sb-blog-filter-overlay aria-hidden="true"></div>
+  <div class="menu-drawer-container sb-blog-overview__drawer-container" data-sb-blog-filter-drawer-container>
+    <div
+      id="SbBlogTopBarCategoriesPanel-{{ section.id }}"
+      class="menu-drawer sb-blog-overview__sticky-filter-panel sb-blog-overview__sticky-filter-panel--mobile"
+      data-sb-blog-filter-panel
+    >
+      <div class="sb-blog-overview__sticky-filter-panel-surface">
+        <div class="sb-blog-overview__sticky-filter-panel-inner sb-blog-overview__sticky-filter-panel-inner--mobile">
+          <div class="sb-blog-overview__sticky-filter-panel-header">
+            <button
+              type="button"
+              class="menu-drawer__close-button sb-blog-overview__sticky-filter-close"
+              data-sb-blog-filter-close
+              aria-label="{{ 'sb.blog.close_categories' | t }}"
+            >
+              <span class="menu-drawer__close-icon sb-blog-overview__sticky-filter-close-icon" aria-hidden="true">
+                {{ 'icon-cancel.svg' | inline_asset_content }}
+              </span>
+            </button>
+            <p
+              class="sb-blog-overview__sticky-filter-panel-title menu-drawer__animated-element font-callout weight-bold"
+              style="--menu-drawer-animation-index: 1;"
+            >
+              {{ 'sb.blog.categories' | t }}
+            </p>
+          </div>
+
+          <div class="sb-blog-overview__sticky-filter-panel-list">
+            {% assign mobile_filter_animation_index = 2 %}
+            <a
+              class="sb-blog-overview__sticky-filter-option menu-drawer__animated-element font-caption{% if all_filter_is_active %} is-active{% endif %}"
+              href="{{ blog.url }}"
+              style="--menu-drawer-animation-index: {{ mobile_filter_animation_index }};"
+            >
+              {{ 'sb.blog.all' | t }}
+            </a>
+            {% assign mobile_filter_animation_index = mobile_filter_animation_index | plus: 1 %}
+            <a
+              class="sb-blog-overview__sticky-filter-option menu-drawer__animated-element font-caption{% if active_tag_handle == 'company-news' %} is-active{% endif %}"
+              href="{{ blog.url }}/tagged/company-news"
+              style="--menu-drawer-animation-index: {{ mobile_filter_animation_index }};"
+            >
+              {{ 'sb.blog.company_news' | t }}
+            </a>
+            {% assign mobile_filter_animation_index = mobile_filter_animation_index | plus: 1 %}
+            <a
+              class="sb-blog-overview__sticky-filter-option menu-drawer__animated-element font-caption{% if active_tag_handle == 'music-insights' %} is-active{% endif %}"
+              href="{{ blog.url }}/tagged/music-insights"
+              style="--menu-drawer-animation-index: {{ mobile_filter_animation_index }};"
+            >
+              {{ 'sb.blog.music_insights' | t }}
+            </a>
+            {% assign mobile_filter_animation_index = mobile_filter_animation_index | plus: 1 %}
+            <a
+              class="sb-blog-overview__sticky-filter-option menu-drawer__animated-element font-caption{% if active_tag_handle == 'product-insights' or active_tag_handle == 'product-tips' %} is-active{% endif %}"
+              href="{{ blog.url }}/tagged/product-tips"
+              style="--menu-drawer-animation-index: {{ mobile_filter_animation_index }};"
+            >
+              {{ 'sb.blog.product_tips' | t }}
+            </a>
+            {% assign mobile_filter_animation_index = mobile_filter_animation_index | plus: 1 %}
+            <a
+              class="sb-blog-overview__sticky-filter-option menu-drawer__animated-element font-caption{% if active_tag_handle == 'gift-guides' %} is-active{% endif %}"
+              href="{{ blog.url }}/tagged/gift-guides"
+              style="--menu-drawer-animation-index: {{ mobile_filter_animation_index }};"
+            >
+              {{ 'sb.blog.gift_guides' | t }}
+            </a>
+            {% assign mobile_filter_animation_index = mobile_filter_animation_index | plus: 1 %}
+
+            {% if has_product_tag_filters %}
+              <span
+                class="sb-blog-overview__sticky-filter-option sb-blog-overview__sticky-filter-option--group menu-drawer__animated-element font-caption"
+                style="--menu-drawer-animation-index: {{ mobile_filter_animation_index }};"
+              >
+                {{ 'sb.blog.by_product' | t }}
+              </span>
+              {% assign mobile_filter_animation_index = mobile_filter_animation_index | plus: 1 %}
+              <div class="sb-blog-overview__sticky-filter-option-children">
+                {% for tag in blog.all_tags %}
+                  {% liquid
+                    assign tag_value = tag | strip
+                    assign tag_value_handle = tag_value | handleize
+                    assign tag_value_downcase = tag_value | downcase
+                    assign tag_prefix = tag_value_downcase | slice: 0, 10
+                    assign option_label = ''
+
+                    if tag_prefix == 'by_product'
+                      assign option_label = tag_value | slice: 10, tag_value.size
+                      assign leading_char = option_label | slice: 0, 1
+                      if leading_char == '_' or leading_char == '-' or leading_char == ':' or leading_char == '|'
+                        assign option_label = option_label | slice: 1, option_label.size
+                      endif
+                      assign option_label = option_label | strip
+                      if option_label == blank
+                        assign option_label = tag_value
+                      endif
+                    endif
+                  %}
+                  {% if option_label != blank %}
+                    <a
+                      class="sb-blog-overview__sticky-filter-option menu-drawer__animated-element font-caption{% if active_tag_handle == tag_value_handle %} is-active{% endif %}"
+                      href="{{ blog.url }}/tagged/{{ tag_value_handle }}"
+                      style="--menu-drawer-animation-index: {{ mobile_filter_animation_index }};"
+                    >
+                      {{ option_label | escape }}
+                    </a>
+                    {% assign mobile_filter_animation_index = mobile_filter_animation_index | plus: 1 %}
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            {% if has_instrument_tag_filters %}
+              <span
+                class="sb-blog-overview__sticky-filter-option sb-blog-overview__sticky-filter-option--group menu-drawer__animated-element font-caption"
+                style="--menu-drawer-animation-index: {{ mobile_filter_animation_index }};"
+              >
+                {{ 'sb.blog.by_instrument' | t }}
+              </span>
+              {% assign mobile_filter_animation_index = mobile_filter_animation_index | plus: 1 %}
+              <div class="sb-blog-overview__sticky-filter-option-children">
+                {% for tag in blog.all_tags %}
+                  {% liquid
+                    assign tag_value = tag | strip
+                    assign tag_value_handle = tag_value | handleize
+                    assign tag_value_downcase = tag_value | downcase
+                    assign tag_prefix = tag_value_downcase | slice: 0, 13
+                    assign option_label = ''
+
+                    if tag_prefix == 'by_instrument'
+                      assign option_label = tag_value | slice: 13, tag_value.size
+                      assign leading_char = option_label | slice: 0, 1
+                      if leading_char == '_' or leading_char == '-' or leading_char == ':' or leading_char == '|'
+                        assign option_label = option_label | slice: 1, option_label.size
+                      endif
+                      assign option_label = option_label | strip
+                      if option_label == blank
+                        assign option_label = tag_value
+                      endif
+                    endif
+                  %}
+                  {% if option_label != blank %}
+                    <a
+                      class="sb-blog-overview__sticky-filter-option menu-drawer__animated-element font-caption{% if active_tag_handle == tag_value_handle %} is-active{% endif %}"
+                      href="{{ blog.url }}/tagged/{{ tag_value_handle }}"
+                      style="--menu-drawer-animation-index: {{ mobile_filter_animation_index }};"
+                    >
+                      {{ option_label | escape }}
+                    </a>
+                    {% assign mobile_filter_animation_index = mobile_filter_animation_index | plus: 1 %}
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-drawer__backdrop menu-drawer__backdrop--local" data-sb-blog-filter-mobile-backdrop aria-hidden="true"></div>
+  </div>
+
+  <div
+    class="menu-drawer__backdrop menu-drawer__backdrop--local sb-blog-overview__interaction-overlay"
+    data-sb-blog-filter-overlay
+    aria-hidden="true"
+  ></div>
 
 </section>
 
@@ -470,6 +476,9 @@
   }
 
   .sb-blog-top-sticky-accessory-bar {
+    --sb-drawer-animation-speed: 320ms;
+    --sb-drawer-overlay-background: var(--sb-color-always-black-25);
+    --sb-drawer-overlay-filter: brightness(0.75);
     --sb-menu-unroll-duration: 420ms;
     --sb-menu-unroll-ease: cubic-bezier(0.22, 1, 0.36, 1);
     --sb-menu-surface-shadow: 0 var(--sb-space-48) var(--sb-space-48) 0 var(--sb-color-always-black-25);
@@ -481,12 +490,6 @@
   }
 
   .sb-blog-overview__interaction-overlay {
-    background: var(--sb-color-always-black-25);
-    inset: 0;
-    opacity: 0;
-    pointer-events: none;
-    position: fixed;
-    transition: opacity 180ms ease;
     z-index: 0;
   }
 
@@ -747,10 +750,13 @@
       width: 100%;
     }
 
-    .sb-blog-overview__sticky-nav-wrap--mobile,
     .sb-blog-overview__drawer-container {
       position: relative;
       z-index: 1;
+    }
+
+    .sb-blog-overview__interaction-overlay {
+      display: none;
     }
 
     .sb-blog-overview__sticky-nav--mobile .sb-blog-overview__sticky-dropdown {
@@ -907,12 +913,31 @@
       blogDrawerOpenFrames.delete(drawerContainer);
     };
 
+    const getDropdownPanel = (dropdown) => {
+      if (!dropdown) return null;
+      const trigger = dropdown.querySelector('[data-sb-blog-filter-trigger]');
+      const panelId = trigger ? trigger.getAttribute('aria-controls') : '';
+      if (panelId) {
+        return root.querySelector(`#${CSS.escape(panelId)}`) || document.getElementById(panelId);
+      }
+      return dropdown.querySelector('[data-sb-blog-filter-panel]');
+    };
+
+    const getDropdownDrawerContainer = (dropdown) => {
+      const panel = getDropdownPanel(dropdown);
+      if (panel) {
+        const drawerContainer = panel.closest('[data-sb-blog-filter-drawer-container]');
+        if (drawerContainer) return drawerContainer;
+      }
+      return dropdown ? dropdown.querySelector('[data-sb-blog-filter-drawer-container]') : null;
+    };
+
     const syncDesktopBlogFilterLayout = () => {
       const isMobileViewport = blogFilterMobileQuery.matches;
 
       if (isMobileViewport || !desktopStickyNavWrap || !desktopStickyNav) {
         blogFilterDropdowns.forEach((dropdown) => {
-          const panel = dropdown.querySelector('[data-sb-blog-filter-panel]');
+          const panel = getDropdownPanel(dropdown);
           if (!panel) return;
           panel.style.removeProperty('top');
         });
@@ -922,7 +947,7 @@
       const stickyNavBottom = Math.min(window.innerHeight, Math.max(0, desktopStickyNav.getBoundingClientRect().bottom));
 
       blogFilterDropdowns.forEach((dropdown) => {
-        const panel = dropdown.querySelector('[data-sb-blog-filter-panel]');
+        const panel = getDropdownPanel(dropdown);
         if (!panel || panel.classList.contains('sb-blog-overview__sticky-filter-panel--mobile')) return;
 
         const dropdownRect = dropdown.getBoundingClientRect();
@@ -935,8 +960,8 @@
       if (!dropdown || dropdown.getAttribute('data-open') !== 'true') return;
 
       const trigger = dropdown.querySelector('[data-sb-blog-filter-trigger]');
-      const panel = dropdown.querySelector('[data-sb-blog-filter-panel]');
-      const drawerContainer = dropdown.querySelector('[data-sb-blog-filter-drawer-container]');
+      const panel = getDropdownPanel(dropdown);
+      const drawerContainer = getDropdownDrawerContainer(dropdown);
       if (!trigger || !panel) return;
 
       trigger.setAttribute('aria-expanded', 'false');
@@ -986,7 +1011,7 @@
         section.style.zIndex = hasOpenDropdown ? '110' : '';
       }
       if (interactionOverlay) {
-        interactionOverlay.classList.toggle('is-active', hasOpenDropdown);
+        interactionOverlay.classList.toggle('is-active', hasOpenDropdown && !blogFilterMobileQuery.matches);
       }
     };
 
@@ -994,8 +1019,8 @@
       if (!dropdown || dropdown.getAttribute('data-open') === 'true') return;
 
       const trigger = dropdown.querySelector('[data-sb-blog-filter-trigger]');
-      const panel = dropdown.querySelector('[data-sb-blog-filter-panel]');
-      const drawerContainer = dropdown.querySelector('[data-sb-blog-filter-drawer-container]');
+      const panel = getDropdownPanel(dropdown);
+      const drawerContainer = getDropdownDrawerContainer(dropdown);
       if (!trigger || !panel) return;
 
       closeAllBlogFilterDropdowns({ except: dropdown });
@@ -1023,7 +1048,11 @@
     const handleBlogFilterDropdownDocumentClick = (event) => {
       const target = event.target;
       if (!(target instanceof Node)) return;
-      if (blogFilterDropdowns.some((dropdown) => dropdown.contains(target))) return;
+      if (blogFilterDropdowns.some((dropdown) => {
+        if (dropdown.contains(target)) return true;
+        const drawerContainer = getDropdownDrawerContainer(dropdown);
+        return drawerContainer ? drawerContainer.contains(target) : false;
+      })) return;
       closeAllBlogFilterDropdowns();
       updateBlogFilterBackdropState();
     };
@@ -1038,8 +1067,8 @@
 
     blogFilterDropdowns.forEach((dropdown) => {
       const trigger = dropdown.querySelector('[data-sb-blog-filter-trigger]');
-      const panel = dropdown.querySelector('[data-sb-blog-filter-panel]');
-      const drawerContainer = dropdown.querySelector('[data-sb-blog-filter-drawer-container]');
+      const panel = getDropdownPanel(dropdown);
+      const drawerContainer = getDropdownDrawerContainer(dropdown);
       if (!trigger || !panel) return;
       const closeButtons = Array.from(panel.querySelectorAll('[data-sb-blog-filter-close]'));
 
@@ -1078,6 +1107,12 @@
     document.addEventListener('sb:blog-filter:request-close', () => {
       closeAllBlogFilterDropdowns();
       updateBlogFilterBackdropState();
+    });
+    root.querySelectorAll('[data-sb-blog-filter-mobile-backdrop]').forEach((backdrop) => {
+      backdrop.addEventListener('click', () => {
+        closeAllBlogFilterDropdowns();
+        updateBlogFilterBackdropState();
+      });
     });
     if (interactionOverlay) {
       interactionOverlay.addEventListener('click', () => {
