@@ -12,8 +12,9 @@
     "hero": {
       "type": "hero-card",
       "settings": {
-        "use_resource_title_description": true,
         "use_seasonal_hero_card": false,
+        "use_resource_title_description": true,
+        "use_product_page_metaobjects": false,
         "background_image_desktop": "shopify://shop_images/Property_1_Content_creators_a0554ba8-e261-4609-a0ca-f5f19f932481.jpg",
         "background_image_mobile": "shopify://shop_images/Property_1_Content_creators_mobile.jpg",
         "kicker": "Content creators and artists",
@@ -77,6 +78,7 @@
         "item_1"
       ],
       "settings": {
+        "use_product_metaobjects": false,
         "title": "Getting started is simple"
       }
     },
@@ -107,6 +109,7 @@
     "large_feature": {
       "type": "large-feature",
       "settings": {
+        "use_product_metaobjects": false,
         "media_position": "left",
         "media": "shopify://shop_images/Property_1_Content_creators_and_artists.jpg",
         "show_icon_and_kicker": false,
@@ -158,8 +161,8 @@
         "accordion_item_iWFLNJ": {
           "type": "accordion_item",
           "settings": {
-            "question": "How do I get paid?",
-            "answer": "<p>We use Shopify Collabs to manage payments. You can set up automatic payouts directly to your bank account or PayPal.</p>"
+            "question": "How are sales tracked and how do I get paid?",
+            "answer": "<p>Tracking is handled securely through Shopify Collabs. You will have a personal dashboard to view your clicks, sales, and earnings in real-time.<br/><br/>In Shopify Collabs, you can set up automatic payouts directly to your bank account or PayPal.</p>"
           }
         },
         "accordion_item_yEjtWF": {
@@ -167,13 +170,6 @@
           "settings": {
             "question": "When do I receive my money?",
             "answer": "<p>There is a standard holding period (30 days) to ensure the order isn't refunded. Once cleared, payouts are processed automatically twice a month, provided your balance exceeds $25.</p>"
-          }
-        },
-        "accordion_item_UcnyHj": {
-          "type": "accordion_item",
-          "settings": {
-            "question": "How are sales tracked?",
-            "answer": "<p>Tracking is handled securely through Shopify Collabs. You will have a personal dashboard to view your clicks, sales, and earnings in real-time.</p>"
           }
         },
         "accordion_item_6n7PDU": {
@@ -192,10 +188,10 @@
         "accordion_item_LFKXfx",
         "accordion_item_iWFLNJ",
         "accordion_item_yEjtWF",
-        "accordion_item_UcnyHj",
         "accordion_item_6n7PDU"
       ],
       "settings": {
+        "use_product_metaobjects": false,
         "use_custom_title": false,
         "custom_title": "Frequently asked questions",
         "show_subtitle": true
