@@ -90,7 +90,7 @@
 
       {% for block in section.blocks %}
         {% if block.type == 'subtitle' and block.settings.content != blank %}
-          <div class="sb-contact-form__subtitle-block font-body weight-regular rte sb-flow-24" {{ block.shopify_attributes }}>
+          <div class="sb-contact-form__subtitle-block font-body weight-regular rte" {{ block.shopify_attributes }}>
             {{ block.settings.content }}
           </div>
         {% endif %}
@@ -107,7 +107,7 @@
   .sb-contact-form__form {
     display: flex;
     flex-direction: column;
-    gap: var(--sb-space-20);
+    gap: 24px;
     width: 100%;
   }
 
@@ -118,13 +118,21 @@
 
   .sb-contact-form__success-title {
     color: var(--sb-color-neutral-900);
-    margin: 0 0 calc(48px - var(--sb-space-20));
+    margin: 0 0 48px;
   }
 
   .sb-contact-form__subtitle-block {
     color: var(--sb-color-neutral-800);
     grid-column: 1 / -1;
     margin: 0;
+  }
+
+  .sb-contact-form__subtitle-block > * {
+    margin: 0;
+  }
+
+  .sb-contact-form__subtitle-block > * + * {
+    margin-top: 24px;
   }
 
   .sb-contact-form__subtitle-block a,
@@ -149,11 +157,11 @@
   .sb-contact-form__grid {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--sb-space-20);
+    gap: 24px;
   }
 
   .sb-contact-form__field {
-    flex: 1 1 calc((100% - var(--sb-space-20)) / 2);
+    flex: 1 1 calc((100% - 24px) / 2);
     min-width: 0;
   }
 
@@ -168,6 +176,7 @@
     border: 0;
     box-shadow: 0 0 10px 0 var(--sb-color-always-black-12);
     color: var(--sb-color-always-black);
+    display: block;
     font-family: var(--sb-font-primary);
     font-size: var(--font-size-form-input);
     font-weight: 400;
