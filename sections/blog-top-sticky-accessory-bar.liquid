@@ -1048,6 +1048,17 @@
     const handleBlogFilterDropdownDocumentClick = (event) => {
       const target = event.target;
       if (!(target instanceof Node)) return;
+      const targetElement = target instanceof Element ? target : target.parentElement;
+      if (
+        targetElement
+        && (
+          targetElement.closest('[data-sb-blog-filter-panel]')
+          || targetElement.closest('[data-sb-blog-filter-drawer-container]')
+          || targetElement.closest('[data-sb-blog-filter-mobile-backdrop]')
+        )
+      ) {
+        return;
+      }
       if (blogFilterDropdowns.some((dropdown) => {
         if (dropdown.contains(target)) return true;
         const drawerContainer = getDropdownDrawerContainer(dropdown);
