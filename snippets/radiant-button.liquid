@@ -3,6 +3,7 @@
 {% assign button_html_type = button_type | default: 'button' %}
 {% assign button_link = link %}
 {% assign button_attributes = attributes %}
+{% assign button_open_in_new_tab = open_in_new_tab | default: false %}
 
 {% liquid
   if button_link != blank
@@ -56,7 +57,11 @@
 {% endcapture %}
 
 {% if button_link != blank %}
-  <a class="{{ button_classes | strip }}" href="{{ button_link }}" {% if button_attributes != blank %}{{ button_attributes }}{% endif %}>
+  {% capture button_link_attributes -%}
+    {%- if button_open_in_new_tab -%}target="_blank" rel="noopener noreferrer" {%- endif -%}
+    {%- if button_attributes != blank -%}{{ button_attributes }}{%- endif -%}
+  {%- endcapture %}
+  <a class="{{ button_classes | strip }}" href="{{ button_link }}" {% if button_link_attributes != blank %}{{ button_link_attributes | strip }}{% endif %}>
     {% if button_icon_position == 'leading' %}
       {{ button_icon }}
     {% endif %}

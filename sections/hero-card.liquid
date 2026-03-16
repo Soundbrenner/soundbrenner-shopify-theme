@@ -185,7 +185,6 @@
 {% assign hero_card_show_app_download_google_play = false %}
 {% assign hero_card_show_app_download_china = false %}
 {% assign hero_card_show_app_downloads = false %}
-{% assign hero_card_button_attributes = '' %}
 {% if hero_card_product_mode == false and hero_card_use_seasonal == false and hero_card_use_resource_copy == false %}
   {% assign hero_card_app_download_mode = true %}
   {% assign hero_card_show_app_download_qr = section.settings.show_app_download_qr %}
@@ -195,9 +194,6 @@
   {% if hero_card_show_app_download_qr or hero_card_show_app_download_app_store or hero_card_show_app_download_google_play or hero_card_show_app_download_china %}
     {% assign hero_card_show_app_downloads = true %}
   {% endif %}
-{% endif %}
-{% if hero_card_product_mode == false and section.settings.button_open_in_new_tab and hero_card_button_link != blank %}
-  {% assign hero_card_button_attributes = 'target="_blank" rel="noopener noreferrer"' %}
 {% endif %}
 
 {% if hero_card_hide_section %}
@@ -393,7 +389,7 @@
           {% render 'radiant-button',
             label: hero_card_button_label,
             link: hero_card_button_link,
-            attributes: hero_card_button_attributes,
+            open_in_new_tab: section.settings.button_open_in_new_tab,
             size: section.settings.button_size,
             icon_position: section.settings.icon_position,
             extra_class: 'sb-framing-card__button'
