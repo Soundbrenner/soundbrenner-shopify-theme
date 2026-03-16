@@ -13,102 +13,104 @@
         <p class="sb-contact-form__status font-caption weight-regular">{{ form.errors | default_errors }}</p>
       {% endif %}
 
-      <div class="sb-contact-form__grid">
+      <div class="sb-contact-form__content">
+        <div class="sb-contact-form__grid">
+          {% for block in section.blocks %}
+            {% assign field_id = 'ContactFormField-' | append: section.id | append: '-' | append: block.id %}
+
+            {% case block.type %}
+              {% when 'name_field' %}
+                <div class="sb-contact-form__field" {{ block.shopify_attributes }}>
+                  <input
+                    class="font-form-input weight-regular"
+                    id="{{ field_id }}"
+                    type="text"
+                    name="contact[name]"
+                    value="{{ form.name }}"
+                    autocomplete="name"
+                    placeholder="{{ 'sb.contact.full_name' | t }}"
+                    required
+                  >
+                </div>
+
+              {% when 'email_field' %}
+                <div class="sb-contact-form__field" {{ block.shopify_attributes }}>
+                  <input
+                    class="font-form-input weight-regular"
+                    id="{{ field_id }}"
+                    type="email"
+                    name="contact[email]"
+                    value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                    autocomplete="email"
+                    spellcheck="false"
+                    autocapitalize="off"
+                    placeholder="{{ 'sb.contact.email' | t }}"
+                    required
+                  >
+                </div>
+
+              {% when 'open_text_50' %}
+                {% assign key = block.settings.label | handleize %}
+                {% if key == blank %}{% assign key = block.id %}{% endif %}
+                <div class="sb-contact-form__field" {{ block.shopify_attributes }}>
+                  <input
+                    class="font-form-input weight-regular"
+                    id="{{ field_id }}"
+                    type="text"
+                    name="contact[{{ key }}]"
+                    value=""
+                    placeholder="{{ block.settings.label }}"
+                    {% if block.settings.required %}required{% endif %}
+                  >
+                </div>
+
+              {% when 'open_text_100' %}
+                <div class="sb-contact-form__field sb-contact-form__field--full" {{ block.shopify_attributes }}>
+                  <textarea
+                    class="font-form-input weight-regular"
+                    id="{{ field_id }}"
+                    name="contact[body]"
+                    rows="6"
+                    placeholder="{{ block.settings.label }}"
+                    {% if block.settings.required %}required{% endif %}
+                  >{{ form.body }}</textarea>
+                </div>
+            {% endcase %}
+          {% endfor %}
+        </div>
+
+        <div class="sb-contact-form__submit-row">
+          {% render 'radiant-button',
+            label: contact_send_label,
+            size: 'large',
+            icon_position: 'trailing',
+            button_type: 'submit',
+            extra_class: 'sb-contact-form__submit'
+          %}
+        </div>
+
         {% for block in section.blocks %}
-          {% assign field_id = 'ContactFormField-' | append: section.id | append: '-' | append: block.id %}
-
-          {% case block.type %}
-            {% when 'name_field' %}
-              <div class="sb-contact-form__field" {{ block.shopify_attributes }}>
-                <input
-                  class="font-form-input weight-regular"
-                  id="{{ field_id }}"
-                  type="text"
-                  name="contact[name]"
-                  value="{{ form.name }}"
-                  autocomplete="name"
-                  placeholder="{{ 'sb.contact.full_name' | t }}"
-                  required
-                >
-              </div>
-
-            {% when 'email_field' %}
-              <div class="sb-contact-form__field" {{ block.shopify_attributes }}>
-                <input
-                  class="font-form-input weight-regular"
-                  id="{{ field_id }}"
-                  type="email"
-                  name="contact[email]"
-                  value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
-                  autocomplete="email"
-                  spellcheck="false"
-                  autocapitalize="off"
-                  placeholder="{{ 'sb.contact.email' | t }}"
-                  required
-                >
-              </div>
-
-            {% when 'open_text_50' %}
-              {% assign key = block.settings.label | handleize %}
-              {% if key == blank %}{% assign key = block.id %}{% endif %}
-              <div class="sb-contact-form__field" {{ block.shopify_attributes }}>
-                <input
-                  class="font-form-input weight-regular"
-                  id="{{ field_id }}"
-                  type="text"
-                  name="contact[{{ key }}]"
-                  value=""
-                  placeholder="{{ block.settings.label }}"
-                  {% if block.settings.required %}required{% endif %}
-                >
-              </div>
-
-            {% when 'open_text_100' %}
-              <div class="sb-contact-form__field sb-contact-form__field--full" {{ block.shopify_attributes }}>
-                <textarea
-                  class="font-form-input weight-regular"
-                  id="{{ field_id }}"
-                  name="contact[body]"
-                  rows="6"
-                  placeholder="{{ block.settings.label }}"
-                  {% if block.settings.required %}required{% endif %}
-                >{{ form.body }}</textarea>
-              </div>
-          {% endcase %}
+          {% if block.type == 'subtitle' and block.settings.content != blank %}
+            <div class="sb-contact-form__subtitle-block font-body weight-regular rte" {{ block.shopify_attributes }}>
+              {{ block.settings.content }}
+            </div>
+          {% endif %}
         {% endfor %}
       </div>
-
-      <div class="sb-contact-form__submit-row">
-        {% render 'radiant-button',
-          label: contact_send_label,
-          size: 'large',
-          icon_position: 'trailing',
-          button_type: 'submit',
-          extra_class: 'sb-contact-form__submit'
-        %}
-      </div>
-
-      {% for block in section.blocks %}
-        {% if block.type == 'subtitle' and block.settings.content != blank %}
-          <div class="sb-contact-form__subtitle-block font-body weight-regular rte" {{ block.shopify_attributes }}>
-            {{ block.settings.content }}
-          </div>
-        {% endif %}
-      {% endfor %}
     {% endform %}
   </div>
 </section>
 
 {% stylesheet %}
-  .shopify-section[id*='template--']:has(> .sb-contact-form .sb-contact-form__success-title) {
-    margin-top: 0 !important;
-  }
-
   .sb-contact-form__inner {
     width: 100%;
   }
 
   .sb-contact-form__form {
+    width: 100%;
+  }
+
+  .sb-contact-form__content {
     display: flex;
     flex-direction: column;
     gap: 24px;
