@@ -130,6 +130,29 @@
         "show_app_download_china": false
       }
     },
+    "hero_card_Dzed3m": {
+      "type": "hero-card",
+      "name": "Hero card",
+      "settings": {
+        "use_seasonal_hero_card": false,
+        "use_resource_title_description": false,
+        "use_product_page_metaobjects": false,
+        "background_image_desktop": "shopify://shop_images/Hero_card_Property_1_Free_online_metronome_desktop.jpg",
+        "background_image_mobile": "shopify://shop_images/Hero_card_Property_1_Free_online_metronome_mobile.jpg",
+        "kicker": "Free online metronome",
+        "headline": "A metronome in your browser.\nInstant. Simple. Free.",
+        "subheadline": "",
+        "show_button": true,
+        "button_label": "Open metronome",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": "https://metronome.soundbrenner.com",
+        "show_app_download_qr": false,
+        "show_app_download_app_store": false,
+        "show_app_download_google_play": false,
+        "show_app_download_china": false
+      }
+    },
     "expert_testimonials_AkfimQ": {
       "type": "expert-testimonials",
       "blocks": {
@@ -327,6 +350,7 @@
       ],
       "name": "Accordion",
       "settings": {
+        "use_product_metaobjects": false,
         "use_custom_title": false,
         "custom_title": "Frequently asked questions",
         "show_subtitle": true
@@ -366,6 +390,7 @@
     "collection_overview_home",
     "press_ticker_home",
     "hero_card_HFy7pm",
+    "hero_card_Dzed3m",
     "expert_testimonials_AkfimQ",
     "hero_card_d8GepA",
     "highlights_shipping_returns",
