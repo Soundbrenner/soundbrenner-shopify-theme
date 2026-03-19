@@ -15,11 +15,6 @@
         {% if primary_navigation != blank and primary_navigation.links.size > 0 %}
           {% for link in primary_navigation.links %}
             {% liquid
-              assign drawer_link_title_downcase = link.title | downcase
-              assign drawer_link_url_downcase = link.url | downcase
-              if drawer_link_title_downcase contains 'debug' or drawer_link_url_downcase contains 'debug'
-                continue
-              endif
               assign drawer_link_index = forloop.index
               assign has_drawer_submenu = false
 
