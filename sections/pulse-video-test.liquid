@@ -1,0 +1,111 @@
+{% liquid
+  assign hero_video_hide_section = false
+  assign hero_video_entry = blank
+  assign hero_video_youtube_id = blank
+  assign hero_video_title = blank
+  assign hero_video_anchor_id = 'sb-hero-video-product-' | append: product.id
+
+  if request.page_type != 'product' or product == blank
+    assign hero_video_hide_section = true
+  else
+    assign hero_video_root_ref = product.metafields.custom.sbv2_hero_videos
+    assign hero_video_root = hero_video_root_ref.value | default: hero_video_root_ref.reference.value | default: hero_video_root_ref.reference | default: hero_video_root_ref
+
+    if hero_video_root != blank
+      assign hero_video_items = hero_video_root.videos.value | default: hero_video_root.videos.references | default: hero_video_root.videos
+
+      if hero_video_items != blank
+        for hero_video_item in hero_video_items limit: 1
+          assign hero_video_entry = hero_video_item.value | default: hero_video_item.reference.value | default: hero_video_item.reference | default: hero_video_item
+        endfor
+      endif
+    endif
+
+    if hero_video_entry != blank
+      assign hero_video_youtube_id = hero_video_entry.youtube_id.value | default: hero_video_entry.youtube_id | append: '' | strip
+      assign hero_video_title = hero_video_entry.video_title.value | default: hero_video_entry.video_title | append: '' | strip
+
+      if hero_video_youtube_id contains 'youtube.com/watch'
+        assign hero_video_youtube_id = hero_video_youtube_id | split: 'v=' | last | split: '&' | first
+      elsif hero_video_youtube_id contains 'youtu.be/'
+        assign hero_video_youtube_id = hero_video_youtube_id | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first
+      endif
+
+      assign hero_video_youtube_id = hero_video_youtube_id | split: '?' | first | split: '&' | first | split: '/' | last
+    endif
+
+    if hero_video_youtube_id == blank
+      assign hero_video_hide_section = true
+    endif
+
+    if hero_video_title == blank
+      assign hero_video_title = 'sb.hero_video.title' | t
+    endif
+  endif
+%}
+
+{% if hero_video_hide_section %}
+  <script>
+    (() => {
+      const sectionWrapper = document.currentScript && document.currentScript.closest('.shopify-section');
+      if (sectionWrapper) {
+        sectionWrapper.style.setProperty('display', 'none', 'important');
+      }
+    })();
+  </script>
+{% else %}
+  {% # theme-check-disable RemoteAsset %}
+  <link rel="preconnect" href="https://www.youtube.com">
+  <style>
+    .sb-hero-video__frame-wrap {
+      aspect-ratio: 16 / 9;
+      background: transparent;
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+    }
+
+    .sb-hero-video__frame {
+      border: 0;
+      display: block;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+
+  <section
+    id="{{ hero_video_anchor_id }}"
+    class="sb-hero-video"
+    style="--sb-hero-video-play-icon-url: url('{{ 'play_arrow.svg' | asset_url }}');"
+    data-sb-motion="reveal"
+    data-hero-video-anchor
+    data-product-id="{{ product.id }}"
+  >
+    <div class="sb-hero-video__inner" data-sb-motion-item>
+      <div class="sb-hero-video__single">
+        <div class="sb-hero-video__frame-wrap">
+          <iframe
+            class="sb-hero-video__frame"
+            src="https://www.youtube.com/embed/{{ hero_video_youtube_id }}?rel=0"
+            title="{{ hero_video_title | escape }}"
+            loading="eager"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Pulse video test",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Pulse video test"
+    }
+  ]
+}
+{% endschema %}
