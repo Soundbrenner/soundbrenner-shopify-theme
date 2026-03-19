@@ -441,16 +441,6 @@
       "qr_code_label": "Code QR de carte cadeau",
       "shop_link": "Visite la boutique en ligne"
     },
-    "debug": {
-      "panel_aria_label": "Basculer le mode débogage du thème",
-      "theme": "Thème",
-      "debug": "Déboguer",
-      "dark": "Sombre",
-      "light": "Lumière",
-      "auto": "Auto",
-      "klaviyo_popup": "Popup Klaviyo",
-      "product_sticky": "Produit épinglé"
-    },
     "password": {
       "close": "Fermer la fenêtre du mot de passe",
       "enter_password": "Saisis ton mot de passe",

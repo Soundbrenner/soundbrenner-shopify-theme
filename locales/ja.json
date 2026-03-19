@@ -435,16 +435,6 @@
       "subheadline_free_shipping": "最大{{ Sitewide discount depth }}%オフ＆{{ Free shipping threshold }}以上のご注文で{{ Shipping country }}への送料無料。",
       "subheadline_no_free_shipping": "{{ Shipping country }}で最大{{ Sitewide discount depth }}%オフ"
     },
-    "debug": {
-      "panel_aria_label": "テーマデバッグ切り替え",
-      "theme": "テーマ",
-      "debug": "デバッグ",
-      "dark": "ダーク",
-      "light": "ライト",
-      "auto": "オート",
-      "klaviyo_popup": "Klaviyoポップアップ",
-      "product_sticky": "製品スティッキー"
-    },
     "gift_card": {
       "copy_code": "ギフトカードコードをコピー",
       "copy_code_success": "ギフトカードコードをコピーしました。",

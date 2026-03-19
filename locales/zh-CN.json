@@ -435,16 +435,6 @@
       "subheadline_free_shipping": "全场最高可享{{ Sitewide discount depth }}%优惠，订单满{{ Free shipping threshold }}元，寄往{{ Shipping country }}可享免费送货。",
       "subheadline_no_free_shipping": "在{{ Shipping country }}，最高可享{{ Sitewide discount depth }}%优惠。"
     },
-    "debug": {
-      "panel_aria_label": "主题调试切换",
-      "theme": "主题",
-      "debug": "调试",
-      "dark": "深色",
-      "light": "灯光",
-      "auto": "自动",
-      "klaviyo_popup": "Klaviyo 弹窗",
-      "product_sticky": "产品置顶"
-    },
     "gift_card": {
       "copy_code": "复制礼品卡代码",
       "copy_code_success": "礼品卡代码已复制。",

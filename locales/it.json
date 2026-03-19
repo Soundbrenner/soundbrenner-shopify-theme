@@ -441,16 +441,6 @@
       "qr_code_label": "Codice QR della gift card",
       "shop_link": "Visita lo store online"
     },
-    "debug": {
-      "panel_aria_label": "Attiva/disattiva debug tema",
-      "theme": "Tema",
-      "debug": "Debug",
-      "dark": "Scuro",
-      "light": "Luce",
-      "auto": "Auto",
-      "klaviyo_popup": "Popup Klaviyo",
-      "product_sticky": "Prodotto in evidenza"
-    },
     "password": {
       "close": "Chiudi finestra password",
       "enter_password": "Inserisci la password",

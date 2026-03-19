@@ -229,16 +229,6 @@
       "qr_code_label": "Gift card QR code",
       "shop_link": "Visit online store"
     },
-    "debug": {
-      "panel_aria_label": "Theme debug toggle",
-      "theme": "Theme",
-      "debug": "Debug",
-      "dark": "Dark",
-      "light": "Light",
-      "auto": "Auto",
-      "klaviyo_popup": "Klaviyo popup",
-      "product_sticky": "Product sticky"
-    },
     "contact": {
       "email": "Email",
       "full_name": "Full name",

@@ -435,16 +435,6 @@
       "subheadline_free_shipping": "Spare bis zu {{ Sitewide discount depth }} % und erhalte kostenlosen Versand nach {{ Shipping country }} bei Bestellungen über {{ Free shipping threshold }}.",
       "subheadline_no_free_shipping": "Spare bis zu {{ Sitewide discount depth }} % in {{ Shipping country }}."
     },
-    "debug": {
-      "panel_aria_label": "Theme-Debug-Umschalter",
-      "theme": "Thema",
-      "debug": "Debug",
-      "dark": "Dunkel",
-      "light": "Licht",
-      "auto": "Auto",
-      "klaviyo_popup": "Klaviyo-Popup",
-      "product_sticky": "Produkt-Sticky"
-    },
     "gift_card": {
       "copy_code": "Geschenkkartencode kopieren",
       "copy_code_success": "Geschenkkartencode kopiert.",
