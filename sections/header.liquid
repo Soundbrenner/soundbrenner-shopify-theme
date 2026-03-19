@@ -140,6 +140,11 @@
       {% if primary_navigation != blank and primary_navigation.links.size > 0 %}
         {% for link in primary_navigation.links %}
           {% liquid
+            assign link_title_downcase = link.title | downcase
+            assign link_url_downcase = link.url | downcase
+            if link_title_downcase contains 'debug' or link_url_downcase contains 'debug'
+              continue
+            endif
             assign link_index = forloop.index
             assign link_path = link.url | split: '?' | first
             assign is_active_link = false
