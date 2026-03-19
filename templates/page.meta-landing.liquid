@@ -154,9 +154,14 @@
 
 <section class="sb-meta-landing{% if landing_product == blank %} sb-meta-landing--copy-only{% endif %}">
   <div class="sb-meta-landing__shell">
-    <div class="sb-meta-landing__hero">
+    <div
+      class="sb-meta-landing__hero{% if landing_primary_media != blank %} sb-meta-landing__hero--with-background{% endif %}"
+      {% if landing_primary_media != blank %}
+        style="--sb-meta-hero-image: url('{{ landing_primary_media | image_url: width: 1600 }}');"
+      {% endif %}
+    >
       <div class="sb-meta-landing__content-column">
-        <p class="sb-meta-landing__eyebrow font-caption weight-semibold">For musicians upgrading from regular earbuds</p>
+        <p class="sb-meta-landing__eyebrow font-caption weight-semibold">Ready to upgrade from regular earbuds?</p>
         <h1 class="sb-meta-landing__title font-title weight-bold">Your first serious IEM</h1>
         <p class="sb-meta-landing__body font-body weight-regular">
           If you are practicing, rehearsing, or performing with normal earbuds or headphones, you are probably dealing with unclear sound, weak isolation, and distractions that make it harder to hear yourself properly.
@@ -172,13 +177,20 @@
           <div class="sb-meta-landing__hero-offer" aria-label="Current Wave offer">
             <div class="sb-meta-landing__hero-offer-price">
               <p class="sb-meta-landing__hero-offer-current font-title weight-bold">
-                {% render 'sb-money-no-decimals', amount: landing_display_price_cents, currency: landing_currency_code, context: 'storefront' %}
+                <span
+                  class="sb-meta-landing__hero-offer-current-value"
+                  style="color: #ffffff !important; -webkit-text-fill-color: #ffffff !important; background: none !important; -webkit-background-clip: border-box !important; background-clip: border-box !important;"
+                >
+                  {% render 'sb-money-no-decimals', amount: landing_display_price_cents, currency: landing_currency_code, context: 'storefront' %}
+                </span>
               </p>
 
               {% if landing_has_compare_price %}
                 <p class="sb-meta-landing__hero-offer-compare font-body weight-regular">
                   <span class="sb-meta-landing__hero-offer-from">Down from</span>
-                  {% render 'sb-money-no-decimals', amount: landing_display_compare_cents, currency: landing_currency_code, context: 'storefront' %}
+                  <span class="sb-meta-landing__hero-offer-compare-value">
+                    {% render 'sb-money-no-decimals', amount: landing_display_compare_cents, currency: landing_currency_code, context: 'storefront' %}
+                  </span>
                 </p>
               {% endif %}
             </div>
@@ -189,7 +201,10 @@
                   {{ 'sb.product.save_percent' | t: percent: landing_savings_percentage }}
                 </p>
                 <p class="sb-meta-landing__hero-offer-savings-copy font-caption weight-regular">
-                  Save {% render 'sb-money-no-decimals', amount: landing_savings_cents, currency: landing_currency_code, context: 'storefront' %}
+                  Save
+                  <span class="sb-meta-landing__hero-offer-savings-value">
+                    {% render 'sb-money-no-decimals', amount: landing_savings_cents, currency: landing_currency_code, context: 'storefront' %}
+                  </span>
                 </p>
               </div>
             {% endif %}
@@ -206,53 +221,6 @@
               extra_class: 'sb-meta-landing__primary-cta'
             %}
           {% endif %}
-
-          <a class="sb-meta-landing__text-link font-caption weight-semibold" href="#why-switch-from-regular-earbuds">
-            Why switch from regular earbuds?
-          </a>
-        </div>
-      </div>
-
-      <div class="sb-meta-landing__media-column">
-        <div class="sb-meta-landing__visual-stack">
-          {% if landing_primary_media != blank %}
-            <div class="sb-meta-landing__media-card">
-              <div class="sb-meta-landing__media">
-                {{
-                  landing_primary_media
-                  | image_url: width: 1600
-                  | image_tag:
-                    class: 'sb-meta-landing__media-image',
-                    widths: '480, 720, 960, 1200, 1600',
-                    sizes: '(min-width: 990px) 50vw, 100vw',
-                    alt: landing_product.title,
-                    loading: 'eager'
-                }}
-              </div>
-            </div>
-          {% endif %}
-
-          <div class="sb-meta-landing__visual-meta">
-            {% if landing_secondary_media != blank %}
-              <div class="sb-meta-landing__inset-card">
-                {{
-                  landing_secondary_media
-                  | image_url: width: 960
-                  | image_tag:
-                    class: 'sb-meta-landing__inset-image',
-                    widths: '320, 480, 720, 960',
-                    sizes: '(min-width: 990px) 16rem, 42vw',
-                    alt: landing_product.title,
-                    loading: 'lazy'
-                }}
-              </div>
-            {% endif %}
-
-            <div class="sb-meta-landing__floating-card">
-              <p class="sb-meta-landing__floating-title font-caption weight-semibold">Beginner-friendly upgrade</p>
-              <p class="sb-meta-landing__floating-copy font-body weight-regular">Clearer monitoring, better fit, less distraction from the first session.</p>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -981,10 +949,39 @@
 
   .sb-meta-landing__hero {
     align-items: start;
+    border-radius: calc(var(--sb-radius-card) + 0.5rem);
     display: grid;
     gap: var(--sb-space-32);
     grid-template-columns: minmax(0, 1fr);
+    overflow: hidden;
+    padding: clamp(1.5rem, 4vw, 3rem);
+    position: relative;
     width: 100%;
+  }
+
+  .sb-meta-landing__hero > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .sb-meta-landing__hero--with-background {
+    background-color: #050607;
+    background-image: var(--sb-meta-hero-image);
+    background-position: 72% center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: clamp(32rem, 72vw, 46rem);
+  }
+
+  .sb-meta-landing__hero--with-background::before {
+    background:
+      linear-gradient(90deg, rgba(4, 6, 8, 0.96) 0%, rgba(4, 6, 8, 0.9) 28%, rgba(4, 6, 8, 0.62) 48%, rgba(4, 6, 8, 0.24) 68%, rgba(4, 6, 8, 0.08) 100%),
+      linear-gradient(180deg, rgba(4, 6, 8, 0.18) 0%, rgba(4, 6, 8, 0.54) 100%);
+    box-shadow: inset 0 -120px 140px rgba(0, 0, 0, 0.5);
+    content: '';
+    inset: 0;
+    position: absolute;
+    z-index: 0;
   }
 
   .sb-meta-landing__pain-section {
@@ -1043,18 +1040,17 @@
 
   .sb-meta-landing__content-column {
     align-self: center;
+    background: linear-gradient(180deg, rgba(7, 9, 12, 0.72) 0%, rgba(7, 9, 12, 0.5) 100%);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: calc(var(--sb-radius-card) + 0.25rem);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.22);
     display: flex;
     flex-direction: column;
-    gap: var(--sb-space-20);
+    gap: var(--sb-space-18);
     justify-content: center;
     max-width: 36rem;
-  }
-
-  .sb-meta-landing__media-column {
-    display: flex;
-    justify-content: center;
-    min-width: 0;
-    width: 100%;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
   }
 
   .sb-meta-landing__eyebrow {
@@ -1062,8 +1058,10 @@
     color: #00b59c;
     display: inline-flex;
     gap: var(--sb-space-12);
+    font-size: 0.82rem;
     letter-spacing: 0.08em;
     margin: 0;
+    opacity: 0.95;
     text-transform: uppercase;
   }
 
@@ -1078,20 +1076,21 @@
   }
 
   .sb-meta-landing__title {
-    color: var(--sb-color-neutral-900);
-    font-size: clamp(2.4rem, 7.5vw, 4.75rem);
-    line-height: 0.98;
+    color: var(--sb-color-neutral-100);
+    font-size: clamp(2.6rem, 6.6vw, 4.35rem);
+    line-height: 0.94;
+    letter-spacing: -0.03em;
     margin: 0;
-    max-width: 11ch;
+    max-width: 9ch;
     text-wrap: balance;
   }
 
   .sb-meta-landing__body {
-    color: var(--sb-color-neutral-900);
-    font-size: clamp(1rem, 2.2vw, 1.125rem);
-    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: clamp(1rem, 1.9vw, 1.06rem);
+    line-height: 1.58;
     margin: 0;
-    max-width: 54ch;
+    max-width: 46ch;
   }
 
   .sb-meta-landing__benefits {
@@ -1114,10 +1113,14 @@
 
   .sb-meta-landing__hero-offer {
     align-items: start;
-    column-gap: var(--sb-space-16);
+    background: rgba(8, 10, 14, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: calc(var(--sb-radius-card) - 0.25rem);
+    column-gap: 0.9rem;
     display: grid;
     grid-template-columns: minmax(0, auto) minmax(0, 1fr);
-    row-gap: var(--sb-space-10);
+    padding: 0.85rem 1rem;
+    row-gap: 0.45rem;
     justify-items: start;
     max-width: 100%;
     width: fit-content;
@@ -1128,7 +1131,7 @@
     align-items: flex-start;
     display: flex;
     flex-direction: column;
-    gap: var(--sb-space-8);
+    gap: 0.35rem;
   }
 
   .sb-meta-landing__hero-offer-current,
@@ -1140,17 +1143,33 @@
 
   .sb-meta-landing__hero-offer-current {
     align-items: baseline;
+    color: var(--sb-color-neutral-100) !important;
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    line-height: 0.94;
+    font-size: clamp(1.85rem, 3.6vw, 2.5rem);
+    line-height: 0.88;
+  }
+
+  .sb-meta-landing__hero-offer-current-value,
+  .sb-meta-landing__hero-offer-current-value * {
+    -webkit-text-fill-color: var(--sb-color-neutral-100) !important;
+    color: var(--sb-color-neutral-100) !important;
+    display: inline-block;
   }
 
   .sb-meta-landing__hero-offer-compare {
+    color: rgba(255, 255, 255, 0.64) !important;
     display: flex;
     flex-wrap: wrap;
     gap: 0.35rem;
-    opacity: 0.74;
+    opacity: 1;
+  }
+
+  .sb-meta-landing__hero-offer-compare-value,
+  .sb-meta-landing__hero-offer-compare-value * {
+    -webkit-text-fill-color: rgba(255, 255, 255, 0.64) !important;
+    color: rgba(255, 255, 255, 0.64) !important;
   }
 
   .sb-meta-landing__hero-offer-from {
@@ -1158,22 +1177,37 @@
   }
 
   .sb-meta-landing__hero-offer-savings-badge {
+    color: #00b59c !important;
     border: 1px solid currentColor;
     border-radius: 999px;
     letter-spacing: 0.08em;
     padding: 0.4rem 0.8rem;
   }
 
+  .sb-meta-landing__hero-offer-savings-copy {
+    color: rgba(255, 255, 255, 0.86) !important;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+
+  .sb-meta-landing__hero-offer-savings-value,
+  .sb-meta-landing__hero-offer-savings-value * {
+    -webkit-text-fill-color: rgba(255, 255, 255, 0.86) !important;
+    color: rgba(255, 255, 255, 0.86) !important;
+  }
+
   .sb-meta-landing__benefit {
     align-items: center;
-    background: rgba(255, 255, 255, 0.55);
-    border: 1px solid var(--sb-color-neutral-300);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 999px;
-    box-shadow: 0 10px 24px var(--sb-color-always-black-12);
+    box-shadow: none;
+    color: rgba(255, 255, 255, 0.94);
     display: flex;
     gap: var(--sb-space-12);
     margin: 0;
-    padding: var(--sb-space-16) var(--sb-space-20);
+    padding: 0.9rem 1.05rem;
     width: 100%;
   }
 
@@ -1194,14 +1228,14 @@
   }
 
   .sb-meta-landing__primary-cta {
-    max-width: 22rem;
+    max-width: 18rem;
     width: 100%;
   }
 
   .sb-meta-landing__text-link,
   .sb-meta-landing__text-link:visited {
     align-items: center;
-    color: var(--sb-color-neutral-900);
+    color: rgba(255, 255, 255, 0.9);
     display: inline-flex;
     min-height: 1.5rem;
     text-decoration: none;
@@ -1256,15 +1290,18 @@
   }
 
   .sb-meta-landing__floating-card {
+    align-self: center;
     backdrop-filter: blur(16px);
     background: rgba(18, 20, 26, 0.92);
     box-shadow: 0 18px 42px rgba(0, 0, 0, 0.16);
     border-radius: calc(var(--sb-radius-card) - 0.25rem);
     display: flex;
     flex-direction: column;
+    gap: var(--sb-space-14);
     justify-content: center;
-    min-height: 100%;
-    padding: var(--sb-space-18);
+    max-width: 32rem;
+    min-height: 0;
+    padding: clamp(1.5rem, 2vw, 2.25rem);
     width: 100%;
   }
 
@@ -1275,12 +1312,18 @@
 
   .sb-meta-landing__floating-title {
     color: #00b59c;
+    font-size: 0.95rem;
     letter-spacing: 0.04em;
+    line-height: 1.1;
     text-transform: uppercase;
   }
 
   .sb-meta-landing__floating-copy {
-    margin-top: var(--sb-space-12);
+    color: var(--sb-color-neutral-100);
+    font-size: clamp(1.85rem, 2.4vw, 2.6rem);
+    line-height: 1.12;
+    max-width: 12ch;
+    text-wrap: balance;
   }
 
   .sb-meta-landing__section-heading {
@@ -1764,10 +1807,11 @@
   }
 
   .sb-meta-landing__testimonial-marquee {
-    margin-inline: calc(var(--sb-space-20) * -1);
+    margin-inline: 0;
+    overflow: hidden;
     overflow-x: auto;
     overflow-y: hidden;
-    padding-inline: var(--sb-space-20);
+    padding-inline: 0;
     scrollbar-width: none;
   }
 
@@ -2494,16 +2538,11 @@
     }
 
     .sb-meta-landing__content-column {
-      gap: var(--sb-space-24);
+      max-width: 34rem;
     }
 
-    .sb-meta-landing__visual-stack {
+    .sb-meta-landing__content-column {
       gap: var(--sb-space-24);
-      padding: var(--sb-space-12);
-    }
-
-    .sb-meta-landing__visual-meta {
-      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
     }
 
     .sb-meta-landing__benefit {
@@ -2561,10 +2600,6 @@
       display: none;
     }
 
-    .sb-meta-landing__floating-card,
-    .sb-meta-landing__inset-card {
-      height: 100%;
-    }
   }
 
   @media screen and (max-width: 749px) {
@@ -2669,10 +2704,6 @@
       content: 'Regular earbuds / headphones';
     }
 
-    .sb-meta-landing__floating-card {
-      min-height: 0;
-    }
-
     .sb-meta-landing__sticky-buy-inner {
       grid-template-columns: minmax(0, 1fr) minmax(0, auto);
     }
@@ -2686,7 +2717,11 @@
     .sb-meta-landing__hero {
       align-items: center;
       gap: var(--sb-space-48);
-      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .sb-meta-landing__hero--with-background {
+      background-position: 78% center;
     }
 
     .sb-meta-landing__pain-grid {
@@ -2724,16 +2759,6 @@
       padding: var(--sb-space-36) 0;
     }
 
-    .sb-meta-landing__visual-stack {
-      max-width: 100%;
-      padding: var(--sb-space-12) var(--sb-space-12) 0;
-    }
-
-    .sb-meta-landing__visual-meta {
-      align-items: stretch;
-      grid-template-columns: minmax(0, 0.72fr) minmax(0, 0.88fr);
-    }
-
     .sb-meta-landing__hero-offer {
       align-items: center;
     }
@@ -2757,6 +2782,7 @@
     const modalOpeners = Array.from(document.querySelectorAll('[data-sb-modal-open]'));
     const modalClosers = Array.from(document.querySelectorAll('[data-sb-modal-close]'));
     const testimonialMarquee = document.querySelector('.sb-meta-landing__testimonial-marquee');
+    const testimonialTrack = testimonialMarquee?.querySelector('.sb-meta-landing__testimonial-track');
     let lastFocusedNode = null;
 
     const closeModal = () => {
@@ -2790,7 +2816,7 @@
       }
     });
 
-    if (!reduceMotion && testimonialMarquee instanceof HTMLElement) {
+    if (!reduceMotion && testimonialMarquee instanceof HTMLElement && testimonialTrack instanceof HTMLElement) {
       let testimonialFrame = 0;
       let lastTimestamp = 0;
       let isTestimonialPaused = false;
@@ -2806,7 +2832,7 @@
 
         if (!lastTimestamp) lastTimestamp = timestamp;
 
-        const maxScroll = testimonialMarquee.scrollWidth - testimonialMarquee.clientWidth;
+        const maxScroll = Math.max(0, testimonialTrack.scrollWidth - testimonialMarquee.clientWidth);
         if (maxScroll <= 0) {
           testimonialMarquee.scrollLeft = 0;
           lastTimestamp = timestamp;
