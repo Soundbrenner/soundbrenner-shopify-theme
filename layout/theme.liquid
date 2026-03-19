@@ -2980,21 +2980,37 @@
         const formatStarRatingWidgets = (scope = document) => {
           const buttons = scope.querySelectorAll('.klaviyo-star-rating-widget .kl_reviews__star_rating_widget');
           buttons.forEach((button) => {
-            const aria = button.getAttribute('aria-label') || '';
-            const ariaNumericTokens = Array.from(aria.matchAll(/\d[\d.,\s\u00A0\u202F]*/g)).map((match) => `${match[0]}`.trim());
-
             const starsBadge = button.querySelector('.kl_reviews__stars_badge');
             if (!starsBadge) return;
 
             const existingLabel = button.querySelector('.kl_reviews__star_rating_widget__label');
-            const countFromLabel = (existingLabel?.textContent || '').match(/(\d[\d.,\s\u00A0\u202F]*)/);
-            const ratingRaw = ariaNumericTokens[0] || '';
-            const countFromAria = ariaNumericTokens.length > 1 ? ariaNumericTokens[ariaNumericTokens.length - 1] : '';
-            const rawCount = countFromAria || (countFromLabel && countFromLabel[1]) || '0';
-            const ratingNumber = parseLocalizedDecimal(ratingRaw);
-            if (!Number.isFinite(ratingNumber)) return;
-            const countNumber = parseLocalizedInteger(rawCount);
-            const formattedCount = Number.isFinite(countNumber) ? numberFormatter.format(countNumber) : `${rawCount}`.trim();
+            let ratingNumber = parseLocalizedDecimal(button.dataset.sbKlaviyoRatingValue || '');
+            let countNumber = parseLocalizedInteger(button.dataset.sbKlaviyoReviewCount || '');
+
+            if (!Number.isFinite(ratingNumber) || !Number.isFinite(countNumber)) {
+              const aria = button.getAttribute('aria-label') || '';
+              const ariaNumericTokens = Array.from(aria.matchAll(/\d[\d.,\s\u00A0\u202F]*/g)).map((match) => `${match[0]}`.trim());
+              const countFromLabel = (existingLabel?.textContent || '').match(/(\d[\d.,\s\u00A0\u202F]*)/);
+              const ratingFromAria = ariaNumericTokens.find((token) => /[.,]/.test(token)) || ariaNumericTokens[0] || '';
+              const countFromAria = ariaNumericTokens
+                .map((token) => ({
+                  raw: token,
+                  parsed: parseLocalizedInteger(token),
+                }))
+                .filter((entry) => Number.isFinite(entry.parsed))
+                .sort((a, b) => b.parsed - a.parsed)[0]?.raw || '';
+              const rawCount = (countFromLabel && countFromLabel[1]) || countFromAria || '0';
+
+              ratingNumber = parseLocalizedDecimal(ratingFromAria);
+              countNumber = parseLocalizedInteger(rawCount);
+            }
+
+            if (!Number.isFinite(ratingNumber) || !Number.isFinite(countNumber)) return;
+
+            button.dataset.sbKlaviyoRatingValue = `${ratingNumber}`;
+            button.dataset.sbKlaviyoReviewCount = `${countNumber}`;
+
+            const formattedCount = numberFormatter.format(countNumber);
             const formattedRating = ratingFormatter.format(ratingNumber);
             const reviewsCountCopy = reviewsCountTemplate.replace(/__COUNT__/g, formattedCount);
             const copy = `${formattedRating} (${reviewsCountCopy})`;
