@@ -214,9 +214,9 @@
       </div>
 
       <div class="sb-meta-landing__media-column">
-        <div class="sb-meta-landing__visual-stack" data-sb-parallax-scene>
+        <div class="sb-meta-landing__visual-stack">
           {% if landing_primary_media != blank %}
-            <div class="sb-meta-landing__media-card" data-sb-parallax="0.03">
+            <div class="sb-meta-landing__media-card">
               <div class="sb-meta-landing__media">
                 {{
                   landing_primary_media
@@ -232,24 +232,26 @@
             </div>
           {% endif %}
 
-          {% if landing_secondary_media != blank %}
-            <div class="sb-meta-landing__inset-card" data-sb-parallax="-0.045">
-              {{
-                landing_secondary_media
-                | image_url: width: 960
-                | image_tag:
-                  class: 'sb-meta-landing__inset-image',
-                  widths: '320, 480, 720, 960',
-                  sizes: '(min-width: 990px) 18rem, 55vw',
-                  alt: landing_product.title,
-                  loading: 'lazy'
-              }}
-            </div>
-          {% endif %}
+          <div class="sb-meta-landing__visual-meta">
+            {% if landing_secondary_media != blank %}
+              <div class="sb-meta-landing__inset-card">
+                {{
+                  landing_secondary_media
+                  | image_url: width: 960
+                  | image_tag:
+                    class: 'sb-meta-landing__inset-image',
+                    widths: '320, 480, 720, 960',
+                    sizes: '(min-width: 990px) 16rem, 42vw',
+                    alt: landing_product.title,
+                    loading: 'lazy'
+                }}
+              </div>
+            {% endif %}
 
-          <div class="sb-meta-landing__floating-card" data-sb-parallax="0.06">
-            <p class="sb-meta-landing__floating-title font-caption weight-semibold">Beginner-friendly upgrade</p>
-            <p class="sb-meta-landing__floating-copy font-body weight-regular">Clearer monitoring, better fit, less distraction from the first session.</p>
+            <div class="sb-meta-landing__floating-card">
+              <p class="sb-meta-landing__floating-title font-caption weight-semibold">Beginner-friendly upgrade</p>
+              <p class="sb-meta-landing__floating-copy font-body weight-regular">Clearer monitoring, better fit, less distraction from the first session.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -655,81 +657,85 @@
         <h2 class="sb-meta-landing__section-title font-title weight-bold">Why so many musicians start with Wave</h2>
       </div>
 
+      {% capture testimonial_cards %}
+        <article class="sb-meta-landing__testimonial-card">
+          <div class="sb-meta-landing__testimonial-stars" aria-hidden="true">
+            {% for _ in (1..5) %}
+              <span class="sb-meta-landing__testimonial-star">{{ 'icon-review-star.svg' | inline_asset_content }}</span>
+            {% endfor %}
+          </div>
+          <p class="sb-meta-landing__testimonial-quote font-callout weight-bold">“I didn’t realize what I was missing.”</p>
+          <p class="sb-meta-landing__testimonial-copy font-body weight-regular">
+            Moving from regular earbuds to Wave made it much easier to hear details clearly in practice.
+          </p>
+        </article>
+
+        <article class="sb-meta-landing__testimonial-card">
+          <div class="sb-meta-landing__testimonial-stars" aria-hidden="true">
+            {% for _ in (1..5) %}
+              <span class="sb-meta-landing__testimonial-star">{{ 'icon-review-star.svg' | inline_asset_content }}</span>
+            {% endfor %}
+          </div>
+          <p class="sb-meta-landing__testimonial-quote font-callout weight-bold">“Huge upgrade from regular earbuds.”</p>
+          <p class="sb-meta-landing__testimonial-copy font-body weight-regular">
+            The fit feels more secure, and it is way easier to hear my click, backing tracks, and my own part.
+          </p>
+        </article>
+
+        <article class="sb-meta-landing__testimonial-card">
+          <div class="sb-meta-landing__testimonial-stars" aria-hidden="true">
+            {% for _ in (1..5) %}
+              <span class="sb-meta-landing__testimonial-star">{{ 'icon-review-star.svg' | inline_asset_content }}</span>
+            {% endfor %}
+          </div>
+          <p class="sb-meta-landing__testimonial-quote font-callout weight-bold">“Way easier to hear clearly.”</p>
+          <p class="sb-meta-landing__testimonial-copy font-body weight-regular">
+            I noticed timing and articulation right away, especially when practicing with a click.
+          </p>
+        </article>
+
+        <article class="sb-meta-landing__testimonial-card">
+          <div class="sb-meta-landing__testimonial-stars" aria-hidden="true">
+            {% for _ in (1..5) %}
+              <span class="sb-meta-landing__testimonial-star">{{ 'icon-review-star.svg' | inline_asset_content }}</span>
+            {% endfor %}
+          </div>
+          <p class="sb-meta-landing__testimonial-quote font-callout weight-bold">“Great value for getting into IEMs.”</p>
+          <p class="sb-meta-landing__testimonial-copy font-body weight-regular">
+            It feels like a practical first step into proper monitoring without overcomplicating anything.
+          </p>
+        </article>
+
+        <article class="sb-meta-landing__testimonial-card">
+          <div class="sb-meta-landing__testimonial-stars" aria-hidden="true">
+            {% for _ in (1..5) %}
+              <span class="sb-meta-landing__testimonial-star">{{ 'icon-review-star.svg' | inline_asset_content }}</span>
+            {% endfor %}
+          </div>
+          <p class="sb-meta-landing__testimonial-quote font-callout weight-bold">“Much better than normal earbuds for rehearsal.”</p>
+          <p class="sb-meta-landing__testimonial-copy font-body weight-regular">
+            Outside noise stops competing so I can stay more focused on the part I am actually playing.
+          </p>
+        </article>
+
+        <article class="sb-meta-landing__testimonial-card">
+          <div class="sb-meta-landing__testimonial-stars" aria-hidden="true">
+            {% for _ in (1..5) %}
+              <span class="sb-meta-landing__testimonial-star">{{ 'icon-review-star.svg' | inline_asset_content }}</span>
+            {% endfor %}
+          </div>
+          <p class="sb-meta-landing__testimonial-quote font-callout weight-bold">“A really easy first monitoring upgrade.”</p>
+          <p class="sb-meta-landing__testimonial-copy font-body weight-regular">
+            It gives me the benefits I wanted from IEMs without feeling technical or intimidating.
+          </p>
+        </article>
+      {% endcapture %}
+
       <div class="sb-meta-landing__testimonial-marquee">
         <div class="sb-meta-landing__testimonial-track">
-          {% for _ in (1..2) %}
-            <article class="sb-meta-landing__testimonial-card">
-              <div class="sb-meta-landing__testimonial-stars" aria-hidden="true">
-                {% for _ in (1..5) %}
-                  <span class="sb-meta-landing__testimonial-star">{{ 'icon-review-star.svg' | inline_asset_content }}</span>
-                {% endfor %}
-              </div>
-              <p class="sb-meta-landing__testimonial-quote font-callout weight-bold">“I didn’t realize what I was missing.”</p>
-              <p class="sb-meta-landing__testimonial-copy font-body weight-regular">
-                Moving from regular earbuds to Wave made it much easier to hear details clearly in practice.
-              </p>
-            </article>
-
-            <article class="sb-meta-landing__testimonial-card">
-              <div class="sb-meta-landing__testimonial-stars" aria-hidden="true">
-                {% for _ in (1..5) %}
-                  <span class="sb-meta-landing__testimonial-star">{{ 'icon-review-star.svg' | inline_asset_content }}</span>
-                {% endfor %}
-              </div>
-              <p class="sb-meta-landing__testimonial-quote font-callout weight-bold">“Huge upgrade from regular earbuds.”</p>
-              <p class="sb-meta-landing__testimonial-copy font-body weight-regular">
-                The fit feels more secure, and it is way easier to hear my click, backing tracks, and my own part.
-              </p>
-            </article>
-
-            <article class="sb-meta-landing__testimonial-card">
-              <div class="sb-meta-landing__testimonial-stars" aria-hidden="true">
-                {% for _ in (1..5) %}
-                  <span class="sb-meta-landing__testimonial-star">{{ 'icon-review-star.svg' | inline_asset_content }}</span>
-                {% endfor %}
-              </div>
-              <p class="sb-meta-landing__testimonial-quote font-callout weight-bold">“Way easier to hear clearly.”</p>
-              <p class="sb-meta-landing__testimonial-copy font-body weight-regular">
-                I noticed timing and articulation right away, especially when practicing with a click.
-              </p>
-            </article>
-
-            <article class="sb-meta-landing__testimonial-card">
-              <div class="sb-meta-landing__testimonial-stars" aria-hidden="true">
-                {% for _ in (1..5) %}
-                  <span class="sb-meta-landing__testimonial-star">{{ 'icon-review-star.svg' | inline_asset_content }}</span>
-                {% endfor %}
-              </div>
-              <p class="sb-meta-landing__testimonial-quote font-callout weight-bold">“Great value for getting into IEMs.”</p>
-              <p class="sb-meta-landing__testimonial-copy font-body weight-regular">
-                It feels like a practical first step into proper monitoring without overcomplicating anything.
-              </p>
-            </article>
-
-            <article class="sb-meta-landing__testimonial-card">
-              <div class="sb-meta-landing__testimonial-stars" aria-hidden="true">
-                {% for _ in (1..5) %}
-                  <span class="sb-meta-landing__testimonial-star">{{ 'icon-review-star.svg' | inline_asset_content }}</span>
-                {% endfor %}
-              </div>
-              <p class="sb-meta-landing__testimonial-quote font-callout weight-bold">“Much better than normal earbuds for rehearsal.”</p>
-              <p class="sb-meta-landing__testimonial-copy font-body weight-regular">
-                Outside noise stops competing so I can stay more focused on the part I am actually playing.
-              </p>
-            </article>
-
-            <article class="sb-meta-landing__testimonial-card">
-              <div class="sb-meta-landing__testimonial-stars" aria-hidden="true">
-                {% for _ in (1..5) %}
-                  <span class="sb-meta-landing__testimonial-star">{{ 'icon-review-star.svg' | inline_asset_content }}</span>
-                {% endfor %}
-              </div>
-              <p class="sb-meta-landing__testimonial-quote font-callout weight-bold">“A really easy first monitoring upgrade.”</p>
-              <p class="sb-meta-landing__testimonial-copy font-body weight-regular">
-                It gives me the benefits I wanted from IEMs without feeling technical or intimidating.
-              </p>
-            </article>
-          {% endfor %}
+          <div class="sb-meta-landing__testimonial-group">
+            {{ testimonial_cards }}
+          </div>
         </div>
       </div>
     </section>
@@ -1018,12 +1024,21 @@
   }
 
   .sb-meta-landing__visual-stack {
+    display: grid;
+    gap: var(--sb-space-20);
     isolation: isolate;
     margin: 0 auto;
     max-width: 680px;
-    padding: var(--sb-space-8) 0 var(--sb-space-40);
+    padding: var(--sb-space-8) 0;
     position: relative;
     width: 100%;
+  }
+
+  .sb-meta-landing__visual-meta {
+    align-items: stretch;
+    display: grid;
+    gap: var(--sb-space-16);
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .sb-meta-landing__content-column {
@@ -1210,7 +1225,6 @@
   .sb-meta-landing__media-card {
     padding: var(--sb-space-12);
     position: relative;
-    transform: translate3d(0, var(--sb-parallax-y), 0);
     width: 100%;
   }
 
@@ -1224,14 +1238,8 @@
   }
 
   .sb-meta-landing__inset-card {
-    --sb-parallax-y: 0px;
     background: #0f1117;
-    bottom: 0;
-    max-width: min(44vw, 200px);
     padding: var(--sb-space-10);
-    position: absolute;
-    right: var(--sb-space-10);
-    transform: translate3d(0, var(--sb-parallax-y), 0);
     width: 100%;
   }
 
@@ -1252,14 +1260,12 @@
     background: rgba(18, 20, 26, 0.92);
     box-shadow: 0 18px 42px rgba(0, 0, 0, 0.16);
     border-radius: calc(var(--sb-radius-card) - 0.25rem);
-    left: auto;
-    margin-top: var(--sb-space-16);
-    max-width: min(100%, 320px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100%;
     padding: var(--sb-space-18);
-    position: relative;
-    top: auto;
-    transform: translate3d(0, var(--sb-parallax-y), 0);
-    width: calc(100% - var(--sb-space-32));
+    width: 100%;
   }
 
   .sb-meta-landing__floating-title,
@@ -1759,17 +1765,26 @@
 
   .sb-meta-landing__testimonial-marquee {
     margin-inline: calc(var(--sb-space-20) * -1);
-    mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
     padding-inline: var(--sb-space-20);
+    scrollbar-width: none;
   }
 
   .sb-meta-landing__testimonial-track {
     align-items: stretch;
     display: flex;
-    gap: var(--sb-space-20);
     width: max-content;
-    will-change: transform;
+  }
+
+  .sb-meta-landing__testimonial-marquee::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sb-meta-landing__testimonial-group {
+    display: flex;
+    gap: var(--sb-space-20);
+    flex: 0 0 auto;
   }
 
   .sb-meta-landing__testimonial-card {
@@ -2372,10 +2387,6 @@
     border-top-color: var(--sb-meta-border-dark);
   }
 
-  .sb-meta-landing__testimonial-track {
-    animation: sb-meta-marquee 36s linear infinite;
-  }
-
   .sb-meta-landing__hero-offer-compare,
   .sb-meta-landing__sticky-buy-meta {
     color: var(--sb-meta-text-subtle);
@@ -2428,16 +2439,6 @@
   [data-sb-reveal].is-visible {
     opacity: 1;
     transform: translateY(0);
-  }
-
-  @keyframes sb-meta-marquee {
-    0% {
-      transform: translate3d(0, 0, 0);
-    }
-
-    100% {
-      transform: translate3d(calc(-50% - (var(--sb-space-20) / 2)), 0, 0);
-    }
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -2497,7 +2498,12 @@
     }
 
     .sb-meta-landing__visual-stack {
-      padding: var(--sb-space-12) var(--sb-space-12) var(--sb-space-48);
+      gap: var(--sb-space-24);
+      padding: var(--sb-space-12);
+    }
+
+    .sb-meta-landing__visual-meta {
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
     }
 
     .sb-meta-landing__benefit {
@@ -2555,18 +2561,9 @@
       display: none;
     }
 
-    .sb-meta-landing__floating-card {
-      left: auto;
-      margin-top: var(--sb-space-20);
-      max-width: min(100%, 340px);
-      top: auto;
-      width: calc(100% - var(--sb-space-40));
-    }
-
+    .sb-meta-landing__floating-card,
     .sb-meta-landing__inset-card {
-      bottom: 0;
-      max-width: min(38vw, 240px);
-      right: var(--sb-space-12);
+      height: 100%;
     }
   }
 
@@ -2673,13 +2670,7 @@
     }
 
     .sb-meta-landing__floating-card {
-      margin-left: 0;
-      max-width: min(100%, 320px);
-      width: calc(100% - var(--sb-space-24));
-    }
-
-    .sb-meta-landing__inset-card {
-      max-width: min(42vw, 180px);
+      min-height: 0;
     }
 
     .sb-meta-landing__sticky-buy-inner {
@@ -2735,47 +2726,23 @@
 
     .sb-meta-landing__visual-stack {
       max-width: 100%;
-      padding: var(--sb-space-12) var(--sb-space-20) var(--sb-space-56) var(--sb-space-28);
+      padding: var(--sb-space-12) var(--sb-space-12) 0;
+    }
+
+    .sb-meta-landing__visual-meta {
+      align-items: stretch;
+      grid-template-columns: minmax(0, 0.72fr) minmax(0, 0.88fr);
     }
 
     .sb-meta-landing__hero-offer {
       align-items: center;
     }
-
-    .sb-meta-landing__floating-card {
-      left: 0;
-      margin-top: 0;
-      max-width: 240px;
-      position: absolute;
-      top: auto;
-      width: auto;
-    }
-
-    .sb-meta-landing__inset-card {
-      bottom: 0;
-      max-width: 260px;
-      right: 0;
-    }
-
-    .sb-meta-landing__media-card {
-      transform: translate3d(0, var(--sb-parallax-y), 0) rotate(-0.35deg);
-    }
-
-    .sb-meta-landing__media-card:hover {
-      transform: translate3d(0, calc(var(--sb-parallax-y) - 3px), 0) rotate(-0.35deg);
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .sb-meta-landing__testimonial-marquee {
-      mask-image: none;
       overflow-x: auto;
       padding-bottom: var(--sb-space-8);
-    }
-
-    .sb-meta-landing__testimonial-track {
-      animation: none;
-      width: auto;
     }
   }
 </style>
@@ -2789,6 +2756,7 @@
     const modalBody = modalRoot?.querySelector('#sb-meta-landing-modal-body');
     const modalOpeners = Array.from(document.querySelectorAll('[data-sb-modal-open]'));
     const modalClosers = Array.from(document.querySelectorAll('[data-sb-modal-close]'));
+    const testimonialMarquee = document.querySelector('.sb-meta-landing__testimonial-marquee');
     let lastFocusedNode = null;
 
     const closeModal = () => {
@@ -2821,6 +2789,52 @@
         closeModal();
       }
     });
+
+    if (!reduceMotion && testimonialMarquee instanceof HTMLElement) {
+      let testimonialFrame = 0;
+      let lastTimestamp = 0;
+      let isTestimonialPaused = false;
+
+      const stepTestimonials = (timestamp) => {
+        if (!testimonialMarquee.isConnected) return;
+
+        if (isTestimonialPaused) {
+          lastTimestamp = timestamp;
+          testimonialFrame = window.requestAnimationFrame(stepTestimonials);
+          return;
+        }
+
+        if (!lastTimestamp) lastTimestamp = timestamp;
+
+        const maxScroll = testimonialMarquee.scrollWidth - testimonialMarquee.clientWidth;
+        if (maxScroll <= 0) {
+          testimonialMarquee.scrollLeft = 0;
+          lastTimestamp = timestamp;
+          testimonialFrame = window.requestAnimationFrame(stepTestimonials);
+          return;
+        }
+
+        const delta = timestamp - lastTimestamp;
+        const nextScroll = testimonialMarquee.scrollLeft + (delta * 42) / 1000;
+        testimonialMarquee.scrollLeft = nextScroll >= maxScroll ? 0 : nextScroll;
+        lastTimestamp = timestamp;
+        testimonialFrame = window.requestAnimationFrame(stepTestimonials);
+      };
+
+      const pauseTestimonials = () => {
+        isTestimonialPaused = true;
+      };
+
+      const resumeTestimonials = () => {
+        isTestimonialPaused = false;
+      };
+
+      testimonialMarquee.addEventListener('mouseenter', pauseTestimonials);
+      testimonialMarquee.addEventListener('mouseleave', resumeTestimonials);
+      testimonialMarquee.addEventListener('focusin', pauseTestimonials);
+      testimonialMarquee.addEventListener('focusout', resumeTestimonials);
+      testimonialFrame = window.requestAnimationFrame(stepTestimonials);
+    }
 
     if (reduceMotion || typeof window.IntersectionObserver !== 'function') {
       revealNodes.forEach((node) => node.classList.add('is-visible'));
