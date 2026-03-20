@@ -35,10 +35,16 @@
         "show_app_download_google_play": false,
         "show_app_download_china": false
       }
+    },
+    "iem_compare_table_xFWW7g": {
+      "type": "iem-compare-table",
+      "name": "IEM compare table",
+      "settings": {}
     }
   },
   "order": [
     "main",
-    "hero_card_LAwg9p"
+    "hero_card_LAwg9p",
+    "iem_compare_table_xFWW7g"
   ]
 }
