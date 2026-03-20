@@ -40,11 +40,63 @@
       "type": "iem-compare-table",
       "name": "IEM compare table",
       "settings": {}
+    },
+    "top_feature_highlights_wave": {
+      "type": "top-feature-highlights",
+      "blocks": {
+        "item_monitoring": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/Property_1_Metronome.svg",
+            "gradient_value": "linear-gradient(135deg, #0097FF 0%, #00FCA4 100%)",
+            "title": "Real-time monitoring",
+            "body": "<p>Stay locked in with wired audio and zero Bluetooth delay while you practice or perform.</p>"
+          }
+        },
+        "item_isolation": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/Property_1_Music_note.svg",
+            "gradient_value": "linear-gradient(135deg, #7CD9B0 0%, #1E9980 100%)",
+            "title": "Focused sound",
+            "body": "<p>Strong passive isolation helps you hear the details without distractions getting in the way.</p>"
+          }
+        },
+        "item_fit": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/Property_1_Practice_tracker.svg",
+            "gradient_value": "linear-gradient(135deg, #FFC285 0%, #D46A15 100%)",
+            "title": "Ready for long sessions",
+            "body": "<p>A secure in-ear fit stays comfortable through extended practice, rehearsals, and live sets.</p>"
+          }
+        },
+        "item_power": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/Property_1_Ratings.svg",
+            "gradient_value": "linear-gradient(135deg, #FF8387 0%, #FF1F34 100%)",
+            "title": "No charging required",
+            "body": "<p>Plug in and play without batteries, pairing steps, or charging routines slowing you down.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_monitoring",
+        "item_isolation",
+        "item_fit",
+        "item_power"
+      ],
+      "settings": {
+        "use_product_metaobjects": false,
+        "title": "Why musicians choose Wave"
+      }
     }
   },
   "order": [
     "main",
     "hero_card_LAwg9p",
-    "iem_compare_table_xFWW7g"
+    "iem_compare_table_xFWW7g",
+    "top_feature_highlights_wave"
   ]
 }
