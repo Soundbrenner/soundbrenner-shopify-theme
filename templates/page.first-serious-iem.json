@@ -21,14 +21,16 @@
         "use_seasonal_hero_card": false,
         "use_resource_title_description": false,
         "use_product_page_metaobjects": false,
-        "kicker": "",
-        "headline": "",
-        "subheadline": "",
-        "show_button": false,
-        "button_label": "Placeholder",
+        "background_image_desktop": "shopify://shop_images/Property_1_Wave_in-ear_monitors_f88752ea-2aa6-4fad-a7a5-3775214cea3b.jpg",
+        "background_image_mobile": "shopify://shop_images/Property_1_Wave_in-ear_monitors_mobile.jpg",
+        "kicker": "Your first serious IEM",
+        "headline": "Your first IEM should feel like an upgrade, not a gamble.",
+        "subheadline": "Soundbrenner Wave gives you the clarity, fit, and real-time monitoring musicians want, without the complexity or price jump that usually makes first-time buyers hesitate.",
+        "show_button": true,
+        "button_label": "Shop Wave now",
         "button_size": "large",
-        "icon_position": "none",
-        "button_link": "",
+        "icon_position": "trailing",
+        "button_link": "/products/wave-in-ear-monitors",
         "button_open_in_new_tab": false,
         "show_app_download_qr": false,
         "show_app_download_app_store": false,
@@ -49,8 +51,8 @@
           "settings": {
             "icon": "shopify://shop_images/Property_1_Metronome.svg",
             "gradient_value": "linear-gradient(135deg, #0097FF 0%, #00FCA4 100%)",
-            "title": "Real-time monitoring",
-            "body": "<p>Stay locked in with wired audio and zero Bluetooth delay while you practice or perform.</p>"
+            "title": "Zero-lag monitoring",
+            "body": "<p>Hear yourself in real time with wired audio that stays locked in while you practice, record, or perform.</p>"
           }
         },
         "item_isolation": {
@@ -58,8 +60,8 @@
           "settings": {
             "icon": "shopify://shop_images/Property_1_Music_note.svg",
             "gradient_value": "linear-gradient(135deg, #7CD9B0 0%, #1E9980 100%)",
-            "title": "Focused sound",
-            "body": "<p>Strong passive isolation helps you hear the details without distractions getting in the way.</p>"
+            "title": "More focus, less noise",
+            "body": "<p>Strong passive isolation helps the details come through clearly without outside distractions pulling you out of the moment.</p>"
           }
         },
         "item_fit": {
@@ -67,8 +69,8 @@
           "settings": {
             "icon": "shopify://shop_images/Property_1_Practice_tracker.svg",
             "gradient_value": "linear-gradient(135deg, #FFC285 0%, #D46A15 100%)",
-            "title": "Ready for long sessions",
-            "body": "<p>A secure in-ear fit stays comfortable through extended practice, rehearsals, and live sets.</p>"
+            "title": "Comfort that lasts",
+            "body": "<p>A secure fit stays comfortable through longer practice blocks, rehearsals, and live sets.</p>"
           }
         },
         "item_power": {
@@ -76,8 +78,8 @@
           "settings": {
             "icon": "shopify://shop_images/Property_1_Ratings.svg",
             "gradient_value": "linear-gradient(135deg, #FF8387 0%, #FF1F34 100%)",
-            "title": "No charging required",
-            "body": "<p>Plug in and play without batteries, pairing steps, or charging routines slowing you down.</p>"
+            "title": "Plug in and play",
+            "body": "<p>No batteries, pairing steps, or charging routines. Just connect and get to work.</p>"
           }
         }
       },
@@ -89,7 +91,92 @@
       ],
       "settings": {
         "use_product_metaobjects": false,
-        "title": "Why musicians choose Wave"
+        "title": "Why Wave is easy to start with"
+      }
+    },
+    "large_feature_first_iem_fit": {
+      "type": "large-feature",
+      "name": "Large feature",
+      "settings": {
+        "use_product_metaobjects": false,
+        "media_position": "left",
+        "media": "shopify://shop_images/Property_1_Wave_1.jpg",
+        "show_icon_and_kicker": true,
+        "kicker_icon": "shopify://shop_images/Property_1_Verified_user.svg",
+        "kicker_text": "Fit and comfort",
+        "title_part_one": "A first IEM should feel",
+        "title_part_two": "comfortable from day one",
+        "title_accent_color": "primary-500",
+        "body": "<p>One of the biggest reasons people delay their first IEM is simple: they worry it will feel awkward the moment they put it in.</p><p>Wave is designed to sit securely without feeling intimidating, so getting started feels easier than expected.</p><p>Once the fit clicks, you get the stability and isolation that make longer practice sessions and live use feel far more focused.</p>"
+      }
+    },
+    "large_feature_first_iem_complexity": {
+      "type": "large-feature",
+      "name": "Large feature",
+      "settings": {
+        "use_product_metaobjects": false,
+        "media_position": "right",
+        "media": "shopify://shop_images/Property_1_Wave_2.jpg",
+        "show_icon_and_kicker": true,
+        "kicker_icon": "shopify://shop_images/Property_1_Wired.svg",
+        "kicker_text": "Simple to start",
+        "title_part_one": "Serious monitoring does not have to be",
+        "title_part_two": "complicated",
+        "title_accent_color": "primary-500",
+        "body": "<p>Another common hesitation is complexity. A lot of first-time buyers assume IEMs will add more gear, more setup, and more things to troubleshoot.</p><p>Wave keeps it straightforward: connect, play, and hear clearly without charging, pairing, or Bluetooth lag.</p><p>It is the simple way to move beyond consumer listening gear without making your setup harder to live with.</p>"
+      }
+    },
+    "wave_social_proof_testimonials": {
+      "type": "expert-testimonials",
+      "name": "Expert testimonials",
+      "blocks": {
+        "testimonial_wave_1": {
+          "type": "testimonial",
+          "settings": {
+            "testimonial": "wave-pro-1"
+          }
+        },
+        "testimonial_wave_2": {
+          "type": "testimonial",
+          "settings": {
+            "testimonial": "wave-pro-2"
+          }
+        },
+        "testimonial_wave_3": {
+          "type": "testimonial",
+          "settings": {
+            "testimonial": "wave-pro-3"
+          }
+        },
+        "testimonial_wave_4": {
+          "type": "testimonial",
+          "settings": {
+            "testimonial": "wave-pro-4"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_wave_1",
+        "testimonial_wave_2",
+        "testimonial_wave_3",
+        "testimonial_wave_4"
+      ],
+      "settings": {
+        "use_product_metaobjects": false,
+        "title": "What musicians say after switching to Wave"
+      }
+    },
+    "wave_bottom_cta_final": {
+      "type": "wave-bottom-cta",
+      "settings": {
+        "product_handle": "wave-in-ear-monitors",
+        "eyebrow": "Ready when you are",
+        "title_part_one": "Start with the IEM that makes",
+        "title_part_two": "the first step feel easy",
+        "body": "<p>Wave gives you the clarity, isolation, and real-time monitoring that everyday listening gear cannot, without pushing you into a more complicated or expensive setup.</p><p>If you have been waiting for the right first IEM, this is a confident place to begin.</p>",
+        "trust_line": "30-day money-back guarantee",
+        "button_label": "Shop Wave now",
+        "helper_text": "Ships worldwide. Plug in, lock in, and hear every detail without Bluetooth lag."
       }
     }
   },
@@ -97,6 +184,10 @@
     "main",
     "hero_card_LAwg9p",
     "iem_compare_table_xFWW7g",
-    "top_feature_highlights_wave"
+    "top_feature_highlights_wave",
+    "large_feature_first_iem_fit",
+    "large_feature_first_iem_complexity",
+    "wave_social_proof_testimonials",
+    "wave_bottom_cta_final"
   ]
 }

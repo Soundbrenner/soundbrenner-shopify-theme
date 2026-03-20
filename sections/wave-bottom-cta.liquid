@@ -1,0 +1,585 @@
+{% liquid
+  assign cta_product_handle = section.settings.product_handle | default: 'wave-in-ear-monitors'
+  assign cta_product = all_products[cta_product_handle]
+  assign hide_section = false
+  assign cta_currency_code = cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency | upcase
+  assign cta_variant = blank
+  assign cta_has_compare_price = false
+  assign cta_discount_percent = 0
+  assign cta_price_cents = 0
+  assign cta_compare_price_cents = 0
+  assign cta_rating = 0
+  assign cta_reviews_count = 0
+  assign cta_product_url = blank
+  assign cta_image = blank
+  assign storefront_cart_discount_percent = 0
+  assign storefront_global_discount_percent = 0
+  assign storefront_product_discount_percent = 0
+  assign storefront_effective_discount_percent = 0
+
+  if cta_product == blank or cta_product.url == blank
+    assign hide_section = true
+  else
+    assign cta_variant = cta_product.selected_or_first_available_variant
+    assign cta_product_url = cta_product.url
+    assign cta_image = cta_variant.featured_image | default: cta_product.featured_image
+
+    if cta_variant == blank
+      assign hide_section = true
+    endif
+
+    if cta_product.metafields.reviews.rating.value != blank
+      assign cta_rating_source = cta_product.metafields.reviews.rating.value
+      assign cta_rating = cta_rating_source.rating | default: cta_rating_source | plus: 0
+    endif
+
+    assign cta_reviews_count = cta_product.metafields.reviews.rating_count.value | default: 0 | plus: 0 | round: 0
+    assign cta_price_cents = cta_variant.price | default: 0 | plus: 0
+    assign cta_compare_price_cents = cta_variant.compare_at_price | default: 0 | plus: 0
+
+    for discount_application in cart.cart_level_discount_applications
+      if discount_application.value_type == 'percentage'
+        assign storefront_next_discount_percent = discount_application.value | plus: 0
+        if storefront_next_discount_percent > storefront_cart_discount_percent
+          assign storefront_cart_discount_percent = storefront_next_discount_percent
+        endif
+      endif
+    endfor
+
+    for cart_item in cart.items
+      for line_discount_allocation in cart_item.line_level_discount_allocations
+        assign line_discount_application = line_discount_allocation.discount_application
+        if line_discount_application and line_discount_application.value_type == 'percentage'
+          assign storefront_next_discount_percent = line_discount_application.value | plus: 0
+          if storefront_next_discount_percent > storefront_cart_discount_percent
+            assign storefront_cart_discount_percent = storefront_next_discount_percent
+          endif
+        endif
+      endfor
+    endfor
+
+    assign storefront_global_discount_percent = settings.sitewide_seasonal_discount_depth | default: 48 | plus: 0
+    if storefront_cart_discount_percent > storefront_global_discount_percent
+      assign storefront_global_discount_percent = storefront_cart_discount_percent
+    endif
+    if storefront_global_discount_percent < 0
+      assign storefront_global_discount_percent = 0
+    elsif storefront_global_discount_percent > 100
+      assign storefront_global_discount_percent = 100
+    endif
+
+    assign storefront_override_product_1 = all_products[settings.storefront_price_override_product_id_1]
+    if storefront_override_product_1 != blank and storefront_override_product_1.id == cta_product.id
+      assign storefront_product_discount_percent = settings.storefront_price_override_discount_depth_1 | default: 0 | plus: 0
+    endif
+    assign storefront_override_product_2 = all_products[settings.storefront_price_override_product_id_2]
+    if storefront_override_product_2 != blank and storefront_override_product_2.id == cta_product.id
+      assign storefront_product_discount_percent = settings.storefront_price_override_discount_depth_2 | default: 0 | plus: 0
+    endif
+    assign storefront_override_product_3 = all_products[settings.storefront_price_override_product_id_3]
+    if storefront_override_product_3 != blank and storefront_override_product_3.id == cta_product.id
+      assign storefront_product_discount_percent = settings.storefront_price_override_discount_depth_3 | default: 0 | plus: 0
+    endif
+    assign storefront_override_product_4 = all_products[settings.storefront_price_override_product_id_4]
+    if storefront_override_product_4 != blank and storefront_override_product_4.id == cta_product.id
+      assign storefront_product_discount_percent = settings.storefront_price_override_discount_depth_4 | default: 0 | plus: 0
+    endif
+    if storefront_product_discount_percent < 0
+      assign storefront_product_discount_percent = 0
+    elsif storefront_product_discount_percent > 100
+      assign storefront_product_discount_percent = 100
+    endif
+
+    assign storefront_effective_discount_percent = storefront_global_discount_percent
+    if storefront_product_discount_percent > storefront_effective_discount_percent
+      assign storefront_effective_discount_percent = storefront_product_discount_percent
+    endif
+    if storefront_global_discount_percent > 0 and storefront_product_discount_percent > 0
+      assign storefront_keep_after_global = 100 | minus: storefront_global_discount_percent
+      assign storefront_keep_after_product = 100 | minus: storefront_product_discount_percent
+      assign storefront_keep_combined_percent = storefront_keep_after_global | times: storefront_keep_after_product | divided_by: 100.0
+      assign storefront_effective_discount_percent = 100 | minus: storefront_keep_combined_percent
+    endif
+
+    if storefront_effective_discount_percent > 0
+      assign cta_compare_price_cents = cta_price_cents
+      assign storefront_keep_percent = 100 | minus: storefront_effective_discount_percent
+      assign cta_price_cents = cta_price_cents | times: storefront_keep_percent | divided_by: 100.0 | round
+      assign cta_discount_percent = storefront_effective_discount_percent | round
+      assign cta_has_compare_price = true
+    elsif cta_compare_price_cents > cta_price_cents
+      assign cta_discount_percent = cta_compare_price_cents | minus: cta_price_cents | times: 100.0 | divided_by: cta_compare_price_cents | round
+      assign cta_has_compare_price = true
+    endif
+  endif
+%}
+
+{% if hide_section %}
+  <script>
+    (() => {
+      const sectionWrapper = document.currentScript && document.currentScript.closest('.shopify-section');
+      if (sectionWrapper) {
+        sectionWrapper.style.setProperty('display', 'none', 'important');
+      }
+    })();
+  </script>
+{% else %}
+  <section class="sb-wave-bottom-cta" data-sb-motion="reveal">
+    <div class="sb-wave-bottom-cta__shell" data-sb-motion-item>
+      <div class="sb-wave-bottom-cta__content">
+        <p class="sb-wave-bottom-cta__eyebrow font-caption weight-semibold">{{ section.settings.eyebrow }}</p>
+        <h2 class="sb-wave-bottom-cta__title font-title weight-bold">
+          <span class="sb-wave-bottom-cta__title-primary">{{ section.settings.title_part_one }}</span>
+          <span class="sb-wave-bottom-cta__title-accent">{{ section.settings.title_part_two }}</span>
+        </h2>
+        <div class="sb-wave-bottom-cta__body font-body weight-regular rte">
+          {{ section.settings.body }}
+        </div>
+
+        <div class="sb-wave-bottom-cta__proof">
+          <div class="sb-wave-bottom-cta__stars" aria-hidden="true" style="--sb-wave-cta-star-url: url('{{ 'icon-review-star.svg' | asset_url }}');">
+            {% for i in (1..5) %}
+              {% assign step = i | minus: 1 %}
+              {% assign fill_ratio = cta_rating | minus: step %}
+              {% if fill_ratio >= 1 %}
+                {% assign fill_percent = 100 %}
+              {% elsif fill_ratio <= 0 %}
+                {% assign fill_percent = 0 %}
+              {% else %}
+                {% assign fill_percent = fill_ratio | times: 100 | round %}
+              {% endif %}
+              <span class="sb-wave-bottom-cta__star" style="--sb-star-fill: {{ fill_percent }}%;"></span>
+            {% endfor %}
+          </div>
+          <p class="sb-wave-bottom-cta__proof-text font-caption weight-semibold">
+            {{ cta_rating | round: 1 }} stars from {{ cta_reviews_count }} reviews
+          </p>
+        </div>
+
+        {% if cta_has_compare_price %}
+          <div class="sb-wave-bottom-cta__savings-badge-wrap">
+            <p class="sb-wave-bottom-cta__savings-badge font-caption weight-semibold">
+              Save {{ cta_discount_percent }}% today
+            </p>
+          </div>
+        {% endif %}
+
+        <div class="sb-wave-bottom-cta__offers">
+          <div class="sb-wave-bottom-cta__offer">
+            <p class="sb-wave-bottom-cta__offer-label font-caption weight-semibold">Price today</p>
+            <div class="sb-wave-bottom-cta__price-row">
+              {% if cta_has_compare_price %}
+                <span class="sb-wave-bottom-cta__compare-price font-body weight-regular">
+                  {% render 'sb-money-no-decimals', amount: cta_compare_price_cents, currency: cta_currency_code, context: 'storefront' %}
+                </span>
+              {% endif %}
+              <span class="sb-wave-bottom-cta__current-price font-body weight-bold">
+                {% render 'sb-money-no-decimals', amount: cta_price_cents, currency: cta_currency_code, context: 'storefront' %}
+              </span>
+            </div>
+          </div>
+
+          <div class="sb-wave-bottom-cta__offer">
+            <p class="sb-wave-bottom-cta__offer-label font-caption weight-semibold">Peace of mind</p>
+            <p class="sb-wave-bottom-cta__offer-value font-body weight-bold">{{ section.settings.trust_line }}</p>
+          </div>
+        </div>
+
+        <div class="sb-wave-bottom-cta__actions">
+          {% render 'radiant-button',
+            label: section.settings.button_label,
+            link: cta_product_url,
+            size: 'large',
+            icon_position: 'trailing'
+          %}
+          <p class="sb-wave-bottom-cta__helper font-caption weight-regular">{{ section.settings.helper_text }}</p>
+        </div>
+      </div>
+
+      <div class="sb-wave-bottom-cta__media">
+        {% if cta_image != blank %}
+          {% assign cta_image_width = cta_image.width | default: 1200 | at_most: 1200 %}
+          {{
+            cta_image
+            | image_url: width: cta_image_width
+            | image_tag:
+              class: 'sb-wave-bottom-cta__image',
+              widths: '480, 640, 800, 1024, 1200',
+              sizes: '(min-width: 990px) 32vw, 100vw',
+              alt: cta_product.title,
+              loading: 'lazy'
+          }}
+        {% else %}
+          <img
+            class="sb-wave-bottom-cta__image"
+            src="{{ 'placeholder-large-feature.png' | asset_url }}"
+            alt="{{ cta_product.title | escape }}"
+            loading="lazy"
+            width="1200"
+            height="1108"
+          >
+        {% endif %}
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% stylesheet %}
+  .sb-wave-bottom-cta {
+    width: 100%;
+  }
+
+  .sb-wave-bottom-cta__shell {
+    align-items: center;
+    background:
+      radial-gradient(circle at top right, rgba(0, 201, 183, 0.12) 0, transparent 18%),
+      linear-gradient(180deg, #161616 0%, #090909 52%, #050505 100%);
+    border: 1px solid var(--sb-color-neutral-700);
+    border-radius: 32px;
+    display: grid;
+    gap: 40px;
+    grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+    overflow: hidden;
+    padding: 44px;
+  }
+
+  .sb-wave-bottom-cta__content {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    min-width: 0;
+  }
+
+  .sb-wave-bottom-cta__eyebrow,
+  .sb-wave-bottom-cta__title,
+  .sb-wave-bottom-cta__proof-text,
+  .sb-wave-bottom-cta__offer-label,
+  .sb-wave-bottom-cta__offer-value,
+  .sb-wave-bottom-cta__helper {
+    margin: 0;
+  }
+
+  .sb-wave-bottom-cta__eyebrow {
+    color: var(--sb-color-primary-500);
+    font-size: 0.95rem;
+    text-transform: uppercase;
+  }
+
+  .sb-wave-bottom-cta__title {
+    color: var(--sb-color-always-white);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25em;
+    line-height: 0.98;
+    max-width: 10ch;
+  }
+
+  .sb-wave-bottom-cta__title-primary,
+  .sb-wave-bottom-cta__title-accent {
+    color: inherit;
+  }
+
+  .sb-wave-bottom-cta__title-accent {
+    color: var(--sb-color-primary-500);
+  }
+
+  .sb-wave-bottom-cta__title-accent {
+    color: var(--sb-color-primary-500);
+  }
+
+  .sb-wave-bottom-cta__body {
+    color: var(--sb-color-always-white);
+    font-size: 1rem;
+    line-height: 1.5;
+    max-width: 620px;
+    opacity: 0.96;
+  }
+
+  .sb-wave-bottom-cta__body,
+  .sb-wave-bottom-cta__body p,
+  .sb-wave-bottom-cta__body strong,
+  .sb-wave-bottom-cta__body a {
+    color: var(--sb-color-always-white);
+  }
+
+  .sb-wave-bottom-cta__body > * {
+    margin: 0;
+  }
+
+  .sb-wave-bottom-cta__body > * + * {
+    margin-top: 16px;
+  }
+
+  .sb-wave-bottom-cta__proof {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 10px 16px;
+    width: fit-content;
+  }
+
+  .sb-wave-bottom-cta__proof-text,
+  .sb-wave-bottom-cta__helper,
+  .sb-wave-bottom-cta__offer-label {
+    color: var(--sb-color-neutral-100);
+  }
+
+  .sb-wave-bottom-cta__proof-text {
+    color: var(--sb-color-always-white);
+    font-size: 1rem;
+    opacity: 1;
+  }
+
+  .sb-wave-bottom-cta__proof-text,
+  .sb-wave-bottom-cta__proof-text * {
+    color: var(--sb-color-always-white);
+  }
+
+  .sb-wave-bottom-cta__savings-badge-wrap {
+    display: flex;
+  }
+
+  .sb-wave-bottom-cta__savings-badge {
+    background: rgba(0, 201, 183, 0.12);
+    border: 1px solid rgba(0, 201, 183, 0.4);
+    border-radius: 999px;
+    color: var(--sb-color-primary-500);
+    display: inline-flex;
+    margin: 0;
+    padding: 10px 16px;
+  }
+
+  .sb-wave-bottom-cta__stars {
+    display: inline-flex;
+    gap: 6px;
+  }
+
+  .sb-wave-bottom-cta__star {
+    background: linear-gradient(90deg, var(--sb-color-reviews) var(--sb-star-fill), var(--sb-color-neutral-700) var(--sb-star-fill));
+    display: block;
+    height: 18px;
+    mask: center / contain no-repeat var(--sb-wave-cta-star-url);
+    width: 18px;
+    -webkit-mask: center / contain no-repeat var(--sb-wave-cta-star-url);
+  }
+
+  .sb-wave-bottom-cta__offers {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sb-wave-bottom-cta__offer {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: space-between;
+    min-height: 132px;
+    padding: 18px;
+  }
+
+  .sb-wave-bottom-cta__offer-label {
+    color: var(--sb-color-always-white);
+    font-size: 0.78rem;
+    opacity: 0.72;
+    text-transform: uppercase;
+  }
+
+  .sb-wave-bottom-cta__offer,
+  .sb-wave-bottom-cta__offer p,
+  .sb-wave-bottom-cta__offer span {
+    color: var(--sb-color-always-white);
+  }
+
+  .sb-wave-bottom-cta__price-row {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .sb-wave-bottom-cta__compare-price {
+    color: var(--sb-color-neutral-300);
+    font-size: 0.95rem;
+    margin: 0;
+    opacity: 0.6;
+    text-decoration: line-through;
+  }
+
+  .sb-wave-bottom-cta__current-price,
+  .sb-wave-bottom-cta__offer-value {
+    color: var(--sb-color-always-white);
+  }
+
+  .sb-wave-bottom-cta__current-price {
+    color: var(--sb-color-primary-500);
+    font-size: clamp(1.75rem, 2.8vw, 2.5rem);
+    letter-spacing: -0.03em;
+    line-height: 0.92;
+    text-shadow: 0 0 24px rgba(0, 201, 183, 0.14);
+  }
+
+  .sb-wave-bottom-cta__offer-value {
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+  }
+
+  .sb-wave-bottom-cta__offer:nth-child(2) .sb-wave-bottom-cta__offer-value {
+    font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+    line-height: 1.18;
+  }
+
+  .sb-wave-bottom-cta__actions {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .sb-wave-bottom-cta__helper {
+    color: var(--sb-color-neutral-200);
+    font-size: 0.9rem;
+    opacity: 0.82;
+  }
+
+  .sb-wave-bottom-cta__helper,
+  .sb-wave-bottom-cta__helper * {
+    color: var(--sb-color-neutral-200);
+  }
+
+  .sb-wave-bottom-cta__actions .sb-button-radiant {
+    box-shadow: 0 18px 36px rgba(0, 201, 183, 0.16);
+  }
+
+  .sb-wave-bottom-cta__media {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 32px;
+    overflow: hidden;
+    padding: 16px;
+    width: 100%;
+  }
+
+  .sb-wave-bottom-cta__image {
+    aspect-ratio: 620 / 554;
+    border-radius: 24px;
+    display: block;
+    height: auto;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  @media screen and (max-width: 1180px) {
+    .sb-wave-bottom-cta__shell {
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 0.78fr);
+    }
+  }
+
+  @media screen and (max-width: 989px) {
+    .sb-wave-bottom-cta__title {
+      max-width: none;
+    }
+
+    .sb-wave-bottom-cta__shell {
+      gap: 36px;
+      grid-template-columns: 1fr;
+      padding: 32px 22px;
+    }
+
+    .sb-wave-bottom-cta__offers {
+      grid-template-columns: 1fr;
+    }
+
+    .sb-wave-bottom-cta__offer {
+      min-height: 0;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .sb-wave-bottom-cta__content {
+      gap: 20px;
+    }
+
+    .sb-wave-bottom-cta__current-price {
+      font-size: 2.2rem;
+    }
+
+    .sb-wave-bottom-cta__offer-value {
+      font-size: 1.5rem;
+    }
+
+    .sb-wave-bottom-cta__proof {
+      width: 100%;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Wave bottom CTA",
+  "settings": [
+    {
+      "type": "text",
+      "id": "product_handle",
+      "label": "Product handle",
+      "default": "wave-in-ear-monitors"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Your first serious IEM"
+    },
+    {
+      "type": "text",
+      "id": "title_part_one",
+      "label": "Title part 1",
+      "default": "Make your move with"
+    },
+    {
+      "type": "text",
+      "id": "title_part_two",
+      "label": "Title part 2",
+      "default": "Soundbrenner Wave"
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body",
+      "default": "<p>You do not need to overthink your first IEM forever. Wave gives you the clarity, comfort, and real-time performance that makes stepping up from everyday listening gear finally feel worth it.</p>"
+    },
+    {
+      "type": "text",
+      "id": "trust_line",
+      "label": "Trust line",
+      "default": "30-day money-back guarantee"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop Wave now"
+    },
+    {
+      "type": "text",
+      "id": "helper_text",
+      "label": "Helper text",
+      "default": "Ships worldwide. Start simple and hear the difference."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Wave bottom CTA"
+    }
+  ]
+}
+{% endschema %}

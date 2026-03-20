@@ -4,10 +4,10 @@
       Compare your options
     </p>
     <h2 class="sb-iem-compare-table__title font-title weight-bold">
-      Why Wave is the better first serious IEM
+      Why Wave makes sense as a first serious IEM
     </h2>
     <p class="sb-iem-compare-table__subtitle font-body weight-regular">
-      A cleaner side-by-side view of what actually matters when you are choosing gear for practice and performance.
+      Wave covers the core benefits musicians actually need for practice and performance, without the cost jump or convenience tradeoffs of the alternatives.
     </p>
   </div>
 
@@ -27,7 +27,7 @@
         <div class="sb-iem-compare-table__cell sb-iem-compare-table__cell--product sb-iem-compare-table__cell--wave" role="columnheader">
           <span class="sb-iem-compare-table__badge font-caption2 weight-semibold">Best fit for musicians</span>
           <p class="sb-iem-compare-table__product-name font-body weight-bold">Soundbrenner Wave IEMs</p>
-          <p class="sb-iem-compare-table__product-note font-caption weight-regular">Built for focused practice and performance</p>
+          <p class="sb-iem-compare-table__product-note font-caption weight-regular">Built for practice and performance</p>
         </div>
 
         <div
@@ -253,6 +253,7 @@
     justify-content: center;
     min-height: 94px;
     padding: var(--sb-space-20);
+    position: relative;
   }
 
   .sb-iem-compare-table__cell:nth-child(5n) {
@@ -284,8 +285,8 @@
   }
 
   .sb-iem-compare-table__cell--product.sb-iem-compare-table__cell--wave {
-    background: linear-gradient(180deg, var(--sb-color-primary-500) 0%, var(--sb-color-primary-700) 100%);
-    border-right-color: var(--sb-color-primary-700);
+    background: transparent !important;
+    border-right-color: transparent;
     color: var(--sb-color-always-white);
   }
 
@@ -300,8 +301,31 @@
   }
 
   .sb-iem-compare-table__cell--wave {
-    background: rgba(0, 201, 183, 0.14) !important;
-    box-shadow: inset 0 0 0 1px var(--sb-color-primary-500);
+    background: transparent !important;
+    border-right-color: transparent;
+    border-top-color: transparent;
+    overflow: hidden;
+  }
+
+  .sb-iem-compare-table__cell--wave::before {
+    background: rgba(0, 201, 183, 0.14);
+    border-left: 1px solid var(--sb-color-primary-500);
+    border-right: 1px solid var(--sb-color-primary-500);
+    border-top: 1px solid var(--sb-color-primary-500);
+    content: '';
+    inset: 0;
+    pointer-events: none;
+    position: absolute;
+  }
+
+  .sb-iem-compare-table__cell--product.sb-iem-compare-table__cell--wave::before {
+    background: linear-gradient(180deg, var(--sb-color-primary-500) 0%, var(--sb-color-primary-700) 100%);
+    border-top: 0;
+  }
+
+  .sb-iem-compare-table__cell > * {
+    position: relative;
+    z-index: 1;
   }
 
   .sb-iem-compare-table__cell--icon {
