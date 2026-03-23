@@ -630,8 +630,8 @@
       border: 1px solid var(--sb-color-primary-300-25);
       border-radius: 24px;
       display: grid;
-      gap: var(--sb-space-16);
-      padding: var(--sb-space-20);
+      gap: var(--sb-space-20);
+      padding: var(--sb-space-24);
     }
 
     #sb-beat-the-metronome-page .sb-beat__success-label {
@@ -642,6 +642,16 @@
       letter-spacing: 0.12em;
       margin: 0;
       text-transform: uppercase;
+    }
+
+    #sb-beat-the-metronome-page .sb-beat__success > div:first-child {
+      display: grid;
+      gap: var(--sb-space-8);
+    }
+
+    #sb-beat-the-metronome-page .sb-beat__success .sb-beat__feedback-heading {
+      line-height: 1.12;
+      margin-bottom: var(--sb-space-6);
     }
 
     #sb-beat-the-metronome-page .sb-beat__code-card {
@@ -664,18 +674,6 @@
     #sb-beat-the-metronome-page .sb-beat__code-card--link {
       color: var(--sb-color-neutral-900);
       text-decoration: none;
-    }
-
-    #sb-beat-the-metronome-page .sb-beat__code-card::after {
-      background: var(--sb-beat-accent-gradient);
-      border-radius: 999px;
-      content: '';
-      height: 110px;
-      opacity: 0.38;
-      position: absolute;
-      right: -18px;
-      top: -18px;
-      width: 110px;
     }
 
     #sb-beat-the-metronome-page .sb-beat__code {
@@ -702,25 +700,34 @@
       z-index: 1;
     }
 
-    #sb-beat-the-metronome-page .sb-beat__code-card-action {
-      align-items: center;
-      color: var(--sb-color-neutral-900);
-      display: inline-flex;
-      font-family: var(--font-primary--family);
-      font-size: 0.95rem;
-      font-weight: 700;
-      gap: var(--sb-space-8);
-      justify-content: center;
-      line-height: 1.2;
+    #sb-beat-the-metronome-page .sb-beat__code-card > div:first-child {
+      flex: 1 1 auto;
+      min-width: 0;
       position: relative;
-      text-align: left;
       z-index: 1;
     }
 
-    #sb-beat-the-metronome-page .sb-beat__code-card-action::after {
-      content: '->';
-      font-size: 0.9em;
+    #sb-beat-the-metronome-page .sb-beat__code-card-action {
+      align-items: center;
+      background: var(--sb-beat-accent-gradient);
+      border: 0;
+      border-radius: var(--sb-radius-pill);
+      box-shadow: 0 18px 34px var(--sb-color-primary-500-25);
+      color: var(--sb-color-always-white);
+      display: inline-flex;
+      font-family: var(--font-primary--family);
+      font-size: 1rem;
+      font-weight: 700;
+      justify-content: center;
       line-height: 1;
+      min-height: 56px;
+      padding: 0 var(--sb-space-24);
+      position: relative;
+      text-align: center;
+      text-wrap: nowrap;
+      white-space: nowrap;
+      width: 100%;
+      z-index: 1;
     }
 
     #sb-beat-the-metronome-page .sb-beat__retry {
@@ -738,7 +745,7 @@
       font-size: clamp(1.5rem, 4vw, 2.2rem);
       font-weight: 700;
       letter-spacing: -0.03em;
-      line-height: 1.12;
+      line-height: 1.18;
       margin: 0;
     }
 
@@ -940,13 +947,16 @@
       }
 
       #sb-beat-the-metronome-page .sb-beat__code-card {
-        align-items: center;
-        flex-direction: row;
-        justify-content: space-between;
+        gap: var(--sb-space-16);
+        padding: var(--sb-space-24);
       }
 
       #sb-beat-the-metronome-page .sb-beat__code-card-action {
-        text-align: right;
+        font-size: 1rem;
+        justify-content: center;
+        min-height: 60px;
+        padding: 0 var(--sb-space-24);
+        width: 100%;
       }
 
       #sb-beat-the-metronome-page .sb-beat__fallback-unlock {
@@ -1541,6 +1551,7 @@
 
         if (won) {
           setMode('success');
+          startButton.hidden = true;
           successPanel.hidden = false;
           pulseStage.dataset.pulse = 'success';
           state.currentBeatDisplay = '';
@@ -1576,6 +1587,7 @@
       const softUnlock = () => {
         optionsWrap.hidden = true;
         retryPanel.hidden = true;
+        startButton.hidden = true;
         successPanel.hidden = false;
         setMode('success');
         pulseStage.dataset.pulse = 'success';
@@ -1586,7 +1598,7 @@
         successBody.textContent = '';
         feedbackHeading.textContent = '';
         feedbackBody.textContent = '';
-        roundLabel.textContent = 'Offer unlocked.';
+        roundLabel.textContent = '';
         setLiveMessage('Success. Your discount code is BEAT25.');
         focusSoon(successShopLink);
       };
