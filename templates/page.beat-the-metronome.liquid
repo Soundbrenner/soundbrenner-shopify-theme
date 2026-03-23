@@ -18,7 +18,10 @@
       isolation: isolate;
       overflow: hidden;
       overflow: clip;
-      padding: var(--sb-space-24) var(--page-margin-mobile) var(--sb-space-48);
+      padding-top: calc(var(--sb-space-40, 40px) + var(--sb-space-24, 24px));
+      padding-right: var(--page-margin-mobile, 20px);
+      padding-bottom: var(--sb-space-32, 32px);
+      padding-left: var(--page-margin-mobile, 20px);
       position: relative;
     }
 
@@ -67,7 +70,7 @@
     }
 
     #sb-beat-the-metronome-page .sb-beat__shell {
-      margin: 0 auto;
+      margin: var(--sb-space-24, 24px) auto 0;
       max-width: var(--sb-beat-page-max-width);
     }
 
@@ -76,6 +79,7 @@
       border: var(--sb-beat-page-border);
       border-radius: calc(var(--sb-beat-page-radius) + 8px);
       box-shadow: var(--sb-beat-page-shadow);
+      margin-top: var(--sb-space-24, 24px);
       overflow: hidden;
       position: relative;
     }
@@ -114,19 +118,14 @@
     }
 
     #sb-beat-the-metronome-page .sb-beat__intro-actions {
-      display: grid;
-      gap: var(--sb-space-12);
-      max-width: 30rem;
+      align-items: flex-start;
+      display: flex;
+      max-width: 100%;
       width: 100%;
     }
 
     #sb-beat-the-metronome-page .sb-beat__promo-card {
-      background: linear-gradient(180deg, var(--sb-color-neutral-900-12) 0%, var(--sb-color-primary-500-25) 100%);
-      border: 1px solid var(--sb-color-primary-300-25);
-      border-radius: 22px;
-      display: grid;
-      gap: var(--sb-space-12);
-      padding: var(--sb-space-18);
+      width: 100%;
     }
 
     #sb-beat-the-metronome-page .sb-beat__promo-kicker {
@@ -205,12 +204,7 @@
     }
 
     #sb-beat-the-metronome-page .sb-beat__eyebrow::before {
-      background: var(--sb-beat-accent-gradient);
-      border-radius: 999px;
-      content: '';
-      display: block;
-      height: 10px;
-      width: 40px;
+      content: none;
     }
 
     #sb-beat-the-metronome-page .sb-beat__headline {
@@ -307,9 +301,13 @@
     }
 
     #sb-beat-the-metronome-page .sb-beat__arena {
-      background: linear-gradient(180deg, var(--sb-color-neutral-200-80) 0%, var(--sb-color-neutral-200-40) 100%);
+      background:
+        linear-gradient(135deg, var(--sb-color-neutral-200-80) 0%, var(--sb-color-neutral-200-40) 100%);
       border: 1px solid var(--sb-color-neutral-900-12);
       border-radius: var(--sb-beat-page-radius);
+      box-shadow:
+        inset 0 1px 0 var(--sb-color-always-white-12),
+        inset 0 -8px 24px var(--sb-color-always-black-12);
       overflow: hidden;
       padding: var(--sb-space-24);
       position: relative;
@@ -329,55 +327,22 @@
       position: absolute;
     }
 
+    #sb-beat-the-metronome-page .sb-beat__arena::after {
+      background:
+        linear-gradient(180deg, var(--sb-color-always-white-12) 0%, var(--sb-color-always-white-0) 18%);
+      content: '';
+      inset: 0;
+      opacity: 0.7;
+      pointer-events: none;
+      position: absolute;
+    }
+
     #sb-beat-the-metronome-page .sb-beat__arena-inner {
       align-items: start;
       display: grid;
       gap: var(--sb-space-20);
       position: relative;
       z-index: 1;
-    }
-
-    #sb-beat-the-metronome-page .sb-beat__status-row {
-      align-items: flex-start;
-      display: flex;
-      flex-direction: column;
-      gap: var(--sb-space-16);
-      justify-content: flex-start;
-      margin-bottom: var(--sb-space-12);
-    }
-
-    #sb-beat-the-metronome-page .sb-beat__label {
-      color: var(--sb-color-neutral-900-50);
-      font-family: var(--font-primary--family);
-      font-size: var(--font-size-caption);
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      margin: 0;
-      text-transform: uppercase;
-    }
-
-    #sb-beat-the-metronome-page .sb-beat__pill {
-      align-items: center;
-      background: var(--sb-color-neutral-900-12);
-      border: 1px solid var(--sb-color-neutral-900-12);
-      border-radius: 999px;
-      color: var(--sb-color-neutral-900);
-      display: inline-flex;
-      font-family: var(--font-primary--family);
-      font-size: var(--font-size-caption);
-      font-weight: 600;
-      gap: var(--sb-space-8);
-      min-height: 38px;
-      padding: 0 var(--sb-space-20);
-      white-space: nowrap;
-    }
-
-    #sb-beat-the-metronome-page .sb-beat__pill-dot {
-      background: var(--sb-beat-accent-gradient);
-      border-radius: 999px;
-      display: block;
-      height: 8px;
-      width: 8px;
     }
 
     #sb-beat-the-metronome-page .sb-beat__pulse-wrap {
@@ -390,6 +355,10 @@
       position: relative;
     }
 
+    #sb-beat-the-metronome-page .sb-beat__pulse-wrap::before {
+      content: none;
+    }
+
     #sb-beat-the-metronome-page .sb-beat__pulse-stage {
       align-items: center;
       display: grid;
@@ -397,6 +366,7 @@
       justify-items: center;
       position: relative;
       width: min(46vw, 220px);
+      z-index: 1;
     }
 
     #sb-beat-the-metronome-page .sb-beat__pulse-ring,
@@ -435,14 +405,14 @@
         radial-gradient(circle at 30% 30%, var(--sb-color-always-white-25), var(--sb-color-always-white-0) 38%),
         var(--sb-beat-accent-gradient);
       box-shadow:
-        0 18px 38px var(--sb-color-always-black-25),
-        0 0 0 14px var(--sb-color-primary-500-0);
+        0 14px 28px var(--sb-color-always-black-25),
+        0 0 0 10px var(--sb-color-primary-500-0);
       color: var(--sb-color-always-white);
       display: grid;
       font-family: var(--font-display--family);
       font-size: clamp(2.1rem, 6vw, 3.2rem);
       font-weight: 700;
-      height: 42%;
+      height: 34%;
       justify-items: center;
       letter-spacing: -0.04em;
       line-height: 1;
@@ -453,7 +423,7 @@
       transition:
         box-shadow var(--sb-beat-transition),
         transform var(--sb-beat-transition);
-      width: 42%;
+      width: 34%;
     }
 
     #sb-beat-the-metronome-page .sb-beat__pulse-stage[data-pulse='playing'] .sb-beat__pulse-core,
@@ -485,6 +455,10 @@
       min-height: 1.2em;
       text-align: center;
       text-transform: uppercase;
+    }
+
+    #sb-beat-the-metronome-page .sb-beat__round-label:empty {
+      display: none;
     }
 
     #sb-beat-the-metronome-page .sb-beat__track {
@@ -523,35 +497,17 @@
     }
 
     #sb-beat-the-metronome-page .sb-beat__track-dot[data-dot-state='active']::after,
-    #sb-beat-the-metronome-page .sb-beat__track-dot[data-dot-state='complete']::after {
+    #sb-beat-the-metronome-page .sb-beat__track-dot[data-dot-state='correct']::after,
+    #sb-beat-the-metronome-page .sb-beat__track-dot[data-dot-state='incorrect']::after {
       opacity: 1;
     }
 
-    #sb-beat-the-metronome-page .sb-beat__progress {
-      align-items: flex-start;
-      display: flex;
-      flex-direction: column;
-      flex-wrap: wrap;
-      gap: var(--sb-space-8);
-      justify-content: flex-start;
-      margin-bottom: 0;
+    #sb-beat-the-metronome-page .sb-beat__track-dot[data-dot-state='correct']::after {
+      background: var(--sb-color-success-500, #22c55e);
     }
 
-    #sb-beat-the-metronome-page .sb-beat__progress-value {
-      font-family: var(--font-display--family);
-      font-size: clamp(1.25rem, 3.1vw, 1.65rem);
-      font-weight: 700;
-      letter-spacing: -0.04em;
-      margin: 0;
-    }
-
-    #sb-beat-the-metronome-page .sb-beat__progress-copy {
-      color: var(--sb-color-neutral-900-50);
-      font-family: var(--font-primary--family);
-      font-size: var(--font-size-caption);
-      font-weight: 600;
-      margin: 0;
-      text-transform: uppercase;
+    #sb-beat-the-metronome-page .sb-beat__track-dot[data-dot-state='incorrect']::after {
+      background: var(--sb-color-error-500, #ef4444);
     }
 
     #sb-beat-the-metronome-page .sb-beat__feedback {
@@ -571,6 +527,10 @@
       text-wrap: balance;
     }
 
+    #sb-beat-the-metronome-page .sb-beat__feedback-heading:empty {
+      display: none;
+    }
+
     #sb-beat-the-metronome-page .sb-beat__feedback-body {
       color: var(--sb-color-neutral-900-75);
       font-family: var(--font-primary--family);
@@ -580,43 +540,15 @@
       max-width: 30rem;
     }
 
-    #sb-beat-the-metronome-page .sb-beat__controls {
-      align-items: stretch;
-      display: grid;
-      gap: var(--sb-space-12);
-      grid-template-columns: minmax(0, 1fr);
-      margin-bottom: 0;
+    #sb-beat-the-metronome-page .sb-beat__feedback-body:empty {
+      display: none;
     }
 
-    #sb-beat-the-metronome-page .sb-beat__controls[hidden],
     #sb-beat-the-metronome-page .sb-beat__options[hidden],
     #sb-beat-the-metronome-page .sb-beat__success[hidden],
     #sb-beat-the-metronome-page .sb-beat__retry[hidden],
     #sb-beat-the-metronome-page .sb-beat__attempt-hint[hidden] {
       display: none;
-    }
-
-    #sb-beat-the-metronome-page .sb-beat__replay {
-      background:
-        linear-gradient(180deg, var(--sb-color-neutral-200) 0%, var(--sb-color-neutral-300) 100%);
-      border: 1px solid var(--sb-color-neutral-900-12);
-      color: var(--sb-color-neutral-900);
-      font-family: var(--font-display--family);
-      font-size: clamp(1.25rem, 2.6vw, 1.7rem);
-      font-weight: 700;
-      letter-spacing: -0.04em;
-      line-height: 1.1;
-      min-height: 76px;
-      min-width: 0;
-      padding: var(--sb-space-16) var(--sb-space-12);
-      text-align: center;
-      width: 100%;
-    }
-
-    #sb-beat-the-metronome-page .sb-beat__replay[disabled] {
-      cursor: not-allowed;
-      opacity: 0.45;
-      transform: none;
     }
 
     #sb-beat-the-metronome-page .sb-beat__options {
@@ -644,6 +576,30 @@
       text-wrap: nowrap;
       white-space: nowrap;
       width: 100%;
+    }
+
+    #sb-beat-the-metronome-page[data-state='idle'] .sb-beat__feedback {
+      display: none;
+    }
+
+    #sb-beat-the-metronome-page[data-state='idle'] .sb-beat__track {
+      opacity: 0.78;
+    }
+
+    #sb-beat-the-metronome-page[data-state='idle'] .sb-beat__primary-button {
+      align-self: center;
+      background:
+        linear-gradient(135deg, var(--sb-color-primary-500) 0%, var(--sb-color-blue-300) 100%);
+      border: 1px solid var(--sb-color-always-white-12);
+      border-radius: 999px;
+      box-shadow:
+        0 14px 28px var(--sb-color-primary-500-25),
+        inset 0 1px 0 var(--sb-color-always-white-25);
+      font-size: clamp(1.2rem, 2.6vw, 1.7rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      min-height: 76px;
+      padding: var(--sb-space-14) var(--sb-space-24);
     }
 
     #sb-beat-the-metronome-page .sb-beat__option-button[data-answered='true'][data-correct='true'] {
@@ -806,11 +762,13 @@
       font-size: var(--font-size-caption);
       font-weight: 700;
       justify-content: center;
-      min-height: 40px;
+      min-height: 36px;
       line-height: 1.3;
-      padding: var(--sb-space-8) var(--sb-space-16);
+      padding: var(--sb-space-8) var(--sb-space-14);
+      text-align: center;
       text-decoration: none;
-      width: 100%;
+      white-space: normal;
+      width: auto;
     }
 
     #sb-beat-the-metronome-page .sb-beat__fallback-unlock:focus-visible {
@@ -856,57 +814,68 @@
 
     @media (min-width: 990px) {
       #sb-beat-the-metronome-page {
-        padding: var(--sb-space-30) var(--page-margin-desktop) var(--sb-space-64);
+        padding-top: calc(var(--sb-space-48, 48px) + var(--sb-space-24, 24px));
+        padding-right: var(--page-margin-desktop, 32px);
+        padding-bottom: var(--sb-space-32, 32px);
+        padding-left: var(--page-margin-desktop, 32px);
       }
 
       #sb-beat-the-metronome-page .sb-beat__panel-inner {
-        gap: var(--sb-space-30);
+        align-items: start;
+        gap: var(--sb-space-40);
+        grid-template-columns: minmax(0, 400px) minmax(0, calc(100% - 440px));
         padding: var(--sb-space-30);
       }
 
+      #sb-beat-the-metronome-page .sb-beat__panel {
+        margin-top: var(--sb-space-32, 32px);
+      }
+
+      #sb-beat-the-metronome-page .sb-beat__shell {
+        margin-top: var(--sb-space-32, 32px);
+      }
+
       #sb-beat-the-metronome-page .sb-beat__intro {
-        align-items: end;
-        column-gap: var(--sb-space-24);
+        align-items: start;
         gap: var(--sb-space-16);
-        grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+        justify-items: stretch;
       }
 
       #sb-beat-the-metronome-page .sb-beat__intro-main {
-        grid-column: 1;
+        max-width: none;
       }
 
       #sb-beat-the-metronome-page .sb-beat__intro-actions {
-        grid-column: 2;
-        justify-self: end;
+        justify-self: start;
+        width: auto;
+      }
+
+      #sb-beat-the-metronome-page .sb-beat__arena {
+        min-width: 0;
         width: 100%;
       }
 
       #sb-beat-the-metronome-page .sb-beat__arena-inner {
         align-items: center;
-        column-gap: var(--sb-space-24);
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-      }
-
-      #sb-beat-the-metronome-page .sb-beat__primary-button {
-        min-width: 220px;
-        width: auto;
+        gap: var(--sb-space-24);
+        grid-template-columns: minmax(0, 420px);
+        justify-content: center;
       }
 
       #sb-beat-the-metronome-page .sb-beat__headline {
-        max-width: 10ch;
-        font-size: clamp(2.35rem, 5.8vw, 4.7rem);
+        max-width: 8ch;
+        font-size: clamp(2.1rem, 4.7vw, 4.1rem);
         line-height: 0.98;
       }
 
       #sb-beat-the-metronome-page .sb-beat__subheadline {
-        font-size: clamp(1.15rem, 2.3vw, 1.65rem);
+        font-size: clamp(1.05rem, 1.9vw, 1.45rem);
         line-height: 1.12;
+        max-width: 18ch;
       }
 
       #sb-beat-the-metronome-page .sb-beat__promo-card {
-        border-radius: 24px;
-        gap: var(--sb-space-12);
-        padding: var(--sb-space-20);
+        width: 100%;
       }
 
       #sb-beat-the-metronome-page .sb-beat__promo-title {
@@ -924,66 +893,50 @@
         gap: var(--sb-space-12);
       }
 
-      #sb-beat-the-metronome-page .sb-beat__status-row,
-      #sb-beat-the-metronome-page .sb-beat__track,
-      #sb-beat-the-metronome-page .sb-beat__progress,
-      #sb-beat-the-metronome-page .sb-beat__feedback,
-      #sb-beat-the-metronome-page .sb-beat__options,
-      #sb-beat-the-metronome-page .sb-beat__result {
-        grid-column: 2 / span 3;
-      }
-
       #sb-beat-the-metronome-page .sb-beat__pulse-wrap {
-        grid-column: 1;
-        grid-row: 1 / span 4;
-        min-height: 100%;
+        grid-column: auto;
+        grid-row: auto;
+        min-height: 0;
         padding: 0;
+        width: 100%;
       }
 
       #sb-beat-the-metronome-page .sb-beat__pulse-stage {
-        height: min(34vw, 184px);
-        width: min(34vw, 184px);
+        height: min(24vw, 148px);
+        width: min(24vw, 148px);
       }
 
-      #sb-beat-the-metronome-page .sb-beat__controls {
-        align-items: center;
-        grid-column: 1;
-        grid-row: 5;
+      #sb-beat-the-metronome-page .sb-beat__track,
+      #sb-beat-the-metronome-page .sb-beat__feedback,
+      #sb-beat-the-metronome-page .sb-beat__options,
+      #sb-beat-the-metronome-page .sb-beat__result,
+      #sb-beat-the-metronome-page .sb-beat__primary-button {
+        grid-column: auto;
+        grid-row: auto;
         width: 100%;
       }
 
       #sb-beat-the-metronome-page .sb-beat__options {
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        grid-row: 5;
         margin-bottom: 0;
-      }
-
-      #sb-beat-the-metronome-page .sb-beat__result {
-        grid-row: 6;
       }
 
       #sb-beat-the-metronome-page[data-state='success'] .sb-beat__result,
       #sb-beat-the-metronome-page[data-state='retry'] .sb-beat__result {
         align-self: start;
-        grid-row: 5;
-      }
-
-      #sb-beat-the-metronome-page .sb-beat__status-row {
-        align-items: center;
-        flex-direction: row;
-        justify-content: space-between;
-        margin-bottom: 0;
-      }
-
-      #sb-beat-the-metronome-page .sb-beat__progress {
-        align-items: center;
-        flex-direction: row;
-        gap: var(--sb-space-16);
-        justify-content: space-between;
       }
 
       #sb-beat-the-metronome-page .sb-beat__feedback {
         min-height: 0;
+      }
+
+      #sb-beat-the-metronome-page .sb-beat__feedback-heading {
+        font-size: clamp(1.2rem, 3.1vw, 1.7rem);
+      }
+
+      #sb-beat-the-metronome-page .sb-beat__feedback-body {
+        font-size: 0.9rem;
+        max-width: 24rem;
       }
 
       #sb-beat-the-metronome-page .sb-beat__code-card {
@@ -997,12 +950,17 @@
       }
 
       #sb-beat-the-metronome-page .sb-beat__fallback-unlock {
-        width: fit-content;
+        min-height: 34px;
+        padding: var(--sb-space-8) var(--sb-space-12);
       }
 
       #sb-beat-the-metronome-page .sb-beat__option-button {
         min-height: 76px;
         padding: var(--sb-space-16) var(--sb-space-12);
+      }
+
+      #sb-beat-the-metronome-page .sb-beat__option-button {
+        font-size: clamp(1.05rem, 2.1vw, 1.45rem);
       }
     }
 
@@ -1026,24 +984,25 @@
       }
 
       #sb-beat-the-metronome-page .sb-beat__headline {
-        font-size: clamp(1.85rem, 9.2vw, 3rem);
-        line-height: 1;
-        max-width: 8.5ch;
+        font-size: clamp(1.85rem, 9vw, 3rem);
+        line-height: 0.98;
+        max-width: none;
+        text-wrap: pretty;
       }
 
       #sb-beat-the-metronome-page .sb-beat__subheadline {
         font-size: clamp(0.98rem, 5vw, 1.3rem);
         line-height: 1.18;
-        max-width: 11ch;
+        max-width: none;
+        text-wrap: pretty;
       }
 
       #sb-beat-the-metronome-page .sb-beat__intro-actions {
-        gap: var(--sb-space-18);
+        width: 100%;
       }
 
       #sb-beat-the-metronome-page .sb-beat__promo-card {
-        gap: var(--sb-space-16);
-        padding: var(--sb-space-24);
+        width: 100%;
       }
 
       #sb-beat-the-metronome-page .sb-beat__promo-kicker {
@@ -1081,6 +1040,24 @@
 
       #sb-beat-the-metronome-page .sb-beat__fallback-unlock {
         margin-top: var(--sb-space-8);
+        display: flex;
+        justify-content: center;
+        min-height: 52px;
+        padding: var(--sb-space-10) var(--sb-space-16);
+        width: 100%;
+      }
+
+      #sb-beat-the-metronome-page[data-state='idle'] .sb-beat__pulse-wrap {
+        padding-top: var(--sb-space-6);
+      }
+
+      #sb-beat-the-metronome-page[data-state='idle'] .sb-beat__track {
+        margin-bottom: var(--sb-space-4);
+      }
+
+      #sb-beat-the-metronome-page[data-state='idle'] .sb-beat__primary-button {
+        font-size: clamp(1.1rem, 5.8vw, 1.4rem);
+        min-height: 72px;
       }
     }
 
@@ -1130,38 +1107,20 @@
           </div>
 
           <div class="sb-beat__intro-actions">
-            <div class="sb-beat__promo-card">
-              <p class="sb-beat__promo-kicker">Limited-time unlock</p>
-              <p class="sb-beat__promo-title">Get your subscriber-only <strong>25% off</strong> code in under a minute.</p>
-              <p class="sb-beat__promo-body">Three quick tempo guesses. One short flash-sale window. No account hoops, no long game loop.</p>
-              <div class="sb-beat__promo-points" aria-hidden="true">
-                <div class="sb-beat__promo-point">Subscriber flash sale</div>
-                <div class="sb-beat__promo-point">Only 3 rounds to unlock</div>
-                <div class="sb-beat__promo-point">Replay the beat before you answer</div>
-              </div>
-              <button class="sb-beat__fallback-unlock" type="button" data-unlock-anyway-button>
-                Unlock the code without playing
-              </button>
-            </div>
+            <button class="sb-beat__fallback-unlock" type="button" data-unlock-anyway-button>
+              Unlock the code without playing
+            </button>
           </div>
         </div>
 
         <div class="sb-beat__arena" id="sb-beat-arena">
           <div class="sb-beat__arena-inner">
-            <div class="sb-beat__status-row">
-              <p class="sb-beat__label">BPM test</p>
-              <p class="sb-beat__pill">
-                <span class="sb-beat__pill-dot" aria-hidden="true"></span>
-                <span data-attempt-text>Attempt 1</span>
-              </p>
-            </div>
-
             <div class="sb-beat__pulse-wrap">
               <div class="sb-beat__pulse-stage" data-pulse-stage data-pulse="idle">
                 <div class="sb-beat__pulse-ring" aria-hidden="true"></div>
-                <div class="sb-beat__pulse-core" data-pulse-core>?</div>
+                <div class="sb-beat__pulse-core" data-pulse-core aria-hidden="true"></div>
               </div>
-              <p class="sb-beat__round-label" data-round-label>Ready when you are.</p>
+              <p class="sb-beat__round-label" data-round-label></p>
             </div>
 
             <div class="sb-beat__track" aria-hidden="true">
@@ -1170,25 +1129,12 @@
               {% endfor %}
             </div>
 
-            <div class="sb-beat__progress">
-              <p class="sb-beat__progress-value" data-progress-value>Round 1 / 3</p>
-              <p class="sb-beat__progress-copy">Correct guesses: <span data-score-value>0</span></p>
-            </div>
-
             <div class="sb-beat__feedback">
-              <h2 class="sb-beat__feedback-heading" data-feedback-heading>Listen for the groove.</h2>
-              <p class="sb-beat__feedback-body" data-feedback-body>
-                Press start, hear the beat, then choose the BPM that matches what you heard.
-              </p>
+              <h2 class="sb-beat__feedback-heading" data-feedback-heading></h2>
+              <p class="sb-beat__feedback-body" data-feedback-body></p>
             </div>
 
-            <div class="sb-beat__controls" data-controls hidden>
-              <button class="sb-beat__action-button sb-beat__replay" type="button" data-replay-button disabled>
-                Play beat
-              </button>
-            </div>
-
-            <button class="sb-beat__primary-button" type="button" data-start-button>Start the Test</button>
+            <button class="sb-beat__primary-button" type="button" data-start-button>Start</button>
 
             <div class="sb-beat__options" data-options hidden>
               <button class="sb-beat__option-button" type="button" data-option-button></button>
@@ -1202,7 +1148,7 @@
                   <p class="sb-beat__success-label">Flash sale unlocked</p>
                   <h3 class="sb-beat__feedback-heading" data-success-heading>Nice. You earned it.</h3>
                   <p class="sb-beat__score-line" data-final-score-success></p>
-                  <p class="sb-beat__feedback-body" data-success-body>Your 25% off code is: BEAT25</p>
+                  <p class="sb-beat__feedback-body" data-success-body></p>
                 </div>
 
                 <a class="sb-beat__code-card sb-beat__code-card--link" href="https://www.soundbrenner.com/discount/BEAT25" data-success-shop-link>
@@ -1284,18 +1230,13 @@
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       const startButton = root.querySelector('[data-start-button]');
-      const replayButton = root.querySelector('[data-replay-button]');
       const successShopLink = root.querySelector('[data-success-shop-link]');
       const tryAgainButton = root.querySelector('[data-try-again-button]');
-      const attemptText = root.querySelector('[data-attempt-text]');
       const pulseStage = root.querySelector('[data-pulse-stage]');
       const pulseCore = root.querySelector('[data-pulse-core]');
       const roundLabel = root.querySelector('[data-round-label]');
-      const progressValue = root.querySelector('[data-progress-value]');
-      const scoreValue = root.querySelector('[data-score-value]');
       const feedbackHeading = root.querySelector('[data-feedback-heading]');
       const feedbackBody = root.querySelector('[data-feedback-body]');
-      const controls = root.querySelector('[data-controls]');
       const optionsWrap = root.querySelector('[data-options]');
       const optionButtons = Array.from(root.querySelectorAll('[data-option-button]'));
       const successPanel = root.querySelector('[data-success-panel]');
@@ -1317,7 +1258,8 @@
         mercyMode: false,
         roundIndex: 0,
         score: 0,
-        currentBeatDisplay: '?',
+        roundResults: [],
+        currentBeatDisplay: '',
         hasAnsweredCurrentRound: false,
         audioContext: null,
         activeRounds: [],
@@ -1384,19 +1326,8 @@
         }, 40);
       };
 
-      const setReplayControl = (mode) => {
-        if (mode === 'restart') {
-          controls.hidden = false;
-          replayButton.hidden = false;
-          replayButton.disabled = false;
-          replayButton.textContent = 'Play again';
-          replayButton.dataset.controlMode = 'restart';
-          return;
-        }
-
-        replayButton.hidden = false;
-        replayButton.textContent = 'Play beat';
-        replayButton.dataset.controlMode = 'replay';
+      const setPulseDisplay = (label = '') => {
+        pulseCore.textContent = label;
       };
 
       const setMode = (mode) => {
@@ -1407,7 +1338,7 @@
       const setPulse = (pulseState, label) => {
         pulseStage.dataset.pulse = pulseState;
         if (typeof label === 'string') {
-          pulseCore.textContent = label;
+          setPulseDisplay(label);
         }
 
         if (prefersReducedMotion || pulseState === 'success') return;
@@ -1418,37 +1349,32 @@
         state.pulseResetTimer = window.setTimeout(() => {
           if (state.mode === 'success') {
             pulseStage.dataset.pulse = 'success';
-            pulseCore.textContent = '?';
+            setPulseDisplay('');
             return;
           }
 
           pulseStage.dataset.pulse = 'idle';
           if (state.mode === 'playing') {
-            pulseCore.textContent = `${state.currentBeatDisplay}`;
+            setPulseDisplay(`${state.currentBeatDisplay}`);
             return;
           }
 
           if (state.mode === 'guessing') {
-            pulseCore.textContent = '?';
+            setPulseDisplay('');
           }
         }, 220);
       };
 
       const updateTrackDots = (activeIndex = -1) => {
         trackDots.forEach((dot, index) => {
-          if (index < state.roundIndex) {
-            dot.dataset.dotState = 'complete';
+          if (state.roundResults[index]) {
+            dot.dataset.dotState = state.roundResults[index];
           } else if (index === activeIndex) {
             dot.dataset.dotState = 'active';
           } else {
             dot.dataset.dotState = 'pending';
           }
         });
-      };
-
-      const updateProgress = () => {
-        progressValue.textContent = `Round ${Math.min(state.roundIndex + 1, roundBank.length)} / ${roundBank.length}`;
-        scoreValue.textContent = `${state.score}`;
       };
 
       const resetOptionButtons = () => {
@@ -1476,8 +1402,6 @@
       const setIdleUi = () => {
         setMode('idle');
         startButton.hidden = false;
-        controls.hidden = true;
-        setReplayControl('replay');
         optionsWrap.hidden = true;
         successPanel.hidden = true;
         retryPanel.hidden = true;
@@ -1485,14 +1409,12 @@
         resetOptionButtons();
         state.roundIndex = 0;
         state.score = 0;
-        updateProgress();
-        attemptText.textContent = `Attempt ${Math.max(state.attempts, 1)}${state.mercyMode ? ' · Mercy mode' : ''}`;
-        feedbackHeading.textContent = 'Listen for the groove.';
-        feedbackBody.textContent = 'Press start, hear the beat, then choose the BPM that matches what you heard.';
-        roundLabel.textContent = 'Ready when you are.';
-        replayButton.disabled = true;
-        state.currentBeatDisplay = '?';
-        setPulse('idle', '?');
+        state.roundResults = [];
+        feedbackHeading.textContent = '';
+        feedbackBody.textContent = '';
+        roundLabel.textContent = '';
+        state.currentBeatDisplay = '';
+        setPulse('idle', '');
         updateTrackDots();
         setLiveMessage('Challenge ready. Press start when you are ready.');
       };
@@ -1546,12 +1468,11 @@
       const currentRound = () => state.activeRounds[state.roundIndex];
 
       const finishPlayback = () => {
-        replayButton.disabled = false;
         setMode('guessing');
-        setPulse('idle', '?');
+        setPulse('idle', '');
         feedbackHeading.textContent = 'What BPM was that?';
-        feedbackBody.textContent = 'Choose the BPM that feels right. You can replay the beat before answering.';
-        roundLabel.textContent = `Pick the BPM for round ${state.roundIndex + 1}`;
+        feedbackBody.textContent = '';
+        roundLabel.textContent = '';
         setOptionsForRound();
         optionsWrap.hidden = false;
         optionButtons[0].focus();
@@ -1564,19 +1485,16 @@
 
         clearTimers();
         state.hasAnsweredCurrentRound = false;
-        setReplayControl('replay');
-        replayButton.disabled = true;
         resetOptionButtons();
         optionsWrap.hidden = true;
-        controls.hidden = false;
         updateTrackDots(state.roundIndex);
         setMode('playing');
-        feedbackHeading.textContent = `Round ${state.roundIndex + 1}. Listen closely.`;
+        feedbackHeading.textContent = '';
         feedbackBody.textContent = state.mercyMode
           ? 'The BPM options are spread further apart on this attempt, so trust the feel of the pulse.'
-          : 'We’ll play the beat now. Let it settle in before you guess.';
-        roundLabel.textContent = `Get ready for round ${state.roundIndex + 1}`;
-        state.currentBeatDisplay = '?';
+          : '';
+        roundLabel.textContent = '';
+        state.currentBeatDisplay = '';
         setLiveMessage(`Playing round ${state.roundIndex + 1}. Listen to the tempo.`);
 
         await primeAudio();
@@ -1590,7 +1508,6 @@
         for (let beatIndex = 0; beatIndex < config.playBeats; beatIndex += 1) {
           queueTimeout(() => {
             state.currentBeatDisplay = `${beatIndex + 1}`;
-            roundLabel.textContent = `Playing round ${state.roundIndex + 1}`;
             setPulse('playing', `${state.currentBeatDisplay}`);
           }, config.playbackLeadInMs + beatIndex * beatInterval);
 
@@ -1619,23 +1536,21 @@
         const won = state.score >= threshold;
         const scoreLine = `Score: ${state.score} / ${roundBank.length}`;
 
-        controls.hidden = true;
         optionsWrap.hidden = true;
         updateTrackDots(-1);
 
         if (won) {
           setMode('success');
           successPanel.hidden = false;
-          setReplayControl('restart');
           pulseStage.dataset.pulse = 'success';
-          state.currentBeatDisplay = '?';
-          pulseCore.textContent = '?';
+          state.currentBeatDisplay = '';
+          setPulseDisplay('');
           feedbackHeading.textContent = 'Nice. You earned it.';
-          feedbackBody.textContent = 'Your 25% off code is: BEAT25';
+          feedbackBody.textContent = '';
           successHeading.textContent = 'Nice. You earned it.';
-          successBody.textContent = 'Your 25% off code is: BEAT25';
+          successBody.textContent = '';
           finalScoreSuccess.textContent = scoreLine;
-          roundLabel.textContent = state.score === roundBank.length ? 'Perfect ear.' : 'Code unlocked.';
+          roundLabel.textContent = '';
           setLiveMessage('Success. Your discount code is BEAT25.');
           focusSoon(successShopLink);
           return;
@@ -1652,27 +1567,25 @@
           : 'Almost there. Replay the beats and trust your ear on the next round.';
         mercyCopy.hidden = state.failedAttempts < config.attemptsForMercy;
         roundLabel.textContent = `You got ${state.score} of ${roundBank.length} right.`;
-        state.currentBeatDisplay = '?';
-        setPulse('idle', '?');
+        state.currentBeatDisplay = '';
+        setPulse('idle', '');
         setLiveMessage('Close. Try again.');
         focusSoon(tryAgainButton);
       };
 
       const softUnlock = () => {
-        controls.hidden = true;
-        setReplayControl('replay');
         optionsWrap.hidden = true;
         retryPanel.hidden = true;
         successPanel.hidden = false;
         setMode('success');
         pulseStage.dataset.pulse = 'success';
-        state.currentBeatDisplay = '?';
-        pulseCore.textContent = '?';
+        state.currentBeatDisplay = '';
+        setPulseDisplay('');
         finalScoreSuccess.textContent = `Score: ${state.score} / ${roundBank.length}`;
         successHeading.textContent = 'Taking the easy route? We respect it.';
-        successBody.textContent = 'No rhythm test today. Your 25% off code is still: BEAT25';
-        feedbackHeading.textContent = 'Code unlocked.';
-        feedbackBody.textContent = 'No rhythm test today. Your 25% off code is still: BEAT25';
+        successBody.textContent = '';
+        feedbackHeading.textContent = '';
+        feedbackBody.textContent = '';
         roundLabel.textContent = 'Offer unlocked.';
         setLiveMessage('Success. Your discount code is BEAT25.');
         focusSoon(successShopLink);
@@ -1708,14 +1621,16 @@
 
         if (correct) {
           state.score += 1;
+          state.roundResults[state.roundIndex] = 'correct';
           feedbackHeading.textContent = 'That’s it.';
-          feedbackBody.textContent = `${round.bpm} BPM. Clean pick.`;
+          feedbackBody.textContent = '';
         } else {
+          state.roundResults[state.roundIndex] = 'incorrect';
           feedbackHeading.textContent = 'Not quite.';
           feedbackBody.textContent = `That beat was ${round.bpm} BPM.`;
         }
 
-        updateProgress();
+        updateTrackDots();
         setLiveMessage(`${correct ? 'Correct' : 'Incorrect'}. ${round.bpm} BPM.`);
 
         queueTimeout(() => {
@@ -1726,7 +1641,6 @@
             return;
           }
 
-          updateProgress();
           playRound();
         }, config.betweenRoundDelayMs);
       };
@@ -1739,31 +1653,18 @@
         state.mercyMode = state.failedAttempts >= config.attemptsForMercy;
         state.roundIndex = 0;
         state.score = 0;
+        state.roundResults = [];
         state.hasAnsweredCurrentRound = false;
         prepareRounds();
-        attemptText.textContent = `Attempt ${state.attempts}${state.mercyMode ? ' · Mercy mode' : ''}`;
         startButton.hidden = true;
         successPanel.hidden = true;
         retryPanel.hidden = true;
         mercyCopy.hidden = true;
-        updateProgress();
         playRound();
       };
 
       startButton.addEventListener('click', () => {
         startChallenge();
-      });
-
-      replayButton.addEventListener('click', () => {
-        if (replayButton.dataset.controlMode === 'restart') {
-          clearTimers();
-          setIdleUi();
-          startChallenge();
-          return;
-        }
-
-        if (state.mode !== 'guessing' && state.mode !== 'playing') return;
-        playRound();
       });
 
       optionButtons.forEach((button) => {
@@ -1791,7 +1692,6 @@
 
         clearTimers();
         setMode('retry');
-        controls.hidden = true;
         optionsWrap.hidden = true;
         retryPanel.hidden = false;
         startButton.hidden = false;
@@ -1800,8 +1700,8 @@
         retryCopy.textContent = 'Jump back in when you’re ready.';
         mercyCopy.hidden = true;
         roundLabel.textContent = 'Run reset.';
-        replayButton.disabled = true;
-        setPulse('idle', '?');
+        state.currentBeatDisplay = '';
+        setPulse('idle', '');
         updateTrackDots();
         setLiveMessage('Challenge reset after leaving the page.');
       });
