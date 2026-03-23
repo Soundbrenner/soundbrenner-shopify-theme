@@ -386,14 +386,27 @@
         {% endif %}
 
         {% if hero_card_show_button and hero_card_product_mode == false %}
-          {% render 'radiant-button',
-            label: hero_card_button_label,
-            link: hero_card_button_link,
-            open_in_new_tab: section.settings.button_open_in_new_tab,
-            size: section.settings.button_size,
-            icon_position: section.settings.icon_position,
-            extra_class: 'sb-framing-card__button'
-          %}
+          <div class="sb-framing-card__buttons">
+            {% render 'radiant-button',
+              label: hero_card_button_label,
+              link: hero_card_button_link,
+              open_in_new_tab: section.settings.button_open_in_new_tab,
+              size: section.settings.button_size,
+              icon_position: section.settings.icon_position,
+              extra_class: 'sb-framing-card__button'
+            %}
+
+            {% if section.settings.show_secondary_button and section.settings.secondary_button_label != blank and section.settings.secondary_button_link != blank %}
+              {% render 'radiant-button',
+                label: section.settings.secondary_button_label,
+                link: section.settings.secondary_button_link,
+                open_in_new_tab: section.settings.secondary_button_open_in_new_tab,
+                size: section.settings.button_size,
+                icon_position: section.settings.icon_position,
+                extra_class: 'sb-framing-card__button'
+              %}
+            {% endif %}
+          </div>
         {% endif %}
       </div>
     </div>
@@ -435,9 +448,16 @@
   }
 
   .sb-framing-card__button {
-    margin-inline: auto;
-    margin-top: var(--sb-space-4);
     width: fit-content;
+  }
+
+  .sb-framing-card__buttons {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    margin-top: var(--sb-space-4);
   }
 
   .sb-framing-card__product-form {
@@ -590,6 +610,10 @@
 
     .sb-framing-card__button {
       margin-inline: 0;
+    }
+
+    .sb-framing-card__buttons {
+      justify-content: flex-start;
     }
 
     .sb-framing-card__product-button {
@@ -1137,6 +1161,33 @@
       "id": "button_link",
       "label": "Button link",
       "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button and section.settings.use_product_page_metaobjects == false }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_button",
+      "label": "Show second button",
+      "default": false,
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button and section.settings.use_product_page_metaobjects == false }}"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_label",
+      "label": "Second button label",
+      "default": "Placeholder",
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button and section.settings.show_secondary_button and section.settings.use_product_page_metaobjects == false }}"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_link",
+      "label": "Second button link",
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button and section.settings.show_secondary_button and section.settings.use_product_page_metaobjects == false }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "secondary_button_open_in_new_tab",
+      "label": "Open second button link in new tab",
+      "default": false,
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button and section.settings.show_secondary_button and section.settings.use_product_page_metaobjects == false }}"
     },
     {
       "type": "checkbox",
