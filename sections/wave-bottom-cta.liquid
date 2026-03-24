@@ -195,6 +195,9 @@
                     </span>
                   {% endif %}
                 </div>
+                {% if section.settings.value_anchor != blank %}
+                  <p class="sb-wave-bottom-cta__value-anchor font-caption weight-regular">{{ section.settings.value_anchor }}</p>
+                {% endif %}
               </div>
 
               {% if cta_has_compare_price %}
@@ -382,6 +385,7 @@
   .sb-wave-bottom-cta__proof-text,
   .sb-wave-bottom-cta__trust-text,
   .sb-wave-bottom-cta__offer-label,
+  .sb-wave-bottom-cta__value-anchor,
   .sb-wave-bottom-cta__guarantee-text,
   .sb-wave-bottom-cta__shipping-text {
     color: var(--sb-color-neutral-100);
@@ -493,6 +497,15 @@
     letter-spacing: -0.03em;
     line-height: 0.92;
     text-shadow: 0 0 24px rgba(0, 201, 183, 0.14);
+  }
+
+  .sb-wave-bottom-cta__value-anchor {
+    color: var(--sb-color-neutral-100);
+    font-size: 0.88rem;
+    line-height: 1.4;
+    margin: 0;
+    max-width: 28ch;
+    opacity: 0.88;
   }
 
   .sb-wave-bottom-cta__guarantee-row {
@@ -711,6 +724,11 @@
       "id": "price_today_label",
       "label": "Price label",
       "default": "Price today"
+    },
+    {
+      "type": "text",
+      "id": "value_anchor",
+      "label": "Value anchor"
     },
     {
       "type": "text",

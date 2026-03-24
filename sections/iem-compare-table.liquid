@@ -4,7 +4,7 @@
       Compare your options
     </p>
     <h2 class="sb-iem-compare-table__title font-title weight-bold">
-      Why Wave makes sense as a first serious IEM
+      Why Wave is the right first step
     </h2>
     <p class="sb-iem-compare-table__subtitle font-body weight-regular">
       Wave covers the core benefits musicians actually need for practice and performance, without the cost jump or convenience tradeoffs of the alternatives.
@@ -132,8 +132,8 @@
           style="background: var(--sb-color-always-black); color: var(--sb-color-always-white);"
         >
           <div class="sb-iem-compare-table__label-copy">
-            <p class="sb-iem-compare-table__feature-name font-body weight-bold" style="color: var(--sb-color-always-white);">No charging or pairing</p>
-            <p class="sb-iem-compare-table__feature-note font-caption weight-regular" style="color: var(--sb-color-always-white);">Always ready when it is time to rehearse, record, or perform.</p>
+            <p class="sb-iem-compare-table__feature-name font-body weight-bold" style="color: var(--sb-color-always-white);">No charging. No pairing.</p>
+            <p class="sb-iem-compare-table__feature-note font-caption weight-regular" style="color: var(--sb-color-always-white);">Just plug in and start playing.</p>
           </div>
         </div>
         <div class="sb-iem-compare-table__cell sb-iem-compare-table__cell--wave sb-iem-compare-table__cell--icon" role="cell">
@@ -255,8 +255,8 @@
 
         <div class="sb-iem-compare-table__mobile-feature" data-compare-mobile-feature hidden>
           <div class="sb-iem-compare-table__mobile-feature-copy">
-            <p class="sb-iem-compare-table__mobile-feature-title font-body weight-bold">No charging or pairing</p>
-            <p class="sb-iem-compare-table__mobile-feature-note font-caption weight-regular">Always ready when it is time to rehearse, record, or perform.</p>
+            <p class="sb-iem-compare-table__mobile-feature-title font-body weight-bold">No charging. No pairing.</p>
+            <p class="sb-iem-compare-table__mobile-feature-note font-caption weight-regular">Just plug in and start playing.</p>
           </div>
           <div class="sb-iem-compare-table__mobile-status-pair">
             <div class="sb-iem-compare-table__mobile-status-col sb-iem-compare-table__mobile-status-col--wave">
@@ -365,8 +365,8 @@
 
         <div class="sb-iem-compare-table__mobile-feature" data-compare-mobile-feature hidden>
           <div class="sb-iem-compare-table__mobile-feature-copy">
-            <p class="sb-iem-compare-table__mobile-feature-title font-body weight-bold">No charging or pairing</p>
-            <p class="sb-iem-compare-table__mobile-feature-note font-caption weight-regular">Always ready when it is time to rehearse, record, or perform.</p>
+            <p class="sb-iem-compare-table__mobile-feature-title font-body weight-bold">No charging. No pairing.</p>
+            <p class="sb-iem-compare-table__mobile-feature-note font-caption weight-regular">Just plug in and start playing.</p>
           </div>
           <div class="sb-iem-compare-table__mobile-status-pair">
             <div class="sb-iem-compare-table__mobile-status-col sb-iem-compare-table__mobile-status-col--wave">
@@ -475,8 +475,8 @@
 
         <div class="sb-iem-compare-table__mobile-feature" data-compare-mobile-feature hidden>
           <div class="sb-iem-compare-table__mobile-feature-copy">
-            <p class="sb-iem-compare-table__mobile-feature-title font-body weight-bold">No charging or pairing</p>
-            <p class="sb-iem-compare-table__mobile-feature-note font-caption weight-regular">Always ready when it is time to rehearse, record, or perform.</p>
+            <p class="sb-iem-compare-table__mobile-feature-title font-body weight-bold">No charging. No pairing.</p>
+            <p class="sb-iem-compare-table__mobile-feature-note font-caption weight-regular">Just plug in and start playing.</p>
           </div>
           <div class="sb-iem-compare-table__mobile-status-pair">
             <div class="sb-iem-compare-table__mobile-status-col sb-iem-compare-table__mobile-status-col--wave">
@@ -526,6 +526,16 @@
       </div>
     </div>
   </div>
+
+  <div class="sb-iem-compare-table__cta">
+    {% render 'radiant-button',
+      label: 'Shop Wave now',
+      link: '/products/wave-in-ear-monitors',
+      size: 'large',
+      icon_position: 'trailing',
+      extra_class: 'sb-iem-compare-table__cta-button'
+    %}
+  </div>
 </section>
 
 {% stylesheet %}
@@ -568,6 +578,16 @@
   .sb-iem-compare-table__subtitle {
     margin-inline: 0;
     max-width: 620px;
+  }
+
+  .sb-iem-compare-table__cta {
+    margin-inline: auto;
+    width: min(100%, 420px);
+  }
+
+  .sb-iem-compare-table__cta-button {
+    justify-content: center;
+    width: 100%;
   }
 
   .sb-iem-compare-table__frame {
@@ -813,6 +833,10 @@
   @media screen and (max-width: 749px) {
     .sb-iem-compare-table {
       gap: 28px;
+    }
+
+    .sb-iem-compare-table__cta {
+      width: 100%;
     }
 
     .sb-iem-compare-table__frame {
