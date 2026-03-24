@@ -1311,10 +1311,24 @@ This file can be re-written at any time.
     {% if shop.metafields.shgabc.optimizations %}
     const shopMetafieldConfig = {{ shop.metafields.shgabc.optimizations }};
     {% else %}
-    const shopMetafieldConfig = {};
+    const shopMetafieldConfig = null;
     {% endif %}
+    if (!shopMetafieldConfig) {
+      console.debug("Shop metafield configuration for optimizations is missing. Skipping optimizer initialization.");
+      return;
+    }
 
     const optimizationsData = shopMetafieldConfig.expires_at > Date.now() ? (shopMetafieldConfig.optimizations || []) : [];
+
+    // These ID should match. It is possible for them to be different if a theme is copied from a different shop.
+    const intendedShopifyId = "13064847"; // The hard coded shopify ID when this snippet was pushed to the theme.
+    const currentShopifyId = "{{ shop.id }}"; // The current shopify ID that this theme is rendered in.
+    if (intendedShopifyId !== currentShopifyId) {
+      console.debug(`Shopify ID mismatch: intendedShopifyId=${intendedShopifyId} currentShopifyId=${currentShopifyId}. This may indicate the theme was copied from another shop and not properly set up. Skipping optimizer initialization to avoid potential issues.`);
+      return;
+    } else {
+      console.debug(`Shopify ID verified: ${intendedShopifyId}`);
+    }
 
     // Build buy it now config
     const buyItNowConfig = (() => {
