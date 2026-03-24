@@ -6,8 +6,6 @@
       --sb-beat-page-shadow: 0 24px 80px var(--sb-color-always-black-50);
       --sb-beat-page-border: 1px solid var(--sb-color-neutral-900-12);
       --sb-beat-page-background:
-        radial-gradient(circle at top, var(--sb-color-primary-500-25), var(--sb-color-primary-500-0) 38%),
-        radial-gradient(circle at 85% 15%, var(--sb-color-blue-500-25), var(--sb-color-primary-500-0) 32%),
         linear-gradient(180deg, var(--sb-color-neutral-200) 0%, var(--sb-color-neutral-100) 100%);
       --sb-beat-accent-gradient: linear-gradient(135deg, var(--sb-color-primary-500) 0%, var(--sb-color-blue-300) 100%);
       --sb-beat-transition: 220ms ease;
@@ -296,9 +294,6 @@
         linear-gradient(135deg, var(--sb-color-neutral-200-80) 0%, var(--sb-color-neutral-200-40) 100%);
       border: 1px solid var(--sb-color-neutral-900-12);
       border-radius: var(--sb-beat-page-radius);
-      box-shadow:
-        inset 0 1px 0 var(--sb-color-always-white-12),
-        inset 0 -8px 24px var(--sb-color-always-black-12);
       overflow: hidden;
       padding: var(--sb-space-24);
       position: relative;
@@ -319,13 +314,7 @@
     }
 
     #sb-beat-the-metronome-page .sb-beat__arena::after {
-      background:
-        linear-gradient(180deg, var(--sb-color-always-white-12) 0%, var(--sb-color-always-white-0) 18%);
-      content: '';
-      inset: 0;
-      opacity: 0.7;
-      pointer-events: none;
-      position: absolute;
+      content: none;
     }
 
     #sb-beat-the-metronome-page .sb-beat__arena-inner {
