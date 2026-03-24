@@ -49,7 +49,7 @@
         "item_monitoring": {
           "type": "item",
           "settings": {
-            "icon": "shopify://shop_images/Property_1_Metronome.svg",
+            "icon": "shopify://shop_images/usp_wave_1.svg",
             "gradient_value": "linear-gradient(135deg, #0097FF 0%, #00FCA4 100%)",
             "title": "Zero-lag monitoring",
             "body": "<p>Hear yourself in real time with wired audio that stays locked in while you practice, record, or perform.</p>"
@@ -58,7 +58,7 @@
         "item_isolation": {
           "type": "item",
           "settings": {
-            "icon": "shopify://shop_images/Property_1_Music_note.svg",
+            "icon": "shopify://shop_images/usp_wave_2.svg",
             "gradient_value": "linear-gradient(135deg, #7CD9B0 0%, #1E9980 100%)",
             "title": "More focus, less noise",
             "body": "<p>Strong passive isolation helps the details come through clearly without outside distractions pulling you out of the moment.</p>"
@@ -67,7 +67,7 @@
         "item_fit": {
           "type": "item",
           "settings": {
-            "icon": "shopify://shop_images/Property_1_Practice_tracker.svg",
+            "icon": "shopify://shop_images/usp_wave_4.svg",
             "gradient_value": "linear-gradient(135deg, #FFC285 0%, #D46A15 100%)",
             "title": "Comfort that lasts",
             "body": "<p>A secure fit stays comfortable through longer practice blocks, rehearsals, and live sets.</p>"
@@ -76,7 +76,7 @@
         "item_power": {
           "type": "item",
           "settings": {
-            "icon": "shopify://shop_images/Property_1_Ratings.svg",
+            "icon": "shopify://shop_images/usp_wave_5.svg",
             "gradient_value": "linear-gradient(135deg, #FF8387 0%, #FF1F34 100%)",
             "title": "Plug in and play",
             "body": "<p>No batteries, pairing steps, or charging routines. Just connect and get to work.</p>"
