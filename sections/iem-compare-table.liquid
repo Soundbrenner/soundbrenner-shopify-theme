@@ -286,7 +286,8 @@
 
   .sb-iem-compare-table__cell--product.sb-iem-compare-table__cell--wave {
     background: transparent !important;
-    border-right-color: transparent;
+    border-left: 1px solid var(--sb-color-primary-500);
+    border-right-color: var(--sb-color-primary-500);
     color: var(--sb-color-always-white);
   }
 
@@ -302,16 +303,14 @@
 
   .sb-iem-compare-table__cell--wave {
     background: transparent !important;
-    border-right-color: transparent;
-    border-top-color: transparent;
+    border-left: 1px solid var(--sb-color-primary-500);
+    border-right-color: var(--sb-color-primary-500);
+    border-top-color: var(--sb-color-primary-500);
     overflow: hidden;
   }
 
   .sb-iem-compare-table__cell--wave::before {
     background: rgba(0, 201, 183, 0.14);
-    border-left: 1px solid var(--sb-color-primary-500);
-    border-right: 1px solid var(--sb-color-primary-500);
-    border-top: 1px solid var(--sb-color-primary-500);
     content: '';
     inset: 0;
     pointer-events: none;
@@ -321,6 +320,10 @@
   .sb-iem-compare-table__cell--product.sb-iem-compare-table__cell--wave::before {
     background: linear-gradient(180deg, var(--sb-color-primary-500) 0%, var(--sb-color-primary-700) 100%);
     border-top: 0;
+  }
+
+  .sb-iem-compare-table__cell--wave:nth-last-child(4) {
+    border-bottom: 1px solid var(--sb-color-primary-500);
   }
 
   .sb-iem-compare-table__cell > * {
