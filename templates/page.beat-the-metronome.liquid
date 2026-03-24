@@ -84,15 +84,6 @@
       position: relative;
     }
 
-    #sb-beat-the-metronome-page .sb-beat__panel::before {
-      background: linear-gradient(90deg, var(--sb-color-primary-500) 0%, var(--sb-color-blue-300) 100%);
-      content: '';
-      height: 1px;
-      inset: 0 0 auto;
-      opacity: 0.55;
-      position: absolute;
-    }
-
     #sb-beat-the-metronome-page .sb-beat__panel-inner {
       display: grid;
       gap: var(--sb-space-24);
@@ -341,6 +332,7 @@
       align-items: start;
       display: grid;
       gap: var(--sb-space-20);
+      min-height: var(--sb-beat-arena-inner-min-height, 0px);
       position: relative;
       z-index: 1;
     }
@@ -684,6 +676,7 @@
       line-height: 1.08;
       margin: 0;
       position: relative;
+      text-decoration: underline;
       text-shadow: 0 0 22px var(--sb-color-primary-500-25);
       z-index: 1;
     }
@@ -863,7 +856,7 @@
       }
 
       #sb-beat-the-metronome-page .sb-beat__arena-inner {
-        align-items: center;
+        align-items: start;
         gap: var(--sb-space-24);
         grid-template-columns: minmax(0, 420px);
         justify-content: center;
@@ -1260,6 +1253,7 @@
       const unlockAnywayButtons = Array.from(root.querySelectorAll('[data-unlock-anyway-button]'));
       const liveRegion = root.querySelector('[data-live-region]');
       const trackDots = Array.from(root.querySelectorAll('[data-track-dot]'));
+      const arenaInner = root.querySelector('.sb-beat__arena-inner');
 
       const state = {
         mode: 'idle',
@@ -1277,6 +1271,8 @@
         pulseResetTimer: 0,
         liveRegionTimer: 0,
       };
+
+      let stableHeightFrame = 0;
 
       const shuffle = (values) => {
         const next = [...values];
@@ -1334,6 +1330,126 @@
         window.setTimeout(() => {
           if (element) element.focus();
         }, 40);
+      };
+
+      const updateStableArenaHeight = () => {
+        if (!arenaInner) return;
+
+        const hiddenState = {
+          mode: state.mode,
+          rootState: root.dataset.state,
+          startHidden: startButton.hidden,
+          optionsHidden: optionsWrap.hidden,
+          successHidden: successPanel.hidden,
+          retryHidden: retryPanel.hidden,
+          mercyHidden: mercyCopy.hidden,
+          feedbackHeading: feedbackHeading.textContent,
+          feedbackBody: feedbackBody.textContent,
+          roundLabel: roundLabel.textContent,
+          successHeading: successHeading.textContent,
+          successBody: successBody.textContent,
+          finalScoreSuccess: finalScoreSuccess.textContent,
+          finalScoreRetry: finalScoreRetry.textContent,
+          retryCopy: retryCopy.textContent,
+        };
+
+        const measure = (setup) => {
+          setup();
+          return arenaInner.getBoundingClientRect().height;
+        };
+
+        const heights = [
+          measure(() => {
+            root.dataset.state = 'idle';
+            startButton.hidden = false;
+            optionsWrap.hidden = true;
+            successPanel.hidden = true;
+            retryPanel.hidden = true;
+            mercyCopy.hidden = true;
+            feedbackHeading.textContent = '';
+            feedbackBody.textContent = '';
+            roundLabel.textContent = '';
+          }),
+          measure(() => {
+            root.dataset.state = 'guessing';
+            startButton.hidden = true;
+            optionsWrap.hidden = false;
+            successPanel.hidden = true;
+            retryPanel.hidden = true;
+            mercyCopy.hidden = true;
+            feedbackHeading.textContent = 'What BPM was that?';
+            feedbackBody.textContent = '';
+            roundLabel.textContent = '';
+          }),
+          measure(() => {
+            root.dataset.state = 'retry';
+            startButton.hidden = true;
+            optionsWrap.hidden = true;
+            successPanel.hidden = true;
+            retryPanel.hidden = false;
+            mercyCopy.hidden = false;
+            feedbackHeading.textContent = 'Close. Try again.';
+            feedbackBody.textContent = 'Almost there. Replay the beats and trust your ear on the next round.';
+            retryCopy.textContent = 'Next try gets easier. We’ll widen the BPM spread so the right answer stands out more clearly.';
+            finalScoreRetry.textContent = `Score: ${roundBank.length - 1} / ${roundBank.length}`;
+            roundLabel.textContent = `You got ${roundBank.length - 1} of ${roundBank.length} right.`;
+          }),
+          measure(() => {
+            root.dataset.state = 'success';
+            startButton.hidden = true;
+            optionsWrap.hidden = true;
+            successPanel.hidden = false;
+            retryPanel.hidden = true;
+            mercyCopy.hidden = true;
+            feedbackHeading.textContent = 'Nice. You earned it.';
+            feedbackBody.textContent = '';
+            successHeading.textContent = 'Nice. You earned it.';
+            successBody.textContent = '';
+            finalScoreSuccess.textContent = `Score: ${roundBank.length} / ${roundBank.length}`;
+            roundLabel.textContent = '';
+          }),
+          measure(() => {
+            root.dataset.state = 'success';
+            startButton.hidden = true;
+            optionsWrap.hidden = true;
+            successPanel.hidden = false;
+            retryPanel.hidden = true;
+            mercyCopy.hidden = true;
+            feedbackHeading.textContent = '';
+            feedbackBody.textContent = '';
+            successHeading.textContent = 'Taking the easy route? We respect it.';
+            successBody.textContent = '';
+            finalScoreSuccess.textContent = `Score: 0 / ${roundBank.length}`;
+            roundLabel.textContent = '';
+          }),
+        ];
+
+        root.dataset.state = hiddenState.rootState;
+        startButton.hidden = hiddenState.startHidden;
+        optionsWrap.hidden = hiddenState.optionsHidden;
+        successPanel.hidden = hiddenState.successHidden;
+        retryPanel.hidden = hiddenState.retryHidden;
+        mercyCopy.hidden = hiddenState.mercyHidden;
+        feedbackHeading.textContent = hiddenState.feedbackHeading;
+        feedbackBody.textContent = hiddenState.feedbackBody;
+        roundLabel.textContent = hiddenState.roundLabel;
+        successHeading.textContent = hiddenState.successHeading;
+        successBody.textContent = hiddenState.successBody;
+        finalScoreSuccess.textContent = hiddenState.finalScoreSuccess;
+        finalScoreRetry.textContent = hiddenState.finalScoreRetry;
+        retryCopy.textContent = hiddenState.retryCopy;
+        setMode(hiddenState.mode);
+
+        const desktopHeightTrim = window.innerWidth >= 990 ? 56 : 0;
+        const stableHeight = Math.ceil(Math.max(...heights) - desktopHeightTrim);
+        root.style.setProperty('--sb-beat-arena-inner-min-height', `${stableHeight}px`);
+      };
+
+      const scheduleStableArenaHeight = () => {
+        window.cancelAnimationFrame(stableHeightFrame);
+        stableHeightFrame = window.requestAnimationFrame(() => {
+          updateStableArenaHeight();
+        });
       };
 
       const setPulseDisplay = (label = '') => {
@@ -1719,6 +1835,8 @@
       });
 
       setIdleUi();
+      scheduleStableArenaHeight();
+      window.addEventListener('resize', scheduleStableArenaHeight);
     })();
   </script>
 </div>
