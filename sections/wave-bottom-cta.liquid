@@ -10,8 +10,10 @@
   assign cta_compare_price_cents = 0
   assign cta_rating = 0
   assign cta_reviews_count = 0
+  assign cta_has_reviews = false
   assign cta_product_url = blank
   assign cta_image = blank
+  assign cta_override_image = section.settings.image
   assign storefront_cart_discount_percent = 0
   assign storefront_global_discount_percent = 0
   assign storefront_product_discount_percent = 0
@@ -24,6 +26,10 @@
     assign cta_product_url = cta_product.url
     assign cta_image = cta_variant.featured_image | default: cta_product.featured_image
 
+    if cta_override_image != blank
+      assign cta_image = cta_override_image
+    endif
+
     if cta_variant == blank
       assign hide_section = true
     endif
@@ -34,6 +40,9 @@
     endif
 
     assign cta_reviews_count = cta_product.metafields.reviews.rating_count.value | default: 0 | plus: 0 | round: 0
+    if cta_rating > 0 and cta_reviews_count > 0
+      assign cta_has_reviews = true
+    endif
     assign cta_price_cents = cta_variant.price | default: 0 | plus: 0
     assign cta_compare_price_cents = cta_variant.compare_at_price | default: 0 | plus: 0
 
@@ -124,75 +133,109 @@
     })();
   </script>
 {% else %}
+  {% assign cta_rating_rounded = cta_rating | round: 1 %}
+  {% assign cta_rating_rounded_text = cta_rating_rounded | append: '' %}
+  {% assign cta_reviews_count_text = cta_reviews_count | append: '' %}
+  {% assign cta_discount_percent_text = cta_discount_percent | append: '' %}
+  {% assign cta_price_today_label = section.settings.price_today_label | default: 'Price today' %}
+  {% assign cta_review_summary_text = cta_rating_rounded_text | append: ' stars from ' | append: cta_reviews_count_text | append: ' reviews' %}
+  {% assign cta_save_badge_text = 'Save ' | append: cta_discount_percent_text | append: '% today' %}
   <section class="sb-wave-bottom-cta" data-sb-motion="reveal">
     <div class="sb-wave-bottom-cta__shell" data-sb-motion-item>
       <div class="sb-wave-bottom-cta__content">
-        <p class="sb-wave-bottom-cta__eyebrow font-caption weight-semibold">{{ section.settings.eyebrow }}</p>
-        <h2 class="sb-wave-bottom-cta__title font-title weight-bold">
-          <span class="sb-wave-bottom-cta__title-primary">{{ section.settings.title_part_one }}</span>
-          <span class="sb-wave-bottom-cta__title-accent">{{ section.settings.title_part_two }}</span>
-        </h2>
-        <div class="sb-wave-bottom-cta__body font-body weight-regular rte">
-          {{ section.settings.body }}
+        <div class="sb-wave-bottom-cta__copy">
+          <p class="sb-wave-bottom-cta__eyebrow font-caption weight-semibold">{{ section.settings.eyebrow }}</p>
+          <h2 class="sb-wave-bottom-cta__title font-title weight-bold">
+            <span class="sb-wave-bottom-cta__title-primary">{{ section.settings.title_part_one }}</span>
+            <span class="sb-wave-bottom-cta__title-accent">{{ section.settings.title_part_two }}</span>
+          </h2>
+          <div class="sb-wave-bottom-cta__body font-body weight-regular rte">
+            {{ section.settings.body }}
+          </div>
         </div>
 
-        <div class="sb-wave-bottom-cta__proof">
-          <div class="sb-wave-bottom-cta__stars" aria-hidden="true" style="--sb-wave-cta-star-url: url('{{ 'icon-review-star.svg' | asset_url }}');">
-            {% for i in (1..5) %}
-              {% assign step = i | minus: 1 %}
-              {% assign fill_ratio = cta_rating | minus: step %}
-              {% if fill_ratio >= 1 %}
-                {% assign fill_percent = 100 %}
-              {% elsif fill_ratio <= 0 %}
-                {% assign fill_percent = 0 %}
-              {% else %}
-                {% assign fill_percent = fill_ratio | times: 100 | round %}
+        <div class="sb-wave-bottom-cta__decision-box">
+          {% if cta_has_reviews %}
+            <div class="sb-wave-bottom-cta__proof">
+              {% if cta_has_reviews %}
+                <div class="sb-wave-bottom-cta__proof-rating">
+                  <div class="sb-wave-bottom-cta__stars" aria-hidden="true" style="--sb-wave-cta-star-url: url('{{ 'icon-review-star.svg' | asset_url }}');">
+                    {% for i in (1..5) %}
+                      {% assign step = i | minus: 1 %}
+                      {% assign fill_ratio = cta_rating | minus: step %}
+                      {% if fill_ratio >= 1 %}
+                        {% assign fill_percent = 100 %}
+                      {% elsif fill_ratio <= 0 %}
+                        {% assign fill_percent = 0 %}
+                      {% else %}
+                        {% assign fill_percent = fill_ratio | times: 100 | round %}
+                      {% endif %}
+                      <span class="sb-wave-bottom-cta__star" style="--sb-star-fill: {{ fill_percent }}%;"></span>
+                    {% endfor %}
+                  </div>
+                  <p class="sb-wave-bottom-cta__proof-text font-caption weight-semibold">
+                    {{ cta_review_summary_text }}
+                  </p>
+                </div>
               {% endif %}
-              <span class="sb-wave-bottom-cta__star" style="--sb-star-fill: {{ fill_percent }}%;"></span>
-            {% endfor %}
-          </div>
-          <p class="sb-wave-bottom-cta__proof-text font-caption weight-semibold">
-            {{ cta_rating | round: 1 }} stars from {{ cta_reviews_count }} reviews
-          </p>
-        </div>
-
-        {% if cta_has_compare_price %}
-          <div class="sb-wave-bottom-cta__savings-badge-wrap">
-            <p class="sb-wave-bottom-cta__savings-badge font-caption weight-semibold">
-              Save {{ cta_discount_percent }}% today
-            </p>
-          </div>
-        {% endif %}
-
-        <div class="sb-wave-bottom-cta__offers">
-          <div class="sb-wave-bottom-cta__offer">
-            <p class="sb-wave-bottom-cta__offer-label font-caption weight-semibold">Price today</p>
-            <div class="sb-wave-bottom-cta__price-row">
-              {% if cta_has_compare_price %}
-                <span class="sb-wave-bottom-cta__compare-price font-body weight-regular">
-                  {% render 'sb-money-no-decimals', amount: cta_compare_price_cents, currency: cta_currency_code, context: 'storefront' %}
-                </span>
-              {% endif %}
-              <span class="sb-wave-bottom-cta__current-price font-body weight-bold">
-                {% render 'sb-money-no-decimals', amount: cta_price_cents, currency: cta_currency_code, context: 'storefront' %}
-              </span>
             </div>
+          {% endif %}
+
+          <div class="sb-wave-bottom-cta__value-panel">
+            <div class="sb-wave-bottom-cta__value-top">
+              <div class="sb-wave-bottom-cta__value-copy">
+                <p class="sb-wave-bottom-cta__offer-label font-caption weight-semibold">{{ cta_price_today_label }}</p>
+                <div class="sb-wave-bottom-cta__price-row">
+                  <span class="sb-wave-bottom-cta__current-price font-body weight-bold">
+                    {% render 'sb-money-no-decimals', amount: cta_price_cents, currency: cta_currency_code, context: 'storefront' %}
+                  </span>
+                  {% if cta_has_compare_price %}
+                    <span class="sb-wave-bottom-cta__compare-price font-body weight-regular">
+                      {% render 'sb-money-no-decimals', amount: cta_compare_price_cents, currency: cta_currency_code, context: 'storefront' %}
+                    </span>
+                  {% endif %}
+                </div>
+              </div>
+
+              {% if cta_has_compare_price %}
+                <p class="sb-wave-bottom-cta__savings-badge font-caption weight-semibold">
+                  {{ cta_save_badge_text }}
+                </p>
+              {% endif %}
+            </div>
+
+            {% if section.settings.trust_line != blank %}
+              <div class="sb-wave-bottom-cta__guarantee-row">
+                <span
+                  class="sb-wave-bottom-cta__guarantee-icon"
+                  aria-hidden="true"
+                  style="--sb-wave-bottom-cta-guarantee-icon-url: url('{{ 'icon-check.svg' | asset_url }}');"
+                ></span>
+                <p class="sb-wave-bottom-cta__guarantee-text font-caption weight-semibold">{{ section.settings.trust_line }}</p>
+              </div>
+            {% endif %}
+
+            {% if section.settings.helper_text != blank %}
+              <div class="sb-wave-bottom-cta__shipping-row">
+                <span
+                  class="sb-wave-bottom-cta__guarantee-icon"
+                  aria-hidden="true"
+                  style="--sb-wave-bottom-cta-guarantee-icon-url: url('{{ 'icon-check.svg' | asset_url }}');"
+                ></span>
+                <p class="sb-wave-bottom-cta__shipping-text font-caption weight-regular">{{ section.settings.helper_text }}</p>
+              </div>
+            {% endif %}
           </div>
 
-          <div class="sb-wave-bottom-cta__offer">
-            <p class="sb-wave-bottom-cta__offer-label font-caption weight-semibold">Peace of mind</p>
-            <p class="sb-wave-bottom-cta__offer-value font-body weight-bold">{{ section.settings.trust_line }}</p>
-          </div>
-        </div>
-
-        <div class="sb-wave-bottom-cta__actions">
+          <div class="sb-wave-bottom-cta__actions">
           {% render 'radiant-button',
             label: section.settings.button_label,
             link: cta_product_url,
             size: 'large',
-            icon_position: 'trailing'
+            icon_position: 'trailing',
+            extra_class: 'sb-wave-bottom-cta__button'
           %}
-          <p class="sb-wave-bottom-cta__helper font-caption weight-regular">{{ section.settings.helper_text }}</p>
+          </div>
         </div>
       </div>
 
@@ -219,6 +262,12 @@
             height="1108"
           >
         {% endif %}
+
+        {% if section.settings.included_items != blank %}
+          <div class="sb-wave-bottom-cta__included-items font-caption weight-regular rte">
+            {{ section.settings.included_items }}
+          </div>
+        {% endif %}
       </div>
     </div>
   </section>
@@ -230,31 +279,39 @@
   }
 
   .sb-wave-bottom-cta__shell {
-    align-items: center;
+    align-items: start;
     background:
-      radial-gradient(circle at top right, rgba(0, 201, 183, 0.12) 0, transparent 18%),
-      linear-gradient(180deg, #161616 0%, #090909 52%, #050505 100%);
+      radial-gradient(circle at top right, rgba(0, 201, 183, 0.12) 0, transparent 24%),
+      linear-gradient(180deg, #151515 0%, #0d0d0d 56%, #050505 100%);
     border: 1px solid var(--sb-color-neutral-700);
     border-radius: 32px;
     display: grid;
-    gap: 40px;
-    grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+    gap: 28px;
+    grid-template-columns: minmax(0, 1.08fr) minmax(280px, 0.92fr);
     overflow: hidden;
-    padding: 44px;
+    padding: 24px;
   }
 
   .sb-wave-bottom-cta__content {
     display: flex;
     flex-direction: column;
-    gap: 22px;
+    gap: 18px;
     min-width: 0;
+  }
+
+  .sb-wave-bottom-cta__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
   }
 
   .sb-wave-bottom-cta__eyebrow,
   .sb-wave-bottom-cta__title,
   .sb-wave-bottom-cta__proof-text,
+  .sb-wave-bottom-cta__trust-text,
   .sb-wave-bottom-cta__offer-label,
-  .sb-wave-bottom-cta__offer-value,
+  .sb-wave-bottom-cta__guarantee-text,
+  .sb-wave-bottom-cta__shipping-text,
   .sb-wave-bottom-cta__helper {
     margin: 0;
   }
@@ -267,31 +324,26 @@
 
   .sb-wave-bottom-cta__title {
     color: var(--sb-color-always-white);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25em;
-    line-height: 0.98;
-    max-width: 10ch;
+    line-height: 0.96;
+    margin: 0;
+    max-width: 12ch;
+    text-wrap: balance;
   }
 
   .sb-wave-bottom-cta__title-primary,
   .sb-wave-bottom-cta__title-accent {
     color: inherit;
+    text-wrap: pretty;
   }
 
   .sb-wave-bottom-cta__title-accent {
-    color: var(--sb-color-primary-500);
-  }
-
-  .sb-wave-bottom-cta__title-accent {
-    color: var(--sb-color-primary-500);
+    color: var(--sb-color-always-white);
   }
 
   .sb-wave-bottom-cta__body {
     color: var(--sb-color-always-white);
     font-size: 1rem;
     line-height: 1.5;
-    max-width: 620px;
     opacity: 0.96;
   }
 
@@ -310,27 +362,41 @@
     margin-top: 16px;
   }
 
-  .sb-wave-bottom-cta__proof {
-    align-items: center;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 999px;
+  .sb-wave-bottom-cta__decision-box {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 14px;
-    padding: 10px 16px;
-    width: fit-content;
+  }
+
+  .sb-wave-bottom-cta__proof {
+    align-items: flex-start;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px 16px;
   }
 
   .sb-wave-bottom-cta__proof-text,
-  .sb-wave-bottom-cta__helper,
-  .sb-wave-bottom-cta__offer-label {
+  .sb-wave-bottom-cta__trust-text,
+  .sb-wave-bottom-cta__offer-label,
+  .sb-wave-bottom-cta__guarantee-text,
+  .sb-wave-bottom-cta__shipping-text {
     color: var(--sb-color-neutral-100);
+  }
+
+  .sb-wave-bottom-cta__proof-rating {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
   }
 
   .sb-wave-bottom-cta__proof-text {
     color: var(--sb-color-always-white);
-    font-size: 1rem;
+    font-size: 0.95rem;
     opacity: 1;
   }
 
@@ -339,8 +405,9 @@
     color: var(--sb-color-always-white);
   }
 
-  .sb-wave-bottom-cta__savings-badge-wrap {
-    display: flex;
+  .sb-wave-bottom-cta__trust-text {
+    color: var(--sb-color-neutral-200);
+    opacity: 0.92;
   }
 
   .sb-wave-bottom-cta__savings-badge {
@@ -350,7 +417,8 @@
     color: var(--sb-color-primary-500);
     display: inline-flex;
     margin: 0;
-    padding: 10px 16px;
+    padding: 8px 12px;
+    white-space: nowrap;
   }
 
   .sb-wave-bottom-cta__stars {
@@ -367,23 +435,28 @@
     -webkit-mask: center / contain no-repeat var(--sb-wave-cta-star-url);
   }
 
-  .sb-wave-bottom-cta__offers {
-    display: grid;
-    gap: 18px;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .sb-wave-bottom-cta__offer {
+  .sb-wave-bottom-cta__value-panel {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
     border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 20px;
+    border-radius: 24px;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    justify-content: space-between;
-    min-height: 132px;
+    gap: 14px;
     padding: 18px;
+  }
+
+  .sb-wave-bottom-cta__value-top {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .sb-wave-bottom-cta__value-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 
   .sb-wave-bottom-cta__offer-label {
@@ -393,9 +466,9 @@
     text-transform: uppercase;
   }
 
-  .sb-wave-bottom-cta__offer,
-  .sb-wave-bottom-cta__offer p,
-  .sb-wave-bottom-cta__offer span {
+  .sb-wave-bottom-cta__value-panel,
+  .sb-wave-bottom-cta__value-panel p,
+  .sb-wave-bottom-cta__value-panel span {
     color: var(--sb-color-always-white);
   }
 
@@ -403,69 +476,87 @@
     align-items: baseline;
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 12px;
   }
 
   .sb-wave-bottom-cta__compare-price {
     color: var(--sb-color-neutral-300);
-    font-size: 0.95rem;
+    font-size: 1rem;
     margin: 0;
     opacity: 0.6;
     text-decoration: line-through;
   }
 
-  .sb-wave-bottom-cta__current-price,
-  .sb-wave-bottom-cta__offer-value {
-    color: var(--sb-color-always-white);
-  }
-
   .sb-wave-bottom-cta__current-price {
     color: var(--sb-color-primary-500);
-    font-size: clamp(1.75rem, 2.8vw, 2.5rem);
+    font-size: clamp(2rem, 4.8vw, 3.2rem);
     letter-spacing: -0.03em;
     line-height: 0.92;
     text-shadow: 0 0 24px rgba(0, 201, 183, 0.14);
   }
 
-  .sb-wave-bottom-cta__offer-value {
-    font-size: clamp(1.25rem, 2vw, 1.75rem);
-    letter-spacing: -0.02em;
-    line-height: 1.08;
+  .sb-wave-bottom-cta__guarantee-row {
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    gap: 10px;
+    padding-top: 14px;
   }
 
-  .sb-wave-bottom-cta__offer:nth-child(2) .sb-wave-bottom-cta__offer-value {
-    font-size: clamp(1.1rem, 1.6vw, 1.35rem);
-    line-height: 1.18;
+  .sb-wave-bottom-cta__guarantee-icon {
+    background: var(--sb-color-primary-500);
+    display: block;
+    flex: 0 0 16px;
+    height: 16px;
+    mask-image: var(--sb-wave-bottom-cta-guarantee-icon-url);
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    width: 16px;
+    -webkit-mask-image: var(--sb-wave-bottom-cta-guarantee-icon-url);
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+  }
+
+  .sb-wave-bottom-cta__guarantee-text {
+    color: var(--sb-color-always-white);
+    opacity: 0.96;
+  }
+
+  .sb-wave-bottom-cta__shipping-row {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+  }
+
+  .sb-wave-bottom-cta__shipping-text {
+    color: var(--sb-color-always-white);
+    opacity: 0.96;
   }
 
   .sb-wave-bottom-cta__actions {
-    align-items: flex-start;
+    align-items: stretch;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 0;
   }
 
-  .sb-wave-bottom-cta__helper {
-    color: var(--sb-color-neutral-200);
-    font-size: 0.9rem;
-    opacity: 0.82;
-  }
-
-  .sb-wave-bottom-cta__helper,
-  .sb-wave-bottom-cta__helper * {
-    color: var(--sb-color-neutral-200);
-  }
-
-  .sb-wave-bottom-cta__actions .sb-button-radiant {
+  .sb-wave-bottom-cta__button {
     box-shadow: 0 18px 36px rgba(0, 201, 183, 0.16);
+    justify-content: center;
+    width: 100%;
   }
 
   .sb-wave-bottom-cta__media {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 32px;
+    border-radius: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
     overflow: hidden;
-    padding: 16px;
+    padding: 12px;
     width: 100%;
   }
 
@@ -475,12 +566,43 @@
     display: block;
     height: auto;
     object-fit: cover;
+    object-position: 38% 50%;
     width: 100%;
+  }
+
+  .sb-wave-bottom-cta__included-items {
+    color: var(--sb-color-always-white);
+    font-size: 0.82rem;
+    line-height: 1.45;
+    opacity: 0.88;
+    padding: 0 4px 4px;
+  }
+
+  .sb-wave-bottom-cta__included-items,
+  .sb-wave-bottom-cta__included-items p,
+  .sb-wave-bottom-cta__included-items li,
+  .sb-wave-bottom-cta__included-items strong {
+    color: var(--sb-color-always-white);
+  }
+
+  .sb-wave-bottom-cta__included-items > * {
+    margin: 0;
+  }
+
+  .sb-wave-bottom-cta__included-items ul {
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding-left: 18px;
+  }
+
+  .sb-wave-bottom-cta__included-items li::marker {
+    color: var(--sb-color-primary-500);
   }
 
   @media screen and (max-width: 1180px) {
     .sb-wave-bottom-cta__shell {
-      grid-template-columns: minmax(0, 1fr) minmax(280px, 0.78fr);
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 0.86fr);
     }
   }
 
@@ -490,35 +612,50 @@
     }
 
     .sb-wave-bottom-cta__shell {
-      gap: 36px;
+      gap: 24px;
       grid-template-columns: 1fr;
-      padding: 32px 22px;
-    }
-
-    .sb-wave-bottom-cta__offers {
-      grid-template-columns: 1fr;
-    }
-
-    .sb-wave-bottom-cta__offer {
-      min-height: 0;
+      padding: 24px 18px;
     }
   }
 
   @media screen and (max-width: 749px) {
     .sb-wave-bottom-cta__content {
-      gap: 20px;
+      gap: 16px;
     }
 
     .sb-wave-bottom-cta__current-price {
-      font-size: 2.2rem;
-    }
-
-    .sb-wave-bottom-cta__offer-value {
-      font-size: 1.5rem;
+      font-size: 2.4rem;
     }
 
     .sb-wave-bottom-cta__proof {
-      width: 100%;
+      padding: 12px 14px;
+    }
+
+    .sb-wave-bottom-cta__value-panel {
+      padding: 16px;
+    }
+
+    .sb-wave-bottom-cta__image {
+      aspect-ratio: 4 / 3;
+    }
+  }
+
+  @media screen and (min-width: 750px) {
+    .sb-wave-bottom-cta__value-top {
+      align-items: center;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .sb-wave-bottom-cta__proof {
+      align-items: center;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .sb-wave-bottom-cta__trust-text {
+      text-align: right;
     }
   }
 {% endstylesheet %}
@@ -532,6 +669,12 @@
       "id": "product_handle",
       "label": "Product handle",
       "default": "wave-in-ear-monitors"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image override",
+      "info": "Target minimum 1200x1108 at 1x export (1200x1108)."
     },
     {
       "type": "text",
@@ -565,6 +708,12 @@
     },
     {
       "type": "text",
+      "id": "price_today_label",
+      "label": "Price label",
+      "default": "Price today"
+    },
+    {
+      "type": "text",
       "id": "button_label",
       "label": "Button label",
       "default": "Shop Wave now"
@@ -574,6 +723,11 @@
       "id": "helper_text",
       "label": "Helper text",
       "default": "Ships worldwide. Start simple and hear the difference."
+    },
+    {
+      "type": "richtext",
+      "id": "included_items",
+      "label": "Included items"
     }
   ],
   "presets": [
