@@ -191,353 +191,65 @@
     </div>
   </div>
 
-  <div class="sb-iem-compare-table__mobile" aria-label="Comparison for Wave and alternative listening options">
-    <div class="sb-iem-compare-table__mobile-summary">
-      <span class="sb-iem-compare-table__badge font-caption2 weight-semibold">Best fit for musicians</span>
-      <p class="sb-iem-compare-table__mobile-summary-title font-body weight-bold">Soundbrenner Wave IEMs</p>
-      <p class="sb-iem-compare-table__mobile-summary-note font-caption weight-regular">Built for practice and performance</p>
-    </div>
-
-    <div class="sb-iem-compare-table__mobile-picker" role="tablist" aria-label="Choose a comparison">
-      <button class="sb-iem-compare-table__mobile-pill is-active" type="button" role="tab" aria-selected="true" aria-controls="sb-iem-compare-mobile-panel-headphones" id="sb-iem-compare-mobile-tab-headphones" data-compare-mobile-tab="headphones">
-        Consumer headphones
-      </button>
-      <button class="sb-iem-compare-table__mobile-pill" type="button" role="tab" aria-selected="false" aria-controls="sb-iem-compare-mobile-panel-bluetooth" id="sb-iem-compare-mobile-tab-bluetooth" data-compare-mobile-tab="bluetooth">
-        Bluetooth in-ears
-      </button>
-      <button class="sb-iem-compare-table__mobile-pill" type="button" role="tab" aria-selected="false" aria-controls="sb-iem-compare-mobile-panel-expensive" id="sb-iem-compare-mobile-tab-expensive" data-compare-mobile-tab="expensive">
-        Expensive IEMs
-      </button>
-    </div>
-
-    <div class="sb-iem-compare-table__mobile-panels">
-      <div class="sb-iem-compare-table__mobile-panel is-active" id="sb-iem-compare-mobile-panel-headphones" role="tabpanel" aria-labelledby="sb-iem-compare-mobile-tab-headphones" data-compare-mobile-panel="headphones">
-        <div class="sb-iem-compare-table__mobile-panel-head">
-          <p class="sb-iem-compare-table__mobile-panel-title font-body weight-bold">Consumer headphones</p>
-          <p class="sb-iem-compare-table__mobile-panel-note font-caption weight-regular">Great for casual listening</p>
+  <div class="sb-iem-compare-table__mobile" aria-label="Comparison for Wave and the rest">
+    <div class="sb-iem-compare-table__mobile-table" role="table" aria-label="Comparison table for Wave and the rest">
+      <div class="sb-iem-compare-table__mobile-row sb-iem-compare-table__mobile-row--head" role="row">
+        <div class="sb-iem-compare-table__mobile-head sb-iem-compare-table__mobile-head--benefit" role="columnheader">
+          <span class="sb-iem-compare-table__mobile-logo" aria-label="Soundbrenner">
+            {{ 'logo-soundbrenner-wordmark.svg' | inline_asset_content }}
+          </span>
         </div>
+        <div class="sb-iem-compare-table__mobile-head sb-iem-compare-table__mobile-head--wave font-caption2 weight-semibold" role="columnheader">Wave</div>
+        <div class="sb-iem-compare-table__mobile-head font-caption2 weight-semibold" role="columnheader">Bluetooth earbuds</div>
+      </div>
 
-        <div class="sb-iem-compare-table__mobile-features" data-compare-mobile-features>
-        <div class="sb-iem-compare-table__mobile-feature is-active" data-compare-mobile-feature>
-          <div class="sb-iem-compare-table__mobile-feature-copy">
-            <p class="sb-iem-compare-table__mobile-feature-title font-body weight-bold">Wired real-time monitoring</p>
-            <p class="sb-iem-compare-table__mobile-feature-note font-caption weight-regular">No Bluetooth delay while practicing or performing.</p>
-          </div>
-          <div class="sb-iem-compare-table__mobile-status-pair">
-            <div class="sb-iem-compare-table__mobile-status-col sb-iem-compare-table__mobile-status-col--wave">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Wave</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Wave: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
-            </div>
-            <div class="sb-iem-compare-table__mobile-status-col">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Them</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="Consumer headphones: No">{{ sb_iem_compare_table_no_icon }}</span>
-            </div>
-          </div>
+      <div class="sb-iem-compare-table__mobile-row" role="row">
+        <div class="sb-iem-compare-table__mobile-benefit font-body weight-bold" role="rowheader">Wired real-time monitoring</div>
+        <div class="sb-iem-compare-table__mobile-status-cell sb-iem-compare-table__mobile-status-cell--wave" role="cell">
+          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Wave: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
         </div>
-
-        <div class="sb-iem-compare-table__mobile-feature" data-compare-mobile-feature hidden>
-          <div class="sb-iem-compare-table__mobile-feature-copy">
-            <p class="sb-iem-compare-table__mobile-feature-title font-body weight-bold">Strong passive isolation</p>
-            <p class="sb-iem-compare-table__mobile-feature-note font-caption weight-regular">Helps you focus without needing active noise cancellation.</p>
-          </div>
-          <div class="sb-iem-compare-table__mobile-status-pair">
-            <div class="sb-iem-compare-table__mobile-status-col sb-iem-compare-table__mobile-status-col--wave">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Wave</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Wave: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
-            </div>
-            <div class="sb-iem-compare-table__mobile-status-col">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Them</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="Consumer headphones: No">{{ sb_iem_compare_table_no_icon }}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="sb-iem-compare-table__mobile-feature" data-compare-mobile-feature hidden>
-          <div class="sb-iem-compare-table__mobile-feature-copy">
-            <p class="sb-iem-compare-table__mobile-feature-title font-body weight-bold">Secure fit for long sessions</p>
-            <p class="sb-iem-compare-table__mobile-feature-note font-caption weight-regular">Comfort that stays stable during practice and stage movement.</p>
-          </div>
-          <div class="sb-iem-compare-table__mobile-status-pair">
-            <div class="sb-iem-compare-table__mobile-status-col sb-iem-compare-table__mobile-status-col--wave">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Wave</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Wave: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
-            </div>
-            <div class="sb-iem-compare-table__mobile-status-col">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Them</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="Consumer headphones: No">{{ sb_iem_compare_table_no_icon }}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="sb-iem-compare-table__mobile-feature" data-compare-mobile-feature hidden>
-          <div class="sb-iem-compare-table__mobile-feature-copy">
-            <p class="sb-iem-compare-table__mobile-feature-title font-body weight-bold">No charging. No pairing.</p>
-            <p class="sb-iem-compare-table__mobile-feature-note font-caption weight-regular">Just plug in and start playing.</p>
-          </div>
-          <div class="sb-iem-compare-table__mobile-status-pair">
-            <div class="sb-iem-compare-table__mobile-status-col sb-iem-compare-table__mobile-status-col--wave">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Wave</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Wave: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
-            </div>
-            <div class="sb-iem-compare-table__mobile-status-col">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Them</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="Consumer headphones: No">{{ sb_iem_compare_table_no_icon }}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="sb-iem-compare-table__mobile-feature" data-compare-mobile-feature hidden>
-          <div class="sb-iem-compare-table__mobile-feature-copy">
-            <p class="sb-iem-compare-table__mobile-feature-title font-body weight-bold">Musician-first value</p>
-            <p class="sb-iem-compare-table__mobile-feature-note font-caption weight-regular">Serious monitoring benefits without jumping to ultra-premium pricing.</p>
-          </div>
-          <div class="sb-iem-compare-table__mobile-status-pair">
-            <div class="sb-iem-compare-table__mobile-status-col sb-iem-compare-table__mobile-status-col--wave">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Wave</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Wave: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
-            </div>
-            <div class="sb-iem-compare-table__mobile-status-col">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Them</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="Consumer headphones: No">{{ sb_iem_compare_table_no_icon }}</span>
-            </div>
-          </div>
-        </div>
-        </div>
-
-        <div class="sb-iem-compare-table__mobile-feature-nav">
-          <button class="sb-iem-compare-table__mobile-feature-arrow" type="button" data-compare-mobile-prev aria-label="{{ 'sb.common.previous' | t }}">
-            {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
-          </button>
-          <div class="sb-iem-compare-table__mobile-feature-dots" aria-label="Feature progress">
-            <button class="sb-iem-compare-table__mobile-feature-dot is-active" type="button" data-compare-mobile-dot="0" aria-label="Go to feature 1"></button>
-            <button class="sb-iem-compare-table__mobile-feature-dot" type="button" data-compare-mobile-dot="1" aria-label="Go to feature 2"></button>
-            <button class="sb-iem-compare-table__mobile-feature-dot" type="button" data-compare-mobile-dot="2" aria-label="Go to feature 3"></button>
-            <button class="sb-iem-compare-table__mobile-feature-dot" type="button" data-compare-mobile-dot="3" aria-label="Go to feature 4"></button>
-            <button class="sb-iem-compare-table__mobile-feature-dot" type="button" data-compare-mobile-dot="4" aria-label="Go to feature 5"></button>
-          </div>
-          <button class="sb-iem-compare-table__mobile-feature-arrow sb-iem-compare-table__mobile-feature-arrow--next" type="button" data-compare-mobile-next aria-label="{{ 'sb.common.next' | t }}">
-            {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
-          </button>
+        <div class="sb-iem-compare-table__mobile-status-cell" role="cell">
+          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="Bluetooth earbuds: No">{{ sb_iem_compare_table_no_icon }}</span>
         </div>
       </div>
 
-      <div class="sb-iem-compare-table__mobile-panel" id="sb-iem-compare-mobile-panel-bluetooth" role="tabpanel" aria-labelledby="sb-iem-compare-mobile-tab-bluetooth" data-compare-mobile-panel="bluetooth" hidden>
-        <div class="sb-iem-compare-table__mobile-panel-head">
-          <p class="sb-iem-compare-table__mobile-panel-title font-body weight-bold">Bluetooth in-ears</p>
-          <p class="sb-iem-compare-table__mobile-panel-note font-caption weight-regular">Made for convenience first</p>
+      <div class="sb-iem-compare-table__mobile-row" role="row">
+        <div class="sb-iem-compare-table__mobile-benefit font-body weight-bold" role="rowheader">Strong passive isolation</div>
+        <div class="sb-iem-compare-table__mobile-status-cell sb-iem-compare-table__mobile-status-cell--wave" role="cell">
+          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Wave: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
         </div>
-
-        <div class="sb-iem-compare-table__mobile-features" data-compare-mobile-features>
-        <div class="sb-iem-compare-table__mobile-feature is-active" data-compare-mobile-feature>
-          <div class="sb-iem-compare-table__mobile-feature-copy">
-            <p class="sb-iem-compare-table__mobile-feature-title font-body weight-bold">Wired real-time monitoring</p>
-            <p class="sb-iem-compare-table__mobile-feature-note font-caption weight-regular">No Bluetooth delay while practicing or performing.</p>
-          </div>
-          <div class="sb-iem-compare-table__mobile-status-pair">
-            <div class="sb-iem-compare-table__mobile-status-col sb-iem-compare-table__mobile-status-col--wave">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Wave</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Wave: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
-            </div>
-            <div class="sb-iem-compare-table__mobile-status-col">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Them</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="Bluetooth in-ears: No">{{ sb_iem_compare_table_no_icon }}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="sb-iem-compare-table__mobile-feature" data-compare-mobile-feature hidden>
-          <div class="sb-iem-compare-table__mobile-feature-copy">
-            <p class="sb-iem-compare-table__mobile-feature-title font-body weight-bold">Strong passive isolation</p>
-            <p class="sb-iem-compare-table__mobile-feature-note font-caption weight-regular">Helps you focus without needing active noise cancellation.</p>
-          </div>
-          <div class="sb-iem-compare-table__mobile-status-pair">
-            <div class="sb-iem-compare-table__mobile-status-col sb-iem-compare-table__mobile-status-col--wave">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Wave</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Wave: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
-            </div>
-            <div class="sb-iem-compare-table__mobile-status-col">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Them</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="Bluetooth in-ears: No">{{ sb_iem_compare_table_no_icon }}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="sb-iem-compare-table__mobile-feature" data-compare-mobile-feature hidden>
-          <div class="sb-iem-compare-table__mobile-feature-copy">
-            <p class="sb-iem-compare-table__mobile-feature-title font-body weight-bold">Secure fit for long sessions</p>
-            <p class="sb-iem-compare-table__mobile-feature-note font-caption weight-regular">Comfort that stays stable during practice and stage movement.</p>
-          </div>
-          <div class="sb-iem-compare-table__mobile-status-pair">
-            <div class="sb-iem-compare-table__mobile-status-col sb-iem-compare-table__mobile-status-col--wave">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Wave</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Wave: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
-            </div>
-            <div class="sb-iem-compare-table__mobile-status-col">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Them</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="Bluetooth in-ears: No">{{ sb_iem_compare_table_no_icon }}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="sb-iem-compare-table__mobile-feature" data-compare-mobile-feature hidden>
-          <div class="sb-iem-compare-table__mobile-feature-copy">
-            <p class="sb-iem-compare-table__mobile-feature-title font-body weight-bold">No charging. No pairing.</p>
-            <p class="sb-iem-compare-table__mobile-feature-note font-caption weight-regular">Just plug in and start playing.</p>
-          </div>
-          <div class="sb-iem-compare-table__mobile-status-pair">
-            <div class="sb-iem-compare-table__mobile-status-col sb-iem-compare-table__mobile-status-col--wave">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Wave</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Wave: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
-            </div>
-            <div class="sb-iem-compare-table__mobile-status-col">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Them</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="Bluetooth in-ears: No">{{ sb_iem_compare_table_no_icon }}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="sb-iem-compare-table__mobile-feature" data-compare-mobile-feature hidden>
-          <div class="sb-iem-compare-table__mobile-feature-copy">
-            <p class="sb-iem-compare-table__mobile-feature-title font-body weight-bold">Musician-first value</p>
-            <p class="sb-iem-compare-table__mobile-feature-note font-caption weight-regular">Serious monitoring benefits without jumping to ultra-premium pricing.</p>
-          </div>
-          <div class="sb-iem-compare-table__mobile-status-pair">
-            <div class="sb-iem-compare-table__mobile-status-col sb-iem-compare-table__mobile-status-col--wave">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Wave</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Wave: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
-            </div>
-            <div class="sb-iem-compare-table__mobile-status-col">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Them</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="Bluetooth in-ears: No">{{ sb_iem_compare_table_no_icon }}</span>
-            </div>
-          </div>
-        </div>
-        </div>
-
-        <div class="sb-iem-compare-table__mobile-feature-nav">
-          <button class="sb-iem-compare-table__mobile-feature-arrow" type="button" data-compare-mobile-prev aria-label="{{ 'sb.common.previous' | t }}">
-            {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
-          </button>
-          <div class="sb-iem-compare-table__mobile-feature-dots" aria-label="Feature progress">
-            <button class="sb-iem-compare-table__mobile-feature-dot is-active" type="button" data-compare-mobile-dot="0" aria-label="Go to feature 1"></button>
-            <button class="sb-iem-compare-table__mobile-feature-dot" type="button" data-compare-mobile-dot="1" aria-label="Go to feature 2"></button>
-            <button class="sb-iem-compare-table__mobile-feature-dot" type="button" data-compare-mobile-dot="2" aria-label="Go to feature 3"></button>
-            <button class="sb-iem-compare-table__mobile-feature-dot" type="button" data-compare-mobile-dot="3" aria-label="Go to feature 4"></button>
-            <button class="sb-iem-compare-table__mobile-feature-dot" type="button" data-compare-mobile-dot="4" aria-label="Go to feature 5"></button>
-          </div>
-          <button class="sb-iem-compare-table__mobile-feature-arrow sb-iem-compare-table__mobile-feature-arrow--next" type="button" data-compare-mobile-next aria-label="{{ 'sb.common.next' | t }}">
-            {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
-          </button>
+        <div class="sb-iem-compare-table__mobile-status-cell" role="cell">
+          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="Bluetooth earbuds: No">{{ sb_iem_compare_table_no_icon }}</span>
         </div>
       </div>
 
-      <div class="sb-iem-compare-table__mobile-panel" id="sb-iem-compare-mobile-panel-expensive" role="tabpanel" aria-labelledby="sb-iem-compare-mobile-tab-expensive" data-compare-mobile-panel="expensive" hidden>
-        <div class="sb-iem-compare-table__mobile-panel-head">
-          <p class="sb-iem-compare-table__mobile-panel-title font-body weight-bold">Expensive IEMs</p>
-          <p class="sb-iem-compare-table__mobile-panel-note font-caption weight-regular">Strong performance at a much higher price</p>
+      <div class="sb-iem-compare-table__mobile-row" role="row">
+        <div class="sb-iem-compare-table__mobile-benefit font-body weight-bold" role="rowheader">Secure fit for long sessions</div>
+        <div class="sb-iem-compare-table__mobile-status-cell sb-iem-compare-table__mobile-status-cell--wave" role="cell">
+          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Wave: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
         </div>
+        <div class="sb-iem-compare-table__mobile-status-cell" role="cell">
+          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="Bluetooth earbuds: No">{{ sb_iem_compare_table_no_icon }}</span>
+        </div>
+      </div>
 
-        <div class="sb-iem-compare-table__mobile-features" data-compare-mobile-features>
-        <div class="sb-iem-compare-table__mobile-feature is-active" data-compare-mobile-feature>
-          <div class="sb-iem-compare-table__mobile-feature-copy">
-            <p class="sb-iem-compare-table__mobile-feature-title font-body weight-bold">Wired real-time monitoring</p>
-            <p class="sb-iem-compare-table__mobile-feature-note font-caption weight-regular">No Bluetooth delay while practicing or performing.</p>
-          </div>
-          <div class="sb-iem-compare-table__mobile-status-pair">
-            <div class="sb-iem-compare-table__mobile-status-col sb-iem-compare-table__mobile-status-col--wave">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Wave</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Wave: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
-            </div>
-            <div class="sb-iem-compare-table__mobile-status-col">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Them</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Expensive IEMs: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
-            </div>
-          </div>
+      <div class="sb-iem-compare-table__mobile-row" role="row">
+        <div class="sb-iem-compare-table__mobile-benefit font-body weight-bold" role="rowheader">No charging. No pairing.</div>
+        <div class="sb-iem-compare-table__mobile-status-cell sb-iem-compare-table__mobile-status-cell--wave" role="cell">
+          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Wave: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
         </div>
+        <div class="sb-iem-compare-table__mobile-status-cell" role="cell">
+          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="Bluetooth earbuds: No">{{ sb_iem_compare_table_no_icon }}</span>
+        </div>
+      </div>
 
-        <div class="sb-iem-compare-table__mobile-feature" data-compare-mobile-feature hidden>
-          <div class="sb-iem-compare-table__mobile-feature-copy">
-            <p class="sb-iem-compare-table__mobile-feature-title font-body weight-bold">Strong passive isolation</p>
-            <p class="sb-iem-compare-table__mobile-feature-note font-caption weight-regular">Helps you focus without needing active noise cancellation.</p>
-          </div>
-          <div class="sb-iem-compare-table__mobile-status-pair">
-            <div class="sb-iem-compare-table__mobile-status-col sb-iem-compare-table__mobile-status-col--wave">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Wave</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Wave: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
-            </div>
-            <div class="sb-iem-compare-table__mobile-status-col">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Them</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Expensive IEMs: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
-            </div>
-          </div>
+      <div class="sb-iem-compare-table__mobile-row" role="row">
+        <div class="sb-iem-compare-table__mobile-benefit font-body weight-bold" role="rowheader">Musician-first value</div>
+        <div class="sb-iem-compare-table__mobile-status-cell sb-iem-compare-table__mobile-status-cell--wave" role="cell">
+          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Wave: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
         </div>
-
-        <div class="sb-iem-compare-table__mobile-feature" data-compare-mobile-feature hidden>
-          <div class="sb-iem-compare-table__mobile-feature-copy">
-            <p class="sb-iem-compare-table__mobile-feature-title font-body weight-bold">Secure fit for long sessions</p>
-            <p class="sb-iem-compare-table__mobile-feature-note font-caption weight-regular">Comfort that stays stable during practice and stage movement.</p>
-          </div>
-          <div class="sb-iem-compare-table__mobile-status-pair">
-            <div class="sb-iem-compare-table__mobile-status-col sb-iem-compare-table__mobile-status-col--wave">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Wave</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Wave: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
-            </div>
-            <div class="sb-iem-compare-table__mobile-status-col">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Them</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Expensive IEMs: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="sb-iem-compare-table__mobile-feature" data-compare-mobile-feature hidden>
-          <div class="sb-iem-compare-table__mobile-feature-copy">
-            <p class="sb-iem-compare-table__mobile-feature-title font-body weight-bold">No charging. No pairing.</p>
-            <p class="sb-iem-compare-table__mobile-feature-note font-caption weight-regular">Just plug in and start playing.</p>
-          </div>
-          <div class="sb-iem-compare-table__mobile-status-pair">
-            <div class="sb-iem-compare-table__mobile-status-col sb-iem-compare-table__mobile-status-col--wave">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Wave</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Wave: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
-            </div>
-            <div class="sb-iem-compare-table__mobile-status-col">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Them</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Expensive IEMs: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="sb-iem-compare-table__mobile-feature" data-compare-mobile-feature hidden>
-          <div class="sb-iem-compare-table__mobile-feature-copy">
-            <p class="sb-iem-compare-table__mobile-feature-title font-body weight-bold">Musician-first value</p>
-            <p class="sb-iem-compare-table__mobile-feature-note font-caption weight-regular">Serious monitoring benefits without jumping to ultra-premium pricing.</p>
-          </div>
-          <div class="sb-iem-compare-table__mobile-status-pair">
-            <div class="sb-iem-compare-table__mobile-status-col sb-iem-compare-table__mobile-status-col--wave">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Wave</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Wave: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
-            </div>
-            <div class="sb-iem-compare-table__mobile-status-col">
-              <span class="sb-iem-compare-table__mobile-status-label font-caption2 weight-semibold">Them</span>
-              <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="Expensive IEMs: No">{{ sb_iem_compare_table_no_icon }}</span>
-            </div>
-          </div>
-        </div>
-        </div>
-
-        <div class="sb-iem-compare-table__mobile-feature-nav">
-          <button class="sb-iem-compare-table__mobile-feature-arrow" type="button" data-compare-mobile-prev aria-label="{{ 'sb.common.previous' | t }}">
-            {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
-          </button>
-          <div class="sb-iem-compare-table__mobile-feature-dots" aria-label="Feature progress">
-            <button class="sb-iem-compare-table__mobile-feature-dot is-active" type="button" data-compare-mobile-dot="0" aria-label="Go to feature 1"></button>
-            <button class="sb-iem-compare-table__mobile-feature-dot" type="button" data-compare-mobile-dot="1" aria-label="Go to feature 2"></button>
-            <button class="sb-iem-compare-table__mobile-feature-dot" type="button" data-compare-mobile-dot="2" aria-label="Go to feature 3"></button>
-            <button class="sb-iem-compare-table__mobile-feature-dot" type="button" data-compare-mobile-dot="3" aria-label="Go to feature 4"></button>
-            <button class="sb-iem-compare-table__mobile-feature-dot" type="button" data-compare-mobile-dot="4" aria-label="Go to feature 5"></button>
-          </div>
-          <button class="sb-iem-compare-table__mobile-feature-arrow sb-iem-compare-table__mobile-feature-arrow--next" type="button" data-compare-mobile-next aria-label="{{ 'sb.common.next' | t }}">
-            {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
-          </button>
+        <div class="sb-iem-compare-table__mobile-status-cell" role="cell">
+          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="Bluetooth earbuds: No">{{ sb_iem_compare_table_no_icon }}</span>
         </div>
       </div>
     </div>
@@ -669,13 +381,13 @@
   }
 
   .sb-iem-compare-table__cell--product {
-    align-items: flex-start;
+    align-items: center;
     color: var(--sb-color-neutral-100);
     flex-direction: column;
     gap: 14px;
-    justify-content: flex-start;
+    justify-content: center;
     padding: 72px 28px 32px;
-    text-align: left;
+    text-align: center;
   }
 
   .sb-iem-compare-table__cell--product.sb-iem-compare-table__cell--wave {
@@ -692,12 +404,12 @@
   }
 
   .sb-iem-compare-table__cell--label {
-    align-items: flex-start;
+    align-items: center;
     background: var(--sb-color-always-black) !important;
-    justify-content: flex-start;
+    justify-content: center;
     position: sticky;
     left: 0;
-    text-align: left;
+    text-align: center;
     z-index: 1;
   }
 
@@ -739,6 +451,7 @@
     display: flex;
     flex-direction: column;
     gap: var(--sb-space-6);
+    text-align: center;
   }
 
   .sb-iem-compare-table__feature-note,
@@ -855,330 +568,106 @@
     }
 
     .sb-iem-compare-table__mobile {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .sb-iem-compare-table__mobile-summary,
-    .sb-iem-compare-table__mobile-panel {
       background: var(--sb-color-always-black);
       border: 1px solid var(--sb-color-neutral-700);
       border-radius: 24px;
       color: var(--sb-color-always-white);
+      display: block;
       overflow: hidden;
     }
 
-    .sb-iem-compare-table__mobile-summary {
-      border-color: var(--sb-color-primary-500);
-      box-shadow: 0 0 0 1px rgba(0, 201, 183, 0.12);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      padding: 18px;
-    }
-
-    .sb-iem-compare-table__mobile-summary-title,
-    .sb-iem-compare-table__mobile-summary-note,
-    .sb-iem-compare-table__mobile-panel-title,
-    .sb-iem-compare-table__mobile-panel-note,
-    .sb-iem-compare-table__mobile-feature-title,
-    .sb-iem-compare-table__mobile-feature-note,
-    .sb-iem-compare-table__mobile-status-label {
-      margin: 0;
-    }
-
-    .sb-iem-compare-table__mobile-summary-title,
-    .sb-iem-compare-table__mobile-panel-title,
-    .sb-iem-compare-table__mobile-feature-title,
-    .sb-iem-compare-table__mobile-status-label {
-      color: var(--sb-color-always-white);
-    }
-
-    .sb-iem-compare-table__mobile-summary-note,
-    .sb-iem-compare-table__mobile-panel-note,
-    .sb-iem-compare-table__mobile-feature-note {
-      color: var(--sb-iem-compare-table-muted-text);
-    }
-
-    .sb-iem-compare-table__mobile-picker {
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      padding-bottom: 2px;
-      scrollbar-width: none;
-    }
-
-    .sb-iem-compare-table__mobile-picker::-webkit-scrollbar {
-      display: none;
-    }
-
-    .sb-iem-compare-table__mobile-pill {
-      appearance: none;
-      background: var(--sb-color-always-black);
-      border: 1px solid var(--sb-color-neutral-700);
-      border-radius: 999px;
-      color: var(--sb-color-always-white);
-      cursor: pointer;
-      flex: 0 0 auto;
-      padding: 10px 14px;
-    }
-
-    .sb-iem-compare-table__mobile-pill.is-active {
-      background: rgba(0, 201, 183, 0.12);
-      border-color: var(--sb-color-primary-500);
-      box-shadow: 0 0 0 1px rgba(0, 201, 183, 0.12);
-    }
-
-    .sb-iem-compare-table__mobile-panels {
-      min-width: 0;
-    }
-
-    .sb-iem-compare-table__mobile-panel-head {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      padding: 18px 18px 16px;
-    }
-
-    .sb-iem-compare-table__mobile-panel {
-      display: none;
-      flex-direction: column;
-    }
-
-    .sb-iem-compare-table__mobile-panel.is-active {
-      display: flex;
-    }
-
-    .sb-iem-compare-table__mobile-features {
-      border-top: 1px solid var(--sb-color-neutral-700);
-      min-width: 0;
-    }
-
-    .sb-iem-compare-table__mobile-feature {
-      align-items: flex-start;
-      background: var(--sb-color-always-black);
-      display: none;
-      flex-direction: column;
-      gap: 14px;
-      padding: 16px 18px;
-    }
-
-    .sb-iem-compare-table__mobile-feature.is-active {
-      display: flex;
-    }
-
-    .sb-iem-compare-table__mobile-feature + .sb-iem-compare-table__mobile-feature {
-      border-top: 1px solid var(--sb-color-neutral-700);
-    }
-
-    .sb-iem-compare-table__mobile-feature-copy {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .sb-iem-compare-table__mobile-status-pair {
+    .sb-iem-compare-table__mobile-table {
       display: grid;
-      gap: 10px;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: minmax(0, 1.7fr) minmax(72px, 0.7fr) minmax(72px, 0.7fr);
+      min-width: 0;
       width: 100%;
     }
 
-    .sb-iem-compare-table__mobile-status-col {
-      align-items: center;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      justify-content: center;
-      min-height: 82px;
-      padding: 12px;
+    .sb-iem-compare-table__mobile-row {
+      display: contents;
     }
 
-    .sb-iem-compare-table__mobile-status-col--wave {
-      background: rgba(0, 201, 183, 0.12);
-      border-color: var(--sb-color-primary-500);
-    }
-
-    .sb-iem-compare-table__mobile-feature-nav {
-      align-items: center;
+    .sb-iem-compare-table__mobile-head,
+    .sb-iem-compare-table__mobile-benefit,
+    .sb-iem-compare-table__mobile-status-cell {
+      background: var(--sb-color-always-black);
+      border-left: 0;
+      border-right: 1px solid var(--sb-color-neutral-700);
       border-top: 1px solid var(--sb-color-neutral-700);
-      display: flex;
-      gap: 12px;
-      justify-content: space-between;
-      padding: 14px 18px 18px;
+      min-width: 0;
     }
 
-    .sb-iem-compare-table__mobile-feature-arrow {
+    .sb-iem-compare-table__mobile-head {
       align-items: center;
-      appearance: none;
-      background: transparent;
-      border: 0;
-      color: var(--sb-color-always-white);
-      cursor: pointer;
-      display: inline-flex;
-      height: 24px;
-      justify-content: center;
-      padding: 0;
-      width: 24px;
-    }
-
-    .sb-iem-compare-table__mobile-feature-arrow--next {
-      transform: rotate(180deg);
-    }
-
-    .sb-iem-compare-table__mobile-feature-arrow svg {
-      display: block;
-      height: 24px;
-      width: 24px;
-    }
-
-    .sb-iem-compare-table__mobile-feature-arrow svg path:first-child {
-      fill: rgba(255, 255, 255, 0.12);
-    }
-
-    .sb-iem-compare-table__mobile-feature-arrow svg path:last-child {
-      fill: currentColor;
-    }
-
-    .sb-iem-compare-table__mobile-feature-dots {
+      color: var(--sb-iem-compare-table-muted-text);
       display: flex;
-      gap: 8px;
+      min-height: 56px;
+      padding: 12px 14px;
     }
 
-    .sb-iem-compare-table__mobile-feature-dot {
-      appearance: none;
-      background: rgba(255, 255, 255, 0.18);
-      border: 0;
-      border-radius: 999px;
-      cursor: pointer;
-      height: 8px;
-      padding: 0;
-      transition: none;
-      width: 8px;
+    .sb-iem-compare-table__mobile-head--benefit {
+      justify-content: flex-start;
     }
 
-    .sb-iem-compare-table__mobile-feature-dot.is-active {
-      background: var(--sb-color-primary-500);
-      width: 24px;
+    .sb-iem-compare-table__mobile-logo {
+      color: var(--sb-color-always-white);
+      display: inline-flex;
+      max-width: 100%;
+      width: 100%;
     }
 
-    .sb-iem-compare-table__mobile-panel[hidden],
-    .sb-iem-compare-table__mobile-feature[hidden] {
-      display: none !important;
+    .sb-iem-compare-table__mobile-logo svg {
+      display: block;
+      height: auto;
+      max-width: 132px;
+      width: 100%;
+    }
+
+    .sb-iem-compare-table__mobile-logo svg path:not([fill='none']) {
+      fill: currentColor !important;
+    }
+
+    .sb-iem-compare-table__mobile-head--wave {
+      background: var(--sb-color-primary-500-25);
+      border-right-color: var(--sb-color-primary-500);
+      color: var(--sb-color-always-white);
+      justify-content: center;
+    }
+
+    .sb-iem-compare-table__mobile-head:last-child {
+      border-right: 0;
+      justify-content: center;
+    }
+
+    .sb-iem-compare-table__mobile-benefit {
+      align-items: center;
+      color: var(--sb-color-always-white);
+      display: flex;
+      line-height: 1.35;
+      padding: 16px 14px;
+    }
+
+    .sb-iem-compare-table__mobile-status-cell {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      padding: 12px 8px;
+    }
+
+    .sb-iem-compare-table__mobile-status-cell--wave {
+      background: var(--sb-color-primary-500-25);
+      border-right-color: var(--sb-color-primary-500);
+    }
+
+    .sb-iem-compare-table__mobile-status-cell:last-child {
+      border-right: 0;
+    }
+
+    .sb-iem-compare-table__mobile-row--head .sb-iem-compare-table__mobile-head {
+      border-top: 0;
     }
   }
 {% endstylesheet %}
-
-<script>
-  (() => {
-    const initMobileCompare = (scope) => {
-      scope.querySelectorAll('.sb-iem-compare-table__mobile').forEach((mobileRoot) => {
-        if (mobileRoot.dataset.compareMobileInitialized == 'true') return;
-        mobileRoot.dataset.compareMobileInitialized = 'true';
-
-        const tabs = Array.from(mobileRoot.querySelectorAll('[data-compare-mobile-tab]'));
-        const panels = Array.from(mobileRoot.querySelectorAll('[data-compare-mobile-panel]'));
-
-        if (!tabs.length || !panels.length) return;
-
-        const setFeatureState = (panel, index) => {
-          const features = Array.from(panel.querySelectorAll('[data-compare-mobile-feature]'));
-          const dots = Array.from(panel.querySelectorAll('[data-compare-mobile-dot]'));
-          if (!features.length) return;
-
-          const normalizedIndex = ((index % features.length) + features.length) % features.length;
-          panel.dataset.compareMobileFeatureIndex = normalizedIndex;
-
-          features.forEach((feature, featureIndex) => {
-            const isActive = featureIndex == normalizedIndex;
-            feature.classList.toggle('is-active', isActive);
-            feature.hidden = !isActive;
-          });
-
-          dots.forEach((dot, dotIndex) => {
-            dot.classList.toggle('is-active', dotIndex == normalizedIndex);
-          });
-        };
-
-        const activate = (key) => {
-          tabs.forEach((tab) => {
-            const isActive = tab.getAttribute('data-compare-mobile-tab') == key;
-            tab.classList.toggle('is-active', isActive);
-            tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
-          });
-
-          panels.forEach((panel) => {
-            const isActive = panel.getAttribute('data-compare-mobile-panel') == key;
-            panel.classList.toggle('is-active', isActive);
-            panel.hidden = !isActive;
-
-            if (isActive) {
-              const currentIndex = parseInt(panel.dataset.compareMobileFeatureIndex || '0', 10);
-              setFeatureState(panel, Number.isNaN(currentIndex) ? 0 : currentIndex);
-            }
-          });
-        };
-
-        panels.forEach((panel) => {
-          const features = Array.from(panel.querySelectorAll('[data-compare-mobile-feature]'));
-          if (features.length) {
-            const initialIndex = features.findIndex((feature) => feature.classList.contains('is-active'));
-            setFeatureState(panel, initialIndex < 0 ? 0 : initialIndex);
-          }
-        });
-
-        mobileRoot.addEventListener('click', (event) => {
-          const tab = event.target.closest('[data-compare-mobile-tab]');
-          if (tab && mobileRoot.contains(tab)) {
-            activate(tab.getAttribute('data-compare-mobile-tab'));
-            return;
-          }
-
-          const prevButton = event.target.closest('[data-compare-mobile-prev]');
-          if (prevButton && mobileRoot.contains(prevButton)) {
-            const panel = prevButton.closest('[data-compare-mobile-panel]');
-            if (!panel) return;
-            const currentIndex = parseInt(panel.dataset.compareMobileFeatureIndex || '0', 10);
-            setFeatureState(panel, (Number.isNaN(currentIndex) ? 0 : currentIndex) - 1);
-            return;
-          }
-
-          const nextButton = event.target.closest('[data-compare-mobile-next]');
-          if (nextButton && mobileRoot.contains(nextButton)) {
-            const panel = nextButton.closest('[data-compare-mobile-panel]');
-            if (!panel) return;
-            const currentIndex = parseInt(panel.dataset.compareMobileFeatureIndex || '0', 10);
-            setFeatureState(panel, (Number.isNaN(currentIndex) ? 0 : currentIndex) + 1);
-            return;
-          }
-
-          const dot = event.target.closest('[data-compare-mobile-dot]');
-          if (dot && mobileRoot.contains(dot)) {
-            const panel = dot.closest('[data-compare-mobile-panel]');
-            if (!panel) return;
-            const dotIndex = parseInt(dot.getAttribute('data-compare-mobile-dot') || '0', 10);
-            setFeatureState(panel, Number.isNaN(dotIndex) ? 0 : dotIndex);
-          }
-        });
-
-        const initialTab = tabs.find((tab) => tab.classList.contains('is-active')) || tabs[0];
-        if (initialTab) {
-          activate(initialTab.getAttribute('data-compare-mobile-tab'));
-        }
-      });
-    };
-
-    initMobileCompare(document);
-    document.addEventListener('shopify:section:load', (event) => {
-      if (!event.target) return;
-      initMobileCompare(event.target);
-    });
-  })();
-</script>
 
 {% schema %}
 {
