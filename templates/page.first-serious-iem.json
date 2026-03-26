@@ -25,7 +25,7 @@
         "background_image_mobile": "shopify://shop_images/Property_1_Wave_in-ear_monitors_mobile.jpg",
         "kicker": "Your first real in-ear monitors",
         "headline": "Your first IEM should feel like an upgrade, not a gamble.",
-        "subheadline": "Soundbrenner Wave gives you the clarity, fit, and real-time monitoring musicians actually need, without the complexity or price jump that holds most people back.",
+        "subheadline": "",
         "show_button": true,
         "button_label": "Shop Wave now",
         "button_size": "large",
@@ -50,7 +50,7 @@
           "type": "item",
           "settings": {
             "icon": "shopify://shop_images/usp_wave_1.svg",
-            "gradient_value": "linear-gradient(135deg, #0097FF 0%, #00FCA4 100%)",
+            "gradient_value": "linear-gradient(135deg, #FF0739 0%, #8E3BFF 100%)",
             "title": "Zero-lag monitoring",
             "body": "<p>Hear yourself in real time with wired audio that stays locked in while you practice, record, or perform.</p>"
           }
@@ -59,7 +59,7 @@
           "type": "item",
           "settings": {
             "icon": "shopify://shop_images/usp_wave_2.svg",
-            "gradient_value": "linear-gradient(135deg, #7CD9B0 0%, #1E9980 100%)",
+            "gradient_value": "linear-gradient(135deg, #E67702 0%, #FF4700 100%)",
             "title": "More focus, less noise",
             "body": "<p>Strong passive isolation helps the details come through clearly without outside distractions pulling you out of the moment.</p>"
           }
@@ -68,7 +68,7 @@
           "type": "item",
           "settings": {
             "icon": "shopify://shop_images/usp_wave_4.svg",
-            "gradient_value": "linear-gradient(135deg, #FFC285 0%, #D46A15 100%)",
+            "gradient_value": "linear-gradient(135deg, #0097FF 0%, #00FCA4 100%)",
             "title": "Comfort that lasts",
             "body": "<p>A secure fit stays comfortable through longer practice blocks, rehearsals, and live sets.</p>"
           }
@@ -77,7 +77,7 @@
           "type": "item",
           "settings": {
             "icon": "shopify://shop_images/usp_wave_5.svg",
-            "gradient_value": "linear-gradient(135deg, #FF8387 0%, #FF1F34 100%)",
+            "gradient_value": "linear-gradient(135deg, #FFD147 0%, #FF9E18 100%)",
             "title": "Plug in and play",
             "body": "<p>No batteries, pairing steps, or charging routines. Just connect and get to work.</p>"
           }
@@ -134,7 +134,7 @@
         "eyebrow": "Ready when you are",
         "title_part_one": "Start with the IEM that makes",
         "title_part_two": "getting started easy",
-        "body": "<p>Wave gives you the clarity, isolation, and real-time monitoring everyday listening gear simply can\u2019t, without adding complexity or pushing you into high-end pricing.</p><p>If you\u2019ve been putting off your first IEM, this is the easiest way to start.</p>",
+        "body": "",
         "trust_line": "30-day money-back guarantee",
         "value_anchor": "Professional monitoring, without the pro price",
         "button_label": "Shop Wave now",
