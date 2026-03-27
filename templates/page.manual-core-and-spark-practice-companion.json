@@ -43,7 +43,7 @@
         "body_1": {
           "type": "text",
           "settings": {
-            "text": "<p>At Soundbrenner we firmly believe success is not given, it's earned. This is true for musicians, but also for companies.<br/><br/>We went to great lengths to ensure the product you’re holding was made to the highest standards. We care deeply that it becomes an irreplaceable companion on your musical journey.<br/><br/>If you experience any issues, our team will work hard to put a smile back on your face. We’re just an e-mail away.</p>"
+            "text": "<p><strong>Important:</strong> Do not pair Core / Spark in your phone's Bluetooth settings first. Always connect it from inside the Soundbrenner app. If it already appears in your phone's Bluetooth settings, remove or forget it there first, then reconnect it in the app.</p><p>At Soundbrenner we firmly believe success is not given, it's earned. This is true for musicians, but also for companies.<br/><br/>We went to great lengths to ensure the product you’re holding was made to the highest standards. We care deeply that it becomes an irreplaceable companion on your musical journey.<br/><br/>If you experience any issues, our team will work hard to put a smile back on your face. We’re just an e-mail away.</p>"
           }
         },
         "button_1": {
@@ -763,7 +763,7 @@
         "text_fE43Up": {
           "type": "text",
           "settings": {
-            "text": "<p>The Core / Spark can be synchronized with other Soundbrenner wearables by connecting all devices to the same mobile device. You can sync up to five devices simultaneously, allowing everyone to feel the beat together.</p><p>If you would like to connect your Core / Spark to a different mobile device, you must first unpair it from the current device. To access the unpairing prompt, open the <strong>Settings</strong> app on your Core / Spark, navigate to <strong>Bluetooth</strong>, and press the bottom button.</p><p>Once the device is ready to pair, open the Soundbrenner app on the new mobile device. Then navigate to:</p><p><strong>Settings → Add a Soundbrenner wearable</strong></p><p>Select the wearable you would like to connect and follow the on-screen instructions.</p>"
+            "text": "<p>The Core / Spark can be synchronized with other Soundbrenner wearables by connecting all devices to the same mobile device. You can sync up to five devices simultaneously, allowing everyone to feel the beat together.</p><p>Core / Spark can only maintain one active connection at a time. If you want to switch to a different mobile device, first unpair or disconnect it from the current device. To access the unpairing prompt, open the <strong>Settings</strong> app on your Core / Spark, navigate to <strong>Bluetooth</strong>, and press the bottom button.</p><p>Once the device is ready to pair, open the Soundbrenner app on the new mobile device. Then navigate to:</p><p><strong>Settings → Add a Soundbrenner wearable</strong></p><p>Select the wearable you would like to connect and follow the on-screen instructions.</p>"
           }
         },
         "image_wWCNAW": {
