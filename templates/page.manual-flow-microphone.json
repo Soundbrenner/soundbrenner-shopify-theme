@@ -84,7 +84,7 @@
         "text_L9hxMe": {
           "type": "text",
           "settings": {
-            "text": "<p>Flow only works with cables that support data transfer. Use the included cable, or if you need a longer one, make sure it’s a USB-C data cable - most third-party cables are charging-only and won’t work.</p>"
+            "text": "<p>Flow only works with cables that support data transfer.</p><p>Use the included cable whenever possible.</p><p>Many third-party USB-C cables are charging-only and will power the microphone without carrying audio data, which means the microphone may appear on but will not be detected correctly.</p><p>If you use a different cable, make sure it is specifically a USB data cable.</p>"
           }
         },
         "divider_JY3aW7": {
@@ -143,7 +143,7 @@
         "body_5": {
           "type": "text",
           "settings": {
-            "text": "<ol><li>Insert the USB-C or Lightning cable in your mobile device, and plug the other end into the microphone</li><li>Turn on the microphone. The LED will turn on. </li><li>Your microphone will automatically be detected and work in all iOS apps!</li><li>(Optional) Insert your headphone cable in the cable manager and connect it to the 3.5mm jack to monitor what's being recorded</li></ol>"
+            "text": "<ol><li>Insert the USB-C or Lightning cable in your mobile device, and plug the other end into the microphone.</li><li>Turn on the microphone. The LED will turn on.</li><li>Your microphone will automatically be detected and work in iOS apps that support external microphones.</li><li>(Optional) Insert your headphone cable in the cable manager and connect it to the 3.5mm jack to monitor what is being recorded.</li></ol><p>If you do not hear monitoring through the headphone jack, make sure the recording app is actively using Flow as the input device.</p>"
           }
         },
         "heading_4eeHJr": {
@@ -155,7 +155,7 @@
         "text_XGrhm6": {
           "type": "text",
           "settings": {
-            "text": "<p>Flow microphone is also compatible with Android, macOS and Windows.</p><p>Please refer to the iOS instructions, but switch to the appropriate cable.</p><p>Please note that certain Android applications may not support external microphones, so if you're experiencing issues during the setup we recommend to try multiple apps.</p>"
+            "text": "<p>Flow microphone is also compatible with Android, macOS, and Windows.</p><p>Please refer to the iOS instructions, but switch to the appropriate cable.</p><p>If the microphone powers on but no audio is detected, first test with one of the included cables and then try a different recording app.</p><p>Please note that certain Android applications may not support external microphones, so if you experience issues during setup we recommend trying multiple apps.</p>"
           }
         },
         "divider_5": {

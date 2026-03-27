@@ -43,7 +43,7 @@
         "text_1": {
           "type": "text",
           "settings": {
-            "text": "<p>The Metronome by Soundbrenner combines a metronome, practice tracker, and tuner in one app.</p><p>To learn more about the app and to download it for free, visit the app's product page.</p>"
+            "text": "<p>The Metronome by Soundbrenner combines a metronome, practice tracker, and tuner in one app.</p><p>When you use a Soundbrenner wearable, always connect it from inside The Metronome app. Do not pair it in your phone's Bluetooth settings first unless a specific troubleshooting step tells you to do so.</p><p>To learn more about the app and to download it for free, visit the app's product page.</p>"
           }
         },
         "button_gjb4h4": {
@@ -84,7 +84,7 @@
         "text_3": {
           "type": "text",
           "settings": {
-            "text": "<p>To learn more about how to use the app with wearables, check out their manuals.</p>"
+            "text": "<p>When using a Soundbrenner wearable, always connect it from inside The Metronome app.</p><p>If the wearable appears in your phone's Bluetooth settings but does not respond correctly in the app, remove or forget it there first, then reconnect it inside The Metronome app.</p><p>To learn more about how to use the app with wearables, check out their manuals.</p>"
           }
         },
         "button_3a": {
@@ -146,7 +146,7 @@
         "text_Ucnxic": {
           "type": "text",
           "settings": {
-            "text": "<p>Ableton Link lets you synchronize the Soundbrenner metronome with Ableton Live and other Link-enabled apps. For example, a band can run the app on multiple phones to share a synchronized audio click, you can sync your Soundbrenner wearable with Ableton Live on a desktop computer, or connect the app to another Link-enabled app on the same device so both share tempo and stay in sync.</p><p>Link-enabled apps and devices on the same Wi-Fi network connect automatically and remain in time with each other. Any participant can start or stop independently, change the tempo for everyone, and join or leave a session without disrupting synchronization.</p><p>To use Ableton Link, open the Soundbrenner app settings and enable Ableton Link. To sync with another app on the same device, enable Link in both apps. To sync with another device, ensure both devices are on the same Wi-Fi network with Ableton Link activated. Synchronization starts automatically, and the Ableton Link settings in the app will display connection indicators.</p>"
+            "text": "<p>Ableton Link lets you synchronize the Soundbrenner metronome with Ableton Live and other Link-enabled apps. For example, a band can run the app on multiple phones to share a synchronized audio click, you can sync your Soundbrenner wearable with Ableton Live on a desktop computer, or connect the app to another Link-enabled app on the same device so both share tempo and stay in sync.</p><p>Link-enabled apps and devices on the same Wi-Fi network connect automatically and remain in time with each other. Any participant can start or stop independently, change the tempo for everyone, and join or leave a session without disrupting synchronization.</p><p>To use Ableton Link, open The Metronome app settings and enable Ableton Link. To sync with another app on the same device, enable Link in both apps. To sync with another device, ensure both devices are on the same Wi-Fi network with Ableton Link activated. Synchronization starts automatically, and the Ableton Link settings in the app will display connection indicators.</p><p>When using a Soundbrenner wearable with Ableton Link, the wearable follows The Metronome app. In a typical setup, Ableton Live syncs with the app, and the app then controls the wearable.</p>"
           }
         },
         "divider_3CbBPL": {
@@ -226,6 +226,20 @@
             "question": "Does the app still support DAW synchronization?",
             "answer": "<p>Outside of Ableton Link we discontinued the DAW sync beta due to usability and reliability issues. Setup was often complex and time-consuming, and the wide range of DAWs, operating systems, and device combinations made it difficult to ensure a stable experience.</p><p>Our current focus is on introducing tempo changes in the app and continuing to make the metronome as powerful and reliable as possible.</p>"
           }
+        },
+        "accordion_item_wearable_120": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Why is my wearable stuck at 120 BPM or not producing sound or vibration?",
+            "answer": "<p>This usually means your wearable is not connected correctly in The Metronome app.</p><p>Remove the device from your phone's Bluetooth settings if it appears there, then reconnect it from inside The Metronome app.</p>"
+          }
+        },
+        "accordion_item_android_connection": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Why does my wearable not stay connected on Android?",
+            "answer": "<p>This is usually caused by Android permissions or battery restrictions.</p><p>Make sure Bluetooth, Nearby devices, and any required Location permissions are enabled for The Metronome app. Also disable battery optimization and allow background activity if your phone has a separate background restriction setting.</p>"
+          }
         }
       },
       "block_order": [
@@ -260,7 +274,9 @@
         "accordion_item_bpJkt4",
         "accordion_1",
         "accordion_2",
-        "accordion_5"
+        "accordion_5",
+        "accordion_item_wearable_120",
+        "accordion_item_android_connection"
       ],
       "settings": {}
     },

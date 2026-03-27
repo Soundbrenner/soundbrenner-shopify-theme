@@ -68,7 +68,7 @@
         "body_2": {
           "type": "text",
           "settings": {
-            "text": "<p>This video is the ultimate crash course to learn everything you need to know about how to use the Pulse in the shortest time possible.</p>"
+            "text": "<p>This video is the ultimate crash course to learn everything you need to know about how to use the Pulse in the shortest time possible.</p><p><strong>Important</strong></p><p>Do not pair Pulse in your phone's Bluetooth settings first. Always connect it from inside the Soundbrenner app.</p><p>If Pulse already appears in your phone's Bluetooth settings, remove or forget it there before reconnecting it in the app.</p>"
           }
         },
         "vimeo_video_4xgCB6": {
@@ -367,7 +367,7 @@
         "text_3dDnyy": {
           "type": "text",
           "settings": {
-            "text": "<p>Because every musician is different, you can customize Pulse to your preferences using our app.</p><p>To customize or turn off the lights and vibrations, open the mobile app and go to <strong>Settings → Pulse settings → Lights</strong> or <strong>Vibrations</strong>. Try different vibration intensities and durations to find what works best for you.</p><p>For more information on how to use the app, refer to the app manual.</p>"
+            "text": "<p>Because every musician is different, you can customize Pulse to your preferences using our app.</p><p>To customize or turn off the lights and vibrations, open the mobile app and go to <strong>Settings → Pulse settings → Lights</strong> or <strong>Vibrations</strong>. Try different vibration intensities and durations to find what works best for you.</p><p>If Pulse is visible in Bluetooth settings but does not vibrate correctly, does not reconnect, or does not respond to tempo changes, remove or forget it in your phone's Bluetooth settings and reconnect it from inside the Soundbrenner app.</p><p>On Android, stable connection may require Nearby devices permission, disabled battery optimization, and allowed background activity for the Soundbrenner app.</p><p>For more information on how to use the app, refer to the app manual.</p>"
           }
         },
         "button_NGjw3K": {
@@ -398,7 +398,7 @@
         "text_fPAj8t": {
           "type": "text",
           "settings": {
-            "text": "<p>The Pulse can be synced with other wearables by connecting them to the same mobile device. You can sync up to five devices, allowing everyone to feel the beat together.</p><p>Open the Soundbrenner app on the mobile device you want to use for syncing. Then navigate to <strong>Settings → Add a wearable</strong>.</p>"
+            "text": "<p>The Pulse can be synced with other wearables by connecting them to the same mobile device. You can sync up to five devices, allowing everyone to feel the beat together.</p><p>Pulse can only actively connect to one mobile device at a time. If you want to use a different phone or tablet, first remove or forget it from the previous device, then reconnect it in the Soundbrenner app on the new device.</p><p>Open the Soundbrenner app on the mobile device you want to use for syncing. Then navigate to <strong>Settings → Add a wearable</strong>.</p>"
           }
         },
         "divider_r9CiCP": {
@@ -414,7 +414,7 @@
         "text_w4eKbN": {
           "type": "text",
           "settings": {
-            "text": "<p>If your Pulse is not responding, restarting the device will usually resolve the issue.</p><p>To restart the device, first remove the band. Locate the small round hole in the recessed area normally covered by the band. Insert a pointed object, such as a needle, into the hole. If the restart is successful, the device will briefly light up.</p>"
+            "text": "<p>If your Pulse is visible in Bluetooth settings but does not vibrate correctly, does not reconnect, or does not respond to tempo changes, remove or forget it there and reconnect it from inside the Soundbrenner app.</p><p>If your Pulse is not responding, restarting the device will usually resolve the issue.</p><p>To restart the device, first remove the band. Locate the small round hole in the recessed area normally covered by the band. Insert a pointed object, such as a needle, into the hole. If the restart is successful, the device will briefly light up.</p>"
           }
         },
         "image_fKNeqy": {
