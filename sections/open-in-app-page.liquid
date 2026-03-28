@@ -31,6 +31,7 @@
     (() => {
       const sectionRoot = document.currentScript?.closest('.sb-open-in-app-page');
       if (!(sectionRoot instanceof HTMLElement)) return;
+      const sectionWrapper = sectionRoot.closest('.shopify-section');
 
       const deepLinkGroup = sectionRoot.querySelector('[data-open-in-app-deep-link-group]');
       const deepLinkElement = sectionRoot.querySelector('[data-open-in-app-link]');
@@ -47,6 +48,14 @@
 
       if (deepLinkGroup instanceof HTMLElement) {
         deepLinkGroup.hidden = !hasValidDeepLink;
+      }
+
+      if (sectionWrapper instanceof HTMLElement) {
+        if (hasValidDeepLink) {
+          sectionWrapper.removeAttribute('data-sb-section-empty');
+        } else {
+          sectionWrapper.setAttribute('data-sb-section-empty', 'true');
+        }
       }
 
       if (!hasValidDeepLink) return;
