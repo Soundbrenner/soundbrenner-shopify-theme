@@ -1,0 +1,224 @@
+{% liquid
+  assign fallback_block = section.blocks.first
+  assign fallback_target_key = fallback_block.settings.target_key | default: ''
+  assign fallback_deep_link_url = fallback_block.settings.deep_link_url | default: ''
+%}
+
+<section class="sb-open-in-app-page">
+  <div class="sb-content-width">
+    <div class="sb-open-in-app-page__inner">
+      <div
+        class="sb-open-in-app-page__content"
+        data-open-in-app-root
+        {% if fallback_target_key != blank %}data-open-in-app-default-target="{{ fallback_target_key | escape }}"{% endif %}
+      >
+        <div
+          class="sb-open-in-app-page__deep-link-group"
+          data-open-in-app-deep-link-group
+          {% if fallback_deep_link_url == blank %}hidden{% endif %}
+        >
+          <p class="sb-open-in-app-page__body font-body weight-regular">
+            {{ 'sb.app.open_in_app_intro' | t }}
+          </p>
+
+          <p class="sb-open-in-app-page__link-wrap font-body weight-semibold">
+            <a
+              class="sb-open-in-app-page__link"
+              data-open-in-app-link
+              {% if fallback_deep_link_url != blank %}
+                href="{{ fallback_deep_link_url }}"
+              {% endif %}
+            >
+              {{ fallback_deep_link_url }}
+            </a>
+          </p>
+
+          <div class="sb-open-in-app-page__button-wrap">
+            {% render 'radiant-button',
+              label: 'sb.app.open_link' | t,
+              link: fallback_deep_link_url | default: '#',
+              size: 'large',
+              icon_position: 'trailing'
+            %}
+          </div>
+        </div>
+
+        <p class="sb-open-in-app-page__error font-body weight-regular" data-open-in-app-error hidden>
+          {{ 'sb.app.open_in_app_missing_target' | t }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" data-open-in-app-targets>
+    [
+      {% for block in section.blocks %}
+        {
+          "target": {{ block.settings.target_key | json }},
+          "deepLinkUrl": {{ block.settings.deep_link_url | json }}
+        }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ]
+  </script>
+
+  <script>
+    (() => {
+      const sectionRoot = document.currentScript?.closest('.sb-open-in-app-page');
+      if (!(sectionRoot instanceof HTMLElement)) return;
+
+      const contentRoot = sectionRoot.querySelector('[data-open-in-app-root]');
+      const targetsScript = sectionRoot.querySelector('[data-open-in-app-targets]');
+      const deepLinkGroup = sectionRoot.querySelector('[data-open-in-app-deep-link-group]');
+      const deepLinkElement = sectionRoot.querySelector('[data-open-in-app-link]');
+      const openLinkButton = sectionRoot.querySelector('.sb-open-in-app-page__button-wrap .sb-button-radiant');
+      const errorElement = sectionRoot.querySelector('[data-open-in-app-error]');
+
+      if (!(contentRoot instanceof HTMLElement) || !(targetsScript instanceof HTMLScriptElement) || !(deepLinkElement instanceof HTMLAnchorElement) || !(openLinkButton instanceof HTMLAnchorElement)) {
+        return;
+      }
+
+      let targets = [];
+
+      try {
+        targets = JSON.parse(targetsScript.textContent || '[]');
+      } catch (error) {
+        return;
+      }
+
+      const params = new URLSearchParams(window.location.search);
+      const requestedTarget = params.get('target');
+      const defaultTarget = contentRoot.dataset.openInAppDefaultTarget || '';
+      const resolvedTarget = requestedTarget || defaultTarget;
+      const targetConfig = targets.find((entry) => entry && entry.target === resolvedTarget) || null;
+      const hasValidDeepLink = !!(targetConfig && targetConfig.deepLinkUrl);
+
+      if (deepLinkGroup instanceof HTMLElement) {
+        deepLinkGroup.hidden = !hasValidDeepLink;
+      }
+
+      if (targetConfig && hasValidDeepLink) {
+        deepLinkElement.textContent = targetConfig.deepLinkUrl;
+        deepLinkElement.href = targetConfig.deepLinkUrl;
+        openLinkButton.href = targetConfig.deepLinkUrl;
+      }
+
+      if (!targetConfig) {
+        if (errorElement instanceof HTMLElement) {
+          errorElement.hidden = false;
+        }
+        return;
+      }
+    })();
+  </script>
+</section>
+
+{% stylesheet %}
+  .sb-open-in-app-page {
+    padding: 48px 0 96px;
+  }
+
+  .sb-open-in-app-page__inner {
+    margin: 0 auto;
+    max-width: 760px;
+  }
+
+  .sb-open-in-app-page__body,
+  .sb-open-in-app-page__link-wrap,
+  .sb-open-in-app-page__error {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+  }
+
+  .sb-open-in-app-page__content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .sb-open-in-app-page__deep-link-group {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .sb-open-in-app-page__link-wrap {
+    line-height: 1.4;
+  }
+
+  .sb-open-in-app-page__link {
+    color: var(--sb-color-neutral-900);
+    overflow-wrap: anywhere;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .sb-open-in-app-page__link:focus-visible,
+  .sb-open-in-app-page__link:active {
+    color: var(--sb-color-primary-500);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-open-in-app-page__link:hover {
+      color: var(--sb-color-primary-500);
+    }
+  }
+
+  .sb-open-in-app-page__button-wrap {
+    width: fit-content;
+  }
+
+  .sb-open-in-app-page__error {
+    color: var(--sb-color-neutral-700);
+  }
+
+  @media screen and (max-width: 749px) {
+    .sb-open-in-app-page {
+      padding: 32px 0 72px;
+    }
+
+    .sb-open-in-app-page__button-wrap {
+      width: 100%;
+    }
+
+    .sb-open-in-app-page__button-wrap .sb-button-radiant {
+      justify-content: center;
+      width: 100%;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Open in app page",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "target",
+      "name": "Target",
+      "settings": [
+        {
+          "type": "text",
+          "id": "target_key",
+          "label": "Target key",
+          "default": "unlock-contact-tuning"
+        },
+        {
+          "type": "url",
+          "id": "deep_link_url",
+          "label": "Deep link URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Open in app page",
+      "blocks": [
+        {
+          "type": "target"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

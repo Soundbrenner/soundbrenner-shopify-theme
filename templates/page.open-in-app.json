@@ -12,14 +12,14 @@
     "hero": {
       "type": "hero-card",
       "settings": {
+        "use_resource_title_description": false,
         "use_seasonal_hero_card": false,
-        "use_resource_title_description": true,
         "use_product_page_metaobjects": false,
-        "background_image_desktop": "shopify://shop_images/Hero_card_Property_1_The_Metronome_2_desktop.jpg",
-        "background_image_mobile": "shopify://shop_images/Hero_card_Property_1_The_Metronome_2_mobile.jpg",
-        "kicker": "App required",
-        "headline": "App required.",
-        "subheadline": "",
+        "background_image_desktop": "",
+        "background_image_mobile": "",
+        "kicker": "Open in app",
+        "headline": "Open this in the app",
+        "subheadline": "Use the options below to continue.",
         "show_button": false,
         "button_label": "",
         "button_size": "large",
@@ -36,22 +36,37 @@
         "show_app_download_china": false
       }
     },
-    "text": {
+    "main": {
+      "type": "open-in-app-page",
+      "blocks": {
+        "unlock_contact_tuning": {
+          "type": "target",
+          "settings": {
+            "target_key": "unlock-contact-tuning",
+            "deep_link_url": "https://app.soundbrenner.com/unlock-contact-tuning"
+          }
+        }
+      },
+      "block_order": [
+        "unlock_contact_tuning"
+      ],
+      "settings": {}
+    },
+    "download": {
       "type": "text-section",
       "blocks": {
         "body_main": {
           "type": "body",
           "settings": {
-            "text": "<p>Please open this link on a mobile device that has our app installed.<br/><br/>If you don't have our app yet, you can download it for free on the app's product page.</p>",
-            "disable_link_color": false
+            "text": "<p>If you don’t have our app yet, you can download it for free on the app’s product page.</p>"
           }
         },
         "button_main": {
           "type": "button",
           "settings": {
-            "label": "View product page",
+            "label": "Go to product page",
             "button_size": "large",
-            "icon_position": "none",
+            "icon_position": "trailing",
             "link": "shopify://pages/the-metronome-app"
           }
         }
@@ -65,6 +80,7 @@
   },
   "order": [
     "hero",
-    "text"
+    "main",
+    "download"
   ]
 }

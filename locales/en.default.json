@@ -102,6 +102,9 @@
       "download_china": "Download in China",
       "download_google_play": "Download on Google Play",
       "google_play": "Google Play",
+      "open_in_app_intro": "Please open the link on a mobile device that has our app installed:",
+      "open_in_app_missing_target": "This link is not available right now.",
+      "open_link": "Open link",
       "try_free_now": "Try it for free now"
     },
     "blog": {
