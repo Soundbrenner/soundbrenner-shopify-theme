@@ -12,10 +12,11 @@
     "hero": {
       "type": "hero-card",
       "settings": {
-        "use_resource_title_description": true,
         "use_seasonal_hero_card": false,
-        "background_image_desktop": "",
-        "background_image_mobile": "",
+        "use_resource_title_description": true,
+        "use_product_page_metaobjects": false,
+        "background_image_desktop": "shopify://shop_images/Hero_card_Property_1_The_Metronome_2_desktop.jpg",
+        "background_image_mobile": "shopify://shop_images/Hero_card_Property_1_The_Metronome_2_mobile.jpg",
         "kicker": "App required",
         "headline": "App required.",
         "subheadline": "",
@@ -23,7 +24,16 @@
         "button_label": "",
         "button_size": "large",
         "icon_position": "none",
-        "button_link": ""
+        "button_link": "",
+        "show_secondary_button": false,
+        "secondary_button_label": "Placeholder",
+        "secondary_button_link": "",
+        "secondary_button_open_in_new_tab": false,
+        "button_open_in_new_tab": false,
+        "show_app_download_qr": false,
+        "show_app_download_app_store": false,
+        "show_app_download_google_play": false,
+        "show_app_download_china": false
       }
     },
     "text": {
@@ -32,16 +42,17 @@
         "body_main": {
           "type": "body",
           "settings": {
-            "text": "<p>Body text.</p>"
+            "text": "<p>Please open this link on a mobile device that has our app installed.<br/><br/>If you don't have our app yet, you can download it for free on the app's product page.</p>",
+            "disable_link_color": false
           }
         },
         "button_main": {
           "type": "button",
           "settings": {
-            "label": "Placeholder",
+            "label": "View product page",
             "button_size": "large",
-            "icon_position": "trailing",
-            "link": ""
+            "icon_position": "none",
+            "link": "shopify://pages/the-metronome-app"
           }
         }
       },
