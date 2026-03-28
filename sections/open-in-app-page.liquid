@@ -1,6 +1,4 @@
 {% liquid
-  assign fallback_block = section.blocks.first
-  assign fallback_deep_link_url = fallback_block.settings.deep_link_url | default: ''
   assign open_in_app_button_label = 'sb.common.continue' | t
 %}
 
@@ -12,18 +10,16 @@
         <a
           class="sb-open-in-app-page__link"
           data-open-in-app-link
-          {% if fallback_deep_link_url != blank %}
-            href="{{ fallback_deep_link_url }}"
-          {% endif %}
+          href="#"
         >
-          {{ fallback_deep_link_url }}
+          &nbsp;
         </a>
       </p>
 
       <div class="sb-open-in-app-page__button-wrap">
         {% render 'radiant-button',
           label: open_in_app_button_label,
-          link: fallback_deep_link_url | default: '#',
+          link: '#',
           size: 'large',
           icon_position: 'none'
         %}
