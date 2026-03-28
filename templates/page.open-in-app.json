@@ -12,14 +12,14 @@
     "hero": {
       "type": "hero-card",
       "settings": {
-        "use_resource_title_description": false,
         "use_seasonal_hero_card": false,
+        "use_resource_title_description": true,
         "use_product_page_metaobjects": false,
-        "background_image_desktop": "",
-        "background_image_mobile": "",
-        "kicker": "Open in app",
-        "headline": "Open this in the app",
-        "subheadline": "Use the options below to continue.",
+        "background_image_desktop": "shopify://shop_images/Hero_card_Property_1_The_Metronome_2_desktop.jpg",
+        "background_image_mobile": "shopify://shop_images/Hero_card_Property_1_The_Metronome_2_mobile.jpg",
+        "kicker": "",
+        "headline": "",
+        "subheadline": "",
         "show_button": false,
         "button_label": "",
         "button_size": "large",
@@ -58,7 +58,8 @@
         "body_main": {
           "type": "body",
           "settings": {
-            "text": "<p>If you don’t have our app yet, you can download it for free on the app’s product page.</p>"
+            "text": "<p>If you don't have our app yet, you can download it for free on the app's product page.</p>",
+            "disable_link_color": false
           }
         },
         "button_main": {
@@ -66,7 +67,7 @@
           "settings": {
             "label": "Go to product page",
             "button_size": "large",
-            "icon_position": "trailing",
+            "icon_position": "none",
             "link": "shopify://pages/the-metronome-app"
           }
         }
