@@ -27,43 +27,22 @@
     </div>
   </div>
 
-  <script type="application/json" data-open-in-app-targets>
-    [
-      {% for block in section.blocks %}
-        {
-          "target": {{ block.settings.target_key | json }},
-          "deepLinkUrl": {{ block.settings.deep_link_url | json }}
-        }{% unless forloop.last %},{% endunless %}
-      {% endfor %}
-    ]
-  </script>
-
   <script>
     (() => {
       const sectionRoot = document.currentScript?.closest('.sb-open-in-app-page');
       if (!(sectionRoot instanceof HTMLElement)) return;
 
-      const targetsScript = sectionRoot.querySelector('[data-open-in-app-targets]');
       const deepLinkGroup = sectionRoot.querySelector('[data-open-in-app-deep-link-group]');
       const deepLinkElement = sectionRoot.querySelector('[data-open-in-app-link]');
       const openLinkButton = sectionRoot.querySelector('.sb-open-in-app-page__button-wrap .sb-button-radiant');
 
-      if (!(targetsScript instanceof HTMLScriptElement) || !(deepLinkElement instanceof HTMLAnchorElement) || !(openLinkButton instanceof HTMLAnchorElement)) {
-        return;
-      }
-
-      let targets = [];
-
-      try {
-        targets = JSON.parse(targetsScript.textContent || '[]');
-      } catch (error) {
+      if (!(deepLinkElement instanceof HTMLAnchorElement) || !(openLinkButton instanceof HTMLAnchorElement)) {
         return;
       }
 
       const requestedTarget = new URLSearchParams(window.location.search).get('target');
-      const configuredTarget = requestedTarget ? targets.find((entry) => entry && entry.target === requestedTarget) || null : null;
-      const generatedDeepLinkUrl = requestedTarget ? `https://app.soundbrenner.com/${requestedTarget}` : '';
-      const resolvedDeepLinkUrl = configuredTarget && configuredTarget.deepLinkUrl ? configuredTarget.deepLinkUrl : generatedDeepLinkUrl;
+      const sanitizedTarget = requestedTarget ? requestedTarget.trim().replace(/^\/+|\/+$/g, '') : '';
+      const resolvedDeepLinkUrl = sanitizedTarget ? `https://app.soundbrenner.com/${sanitizedTarget}` : '';
       const hasValidDeepLink = !!resolvedDeepLinkUrl;
 
       if (deepLinkGroup instanceof HTMLElement) {
@@ -144,33 +123,9 @@
 {
   "name": "Open in app page",
   "settings": [],
-  "blocks": [
-    {
-      "type": "target",
-      "name": "Target",
-      "settings": [
-        {
-          "type": "text",
-          "id": "target_key",
-          "label": "Target key",
-          "default": "unlock-contact-tuning"
-        },
-        {
-          "type": "url",
-          "id": "deep_link_url",
-          "label": "Deep link URL"
-        }
-      ]
-    }
-  ],
   "presets": [
     {
-      "name": "Open in app page",
-      "blocks": [
-        {
-          "type": "target"
-        }
-      ]
+      "name": "Open in app page"
     }
   ]
 }

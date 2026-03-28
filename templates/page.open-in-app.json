@@ -38,18 +38,6 @@
     },
     "main": {
       "type": "open-in-app-page",
-      "blocks": {
-        "unlock_contact_tuning": {
-          "type": "target",
-          "settings": {
-            "target_key": "unlock-contact-tuning",
-            "deep_link_url": "https://app.soundbrenner.com/unlock-contact-tuning"
-          }
-        }
-      },
-      "block_order": [
-        "unlock_contact_tuning"
-      ],
       "settings": {}
     },
     "download": {
