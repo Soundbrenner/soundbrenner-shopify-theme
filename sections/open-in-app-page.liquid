@@ -72,7 +72,8 @@
     padding: 0;
   }
 
-  .shopify-section[id*='template--']:has(> .sb-open-in-app-page)
+  body:has(.sb-open-in-app-page) .shopify-section[id*='template--']:has(> .sb-open-in-app-page),
+  body:has(.sb-open-in-app-page) .shopify-section[id*='template--']:has(> .sb-open-in-app-page)
     ~ .shopify-section[id*='template--']:has(> .sb-text-section) {
     margin-top: 48px !important;
   }
