@@ -102,7 +102,9 @@
       "download_china": "中国大陆下载",
       "download_google_play": "在 Google Play 下载",
       "google_play": "Google Play",
-      "try_free_now": "立即免费试用"
+      "try_free_now": "立即免费试用",
+      "open_the_link": "打开链接",
+      "open_in_app_intro": "请在已安装我们应用的移动设备上打开该链接："
     },
     "blog": {
       "about_soundbrenner": "关于 Soundbrenner",
