@@ -1589,7 +1589,12 @@
     {{ content_for_header }}
   </head>
 
-  <body data-sb-header-scroll-mode="{{ sb_header_scroll_mode }}">
+  <body
+    data-sb-header-scroll-mode="{{ sb_header_scroll_mode }}"
+    {% if request.page_type == 'page' and page != blank %}
+      data-sb-page-handle="{{ page.handle }}"
+    {% endif %}
+  >
     <div class="sb-klaviyo-popup-backdrop" aria-hidden="true"></div>
     <div id="header-group">
       {% sections 'header-group' %}

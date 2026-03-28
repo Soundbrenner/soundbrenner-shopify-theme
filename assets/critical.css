@@ -169,6 +169,15 @@ body {
   margin-top: var(--sb-space-96) !important;
 }
 
+/*
+  Open-in-app page:
+  tighten the gap around the dynamic deep-link section without changing the default page rhythm elsewhere.
+*/
+body[data-sb-page-handle='open-in-app'] .shopify-section[id$='__main'],
+body[data-sb-page-handle='open-in-app'] .shopify-section[id$='__download'] {
+  margin-top: var(--sb-space-48) !important;
+}
+
 /* Empty template wrappers should not participate in section rhythm or consume page space. */
 .shopify-section[id*='template--'][data-sb-section-empty='true'] {
   display: none !important;
