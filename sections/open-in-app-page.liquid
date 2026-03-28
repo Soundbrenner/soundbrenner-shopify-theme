@@ -61,8 +61,10 @@
       }
 
       const requestedTarget = new URLSearchParams(window.location.search).get('target');
-      const targetConfig = requestedTarget ? targets.find((entry) => entry && entry.target === requestedTarget) || null : null;
-      const hasValidDeepLink = !!(targetConfig && targetConfig.deepLinkUrl);
+      const configuredTarget = requestedTarget ? targets.find((entry) => entry && entry.target === requestedTarget) || null : null;
+      const generatedDeepLinkUrl = requestedTarget ? `https://app.soundbrenner.com/${requestedTarget}` : '';
+      const resolvedDeepLinkUrl = configuredTarget && configuredTarget.deepLinkUrl ? configuredTarget.deepLinkUrl : generatedDeepLinkUrl;
+      const hasValidDeepLink = !!resolvedDeepLinkUrl;
 
       if (deepLinkGroup instanceof HTMLElement) {
         deepLinkGroup.hidden = !hasValidDeepLink;
@@ -70,9 +72,9 @@
 
       if (!hasValidDeepLink) return;
 
-      deepLinkElement.textContent = targetConfig.deepLinkUrl;
-      deepLinkElement.href = targetConfig.deepLinkUrl;
-      openLinkButton.href = targetConfig.deepLinkUrl;
+      deepLinkElement.textContent = resolvedDeepLinkUrl;
+      deepLinkElement.href = resolvedDeepLinkUrl;
+      openLinkButton.href = resolvedDeepLinkUrl;
     })();
   </script>
 </section>
