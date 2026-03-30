@@ -32,6 +32,20 @@
       const sectionRoot = document.currentScript?.closest('.sb-open-in-app-page');
       if (!(sectionRoot instanceof HTMLElement)) return;
       const sectionWrapper = sectionRoot.closest('.shopify-section');
+      let nextSectionWrapper = null;
+
+      if (sectionWrapper instanceof HTMLElement) {
+        let candidate = sectionWrapper.nextElementSibling;
+
+        while (candidate instanceof HTMLElement) {
+          if (candidate.classList.contains('shopify-section') && candidate.querySelector('.sb-text-section')) {
+            nextSectionWrapper = candidate;
+            break;
+          }
+
+          candidate = candidate.nextElementSibling;
+        }
+      }
 
       const deepLinkGroup = sectionRoot.querySelector('[data-open-in-app-deep-link-group]');
       const deepLinkElement = sectionRoot.querySelector('[data-open-in-app-link]');
@@ -53,8 +67,18 @@
       if (sectionWrapper instanceof HTMLElement) {
         if (hasValidDeepLink) {
           sectionWrapper.removeAttribute('data-sb-section-empty');
+          sectionWrapper.style.setProperty('margin-top', '48px', 'important');
         } else {
           sectionWrapper.setAttribute('data-sb-section-empty', 'true');
+          sectionWrapper.style.removeProperty('margin-top');
+        }
+      }
+
+      if (nextSectionWrapper instanceof HTMLElement) {
+        if (hasValidDeepLink) {
+          nextSectionWrapper.style.setProperty('margin-top', '48px', 'important');
+        } else {
+          nextSectionWrapper.style.removeProperty('margin-top');
         }
       }
 
