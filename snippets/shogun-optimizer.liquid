@@ -861,6 +861,52 @@ This file can be re-written at any time.
           font-size: 12px;
           color: #1a1a1a;
         }
+        .shg-preview__variant-option-order-title {
+          font-size: 13px;
+          font-weight: 450;
+          color: #303030;
+          margin-top: 2px;
+        }
+        .shg-preview__variant-option-order {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+        .shg-preview__variant-option-order-row {
+          display: flex;
+          align-items: flex-start;
+          gap: 8px;
+        }
+        .shg-preview__variant-option-order-label {
+          font-size: 16px;
+          font-weight: 450;
+          color: #303030;
+          line-height: 28px;
+          flex-shrink: 0;
+          min-width: 34px;
+        }
+        .shg-preview__variant-option-order-chips {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+        .shg-preview__variant-option-order-chip {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 12px;
+          background: #E3E3E3;
+          padding: 2px 10px;
+          font-size: 12px;
+          font-weight: 450;
+          line-height: 24px;
+          color: #303030;
+        }
+        .shg-preview__variant-option-order-title--disabled,
+        .shg-preview__variant-option-order-label--disabled,
+        .shg-preview__variant-option-order-chip--disabled {
+          opacity: 0.4;
+        }
 
         /* ===== Price Display ===== */
         .shg-preview__compare-at-price {
@@ -1121,6 +1167,23 @@ This file can be re-written at any time.
                             {% endif %}
                           {% endfor %}
                         </div>
+                        {% if shg_is_product_details and variant_a_data.product_options and variant_a_data.product_options.size > 0 %}
+                          <div class="shg-preview__variant-option-order-title shg-preview__variant-option-order-title--disabled">Variant option order:</div>
+                          <div class="shg-preview__variant-option-order">
+                            {% for option in variant_a_data.product_options %}
+                              {% if option and option.values and option.values.size > 0 %}
+                                <div class="shg-preview__variant-option-order-row">
+                                  <span class="shg-preview__variant-option-order-label shg-preview__variant-option-order-label--disabled">{{ option.name | default: 'Option' }}</span>
+                                  <div class="shg-preview__variant-option-order-chips">
+                                    {% for option_value in option.values %}
+                                      <span class="shg-preview__variant-option-order-chip shg-preview__variant-option-order-chip--disabled">{{ option_value.name | default: 'Value' }}</span>
+                                    {% endfor %}
+                                  </div>
+                                </div>
+                              {% endif %}
+                            {% endfor %}
+                          </div>
+                        {% endif %}
                       </div>
                     </div>
                     {% endif %}
@@ -1183,6 +1246,23 @@ This file can be re-written at any time.
                               {% endif %}
                             {% endfor %}
                           </div>
+                          {% if shg_is_product_details and variant_b_data.product_options and variant_b_data.product_options.size > 0 %}
+                            <div class="shg-preview__variant-option-order-title">Variant option order:</div>
+                            <div class="shg-preview__variant-option-order">
+                              {% for option in variant_b_data.product_options %}
+                                {% if option and option.values and option.values.size > 0 %}
+                                  <div class="shg-preview__variant-option-order-row">
+                                    <span class="shg-preview__variant-option-order-label">{{ option.name | default: 'Option' }}</span>
+                                    <div class="shg-preview__variant-option-order-chips">
+                                      {% for option_value in option.values %}
+                                        <span class="shg-preview__variant-option-order-chip">{{ option_value.name | default: 'Value' }}</span>
+                                      {% endfor %}
+                                    </div>
+                                  </div>
+                                {% endif %}
+                              {% endfor %}
+                            </div>
+                          {% endif %}
                         </div>
                       </div>
                     {% endif %}
