@@ -153,14 +153,14 @@
       "settings": {
         "use_product_metaobjects": false,
         "media_position": "right",
-        "media": "shopify://shop_images/large_photo_wave_1.jpg",
+        "media": "shopify://shop_images/Best_worship_IEM_1.jpg",
         "show_icon_and_kicker": false,
         "kicker_icon": "",
         "kicker_text": "",
-        "title_part_one": "A first IEM should feel",
-        "title_part_two": "right from day one",
+        "title_part_one": "Switching to IEMs should feel right",
+        "title_part_two": "from the first Sunday",
         "title_accent_color": "primary-500",
-        "body": "<p>One of the biggest reasons people delay their first IEM is simple: they worry it will feel awkward the moment they put it in.</p><p>Wave is designed to sit securely without feeling intimidating, so getting started feels easier than expected.</p><p>Once the fit clicks, everything changes\u2014better focus, clearer sound, and a setup you can rely on during practice and on stage.</p>"
+        "body": "<p>One of the biggest reasons worship musicians put off switching to IEMs is simple: they worry it will feel wrong on stage, or that they will spend the whole service readjusting.</p><p>Wave is designed to sit securely from the moment you put it in. The over-ear hook locks it in place - no fiddling, no falling out, no distraction.</p><p>Once the fit clicks, everything changes. You can hear your own instrument clearly, stay in the mix, and actually focus on leading worship instead of fighting your gear.</p>"
       }
     },
     "large_feature_first_iem_complexity": {
@@ -169,14 +169,14 @@
       "settings": {
         "use_product_metaobjects": false,
         "media_position": "left",
-        "media": "shopify://shop_images/large_photo_wave_2.jpg",
+        "media": "shopify://shop_images/Best_worship_IEM_2.jpg",
         "show_icon_and_kicker": false,
         "kicker_icon": "",
         "kicker_text": "",
         "title_part_one": "Serious monitoring",
-        "title_part_two": "doesn\u2019t have to be complicated",
+        "title_part_two": "doesn't have to cost $400",
         "title_accent_color": "primary-500",
-        "body": "<p>Another common hesitation is complexity. A lot of first-time buyers assume IEMs will add more gear, more setup, and more things to troubleshoot.</p><p>Wave keeps it straightforward: connect, play, and hear clearly without charging, pairing, or Bluetooth lag.</p><p>It is the simple way to move beyond consumer listening gear without making your setup harder to live with.</p>"
+        "body": "<p>The biggest hesitation we hear from worship musicians is price. Most assume that IEMs worth using cost $400, $500, or more - and that anything under $200 is a compromise.</p><p>Wave is $99. And worship musicians who've used other IEM brands consistently say it outperforms what they paid significantly more for.</p><p>It's the straightforward way to get professional monitoring without the price tag that requires a conversation with your spouse.</p>"
       }
     },
     "wave_bottom_cta_final": {
