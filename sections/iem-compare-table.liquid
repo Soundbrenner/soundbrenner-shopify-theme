@@ -17,19 +17,27 @@
   >
 {% endcapture %}
 
+{% assign table_eyebrow = section.settings.eyebrow %}
+{% assign table_title = section.settings.title %}
+{% assign table_aria_label = section.settings.table_aria_label %}
+{% assign mobile_aria_label = section.settings.mobile_aria_label %}
+{% assign mobile_other_label = section.settings.mobile_other_label %}
+{% assign cta_label = section.settings.cta_label %}
+{% assign cta_link = section.settings.cta_link %}
+
 <section class="sb-iem-compare-table">
   <div class="sb-iem-compare-table__header">
     <p class="sb-iem-compare-table__eyebrow font-caption weight-semibold">
-      Compare your options
+      {{ table_eyebrow }}
     </p>
     <h2 class="sb-iem-compare-table__title font-title weight-bold">
-      Why Wave is the right first step
+      {{ table_title }}
     </h2>
   </div>
 
   <div class="sb-iem-compare-table__frame">
     <div class="sb-iem-compare-table__scroll" tabindex="0">
-      <div class="sb-iem-compare-table__table" role="table" aria-label="Comparison table for Wave and alternative listening options">
+      <div class="sb-iem-compare-table__table" role="table" aria-label="{{ table_aria_label }}">
         <div
           class="sb-iem-compare-table__cell sb-iem-compare-table__cell--corner"
           role="columnheader"
@@ -41,9 +49,9 @@
         </div>
 
         <div class="sb-iem-compare-table__cell sb-iem-compare-table__cell--product sb-iem-compare-table__cell--wave" role="columnheader">
-          <span class="sb-iem-compare-table__badge font-caption2 weight-semibold">Best fit for musicians</span>
-          <p class="sb-iem-compare-table__product-name font-body weight-bold">Soundbrenner Wave IEMs</p>
-          <p class="sb-iem-compare-table__product-note font-caption weight-regular">Built for practice and performance</p>
+          <span class="sb-iem-compare-table__badge font-caption2 weight-semibold">{{ section.settings.wave_badge }}</span>
+          <p class="sb-iem-compare-table__product-name font-body weight-bold">{{ section.settings.wave_name }}</p>
+          <p class="sb-iem-compare-table__product-note font-caption weight-regular">{{ section.settings.wave_note }}</p>
         </div>
 
         <div
@@ -51,8 +59,8 @@
           role="columnheader"
           style="background: var(--sb-color-always-black); color: var(--sb-color-always-white);"
         >
-          <p class="sb-iem-compare-table__product-name font-body weight-bold" style="color: var(--sb-color-always-white);">Consumer headphones</p>
-          <p class="sb-iem-compare-table__product-note font-caption weight-regular" style="color: var(--sb-color-always-white);">Great for casual listening</p>
+          <p class="sb-iem-compare-table__product-name font-body weight-bold" style="color: var(--sb-color-always-white);">{{ section.settings.alt_one_name }}</p>
+          <p class="sb-iem-compare-table__product-note font-caption weight-regular" style="color: var(--sb-color-always-white);">{{ section.settings.alt_one_note }}</p>
         </div>
 
         <div
@@ -60,8 +68,8 @@
           role="columnheader"
           style="background: var(--sb-color-always-black); color: var(--sb-color-always-white);"
         >
-          <p class="sb-iem-compare-table__product-name font-body weight-bold" style="color: var(--sb-color-always-white);">Bluetooth in-ears</p>
-          <p class="sb-iem-compare-table__product-note font-caption weight-regular" style="color: var(--sb-color-always-white);">Made for convenience first</p>
+          <p class="sb-iem-compare-table__product-name font-body weight-bold" style="color: var(--sb-color-always-white);">{{ section.settings.alt_two_name }}</p>
+          <p class="sb-iem-compare-table__product-note font-caption weight-regular" style="color: var(--sb-color-always-white);">{{ section.settings.alt_two_note }}</p>
         </div>
 
         <div
@@ -69,8 +77,8 @@
           role="columnheader"
           style="background: var(--sb-color-always-black); color: var(--sb-color-always-white);"
         >
-          <p class="sb-iem-compare-table__product-name font-body weight-bold" style="color: var(--sb-color-always-white);">Expensive IEMs</p>
-          <p class="sb-iem-compare-table__product-note font-caption weight-regular" style="color: var(--sb-color-always-white);">Strong performance at a much higher price</p>
+          <p class="sb-iem-compare-table__product-name font-body weight-bold" style="color: var(--sb-color-always-white);">{{ section.settings.alt_three_name }}</p>
+          <p class="sb-iem-compare-table__product-note font-caption weight-regular" style="color: var(--sb-color-always-white);">{{ section.settings.alt_three_note }}</p>
         </div>
 
         <div
@@ -79,21 +87,21 @@
           style="background: var(--sb-color-always-black); color: var(--sb-color-always-white);"
         >
           <div class="sb-iem-compare-table__label-copy">
-            <p class="sb-iem-compare-table__feature-name font-body weight-bold" style="color: var(--sb-color-always-white);">Wired real-time monitoring</p>
-            <p class="sb-iem-compare-table__feature-note font-caption weight-regular" style="color: var(--sb-color-always-white);">No Bluetooth delay while practicing or performing.</p>
+            <p class="sb-iem-compare-table__feature-name font-body weight-bold" style="color: var(--sb-color-always-white);">{{ section.settings.row_1_name }}</p>
+            <p class="sb-iem-compare-table__feature-note font-caption weight-regular" style="color: var(--sb-color-always-white);">{{ section.settings.row_1_note }}</p>
           </div>
         </div>
         <div class="sb-iem-compare-table__cell sb-iem-compare-table__cell--wave sb-iem-compare-table__cell--icon" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Yes">{{ sb_iem_compare_table_yes_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_1_wave %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{% if section.settings.row_1_wave %}Yes{% else %}No{% endif %}">{% if section.settings.row_1_wave %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
         <div class="sb-iem-compare-table__cell sb-iem-compare-table__cell--icon" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="No">{{ sb_iem_compare_table_no_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_1_alt_one %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{% if section.settings.row_1_alt_one %}Yes{% else %}No{% endif %}">{% if section.settings.row_1_alt_one %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
         <div class="sb-iem-compare-table__cell sb-iem-compare-table__cell--icon" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="No">{{ sb_iem_compare_table_no_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_1_alt_two %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{% if section.settings.row_1_alt_two %}Yes{% else %}No{% endif %}">{% if section.settings.row_1_alt_two %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
         <div class="sb-iem-compare-table__cell sb-iem-compare-table__cell--icon" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Yes">{{ sb_iem_compare_table_yes_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_1_alt_three %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{% if section.settings.row_1_alt_three %}Yes{% else %}No{% endif %}">{% if section.settings.row_1_alt_three %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
 
         <div
@@ -102,21 +110,21 @@
           style="background: var(--sb-color-always-black); color: var(--sb-color-always-white);"
         >
           <div class="sb-iem-compare-table__label-copy">
-            <p class="sb-iem-compare-table__feature-name font-body weight-bold" style="color: var(--sb-color-always-white);">Strong passive isolation</p>
-            <p class="sb-iem-compare-table__feature-note font-caption weight-regular" style="color: var(--sb-color-always-white);">Helps you focus without needing active noise cancellation.</p>
+            <p class="sb-iem-compare-table__feature-name font-body weight-bold" style="color: var(--sb-color-always-white);">{{ section.settings.row_2_name }}</p>
+            <p class="sb-iem-compare-table__feature-note font-caption weight-regular" style="color: var(--sb-color-always-white);">{{ section.settings.row_2_note }}</p>
           </div>
         </div>
         <div class="sb-iem-compare-table__cell sb-iem-compare-table__cell--wave sb-iem-compare-table__cell--icon" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Yes">{{ sb_iem_compare_table_yes_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_2_wave %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{% if section.settings.row_2_wave %}Yes{% else %}No{% endif %}">{% if section.settings.row_2_wave %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
         <div class="sb-iem-compare-table__cell sb-iem-compare-table__cell--icon" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="No">{{ sb_iem_compare_table_no_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_2_alt_one %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{% if section.settings.row_2_alt_one %}Yes{% else %}No{% endif %}">{% if section.settings.row_2_alt_one %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
         <div class="sb-iem-compare-table__cell sb-iem-compare-table__cell--icon" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="No">{{ sb_iem_compare_table_no_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_2_alt_two %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{% if section.settings.row_2_alt_two %}Yes{% else %}No{% endif %}">{% if section.settings.row_2_alt_two %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
         <div class="sb-iem-compare-table__cell sb-iem-compare-table__cell--icon" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Yes">{{ sb_iem_compare_table_yes_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_2_alt_three %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{% if section.settings.row_2_alt_three %}Yes{% else %}No{% endif %}">{% if section.settings.row_2_alt_three %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
 
         <div
@@ -125,21 +133,21 @@
           style="background: var(--sb-color-always-black); color: var(--sb-color-always-white);"
         >
           <div class="sb-iem-compare-table__label-copy">
-            <p class="sb-iem-compare-table__feature-name font-body weight-bold" style="color: var(--sb-color-always-white);">Secure fit for long sessions</p>
-            <p class="sb-iem-compare-table__feature-note font-caption weight-regular" style="color: var(--sb-color-always-white);">Comfort that stays stable during practice and stage movement.</p>
+            <p class="sb-iem-compare-table__feature-name font-body weight-bold" style="color: var(--sb-color-always-white);">{{ section.settings.row_3_name }}</p>
+            <p class="sb-iem-compare-table__feature-note font-caption weight-regular" style="color: var(--sb-color-always-white);">{{ section.settings.row_3_note }}</p>
           </div>
         </div>
         <div class="sb-iem-compare-table__cell sb-iem-compare-table__cell--wave sb-iem-compare-table__cell--icon" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Yes">{{ sb_iem_compare_table_yes_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_3_wave %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{% if section.settings.row_3_wave %}Yes{% else %}No{% endif %}">{% if section.settings.row_3_wave %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
         <div class="sb-iem-compare-table__cell sb-iem-compare-table__cell--icon" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="No">{{ sb_iem_compare_table_no_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_3_alt_one %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{% if section.settings.row_3_alt_one %}Yes{% else %}No{% endif %}">{% if section.settings.row_3_alt_one %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
         <div class="sb-iem-compare-table__cell sb-iem-compare-table__cell--icon" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="No">{{ sb_iem_compare_table_no_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_3_alt_two %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{% if section.settings.row_3_alt_two %}Yes{% else %}No{% endif %}">{% if section.settings.row_3_alt_two %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
         <div class="sb-iem-compare-table__cell sb-iem-compare-table__cell--icon" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Yes">{{ sb_iem_compare_table_yes_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_3_alt_three %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{% if section.settings.row_3_alt_three %}Yes{% else %}No{% endif %}">{% if section.settings.row_3_alt_three %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
 
         <div
@@ -148,21 +156,21 @@
           style="background: var(--sb-color-always-black); color: var(--sb-color-always-white);"
         >
           <div class="sb-iem-compare-table__label-copy">
-            <p class="sb-iem-compare-table__feature-name font-body weight-bold" style="color: var(--sb-color-always-white);">No charging. No pairing.</p>
-            <p class="sb-iem-compare-table__feature-note font-caption weight-regular" style="color: var(--sb-color-always-white);">Just plug in and start playing.</p>
+            <p class="sb-iem-compare-table__feature-name font-body weight-bold" style="color: var(--sb-color-always-white);">{{ section.settings.row_4_name }}</p>
+            <p class="sb-iem-compare-table__feature-note font-caption weight-regular" style="color: var(--sb-color-always-white);">{{ section.settings.row_4_note }}</p>
           </div>
         </div>
         <div class="sb-iem-compare-table__cell sb-iem-compare-table__cell--wave sb-iem-compare-table__cell--icon" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Yes">{{ sb_iem_compare_table_yes_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_4_wave %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{% if section.settings.row_4_wave %}Yes{% else %}No{% endif %}">{% if section.settings.row_4_wave %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
         <div class="sb-iem-compare-table__cell sb-iem-compare-table__cell--icon" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="No">{{ sb_iem_compare_table_no_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_4_alt_one %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{% if section.settings.row_4_alt_one %}Yes{% else %}No{% endif %}">{% if section.settings.row_4_alt_one %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
         <div class="sb-iem-compare-table__cell sb-iem-compare-table__cell--icon" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="No">{{ sb_iem_compare_table_no_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_4_alt_two %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{% if section.settings.row_4_alt_two %}Yes{% else %}No{% endif %}">{% if section.settings.row_4_alt_two %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
         <div class="sb-iem-compare-table__cell sb-iem-compare-table__cell--icon" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Yes">{{ sb_iem_compare_table_yes_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_4_alt_three %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{% if section.settings.row_4_alt_three %}Yes{% else %}No{% endif %}">{% if section.settings.row_4_alt_three %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
 
         <div
@@ -171,85 +179,85 @@
           style="background: var(--sb-color-always-black); color: var(--sb-color-always-white);"
         >
           <div class="sb-iem-compare-table__label-copy">
-            <p class="sb-iem-compare-table__feature-name font-body weight-bold" style="color: var(--sb-color-always-white);">Musician-first value</p>
-            <p class="sb-iem-compare-table__feature-note font-caption weight-regular" style="color: var(--sb-color-always-white);">Serious monitoring benefits without jumping to ultra-premium pricing.</p>
+            <p class="sb-iem-compare-table__feature-name font-body weight-bold" style="color: var(--sb-color-always-white);">{{ section.settings.row_5_name }}</p>
+            <p class="sb-iem-compare-table__feature-note font-caption weight-regular" style="color: var(--sb-color-always-white);">{{ section.settings.row_5_note }}</p>
           </div>
         </div>
         <div class="sb-iem-compare-table__cell sb-iem-compare-table__cell--wave sb-iem-compare-table__cell--icon" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Yes">{{ sb_iem_compare_table_yes_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_5_wave %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{% if section.settings.row_5_wave %}Yes{% else %}No{% endif %}">{% if section.settings.row_5_wave %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
         <div class="sb-iem-compare-table__cell sb-iem-compare-table__cell--icon" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="No">{{ sb_iem_compare_table_no_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_5_alt_one %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{% if section.settings.row_5_alt_one %}Yes{% else %}No{% endif %}">{% if section.settings.row_5_alt_one %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
         <div class="sb-iem-compare-table__cell sb-iem-compare-table__cell--icon" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="No">{{ sb_iem_compare_table_no_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_5_alt_two %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{% if section.settings.row_5_alt_two %}Yes{% else %}No{% endif %}">{% if section.settings.row_5_alt_two %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
         <div class="sb-iem-compare-table__cell sb-iem-compare-table__cell--icon" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="No">{{ sb_iem_compare_table_no_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_5_alt_three %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{% if section.settings.row_5_alt_three %}Yes{% else %}No{% endif %}">{% if section.settings.row_5_alt_three %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="sb-iem-compare-table__mobile" aria-label="Comparison for Wave and the rest">
-    <div class="sb-iem-compare-table__mobile-table" role="table" aria-label="Comparison table for Wave and the rest">
+  <div class="sb-iem-compare-table__mobile" aria-label="{{ mobile_aria_label }}">
+    <div class="sb-iem-compare-table__mobile-table" role="table" aria-label="{{ mobile_aria_label }}">
       <div class="sb-iem-compare-table__mobile-row sb-iem-compare-table__mobile-row--head" role="row">
         <div class="sb-iem-compare-table__mobile-head sb-iem-compare-table__mobile-head--benefit" role="columnheader">
           <span class="sb-iem-compare-table__mobile-logo" aria-label="Soundbrenner">
             {{ 'logo-soundbrenner-wordmark.svg' | inline_asset_content }}
           </span>
         </div>
-        <div class="sb-iem-compare-table__mobile-head sb-iem-compare-table__mobile-head--wave font-caption2 weight-semibold" role="columnheader">Wave</div>
-        <div class="sb-iem-compare-table__mobile-head font-caption2 weight-semibold" role="columnheader">Bluetooth earbuds</div>
+        <div class="sb-iem-compare-table__mobile-head sb-iem-compare-table__mobile-head--wave font-caption2 weight-semibold" role="columnheader">{{ section.settings.mobile_wave_label }}</div>
+        <div class="sb-iem-compare-table__mobile-head font-caption2 weight-semibold" role="columnheader">{{ mobile_other_label }}</div>
       </div>
 
       <div class="sb-iem-compare-table__mobile-row" role="row">
-        <div class="sb-iem-compare-table__mobile-benefit font-body weight-bold" role="rowheader">Wired real-time monitoring</div>
+        <div class="sb-iem-compare-table__mobile-benefit font-body weight-bold" role="rowheader">{{ section.settings.row_1_name }}</div>
         <div class="sb-iem-compare-table__mobile-status-cell sb-iem-compare-table__mobile-status-cell--wave" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Wave: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_1_wave %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{{ section.settings.mobile_wave_label }}: {% if section.settings.row_1_wave %}Yes{% else %}No{% endif %}">{% if section.settings.row_1_wave %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
         <div class="sb-iem-compare-table__mobile-status-cell" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="Bluetooth earbuds: No">{{ sb_iem_compare_table_no_icon }}</span>
-        </div>
-      </div>
-
-      <div class="sb-iem-compare-table__mobile-row" role="row">
-        <div class="sb-iem-compare-table__mobile-benefit font-body weight-bold" role="rowheader">Strong passive isolation</div>
-        <div class="sb-iem-compare-table__mobile-status-cell sb-iem-compare-table__mobile-status-cell--wave" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Wave: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
-        </div>
-        <div class="sb-iem-compare-table__mobile-status-cell" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="Bluetooth earbuds: No">{{ sb_iem_compare_table_no_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_1_mobile_other %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{{ mobile_other_label }}: {% if section.settings.row_1_mobile_other %}Yes{% else %}No{% endif %}">{% if section.settings.row_1_mobile_other %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
       </div>
 
       <div class="sb-iem-compare-table__mobile-row" role="row">
-        <div class="sb-iem-compare-table__mobile-benefit font-body weight-bold" role="rowheader">Secure fit for long sessions</div>
+        <div class="sb-iem-compare-table__mobile-benefit font-body weight-bold" role="rowheader">{{ section.settings.row_2_name }}</div>
         <div class="sb-iem-compare-table__mobile-status-cell sb-iem-compare-table__mobile-status-cell--wave" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Wave: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_2_wave %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{{ section.settings.mobile_wave_label }}: {% if section.settings.row_2_wave %}Yes{% else %}No{% endif %}">{% if section.settings.row_2_wave %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
         <div class="sb-iem-compare-table__mobile-status-cell" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="Bluetooth earbuds: No">{{ sb_iem_compare_table_no_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_2_mobile_other %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{{ mobile_other_label }}: {% if section.settings.row_2_mobile_other %}Yes{% else %}No{% endif %}">{% if section.settings.row_2_mobile_other %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
       </div>
 
       <div class="sb-iem-compare-table__mobile-row" role="row">
-        <div class="sb-iem-compare-table__mobile-benefit font-body weight-bold" role="rowheader">No charging. No pairing.</div>
+        <div class="sb-iem-compare-table__mobile-benefit font-body weight-bold" role="rowheader">{{ section.settings.row_3_name }}</div>
         <div class="sb-iem-compare-table__mobile-status-cell sb-iem-compare-table__mobile-status-cell--wave" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Wave: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_3_wave %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{{ section.settings.mobile_wave_label }}: {% if section.settings.row_3_wave %}Yes{% else %}No{% endif %}">{% if section.settings.row_3_wave %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
         <div class="sb-iem-compare-table__mobile-status-cell" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="Bluetooth earbuds: No">{{ sb_iem_compare_table_no_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_3_mobile_other %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{{ mobile_other_label }}: {% if section.settings.row_3_mobile_other %}Yes{% else %}No{% endif %}">{% if section.settings.row_3_mobile_other %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
       </div>
 
       <div class="sb-iem-compare-table__mobile-row" role="row">
-        <div class="sb-iem-compare-table__mobile-benefit font-body weight-bold" role="rowheader">Musician-first value</div>
+        <div class="sb-iem-compare-table__mobile-benefit font-body weight-bold" role="rowheader">{{ section.settings.row_4_name }}</div>
         <div class="sb-iem-compare-table__mobile-status-cell sb-iem-compare-table__mobile-status-cell--wave" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--yes" aria-label="Wave: Yes">{{ sb_iem_compare_table_yes_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_4_wave %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{{ section.settings.mobile_wave_label }}: {% if section.settings.row_4_wave %}Yes{% else %}No{% endif %}">{% if section.settings.row_4_wave %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
         <div class="sb-iem-compare-table__mobile-status-cell" role="cell">
-          <span class="sb-iem-compare-table__status sb-iem-compare-table__status--no" aria-label="Bluetooth earbuds: No">{{ sb_iem_compare_table_no_icon }}</span>
+          <span class="sb-iem-compare-table__status {% if section.settings.row_4_mobile_other %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{{ mobile_other_label }}: {% if section.settings.row_4_mobile_other %}Yes{% else %}No{% endif %}">{% if section.settings.row_4_mobile_other %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
+        </div>
+      </div>
+
+      <div class="sb-iem-compare-table__mobile-row" role="row">
+        <div class="sb-iem-compare-table__mobile-benefit font-body weight-bold" role="rowheader">{{ section.settings.row_5_name }}</div>
+        <div class="sb-iem-compare-table__mobile-status-cell sb-iem-compare-table__mobile-status-cell--wave" role="cell">
+          <span class="sb-iem-compare-table__status {% if section.settings.row_5_wave %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{{ section.settings.mobile_wave_label }}: {% if section.settings.row_5_wave %}Yes{% else %}No{% endif %}">{% if section.settings.row_5_wave %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
+        </div>
+        <div class="sb-iem-compare-table__mobile-status-cell" role="cell">
+          <span class="sb-iem-compare-table__status {% if section.settings.row_5_mobile_other %}sb-iem-compare-table__status--yes{% else %}sb-iem-compare-table__status--no{% endif %}" aria-label="{{ mobile_other_label }}: {% if section.settings.row_5_mobile_other %}Yes{% else %}No{% endif %}">{% if section.settings.row_5_mobile_other %}{{ sb_iem_compare_table_yes_icon }}{% else %}{{ sb_iem_compare_table_no_icon }}{% endif %}</span>
         </div>
       </div>
     </div>
@@ -257,8 +265,8 @@
 
   <div class="sb-iem-compare-table__cta">
     {% render 'radiant-button',
-      label: 'Shop Wave now',
-      link: '/products/wave-in-ear-monitors',
+      label: cta_label,
+      link: cta_link,
       size: 'large',
       icon_position: 'trailing',
       extra_class: 'sb-iem-compare-table__cta-button'
@@ -672,7 +680,66 @@
 {% schema %}
 {
   "name": "IEM compare table",
-  "settings": [],
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Compare your options" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Why Wave is the right first step" },
+    { "type": "text", "id": "table_aria_label", "label": "Desktop aria label", "default": "Comparison table for Wave and alternative listening options" },
+    { "type": "text", "id": "mobile_aria_label", "label": "Mobile aria label", "default": "Comparison table for Wave and the rest" },
+    { "type": "text", "id": "wave_badge", "label": "Wave badge", "default": "Best fit for musicians" },
+    { "type": "text", "id": "wave_name", "label": "Wave heading", "default": "Soundbrenner Wave IEMs" },
+    { "type": "text", "id": "wave_note", "label": "Wave note", "default": "Built for practice and performance" },
+    { "type": "text", "id": "alt_one_name", "label": "Alternative 1 heading", "default": "Consumer headphones" },
+    { "type": "text", "id": "alt_one_note", "label": "Alternative 1 note", "default": "Great for casual listening" },
+    { "type": "text", "id": "alt_two_name", "label": "Alternative 2 heading", "default": "Bluetooth in-ears" },
+    { "type": "text", "id": "alt_two_note", "label": "Alternative 2 note", "default": "Made for convenience first" },
+    { "type": "text", "id": "alt_three_name", "label": "Alternative 3 heading", "default": "Expensive IEMs" },
+    { "type": "text", "id": "alt_three_note", "label": "Alternative 3 note", "default": "Strong performance at a much higher price" },
+    { "type": "text", "id": "mobile_wave_label", "label": "Mobile Wave label", "default": "Wave" },
+    { "type": "text", "id": "mobile_other_label", "label": "Mobile comparison label", "default": "Bluetooth earbuds" },
+
+    { "type": "text", "id": "row_1_name", "label": "Row 1 title", "default": "Wired real-time monitoring" },
+    { "type": "text", "id": "row_1_note", "label": "Row 1 note", "default": "No Bluetooth delay while practicing or performing." },
+    { "type": "checkbox", "id": "row_1_wave", "label": "Row 1 Wave", "default": true },
+    { "type": "checkbox", "id": "row_1_alt_one", "label": "Row 1 alternative 1", "default": false },
+    { "type": "checkbox", "id": "row_1_alt_two", "label": "Row 1 alternative 2", "default": false },
+    { "type": "checkbox", "id": "row_1_alt_three", "label": "Row 1 alternative 3", "default": true },
+    { "type": "checkbox", "id": "row_1_mobile_other", "label": "Row 1 mobile comparison", "default": false },
+
+    { "type": "text", "id": "row_2_name", "label": "Row 2 title", "default": "Strong passive isolation" },
+    { "type": "text", "id": "row_2_note", "label": "Row 2 note", "default": "Helps you focus without needing active noise cancellation." },
+    { "type": "checkbox", "id": "row_2_wave", "label": "Row 2 Wave", "default": true },
+    { "type": "checkbox", "id": "row_2_alt_one", "label": "Row 2 alternative 1", "default": false },
+    { "type": "checkbox", "id": "row_2_alt_two", "label": "Row 2 alternative 2", "default": false },
+    { "type": "checkbox", "id": "row_2_alt_three", "label": "Row 2 alternative 3", "default": true },
+    { "type": "checkbox", "id": "row_2_mobile_other", "label": "Row 2 mobile comparison", "default": false },
+
+    { "type": "text", "id": "row_3_name", "label": "Row 3 title", "default": "Secure fit for long sessions" },
+    { "type": "text", "id": "row_3_note", "label": "Row 3 note", "default": "Comfort that stays stable during practice and stage movement." },
+    { "type": "checkbox", "id": "row_3_wave", "label": "Row 3 Wave", "default": true },
+    { "type": "checkbox", "id": "row_3_alt_one", "label": "Row 3 alternative 1", "default": false },
+    { "type": "checkbox", "id": "row_3_alt_two", "label": "Row 3 alternative 2", "default": false },
+    { "type": "checkbox", "id": "row_3_alt_three", "label": "Row 3 alternative 3", "default": true },
+    { "type": "checkbox", "id": "row_3_mobile_other", "label": "Row 3 mobile comparison", "default": false },
+
+    { "type": "text", "id": "row_4_name", "label": "Row 4 title", "default": "No charging. No pairing." },
+    { "type": "text", "id": "row_4_note", "label": "Row 4 note", "default": "Just plug in and start playing." },
+    { "type": "checkbox", "id": "row_4_wave", "label": "Row 4 Wave", "default": true },
+    { "type": "checkbox", "id": "row_4_alt_one", "label": "Row 4 alternative 1", "default": false },
+    { "type": "checkbox", "id": "row_4_alt_two", "label": "Row 4 alternative 2", "default": false },
+    { "type": "checkbox", "id": "row_4_alt_three", "label": "Row 4 alternative 3", "default": true },
+    { "type": "checkbox", "id": "row_4_mobile_other", "label": "Row 4 mobile comparison", "default": false },
+
+    { "type": "text", "id": "row_5_name", "label": "Row 5 title", "default": "Musician-first value" },
+    { "type": "text", "id": "row_5_note", "label": "Row 5 note", "default": "Serious monitoring benefits without jumping to ultra-premium pricing." },
+    { "type": "checkbox", "id": "row_5_wave", "label": "Row 5 Wave", "default": true },
+    { "type": "checkbox", "id": "row_5_alt_one", "label": "Row 5 alternative 1", "default": false },
+    { "type": "checkbox", "id": "row_5_alt_two", "label": "Row 5 alternative 2", "default": false },
+    { "type": "checkbox", "id": "row_5_alt_three", "label": "Row 5 alternative 3", "default": false },
+    { "type": "checkbox", "id": "row_5_mobile_other", "label": "Row 5 mobile comparison", "default": false },
+
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Shop Wave now" },
+    { "type": "url", "id": "cta_link", "label": "Button link" }
+  ],
   "presets": [
     {
       "name": "IEM compare table"
