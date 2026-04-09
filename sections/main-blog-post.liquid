@@ -333,14 +333,12 @@
                 </footer>
               </blockquote>
 
-              {% capture comparison_cta_button_label %}{{ 'sb.blog.comparison_cta_button' | t: product: comparison_product_name }}{% endcapture %}
-              {% render 'radiant-button',
-                label: comparison_cta_button_label | strip,
-                link: comparison_product_url,
-                size: 'large',
-                extra_class: 'font-caption weight-bold sb-blog-post__comparison-cta-button',
-                icon_position: 'trailing'
-              %}
+              <a class="sb-button-radiant sb-button-radiant--large sb-button-radiant--trailing-icon font-caption weight-bold sb-blog-post__comparison-cta-button" href="{{ comparison_product_url }}">
+                <span class="sb-button-radiant__label">{{ 'sb.blog.comparison_cta_button' | t: product: comparison_product_name }}</span>
+                <span class="sb-button-radiant__icon" aria-hidden="true">
+                  {{ 'arrow-reduced-padding.svg' | inline_asset_content }}
+                </span>
+              </a>
             </section>
           {% endif %}
 
