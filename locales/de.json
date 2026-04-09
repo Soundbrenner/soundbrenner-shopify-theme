@@ -159,7 +159,8 @@
         "vocals": "Gesang",
         "woodwind": "Holzbläser"
       },
-      "about_box_default_html": "<p><strong>Über Soundbrenner</strong></p><p>Unsere Mission ist es, Musikübungen so spannend zu machen, dass du nicht mehr aufhören willst.</p><p>Füge deine Links und Texte im Theme-Editor hinzu.</p>"
+      "about_box_default_html": "<p><strong>Über Soundbrenner</strong></p><p>Unsere Mission ist es, Musikübungen so spannend zu machen, dass du nicht mehr aufhören willst.</p><p>Füge deine Links und Texte im Theme-Editor hinzu.</p>",
+      "article_updated_date": "(Aktualisiert {{ date }})"
     },
     "cart": {
       "accepted_payment_methods": "Akzeptierte Zahlungsmethoden",
