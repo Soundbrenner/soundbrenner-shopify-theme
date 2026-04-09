@@ -42,51 +42,51 @@
       "type": "iem-compare-table",
       "name": "IEM compare table",
       "settings": {
-        "eyebrow": "Built for church musicians",
-        "title": "Why Wave works so well on your worship team",
+        "eyebrow": "Built for worship teams",
+        "title": "Why Wave fits church musicians better",
         "table_aria_label": "Comparison table for Wave and alternative listening options for worship musicians",
         "mobile_aria_label": "Comparison table for Wave and Bluetooth earbuds for church musicians",
         "wave_badge": "Best fit for worship teams",
         "wave_name": "Soundbrenner Wave IEMs",
-        "wave_note": "Built for rehearsals and live church services",
+        "wave_note": "Built for rehearsals, services, and team monitoring",
         "alt_one_name": "Consumer headphones",
-        "alt_one_note": "Fine for casual listening, not team monitoring",
+        "alt_one_note": "Fine for casual listening, but not built for worship mixes",
         "alt_two_name": "Bluetooth in-ears",
-        "alt_two_note": "Convenient, but not made for zero-lag stage use",
+        "alt_two_note": "Convenient, but not ideal when timing and clarity matter",
         "alt_three_name": "Expensive IEMs",
-        "alt_three_note": "Strong performance at a much higher price",
+        "alt_three_note": "Strong performance, but a bigger jump in price",
         "mobile_wave_label": "Wave",
         "mobile_other_label": "Bluetooth earbuds",
         "row_1_name": "Wired real-time monitoring",
-        "row_1_note": "Hear the band, click, and vocals in sync during rehearsal and every service.",
+        "row_1_note": "Hear the band, click, cues, and vocals in sync during rehearsal and every service.",
         "row_1_wave": true,
         "row_1_alt_one": false,
         "row_1_alt_two": false,
         "row_1_alt_three": true,
         "row_1_mobile_other": false,
         "row_2_name": "Strong passive isolation",
-        "row_2_note": "Helps you stay locked in with the mix even in louder worship environments.",
+        "row_2_note": "Helps worship leaders and band members stay locked into the mix in louder church environments.",
         "row_2_wave": true,
         "row_2_alt_one": false,
         "row_2_alt_two": false,
         "row_2_alt_three": true,
         "row_2_mobile_other": false,
-        "row_3_name": "Secure fit through full services",
-        "row_3_note": "Comfort that stays stable while you sing, play, and move on stage.",
+        "row_3_name": "Secure fit through full sets",
+        "row_3_note": "Comfort that stays stable while you sing, lead, play, and move through the full service.",
         "row_3_wave": true,
         "row_3_alt_one": false,
         "row_3_alt_two": false,
         "row_3_alt_three": true,
         "row_3_mobile_other": false,
         "row_4_name": "No charging. No pairing.",
-        "row_4_note": "Just plug in before the set and you are ready to go.",
+        "row_4_note": "Just plug in before rehearsal or service and you are ready to go.",
         "row_4_wave": true,
         "row_4_alt_one": false,
         "row_4_alt_two": false,
         "row_4_alt_three": true,
         "row_4_mobile_other": false,
-        "row_5_name": "Great value for your team setup",
-        "row_5_note": "Serious worship-monitoring benefits without jumping straight to ultra-premium pricing.",
+        "row_5_name": "Great value for church musicians",
+        "row_5_note": "A serious upgrade for worship monitoring without jumping straight to ultra-premium pricing.",
         "row_5_wave": true,
         "row_5_alt_one": false,
         "row_5_alt_two": false,
@@ -104,8 +104,8 @@
           "settings": {
             "icon": "shopify://shop_images/usp_wave_1.svg",
             "gradient_value": "linear-gradient(135deg, #FF0739 0%, #8E3BFF 100%)",
-            "title": "Zero-lag monitoring",
-            "body": "<p>Hear yourself in real time with wired audio that stays locked in while you practice, record, or perform.</p>"
+            "title": "Hear your full worship mix clearly",
+            "body": "<p>Stay connected to vocals, instruments, click, and cues with wired audio that keeps everything in sync.</p>"
           }
         },
         "item_isolation": {
@@ -113,8 +113,8 @@
           "settings": {
             "icon": "shopify://shop_images/usp_wave_2.svg",
             "gradient_value": "linear-gradient(135deg, #E67702 0%, #FF4700 100%)",
-            "title": "More focus, less noise",
-            "body": "<p>Strong passive isolation helps the details come through clearly without outside distractions pulling you out of the moment.</p>"
+            "title": "Built for Sunday mornings and Wednesday rehearsals",
+            "body": "<p>Wave is made for the real rhythm of worship teams, from midweek run-throughs to full weekend services.</p>"
           }
         },
         "item_fit": {
@@ -122,8 +122,8 @@
           "settings": {
             "icon": "shopify://shop_images/usp_wave_4.svg",
             "gradient_value": "linear-gradient(135deg, #0097FF 0%, #00FCA4 100%)",
-            "title": "Comfort that lasts",
-            "body": "<p>A secure fit stays comfortable through longer practice blocks, rehearsals, and live sets.</p>"
+            "title": "Comfort that stays secure on stage",
+            "body": "<p>A stable fit helps you lead, sing, and play through the full set without constantly adjusting your IEMs.</p>"
           }
         },
         "item_power": {
@@ -131,8 +131,8 @@
           "settings": {
             "icon": "shopify://shop_images/usp_wave_5.svg",
             "gradient_value": "linear-gradient(135deg, #FFD147 0%, #FF9E18 100%)",
-            "title": "Plug in and play",
-            "body": "<p>No batteries, pairing steps, or charging routines. Just connect and get to work.</p>"
+            "title": "Simple, reliable, and ready every time",
+            "body": "<p>No charging, pairing, or extra setup. Just plug in before the service and you are ready to go.</p>"
           }
         }
       },
@@ -144,7 +144,7 @@
       ],
       "settings": {
         "use_product_metaobjects": false,
-        "title": "Built to be easy from day one"
+        "title": "Why worship teams choose Wave"
       }
     },
     "large_feature_first_iem_fit": {
