@@ -35,40 +35,6 @@
     assign show_article_updated_date = true
   endif
 
-  assign is_comparison_article = false
-  assign comparison_product_handle = blank
-  assign comparison_product = blank
-  assign comparison_product_name = blank
-  assign comparison_product_url = blank
-  assign comparison_product_rating = 0
-  assign comparison_product_reviews_count = 0
-  assign comparison_product_has_reviews = false
-  if article.handle contains '-vs-' and article.handle != 'soundbrenner-wave-vs-soundbrenner-wave-pro'
-    assign is_comparison_article = true
-    if article.handle contains 'soundbrenner-wave-pro'
-      assign comparison_product_handle = 'wave-pro-in-ear-monitors'
-    elsif article.handle contains 'soundbrenner-wave'
-      assign comparison_product_handle = 'wave-in-ear-monitors'
-    endif
-
-    if comparison_product_handle != blank
-      assign comparison_product = all_products[comparison_product_handle]
-    endif
-
-    if comparison_product != blank
-      assign comparison_product_name = comparison_product.title
-      assign comparison_product_url = comparison_product.url
-      if comparison_product.metafields.reviews.rating.value != blank
-        assign comparison_rating_source = comparison_product.metafields.reviews.rating.value
-        assign comparison_product_rating = comparison_rating_source.rating | default: comparison_rating_source | plus: 0
-      endif
-      assign comparison_product_reviews_count = comparison_product.metafields.reviews.rating_count.value | default: 0 | plus: 0 | round: 0
-      if comparison_product_rating > 0 and comparison_product_reviews_count > 0
-        assign comparison_product_has_reviews = true
-      endif
-    endif
-  endif
-
   assign seasonal_sale_name = settings.seasonal_sale_name | strip
   assign sale_name_token = '{{ Sale name }}'
   assign sitewide_discount_depth_token = '{{ Sitewide discount depth }}'
@@ -301,47 +267,6 @@
         </div>
 
         <div class="sb-blog-post__postscript">
-          {% if is_comparison_article and comparison_product != blank and comparison_product_url != blank %}
-            <section class="sb-blog-post__comparison-cta" aria-label="{{ 'sb.blog.comparison_cta_label' | t: product: comparison_product_name }}">
-              <p class="sb-blog-post__comparison-cta-eyebrow font-caption weight-semibold">{{ 'sb.blog.comparison_cta_eyebrow' | t }}</p>
-              <h2 class="sb-blog-post__comparison-cta-title font-callout weight-bold">{{ 'sb.blog.comparison_cta_title' | t: product: comparison_product_name }}</h2>
-              <p class="sb-blog-post__comparison-cta-body font-body weight-regular">{{ 'sb.blog.comparison_cta_body' | t: product: comparison_product_name }}</p>
-
-              {% if comparison_product_has_reviews %}
-                {% liquid
-                  assign comparison_product_rating_rounded = comparison_product_rating | round: 1
-                  assign comparison_product_rating_text = comparison_product_rating_rounded | append: ''
-                  assign comparison_product_reviews_count_text = comparison_product_reviews_count | append: ''
-                %}
-                <p class="sb-blog-post__comparison-cta-meta font-caption weight-semibold">
-                  {{ 'sb.rating.out_of_five_stars' | t: rating: comparison_product_rating_text }}
-                  ·
-                  {{ 'sb.product.reviews_count' | t: count: comparison_product_reviews_count_text }}
-                </p>
-              {% endif %}
-
-              <ul class="sb-blog-post__comparison-cta-points">
-                <li class="sb-blog-post__comparison-cta-point font-caption weight-semibold">{{ 'sb.value_breakdown.money_back_30_day' | t }}</li>
-                <li class="sb-blog-post__comparison-cta-point font-caption weight-semibold">{{ 'sb.product.warranty_1_year' | t }}</li>
-                <li class="sb-blog-post__comparison-cta-point font-caption weight-semibold">{{ 'sb.blog.comparison_cta_support' | t }}</li>
-              </ul>
-
-              <blockquote class="sb-blog-post__comparison-cta-quote">
-                <p class="font-body weight-regular">{{ 'sb.header.mobile_review_text' | t }}</p>
-                <footer class="sb-blog-post__comparison-cta-quote-cite font-caption weight-semibold">
-                  {{ 'sb.header.mobile_review_name' | t }}
-                </footer>
-              </blockquote>
-
-              <a class="sb-button-radiant sb-button-radiant--large sb-button-radiant--trailing-icon font-caption weight-bold sb-blog-post__comparison-cta-button" href="{{ comparison_product_url }}">
-                <span class="sb-button-radiant__label">{{ 'sb.shogun.view_product_page' | t }}</span>
-                <span class="sb-button-radiant__icon" aria-hidden="true">
-                  {{ 'arrow-reduced-padding.svg' | inline_asset_content }}
-                </span>
-              </a>
-            </section>
-          {% endif %}
-
           <div class="sb-blog-post__postscript-divider" aria-hidden="true"></div>
           <p class="sb-blog-post__postscript-author font-body weight-bold">{{ 'sb.blog.by_team_soundbrenner' | t }}</p>
 
@@ -624,16 +549,14 @@
   .sb-blog-post__content > table {
     border-collapse: collapse;
     border-spacing: 0;
-    display: block;
+    display: table;
     font-family: var(--font-primary--family);
     font-size: var(--font-size-caption);
     line-height: 1.35;
     margin: 0;
-    max-width: none;
-    overflow-x: auto;
-    overflow-y: hidden;
-    width: max-content;
-    min-width: 100%;
+    max-width: 100%;
+    table-layout: fixed;
+    width: 100%;
   }
 
   .sb-blog-post__content > table thead tr {
@@ -651,12 +574,13 @@
   .sb-blog-post__content > table th,
   .sb-blog-post__content > table td {
     box-sizing: border-box;
-    min-width: 180px;
+    min-width: 0;
     padding: 16px 16px 16px 0;
     text-align: left;
     vertical-align: top;
     white-space: normal;
-    word-break: break-word;
+    overflow-wrap: anywhere;
+    word-break: normal;
   }
 
   .sb-blog-post__content > table th {
@@ -673,7 +597,7 @@
 
   .sb-blog-post__content > table th:first-child,
   .sb-blog-post__content > table td:first-child {
-    min-width: 140px;
+    width: 26%;
   }
 
   .sb-blog-post__content > table th:last-child,
@@ -740,62 +664,6 @@
 
   .sb-blog-post__postscript {
     margin-top: 0;
-  }
-
-  .sb-blog-post__comparison-cta {
-    background: var(--sb-color-neutral-200);
-    border-radius: 24px;
-    color: var(--sb-color-neutral-900);
-    margin-top: 30px;
-    padding: 24px;
-  }
-
-  .sb-blog-post__comparison-cta > * {
-    margin: 0;
-  }
-
-  .sb-blog-post__comparison-cta > * + * {
-    margin-top: 16px;
-  }
-
-  .sb-blog-post__comparison-cta-eyebrow,
-  .sb-blog-post__comparison-cta-meta {
-    color: var(--sb-color-neutral-800);
-  }
-
-  .sb-blog-post__comparison-cta-points {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .sb-blog-post__comparison-cta-point {
-    background: var(--sb-color-neutral-100);
-    border-radius: 999px;
-    color: var(--sb-color-neutral-900);
-    padding: 8px 12px;
-  }
-
-  .sb-blog-post__comparison-cta-quote {
-    border-left: 2px solid var(--sb-color-neutral-600);
-    margin: 0;
-    padding-left: 20px;
-  }
-
-  .sb-blog-post__comparison-cta-quote > * {
-    margin: 0;
-  }
-
-  .sb-blog-post__comparison-cta-quote-cite {
-    color: var(--sb-color-neutral-800);
-    margin-top: 12px;
-  }
-
-  .sb-blog-post__comparison-cta-button.sb-button-radiant {
-    width: fit-content;
   }
 
   .sb-blog-post__postscript-divider {
@@ -1071,10 +939,6 @@
       margin-top: 30px;
     }
 
-    .sb-blog-post__comparison-cta {
-      padding: 20px;
-    }
-
     .sb-blog-post__read-next .sb-blog-overview-card--archive {
       background: var(--sb-color-neutral-200);
       border-bottom: 0;
@@ -1098,13 +962,12 @@
 
     .sb-blog-post__content > table th,
     .sb-blog-post__content > table td {
-      min-width: 160px;
       padding: 14px 14px 14px 0;
     }
 
     .sb-blog-post__content > table th:first-child,
     .sb-blog-post__content > table td:first-child {
-      min-width: 120px;
+      width: 32%;
     }
   }
 
