@@ -333,8 +333,11 @@
                 </footer>
               </blockquote>
 
+              {% liquid
+                assign comparison_cta_button_label = 'sb.blog.comparison_cta_button' | t: product: comparison_product_name
+              %}
               {% render 'radiant-button',
-                label: 'sb.blog.comparison_cta_button' | t: product: comparison_product_name,
+                label: comparison_cta_button_label,
                 link: comparison_product_url,
                 size: 'large',
                 extra_class: 'font-caption weight-bold sb-blog-post__comparison-cta-button',
