@@ -554,9 +554,11 @@
     font-size: var(--font-size-caption);
     line-height: 1.35;
     margin: 0;
-    max-width: 100%;
+    max-width: none;
     overflow-x: auto;
-    width: 100%;
+    overflow-y: hidden;
+    width: max-content;
+    min-width: 100%;
   }
 
   .sb-blog-post__content > table thead tr {
@@ -573,10 +575,13 @@
 
   .sb-blog-post__content > table th,
   .sb-blog-post__content > table td {
+    box-sizing: border-box;
     min-width: 180px;
     padding: 16px 16px 16px 0;
     text-align: left;
     vertical-align: top;
+    white-space: normal;
+    word-break: break-word;
   }
 
   .sb-blog-post__content > table th {
