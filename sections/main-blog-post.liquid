@@ -26,6 +26,14 @@
   endif
   assign article_read_duration_text = article_read_duration_minutes | append: ''
   assign article_excerpt_text = article.excerpt | strip_html | strip
+  assign article_published_day = article.published_at | date: '%Y-%m-%d'
+  assign article_updated_day = article.updated_at | date: '%Y-%m-%d'
+  assign article_publish_date_text = article.published_at | date: format: 'abbreviated_date'
+  assign article_updated_date_text = article.updated_at | date: format: 'abbreviated_date'
+  assign show_article_updated_date = false
+  if article.updated_at != blank and article_updated_day != article_published_day
+    assign show_article_updated_date = true
+  endif
 
   assign seasonal_sale_name = settings.seasonal_sale_name | strip
   assign sale_name_token = '{{ Sale name }}'
@@ -215,7 +223,7 @@
     <header class="sb-blog-post__header{% if article.image != blank %} sb-blog-post__header--with-media{% else %} sb-blog-post__header--without-media{% endif %}">
       <p class="sb-blog-post__meta-item font-caption weight-regular">{{ article_category_text }}</p>
       <p class="sb-blog-post__meta-item font-caption weight-regular">
-        {{ article.published_at | date: format: 'abbreviated_date' }}
+        {{ article_publish_date_text }}{% if show_article_updated_date %} {{ 'sb.blog.article_updated_date' | t: date: article_updated_date_text }}{% endif %}
       </p>
       {% if article_read_duration_text != blank %}
         <p class="sb-blog-post__meta-item sb-blog-post__meta-item--read-time font-caption weight-regular">

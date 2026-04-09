@@ -111,6 +111,7 @@
       "about_box_default_html": "<p><strong>About Soundbrenner</strong></p><p>We are on a mission to make music practice addictive.</p><p>Add your links and copy in Theme editor.</p>",
       "all": "All",
       "archive": "Archive",
+      "article_updated_date": "(Updated {{ date }})",
       "blog": "Blog",
       "by_instrument": "By instrument",
       "by_product": "By product",
