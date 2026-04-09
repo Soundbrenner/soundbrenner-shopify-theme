@@ -159,7 +159,8 @@
         "vocals": "보컬",
         "woodwind": "목관악기"
       },
-      "about_box_default_html": "<p><strong>Soundbrenner 소개</strong></p><p>우리는 음악 연습이 중독처럼 즐거워지도록 만들고 있어.</p><p>테마 에디터에서 링크와 복사할 내용을 추가해 줘.</p>"
+      "about_box_default_html": "<p><strong>Soundbrenner 소개</strong></p><p>우리는 음악 연습이 중독처럼 즐거워지도록 만들고 있어.</p><p>테마 에디터에서 링크와 복사할 내용을 추가해 줘.</p>",
+      "article_updated_date": "(업데이트됨 {{ date }})"
     },
     "cart": {
       "accepted_payment_methods": "사용 가능한 결제 수단",
