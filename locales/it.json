@@ -159,7 +159,8 @@
         "vocals": "Voce",
         "woodwind": "Strumenti a fiato in legno"
       },
-      "about_box_default_html": "<p><strong>Chi è Soundbrenner</strong></p><p>La nostra missione è rendere la pratica musicale irresistibile.</p><p>Aggiungi i tuoi link e i tuoi testi nell’editor del tema.</p>"
+      "about_box_default_html": "<p><strong>Chi è Soundbrenner</strong></p><p>La nostra missione è rendere la pratica musicale irresistibile.</p><p>Aggiungi i tuoi link e i tuoi testi nell’editor del tema.</p>",
+      "article_updated_date": "(Aggiornato {{ date }})"
     },
     "cart": {
       "accepted_payment_methods": "Metodi di pagamento accettati",
