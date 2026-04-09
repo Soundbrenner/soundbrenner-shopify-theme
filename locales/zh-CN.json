@@ -159,7 +159,8 @@
         "vocals": "人声",
         "woodwind": "木管乐器"
       },
-      "about_box_default_html": "<p><strong>关于 Soundbrenner</strong></p><p>我们的使命是让音乐练习变得让人上瘾。</p><p>请在主题编辑器中添加你的链接和文案。</p>"
+      "about_box_default_html": "<p><strong>关于 Soundbrenner</strong></p><p>我们的使命是让音乐练习变得让人上瘾。</p><p>请在主题编辑器中添加你的链接和文案。</p>",
+      "article_updated_date": "（更新于{{ date }}）"
     },
     "cart": {
       "accepted_payment_methods": "可接受的付款方式",
