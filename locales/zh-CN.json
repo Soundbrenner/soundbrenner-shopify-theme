@@ -230,7 +230,12 @@
       "email": "电子邮件",
       "full_name": "全名",
       "send": "发送",
-      "success_message": "感谢你联系我们。我们会尽快回复。"
+      "success_message": "感谢你联系我们。我们会尽快回复。",
+      "notice_item_refunds": "我们只处理在 soundbrenner.com 下单的退款和保修。如果你是在其他地方购买的，请联系你的零售商。",
+      "notice_item_reply_existing": "如果你已经有一个未解决的支持请求，请直接回复那封邮件，而不是提交新的表单。",
+      "notice_item_suggestion_portal_html": "如有功能建议，请访问我们的<a href=\"{{ url }}\">建议平台</a>。",
+      "notice_item_technical_issue": "遇到技术问题时，建议你附上一段展示问题的视频（可通过 iCloud、Google Drive、Dropbox 等链接分享）。",
+      "notice_title": "重要"
     },
     "footer": {
       "company": "公司",
