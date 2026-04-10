@@ -1,0 +1,253 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "disabled": true,
+      "settings": {}
+    },
+    "hero_card_LAwg9p": {
+      "type": "hero-card",
+      "name": "Hero card",
+      "settings": {
+        "use_seasonal_hero_card": false,
+        "use_resource_title_description": false,
+        "use_product_page_metaobjects": false,
+        "background_image_desktop": "shopify://shop_images/Best_Worship_IEM_desktop.jpg",
+        "background_image_mobile": "shopify://shop_images/Best_Worship_IEM_mobile.jpg",
+        "kicker": "The IEM for your worship team",
+        "headline": "Your church IEM should feel like an upgrade, not a compromise",
+        "subheadline": "",
+        "show_button": true,
+        "button_label": "Shop Wave now",
+        "button_size": "large",
+        "icon_position": "trailing",
+        "button_link": "/products/wave-in-ear-monitors",
+        "button_open_in_new_tab": false,
+        "show_app_download_qr": false,
+        "show_app_download_app_store": false,
+        "show_app_download_google_play": false,
+        "show_app_download_china": false
+      }
+    },
+    "iem_compare_table_xFWW7g": {
+      "type": "iem-compare-table",
+      "name": "IEM compare table",
+      "settings": {
+        "eyebrow": "Built for worship teams",
+        "title": "Why Wave fits church musicians better",
+        "table_aria_label": "Comparison table for Wave and alternative listening options for worship musicians",
+        "mobile_aria_label": "Comparison table for Wave and Bluetooth earbuds for church musicians",
+        "wave_badge": "Best fit for worship teams",
+        "wave_name": "Soundbrenner Wave IEMs",
+        "wave_note": "Built for rehearsals, services, and team monitoring",
+        "alt_one_name": "Consumer headphones",
+        "alt_one_note": "Fine for casual listening, but not built for worship mixes",
+        "alt_two_name": "Bluetooth in-ears",
+        "alt_two_note": "Convenient, but not ideal when timing and clarity matter",
+        "alt_three_name": "Expensive IEMs",
+        "alt_three_note": "Strong performance, but a bigger jump in price",
+        "mobile_wave_label": "Wave",
+        "mobile_other_label": "Bluetooth earbuds",
+        "row_1_name": "Wired real-time monitoring",
+        "row_1_note": "Hear the band, click, cues, and vocals in sync during rehearsal and every service.",
+        "row_1_wave": true,
+        "row_1_alt_one": false,
+        "row_1_alt_two": false,
+        "row_1_alt_three": true,
+        "row_1_mobile_other": false,
+        "row_2_name": "Strong passive isolation",
+        "row_2_note": "Helps worship leaders and band members stay locked into the mix in louder church environments.",
+        "row_2_wave": true,
+        "row_2_alt_one": false,
+        "row_2_alt_two": false,
+        "row_2_alt_three": true,
+        "row_2_mobile_other": false,
+        "row_3_name": "Secure fit through full sets",
+        "row_3_note": "Comfort that stays stable while you sing, lead, play, and move through the full service.",
+        "row_3_wave": true,
+        "row_3_alt_one": false,
+        "row_3_alt_two": false,
+        "row_3_alt_three": true,
+        "row_3_mobile_other": false,
+        "row_4_name": "No charging. No pairing.",
+        "row_4_note": "Just plug in before rehearsal or service and you are ready to go.",
+        "row_4_wave": true,
+        "row_4_alt_one": false,
+        "row_4_alt_two": false,
+        "row_4_alt_three": true,
+        "row_4_mobile_other": false,
+        "row_5_name": "Great value for church musicians",
+        "row_5_note": "A serious upgrade for worship monitoring without jumping straight to ultra-premium pricing.",
+        "row_5_wave": true,
+        "row_5_alt_one": false,
+        "row_5_alt_two": false,
+        "row_5_alt_three": false,
+        "row_5_mobile_other": false,
+        "cta_label": "Shop Wave now",
+        "cta_link": "/products/wave-in-ear-monitors"
+      }
+    },
+    "top_feature_highlights_wave": {
+      "type": "top-feature-highlights",
+      "blocks": {
+        "item_monitoring": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/usp_wave_1.svg",
+            "gradient_value": "linear-gradient(135deg, #FF0739 0%, #8E3BFF 100%)",
+            "title": "Hear your full worship mix clearly",
+            "body": "<p>Stay connected to vocals, instruments, click, and cues with wired audio that keeps everything in sync.</p>"
+          }
+        },
+        "item_isolation": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/usp_wave_2.svg",
+            "gradient_value": "linear-gradient(135deg, #E67702 0%, #FF4700 100%)",
+            "title": "Built for Sunday mornings and Wednesday rehearsals",
+            "body": "<p>Wave is made for the real rhythm of worship teams, from midweek run-throughs to full weekend services.</p>"
+          }
+        },
+        "item_fit": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/usp_wave_4.svg",
+            "gradient_value": "linear-gradient(135deg, #0097FF 0%, #00FCA4 100%)",
+            "title": "Comfort that stays secure on stage",
+            "body": "<p>A stable fit helps you lead, sing, and play through the full set without constantly adjusting your IEMs.</p>"
+          }
+        },
+        "item_power": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/usp_wave_5.svg",
+            "gradient_value": "linear-gradient(135deg, #FFD147 0%, #FF9E18 100%)",
+            "title": "Simple, reliable, and ready every time",
+            "body": "<p>No charging, pairing, or extra setup. Just plug in before the service and you are ready to go.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_monitoring",
+        "item_isolation",
+        "item_fit",
+        "item_power"
+      ],
+      "settings": {
+        "use_product_metaobjects": false,
+        "title": "Why worship teams choose Wave"
+      }
+    },
+    "large_feature_first_iem_fit": {
+      "type": "large-feature",
+      "name": "Large feature",
+      "settings": {
+        "use_product_metaobjects": false,
+        "media_position": "right",
+        "media": "shopify://shop_images/Best_worship_IEM_1.jpg",
+        "show_icon_and_kicker": false,
+        "kicker_icon": "",
+        "kicker_text": "",
+        "title_part_one": "Switching to IEMs should feel right",
+        "title_part_two": "from the first Sunday",
+        "title_accent_color": "primary-500",
+        "body": "<p>One of the biggest reasons worship musicians put off switching to IEMs is simple: they worry it will feel wrong on stage, or that they will spend the whole service readjusting.</p><p>Wave is designed to sit securely from the moment you put it in. The over-ear hook locks it in place - no fiddling, no falling out, no distraction.</p><p>Once the fit clicks, everything changes. You can hear your own instrument clearly, stay in the mix, and actually focus on leading worship instead of fighting your gear.</p>"
+      }
+    },
+    "large_feature_first_iem_complexity": {
+      "type": "large-feature",
+      "name": "Large feature",
+      "settings": {
+        "use_product_metaobjects": false,
+        "media_position": "left",
+        "media": "shopify://shop_images/Best_worship_IEM_2.jpg",
+        "show_icon_and_kicker": false,
+        "kicker_icon": "",
+        "kicker_text": "",
+        "title_part_one": "Serious monitoring",
+        "title_part_two": "doesn't have to cost $400",
+        "title_accent_color": "primary-500",
+        "body": "<p>The biggest hesitation we hear from worship musicians is price. Most assume that IEMs worth using cost $400, $500, or more - and that anything under $200 is a compromise.</p><p>Wave is $99. And worship musicians who've used other IEM brands consistently say it outperforms what they paid significantly more for.</p><p>It's the straightforward way to get professional monitoring without the price tag that requires a conversation with your spouse.</p>"
+      }
+    },
+    "wave_bottom_cta_final": {
+      "type": "wave-bottom-cta",
+      "settings": {
+        "product_handle": "wave-in-ear-monitors",
+        "image": "shopify://shop_images/package_1_1.jpg",
+        "eyebrow": "Ready for rehearsal and Sunday",
+        "title_part_one": "Get the IEM that helps your",
+        "title_part_two": "worship team hear better",
+        "body": "<p>Wave gives church musicians and worship leaders a clear, reliable in-ear mix without the usual jump in price. Plug in, lock in, and focus on the service instead of your gear.</p>",
+        "trust_line": "30-day money-back guarantee",
+        "value_anchor": "Professional monitoring for worship teams, without the premium price tag",
+        "button_label": "Shop Wave now",
+        "helper_text": "Ships worldwide",
+        "included_items": "<ul><li>Wave in-ear monitors</li><li>Wave over-ear 3.5 mm audio cable, 1.5 m (4.9 ft)</li><li>3.5 mm to 1/4-inch adapter</li><li>6 pairs of ear tips</li><li>Carrying case</li></ul>"
+      }
+    },
+    "best_worship_reviews": {
+      "type": "review-cards",
+      "blocks": {
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "reviewer": "Verified Buyer",
+            "quote": "I have been a Worship Leader for several years now and tried a lot of the \"name brand\" IEM's. I have to say for what I needed the IEM's to do, this is the best I have tried so far. The sound is crystal clear, I can distinctly hear all the different parts, and they are very comfortable with several options for those like me with tiny ears. I never once felt like they were going to fall out.",
+            "role": "Worship Leader"
+          }
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {
+            "reviewer": "Verified Buyer",
+            "quote": "I've been playing acoustic, mandolin and bass in our Church praise band for 20+ years. I've tried countless units but nothing pleased for sound quality and fit like your monitors. This past Sunday was my first service using them. My search is over and I've passed on your info to the rest of the band.",
+            "role": "Church Praise Band Musician"
+          }
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {
+            "reviewer": "Verified Buyer",
+            "quote": "I play electric guitar at my church and your ad came across Facebook. I looked at the specs, read reviews and decided to try these out. I WAS NOT DISAPPOINTED! I tried them out on Sunday and was simply amazed at how full and clear everything was! I could hear every instrument and vocalists!",
+            "role": "Church Guitarist"
+          }
+        },
+        "review_4": {
+          "type": "review",
+          "settings": {
+            "reviewer": "Verified Buyer",
+            "quote": "It has an amazing clear sound. I use it for church bass and it is so much clearer than my Bose I was using. I recommend the Wave in-ear monitor if you play in church music where you need to hear everyone while you play.",
+            "role": "Church Bassist"
+          }
+        }
+      },
+      "block_order": [
+        "review_1",
+        "review_2",
+        "review_3",
+        "review_4"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "hero_card_LAwg9p",
+    "iem_compare_table_xFWW7g",
+    "top_feature_highlights_wave",
+    "large_feature_first_iem_fit",
+    "large_feature_first_iem_complexity",
+    "wave_bottom_cta_final",
+    "best_worship_reviews"
+  ]
+}

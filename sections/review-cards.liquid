@@ -1,0 +1,267 @@
+{% if section.blocks.size > 0 %}
+  <section class="sb-review-cards-carousel" data-sb-carousel data-sb-motion="reveal">
+    <div class="sb-review-cards-carousel__motion" data-sb-motion-item>
+      <div class="sb-review-cards-carousel__viewport" data-sb-carousel-viewport>
+        <div class="sb-review-cards-carousel__track" data-sb-carousel-track>
+          {% for block in section.blocks %}
+            <article class="sb-review-cards-carousel__item" data-sb-carousel-item {{ block.shopify_attributes }}>
+              <div class="sb-review-cards-carousel__card">
+                <div class="sb-review-cards-carousel__meta">
+                  <p class="sb-review-cards-carousel__stars font-callout weight-bold" aria-label="5 out of 5 stars">★★★★★</p>
+                  <p class="sb-review-cards-carousel__reviewer font-caption weight-bold">{{ block.settings.reviewer }}</p>
+                </div>
+
+                <blockquote class="sb-review-cards-carousel__quote font-body weight-regular">
+                  <p>{{ block.settings.quote }}</p>
+                </blockquote>
+
+                <p class="sb-review-cards-carousel__role font-body weight-bold">{{ block.settings.role }}</p>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="sb-review-cards-carousel__controls" data-sb-carousel-controls>
+        <button type="button" class="sb-review-cards-carousel__arrow" data-sb-carousel-prev aria-label="Previous reviews" disabled>
+          <span class="sb-review-cards-carousel__arrow-icon sb-review-cards-carousel__arrow-icon--left" aria-hidden="true">
+            {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
+          </span>
+        </button>
+
+        <button type="button" class="sb-review-cards-carousel__arrow" data-sb-carousel-next aria-label="Next reviews" disabled>
+          <span class="sb-review-cards-carousel__arrow-icon sb-review-cards-carousel__arrow-icon--right" aria-hidden="true">
+            {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
+          </span>
+        </button>
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% stylesheet %}
+  .sb-review-cards-carousel {
+    --sb-carousel-gap: var(--sb-space-24);
+    --sb-carousel-bleed-inline: var(--page-margin);
+    width: 100%;
+  }
+
+  .sb-review-cards-carousel__motion {
+    width: 100%;
+  }
+
+  .sb-review-cards-carousel__viewport {
+    margin-left: calc(-1 * var(--sb-carousel-bleed-inline));
+    margin-right: calc(-1 * var(--sb-carousel-bleed-inline));
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-left: var(--sb-carousel-bleed-inline);
+    padding-right: var(--sb-carousel-bleed-inline);
+    scrollbar-width: none;
+    width: calc(100% + (var(--sb-carousel-bleed-inline) * 2));
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sb-review-cards-carousel__viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sb-review-cards-carousel__track {
+    display: flex;
+    gap: var(--sb-carousel-gap);
+    padding: 0;
+    width: max-content;
+  }
+
+  .sb-review-cards-carousel__item {
+    flex: 0 0 352px;
+    max-width: 352px;
+    min-width: 352px;
+  }
+
+  .sb-review-cards-carousel__card {
+    background: var(--sb-color-neutral-200);
+    border: 1px solid var(--sb-color-neutral-300);
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-20);
+    height: 100%;
+    min-height: 320px;
+    padding: var(--sb-space-30);
+  }
+
+  .sb-review-cards-carousel__meta {
+    align-items: center;
+    display: flex;
+    gap: var(--sb-space-12);
+    justify-content: space-between;
+  }
+
+  .sb-review-cards-carousel__stars {
+    color: var(--sb-color-reviews);
+    letter-spacing: 0.08em;
+    line-height: 1;
+    margin: 0;
+  }
+
+  .sb-review-cards-carousel__reviewer,
+  .sb-review-cards-carousel__quote,
+  .sb-review-cards-carousel__quote p,
+  .sb-review-cards-carousel__role {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+  }
+
+  .sb-review-cards-carousel__reviewer {
+    color: var(--sb-color-primary-500);
+    letter-spacing: 0.08em;
+    text-align: right;
+    text-transform: uppercase;
+  }
+
+  .sb-review-cards-carousel__quote {
+    flex: 1 1 auto;
+  }
+
+  .sb-review-cards-carousel__role {
+    border-top: 1px solid var(--sb-color-neutral-300);
+    padding-top: var(--sb-space-16);
+  }
+
+  .sb-review-cards-carousel__controls {
+    align-items: center;
+    display: none;
+    gap: 16px;
+    justify-content: flex-end;
+    margin: 48px 0 0;
+  }
+
+  .sb-review-cards-carousel.is-overflowing .sb-review-cards-carousel__controls {
+    display: flex;
+  }
+
+  .sb-review-cards-carousel__arrow {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    display: inline-flex;
+    height: 48px;
+    justify-content: center;
+    padding: 0;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    width: 48px;
+  }
+
+  .sb-review-cards-carousel__arrow[disabled] {
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  .sb-review-cards-carousel__arrow-icon {
+    display: inline-flex;
+    height: 48px;
+    width: 48px;
+  }
+
+  .sb-review-cards-carousel__arrow-icon--right {
+    transform: scaleX(-1);
+  }
+
+  .sb-review-cards-carousel__arrow-icon svg {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .sb-review-cards-carousel__arrow-icon svg path:first-child {
+    fill: var(--sb-color-neutral-200);
+  }
+
+  .sb-review-cards-carousel__arrow-icon svg path:last-child {
+    fill: var(--sb-color-neutral-800);
+  }
+
+  .sb-review-cards-carousel__arrow:focus-visible:not([disabled]) .sb-review-cards-carousel__arrow-icon svg path:last-child {
+    fill: var(--sb-color-primary-500);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-review-cards-carousel__arrow:hover:not([disabled]) .sb-review-cards-carousel__arrow-icon svg path:last-child {
+      fill: var(--sb-color-primary-500);
+    }
+  }
+
+  .sb-review-cards-carousel.is-not-overflowing .sb-review-cards-carousel__track {
+    margin-inline: auto;
+  }
+
+  @media (max-width: 749px) {
+    .sb-review-cards-carousel__item {
+      flex-basis: min(320px, calc(100vw - (var(--page-margin) * 2)));
+      max-width: min(320px, calc(100vw - (var(--page-margin) * 2)));
+      min-width: min(320px, calc(100vw - (var(--page-margin) * 2)));
+    }
+
+    .sb-review-cards-carousel__card {
+      min-height: 0;
+      padding: var(--sb-space-24);
+    }
+
+    .sb-review-cards-carousel__meta {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .sb-review-cards-carousel__reviewer {
+      text-align: left;
+    }
+  }
+{% endstylesheet %}
+
+{% render 'sb-carousel-init' %}
+
+{% schema %}
+{
+  "name": "Review cards",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "text",
+          "id": "reviewer",
+          "label": "Reviewer",
+          "default": "Verified Buyer"
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "Add review quote"
+        },
+        {
+          "type": "text",
+          "id": "role",
+          "label": "Role",
+          "default": "Worship Leader"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Review cards",
+      "blocks": [
+        {
+          "type": "review"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

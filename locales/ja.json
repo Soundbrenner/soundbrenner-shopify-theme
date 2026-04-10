@@ -159,7 +159,8 @@
         "vocals": "ボーカル",
         "woodwind": "木管楽器"
       },
-      "about_box_default_html": "<p><strong>Soundbrennerについて</strong></p><p>音楽の練習をやみつきにすることが、ぼくたちのミッションです。</p><p>リンクやコピーはテーマエディターで追加してね。</p>"
+      "about_box_default_html": "<p><strong>Soundbrennerについて</strong></p><p>音楽の練習をやみつきにすることが、ぼくたちのミッションです。</p><p>リンクやコピーはテーマエディターで追加してね。</p>",
+      "article_updated_date": "（{{ date }}更新）"
     },
     "cart": {
       "accepted_payment_methods": "ご利用可能なお支払い方法",

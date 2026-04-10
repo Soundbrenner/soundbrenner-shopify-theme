@@ -159,7 +159,8 @@
         "vocals": "Chant",
         "woodwind": "Bois"
       },
-      "about_box_default_html": "<p><strong>À propos de Soundbrenner</strong></p><p>Notre mission, c’est de rendre la pratique musicale addictive.</p><p>Ajoute tes liens et ton texte dans l’éditeur de thème.</p>"
+      "about_box_default_html": "<p><strong>À propos de Soundbrenner</strong></p><p>Notre mission, c’est de rendre la pratique musicale addictive.</p><p>Ajoute tes liens et ton texte dans l’éditeur de thème.</p>",
+      "article_updated_date": "(Mis à jour le {{ date }})"
     },
     "cart": {
       "accepted_payment_methods": "Moyens de paiement acceptés",

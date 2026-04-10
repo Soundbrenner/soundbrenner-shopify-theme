@@ -159,7 +159,8 @@
         "vocals": "Voces",
         "woodwind": "Instrumentos de viento madera"
       },
-      "about_box_default_html": "<p><strong>Acerca de Soundbrenner</strong></p><p>Nuestra misión es hacer que practicar música sea adictivo.</p><p>Agrega tus enlaces y textos en el editor de temas.</p>"
+      "about_box_default_html": "<p><strong>Acerca de Soundbrenner</strong></p><p>Nuestra misión es hacer que practicar música sea adictivo.</p><p>Agrega tus enlaces y textos en el editor de temas.</p>",
+      "article_updated_date": "(Actualizado {{ date }})"
     },
     "cart": {
       "accepted_payment_methods": "Métodos de pago aceptados",
