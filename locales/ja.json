@@ -230,7 +230,12 @@
       "email": "メール",
       "full_name": "氏名",
       "send": "送信",
-      "success_message": "お問い合わせいただきありがとうございます。できるだけ早くご連絡いたします。"
+      "success_message": "お問い合わせいただきありがとうございます。できるだけ早くご連絡いたします。",
+      "notice_item_refunds": "返金や保証の対応は、soundbrenner.comでのご注文のみ承っています。他の店舗で購入した場合は、その販売店にお問い合わせください。",
+      "notice_item_reply_existing": "すでにサポートリクエストを送っている場合は、新しいフォームを送信せずに、そのメールに返信してください。",
+      "notice_item_suggestion_portal_html": "機能の提案は、<a href=\"{{ url }}\">提案ポータル</a>をご覧ください。",
+      "notice_item_technical_issue": "技術的な問題の場合は、問題がわかる動画を添付してみてください（iCloud、Googleドライブ、Dropboxなどのリンクで）。",
+      "notice_title": "重要"
     },
     "footer": {
       "company": "会社",

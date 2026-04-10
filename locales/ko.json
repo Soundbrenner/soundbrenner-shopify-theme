@@ -230,7 +230,12 @@
       "email": "이메일",
       "full_name": "이름 전체",
       "send": "보내기",
-      "success_message": "문의해 주셔서 감사합니다. 최대한 빨리 답변드릴게요."
+      "success_message": "문의해 주셔서 감사합니다. 최대한 빨리 답변드릴게요.",
+      "notice_item_refunds": "soundbrenner.com에서 주문한 상품에 대해서만 환불 및 보증을 처리해. 다른 곳에서 구매했다면, 해당 판매처에 문의해 줘.",
+      "notice_item_reply_existing": "이미 지원 요청이 열려 있다면, 새 양식을 제출하지 말고 해당 이메일에 답장해 줘.",
+      "notice_item_suggestion_portal_html": "기능 제안을 하려면 <a href=\"{{ url }}\">제안 포털</a>을 방문해 줘.",
+      "notice_item_technical_issue": "기술적인 문제가 있다면, 문제를 보여주는 영상을 첨부해 주세요 (iCloud, Google Drive, Dropbox 등 링크로 보내 주세요).",
+      "notice_title": "중요"
     },
     "footer": {
       "company": "회사",
