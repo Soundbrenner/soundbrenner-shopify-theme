@@ -230,7 +230,12 @@
       "email": "E-mail",
       "full_name": "Nom complet",
       "send": "Envoyer",
-      "success_message": "Merci de nous avoir contactés. Nous te répondrons dès que possible."
+      "success_message": "Merci de nous avoir contactés. Nous te répondrons dès que possible.",
+      "notice_item_refunds": "Nous gérons uniquement les remboursements et les garanties pour les commandes passées sur soundbrenner.com. Si tu as acheté ailleurs, contacte ton revendeur.",
+      "notice_item_reply_existing": "Si tu as déjà une demande d’assistance en cours, réponds à cet e-mail au lieu de soumettre un nouveau formulaire.",
+      "notice_item_suggestion_portal_html": "Pour suggérer une fonctionnalité, rends-toi sur notre <a href=\"{{ url }}\">portail de suggestions</a>.",
+      "notice_item_technical_issue": "Pour les problèmes techniques, essaie d’inclure une vidéo montrant le problème (lien via iCloud, Google Drive, Dropbox, etc.).",
+      "notice_title": "Important"
     },
     "footer": {
       "company": "Entreprise",
