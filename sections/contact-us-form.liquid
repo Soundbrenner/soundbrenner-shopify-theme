@@ -2,6 +2,10 @@
   <div class="sb-contact-form__inner">
     {% assign contact_query_string = request.query_string | default: '' | downcase %}
     {% assign contact_send_label = 'sb.contact.send' | t %}
+    {% assign is_contact_us_template = false %}
+    {% if template.suffix == 'contact-us' %}
+      {% assign is_contact_us_template = true %}
+    {% endif %}
     {% form 'contact', class: 'sb-contact-form__form' %}
       <input type="hidden" name="return_to" value="{{ request.path | append: '?contact_posted=true' }}">
 
@@ -79,6 +83,23 @@
           {% endfor %}
         </div>
 
+        {% if is_contact_us_template %}
+          <div class="sb-contact-form__notice" role="note">
+            <div class="sb-contact-form__notice-icon" aria-hidden="true">
+              {{ 'icon-contact-form-warning.svg' | inline_asset_content }}
+            </div>
+            <div class="sb-contact-form__notice-content">
+              <p class="sb-contact-form__notice-title font-body weight-bold">{{ 'sb.contact.notice_title' | t }}</p>
+              <ul class="sb-contact-form__notice-list font-body weight-regular">
+                <li>{{ 'sb.contact.notice_item_reply_existing' | t }}</li>
+                <li>{{ 'sb.contact.notice_item_refunds' | t }}</li>
+                <li>{{ 'sb.contact.notice_item_technical_issue' | t }}</li>
+                <li>{{ 'sb.contact.notice_item_suggestion_portal_html' | t: url: 'https://suggestions.soundbrenner.com' }}</li>
+              </ul>
+            </div>
+          </div>
+        {% endif %}
+
         <div class="sb-contact-form__submit-row">
           {% render 'radiant-button',
             label: contact_send_label,
@@ -89,13 +110,15 @@
           %}
         </div>
 
-        {% for block in section.blocks %}
-          {% if block.type == 'subtitle' and block.settings.content != blank %}
-            <div class="sb-contact-form__subtitle-block font-body weight-regular rte" {{ block.shopify_attributes }}>
-              {{ block.settings.content }}
-            </div>
-          {% endif %}
-        {% endfor %}
+        {% unless is_contact_us_template %}
+          {% for block in section.blocks %}
+            {% if block.type == 'subtitle' and block.settings.content != blank %}
+              <div class="sb-contact-form__subtitle-block font-body weight-regular rte" {{ block.shopify_attributes }}>
+                {{ block.settings.content }}
+              </div>
+            {% endif %}
+          {% endfor %}
+        {% endunless %}
       </div>
     {% endform %}
   </div>
@@ -125,6 +148,69 @@
   .sb-contact-form__success-title {
     color: var(--sb-color-neutral-900);
     margin: 0 0 48px;
+  }
+
+  .sb-contact-form__notice {
+    align-items: start;
+    background: var(--sb-color-neutral-200);
+    border-radius: 24px;
+    color: var(--sb-color-neutral-900);
+    display: grid;
+    gap: 20px;
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: 20px;
+  }
+
+  .sb-contact-form__notice-icon {
+    color: var(--sb-color-red-500);
+    padding-top: 4px;
+  }
+
+  .sb-contact-form__notice-icon svg {
+    display: block;
+    height: 40px;
+    width: 40px;
+  }
+
+  .sb-contact-form__notice-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .sb-contact-form__notice-title {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+  }
+
+  .sb-contact-form__notice-list {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .sb-contact-form__notice-list li + li {
+    margin-top: 8px;
+  }
+
+  .sb-contact-form__notice-list a,
+  .sb-contact-form__notice-list a:visited {
+    color: var(--sb-color-primary-500);
+    text-decoration: none;
+  }
+
+  .sb-contact-form__notice-list a:focus-visible,
+  .sb-contact-form__notice-list a:active {
+    color: var(--sb-color-primary-500);
+    text-decoration: underline;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-contact-form__notice-list a:hover {
+      color: var(--sb-color-primary-500);
+      text-decoration: underline;
+    }
   }
 
   .sb-contact-form__subtitle-block {

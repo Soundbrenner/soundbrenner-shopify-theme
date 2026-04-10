@@ -235,6 +235,11 @@
     "contact": {
       "email": "Email",
       "full_name": "Full name",
+      "notice_item_refunds": "We only handle refunds and warranties for orders on soundbrenner.com. If you purchased elsewhere, contact your retailer.",
+      "notice_item_reply_existing": "If you already have an open support request, reply to that email instead of submitting a new form.",
+      "notice_item_suggestion_portal_html": "For feature suggestions, visit our <a href=\"{{ url }}\">suggestion portal</a>.",
+      "notice_item_technical_issue": "For technical issues, try including a video showing the problem (link via iCloud, Google Drive, Dropbox, etc.).",
+      "notice_title": "Important",
       "send": "Send",
       "success_message": "Thank you for contacting us. We'll get back as soon as possible."
     },

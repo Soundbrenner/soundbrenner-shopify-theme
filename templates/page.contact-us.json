@@ -43,19 +43,12 @@
             "label": "Comment",
             "required": true
           }
-        },
-        "subtitle_WiBfiU": {
-          "type": "subtitle",
-          "settings": {
-            "content": "<p>We only process refunds and warranties for orders placed on soundbrenner.com. If you purchased your product elsewhere, please contact the respective retailer directly.</p><p>If your product has a technical defect, please include a video link, as this will significantly speed up our review process. You can share the video via iCloud, Google Drive, Dropbox, or a similar service.</p><p>For feature suggestions, please visit our <a href=\"https://suggestions.soundbrenner.com\" title=\"https://suggestions.soundbrenner.com\">suggestion portal</a> to check if your idea already exists and upvote it. If it's a new idea, feel free to submit it with as much detail as possible.</p>"
-          }
         }
       },
       "block_order": [
         "name",
         "email",
-        "comment",
-        "subtitle_WiBfiU"
+        "comment"
       ],
       "settings": {}
     }
