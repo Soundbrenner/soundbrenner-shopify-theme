@@ -818,6 +818,50 @@ This file can be re-written at any time.
         .shg-preview__variant-description p:last-child {
           margin-bottom: 0;
         }
+        .shg-preview__variant-description ul,
+        .shg-preview__variant-description ol {
+          margin: 8px 0;
+          padding-left: 18px;
+        }
+        .shg-preview__variant-description ul {
+          list-style: disc;
+        }
+        .shg-preview__variant-description ol {
+          list-style: decimal;
+        }
+        .shg-preview__variant-description table {
+          width: 100%;
+          border-collapse: collapse;
+          table-layout: fixed;
+          margin: 8px 0;
+        }
+        .shg-preview__variant-description th,
+        .shg-preview__variant-description td {
+          border: 1px solid #d1d5db;
+          padding: 4px 8px;
+          vertical-align: top;
+          text-align: left;
+          word-break: break-word;
+        }
+        .shg-preview__variant-description th {
+          font-weight: 600;
+        }
+        .shg-preview__variant-description a {
+          text-decoration: underline;
+          text-underline-offset: 2px;
+          word-break: break-word;
+        }
+        .shg-preview__variant-description img,
+        .shg-preview__variant-description video {
+          max-width: 100%;
+          height: auto;
+        }
+        .shg-preview__variant-description table img,
+        .shg-preview__variant-description table video {
+          display: block;
+          max-width: 100%;
+          height: auto;
+        }
 
         /* ===== Variant Options ===== */
         .shg-preview__variant-options {
@@ -982,6 +1026,8 @@ This file can be re-written at any time.
               {% assign variant_b_data = product_pricing_metafield.value | find: 'shogun_variant_id', shg_second_variant_id %}
               {% assign shg_variant_a_description = variant_a_data.description | default: shg_preview_product.description %}
               {% assign shg_variant_b_description = variant_b_data.description | default: shg_preview_product.description %}
+              {% assign shg_variant_a_description_text = shg_variant_a_description | strip_html | replace: '&nbsp;', '' | replace: '&#160;', '' | strip %}
+              {% assign shg_variant_b_description_text = shg_variant_b_description | strip_html | replace: '&nbsp;', '' | replace: '&#160;', '' | strip %}
 
               <div class="shg-preview__product">
                 <div class="shg-preview__product-header">
@@ -1049,7 +1095,7 @@ This file can be re-written at any time.
                               <img src="{{ shg_preview_product.featured_image | image_url: width: 80 }}" alt="{{ shg_preview_product.title }}" />
                             {% endif %}
                           </div>
-                          {% if shg_variant_a_description != blank %}
+                          {% if shg_variant_a_description_text != blank %}
                             <div class="shg-preview__variant-description shg-preview__text-gray" data-height-key="opt-{{ optimization_config.id }}-product-{{ shg_preview_product.id }}-variant-a">
                               {{ shg_variant_a_description }}
                             </div>
@@ -1091,8 +1137,8 @@ This file can be re-written at any time.
                                 <span class="shg-preview__variant-image-placeholder" aria-hidden="true"></span>
                               {% endif %}
                             </div>
-                            {% if shg_variant_b_description != blank %}
-                              <div class="shg-preview__variant-description" data-height-key="opt-{{ optimization_config.id }}-product-{{ shg_preview_product.id }}-variant-b">
+                            {% if shg_variant_b_description_text != blank %}
+                              <div class="shg-preview__variant-description"  data-height-key="opt-{{ optimization_config.id }}-product-{{ shg_preview_product.id }}-variant-b">
                                 {{ shg_variant_b_description }}
                               </div>
                             {% endif %}
@@ -1129,7 +1175,7 @@ This file can be re-written at any time.
                               <img src="{{ shg_preview_product.featured_image | image_url: width: 80 }}" alt="{{ shg_preview_product.title }}" />
                             {% endif %}
                           </div>
-                          {% if shg_variant_a_description != blank %}
+                          {% if shg_variant_a_description_text != blank %}
                             <div class="shg-preview__variant-description shg-preview__text-gray" data-height-key="opt-{{ optimization_config.id }}-product-{{ shg_preview_product.id }}-variant-a">
                               {{ shg_variant_a_description }}
                             </div>
@@ -1208,7 +1254,7 @@ This file can be re-written at any time.
                                 <span class="shg-preview__variant-image-placeholder" aria-hidden="true"></span>
                               {% endif %}
                             </div>
-                            {% if shg_variant_b_description != blank %}
+                            {% if shg_variant_b_description_text != blank %}
                               <div class="shg-preview__variant-description" data-height-key="opt-{{ optimization_config.id }}-product-{{ shg_preview_product.id }}-variant-b">
                                 {{ shg_variant_b_description }}
                               </div>
