@@ -463,6 +463,9 @@
     "checkout": {
       "split_delivery": {
         "items_for_shipping": "発送用アイテム"
+      },
+      "payment": {
+        "multiple_primary_payment_not_allowed": "無効な支払い方法"
       }
     }
   }

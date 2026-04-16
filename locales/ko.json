@@ -463,6 +463,9 @@
     "checkout": {
       "split_delivery": {
         "items_for_shipping": "배송 품목"
+      },
+      "payment": {
+        "multiple_primary_payment_not_allowed": "유효하지 않은 결제 수단"
       }
     }
   }
