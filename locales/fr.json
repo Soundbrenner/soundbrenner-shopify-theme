@@ -463,6 +463,9 @@
     "checkout": {
       "split_delivery": {
         "items_for_shipping": "Articles à expédier"
+      },
+      "payment": {
+        "multiple_primary_payment_not_allowed": "Moyens de paiement non valides"
       }
     }
   }
