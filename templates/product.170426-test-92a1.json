@@ -17,9 +17,26 @@
       "type": "product-page-hero",
       "settings": {}
     },
+    "press_ticker_product": {
+      "type": "press-ticker",
+      "settings": {
+        "use_product_metaobject_color": true,
+        "background_color": "primary-500",
+        "non_product_content_color": "neutral-900"
+      }
+    },
+    "top_feature_highlights": {
+      "type": "top-feature-highlights",
+      "settings": {
+        "use_product_metaobjects": true,
+        "title": "Top feature highlights"
+      }
+    },
     "hero_video_product": {
       "type": "hero-video",
-      "settings": {}
+      "settings": {
+        "youtube_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+      }
     },
     "target_audience_carousel_product": {
       "type": "target-audience-carousel",
@@ -28,19 +45,29 @@
     "large_feature_product": {
       "type": "large-feature",
       "settings": {
-        "use_product_metaobjects": true
+        "use_product_metaobjects": true,
+        "media_position": "left",
+        "show_icon_and_kicker": false,
+        "kicker_text": "Kicker",
+        "title_part_one": "Title.",
+        "title_part_two": "Title 2.",
+        "title_accent_color": "primary-500",
+        "body": "<p>Body copy goes here.</p>"
       }
     },
     "feature_carousel_product": {
       "type": "feature-carousel",
+      "disabled": true,
       "settings": {
-        "use_product_metaobjects": true
+        "use_product_metaobjects": true,
+        "title": "Feature carousel"
       }
     },
     "trust_indicators_product": {
       "type": "trust-indicators",
       "settings": {
-        "use_product_metaobjects": true
+        "use_product_metaobjects": true,
+        "title": "Trust indicators"
       }
     },
     "value_breakdown_product": {
@@ -50,7 +77,9 @@
     "see_it_in_action_carousel_product": {
       "type": "see-it-in-action-carousel",
       "settings": {
-        "use_product_metaobjects": true
+        "use_product_metaobjects": true,
+        "title": "See it in action",
+        "subtitle": "Watch musicians use it in action."
       }
     },
     "tech_specs_faqs_product": {
@@ -58,6 +87,7 @@
       "settings": {
         "use_product_metaobjects": true,
         "use_custom_title": false,
+        "custom_title": "Frequently asked questions",
         "show_subtitle": true
       }
     },
@@ -65,18 +95,6 @@
       "type": "compare",
       "settings": {
         "use_metaobject_title": true
-      }
-    },
-    "top_feature_highlights": {
-      "type": "top-feature-highlights",
-      "settings": {
-        "use_product_metaobjects": true
-      }
-    },
-    "press_ticker_product": {
-      "type": "press-ticker",
-      "settings": {
-        "use_product_metaobject_color": true
       }
     },
     "main": {
@@ -153,7 +171,8 @@
     "expert_testimonials_carousel": {
       "type": "expert-testimonials",
       "settings": {
-        "use_product_metaobjects": true
+        "use_product_metaobjects": true,
+        "title": "Expert testimonials"
       }
     },
     "product_footer_card": {
@@ -162,6 +181,19 @@
         "use_seasonal_hero_card": false,
         "use_resource_title_description": false,
         "use_product_page_metaobjects": true,
+        "kicker": "",
+        "headline": "",
+        "subheadline": "",
+        "show_button": false,
+        "button_label": "Placeholder",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": "",
+        "show_secondary_button": false,
+        "secondary_button_label": "Placeholder",
+        "secondary_button_link": "",
+        "secondary_button_open_in_new_tab": false,
+        "button_open_in_new_tab": false,
         "show_app_download_qr": false,
         "show_app_download_app_store": false,
         "show_app_download_google_play": false,
@@ -171,7 +203,12 @@
     "often_bought_together": {
       "type": "often-bought-together",
       "settings": {
-        "title": "Often bought together"
+        "title": "Often bought together",
+        "use_manual_products": false,
+        "manual_product_1": "",
+        "manual_product_2": "",
+        "manual_product_3": "",
+        "manual_product_4": ""
       }
     }
   },
