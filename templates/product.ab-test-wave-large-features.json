@@ -1,7 +1,10 @@
 /*
  * ------------------------------------------------------------
- * IMPORTANT: Temporary AB test scaffold for the Wave product page.
- * Delete this template after the experiment ends.
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
 {
@@ -14,9 +17,26 @@
       "type": "product-page-hero",
       "settings": {}
     },
+    "press_ticker_product": {
+      "type": "press-ticker",
+      "settings": {
+        "use_product_metaobject_color": true,
+        "background_color": "primary-500",
+        "non_product_content_color": "neutral-900"
+      }
+    },
+    "top_feature_highlights": {
+      "type": "top-feature-highlights",
+      "settings": {
+        "use_product_metaobjects": true,
+        "title": "Top feature highlights"
+      }
+    },
     "hero_video_product": {
       "type": "hero-video",
-      "settings": {}
+      "settings": {
+        "youtube_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+      }
     },
     "target_audience_carousel_product": {
       "type": "target-audience-carousel",
@@ -25,73 +45,86 @@
     "large_feature_product": {
       "type": "large-feature",
       "settings": {
-        "use_product_metaobjects": true
+        "use_product_metaobjects": true,
+        "media_position": "left",
+        "show_icon_and_kicker": false,
+        "kicker_text": "Kicker",
+        "title_part_one": "Title.",
+        "title_part_two": "Title 2.",
+        "title_accent_color": "primary-500",
+        "body": "<p>Body copy goes here.</p>"
       }
     },
     "ab_test_wave_large_feature_1": {
       "type": "ab-wave-large-feature",
       "settings": {
         "media_position": "right",
+        "media": "shopify://shop_images/Feature_carousel_Wave_Order_1.jpg",
         "show_icon_and_kicker": false,
         "kicker_text": "Kicker",
-        "title_part_one": "AB test feature 1",
-        "title_part_two": "placeholder",
+        "title_part_one": "Zero latency.",
+        "title_part_two": "Just pure, wired precision.",
         "title_accent_color": "primary-500",
-        "body": "<p>Temporary AB test placeholder content. Replace in Theme Editor for the experiment.</p>"
+        "body": "<p>Unlike Bluetooth earbuds, Wave delivers real-time monitoring with no latency.</p>"
       }
     },
     "ab_test_wave_large_feature_2": {
       "type": "ab-wave-large-feature",
       "settings": {
         "media_position": "left",
+        "media": "shopify://shop_images/Feature_carousel_Wave_Order_2.jpg",
         "show_icon_and_kicker": false,
         "kicker_text": "Kicker",
-        "title_part_one": "AB test feature 2",
-        "title_part_two": "placeholder",
+        "title_part_one": "Studio-length cable.",
+        "title_part_two": "Freedom to roam.",
         "title_accent_color": "primary-500",
-        "body": "<p>Temporary AB test placeholder content. Replace in Theme Editor for the experiment.</p>"
+        "body": "<p>The extra long studio cable (1.5m / 4.9 ft) makes it easy to keep your phone out of the way.</p>"
       }
     },
     "ab_test_wave_large_feature_3": {
       "type": "ab-wave-large-feature",
       "settings": {
         "media_position": "right",
+        "media": "shopify://shop_images/Feature_carousel_Wave_Order_3.jpg",
         "show_icon_and_kicker": false,
         "kicker_text": "Kicker",
-        "title_part_one": "AB test feature 3",
-        "title_part_two": "placeholder",
+        "title_part_one": "Detachable cable.",
+        "title_part_two": "Built to last.",
         "title_accent_color": "primary-500",
-        "body": "<p>Temporary AB test placeholder content. Replace in Theme Editor for the experiment.</p>"
+        "body": "<p>Wave’s premium braided over-ear cable connects with gold-plated audiophile pins. Modular, durable, dependable.</p>"
       }
     },
     "ab_test_wave_large_feature_4": {
       "type": "ab-wave-large-feature",
       "settings": {
         "media_position": "left",
+        "media": "shopify://shop_images/Feature_carousel_Wave_Order_4.jpg",
         "show_icon_and_kicker": false,
         "kicker_text": "Kicker",
-        "title_part_one": "AB test feature 4",
-        "title_part_two": "placeholder",
+        "title_part_one": "Sweat resistant.",
+        "title_part_two": "Groove on.",
         "title_accent_color": "primary-500",
-        "body": "<p>Temporary AB test placeholder content. Replace in Theme Editor for the experiment.</p>"
+        "body": "<p>Engineered for live sets and tough rehearsals, Wave stands up to sweat, heat, and the spotlight.</p>"
       }
     },
     "ab_test_wave_large_feature_5": {
       "type": "ab-wave-large-feature",
       "settings": {
         "media_position": "right",
+        "media": "shopify://shop_images/Feature_carousel_Wave_Order_5_e03ee783-a4b7-4b7d-af13-c99ec7447925.jpg",
         "show_icon_and_kicker": false,
         "kicker_text": "Kicker",
-        "title_part_one": "AB test feature 5",
-        "title_part_two": "placeholder",
+        "title_part_one": "Music everywhere.",
+        "title_part_two": "Studio clarity.",
         "title_accent_color": "primary-500",
-        "body": "<p>Temporary AB test placeholder content. Replace in Theme Editor for the experiment.</p>"
+        "body": "<p>From your phone to your studio setup, Wave delivers detailed, high-fidelity sound wherever you listen.</p>"
       }
     },
     "trust_indicators_product": {
       "type": "trust-indicators",
       "settings": {
-        "use_product_metaobjects": true
+        "use_product_metaobjects": true,
+        "title": "Trust indicators"
       }
     },
     "value_breakdown_product": {
@@ -101,7 +134,9 @@
     "see_it_in_action_carousel_product": {
       "type": "see-it-in-action-carousel",
       "settings": {
-        "use_product_metaobjects": true
+        "use_product_metaobjects": true,
+        "title": "See it in action",
+        "subtitle": "Watch musicians use it in action."
       }
     },
     "tech_specs_faqs_product": {
@@ -109,6 +144,7 @@
       "settings": {
         "use_product_metaobjects": true,
         "use_custom_title": false,
+        "custom_title": "Frequently asked questions",
         "show_subtitle": true
       }
     },
@@ -116,18 +152,6 @@
       "type": "compare",
       "settings": {
         "use_metaobject_title": true
-      }
-    },
-    "top_feature_highlights": {
-      "type": "top-feature-highlights",
-      "settings": {
-        "use_product_metaobjects": true
-      }
-    },
-    "press_ticker_product": {
-      "type": "press-ticker",
-      "settings": {
-        "use_product_metaobject_color": true
       }
     },
     "main": {
@@ -204,7 +228,8 @@
     "expert_testimonials_carousel": {
       "type": "expert-testimonials",
       "settings": {
-        "use_product_metaobjects": true
+        "use_product_metaobjects": true,
+        "title": "Expert testimonials"
       }
     },
     "product_footer_card": {
@@ -213,6 +238,19 @@
         "use_seasonal_hero_card": false,
         "use_resource_title_description": false,
         "use_product_page_metaobjects": true,
+        "kicker": "",
+        "headline": "",
+        "subheadline": "",
+        "show_button": false,
+        "button_label": "Placeholder",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": "",
+        "show_secondary_button": false,
+        "secondary_button_label": "Placeholder",
+        "secondary_button_link": "",
+        "secondary_button_open_in_new_tab": false,
+        "button_open_in_new_tab": false,
         "show_app_download_qr": false,
         "show_app_download_app_store": false,
         "show_app_download_google_play": false,
@@ -222,7 +260,12 @@
     "often_bought_together": {
       "type": "often-bought-together",
       "settings": {
-        "title": "Often bought together"
+        "title": "Often bought together",
+        "use_manual_products": false,
+        "manual_product_1": "",
+        "manual_product_2": "",
+        "manual_product_3": "",
+        "manual_product_4": ""
       }
     }
   },
