@@ -18,7 +18,7 @@
         "background_image_mobile": "shopify://shop_images/Property_1_404_mobile.jpg",
         "kicker": "404",
         "headline": "The page you’re looking for can’t be found.",
-        "subheadline": "",
+        "subheadline": "Theme version 6.67",
         "show_button": true,
         "button_label": "Go to home page",
         "button_size": "large",
