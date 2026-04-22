@@ -246,11 +246,7 @@
         {% if hero_card_headline != blank %}
           <h2 class="sb-framing-card__headline font-title weight-bold">{{ hero_card_headline }}</h2>
         {% endif %}
-        {% assign hero_card_show_404_theme_version = false %}
-        {% if template.name == '404' %}
-          {% assign hero_card_show_404_theme_version = true %}
-        {% endif %}
-        {% if hero_card_subheadline != blank or hero_card_show_404_theme_version %}
+        {% if hero_card_subheadline != blank %}
           {% if hero_card_subheadline != blank %}
           <p class="sb-framing-card__subheadline font-body weight-semibold">
             {{ hero_card_subheadline }}
@@ -303,11 +299,6 @@
               })();
             </script>
           {% endif %}
-          {% endif %}
-          {% if hero_card_show_404_theme_version %}
-            <p class="sb-framing-card__subheadline font-body weight-semibold">
-              {{ '404.theme_version' | t: version: settings.theme_version }}
-            </p>
           {% endif %}
         {% endif %}
         {% if hero_card_show_button and hero_card_product_mode %}
