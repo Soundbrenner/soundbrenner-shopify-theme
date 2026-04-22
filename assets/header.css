@@ -171,7 +171,7 @@
 
   .header__primary-menu {
     --sb-primary-max-width: min(
-      calc(100vw - (var(--page-margin, 16px) * 2)),
+      var(--sb-header-inner-width, calc(100% - (var(--page-margin, 16px) * 2))),
       var(--page-width, 1240px)
     );
     --sb-primary-card-width: calc(

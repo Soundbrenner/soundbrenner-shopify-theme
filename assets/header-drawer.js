@@ -238,12 +238,6 @@
     const getPageScrollLockMode = () => {
       if (isMobileMenuOpen()) return 'fixed';
 
-      const headerElement = document.querySelector('.header');
-      const desktopPrimaryMenuOpen = isDesktopViewport()
-        && headerElement
-        && headerElement.classList.contains('is-primary-open');
-      if (desktopPrimaryMenuOpen) return 'overflow';
-
       const mobileSearchShortcutOpen = isMobileViewport()
         && document.documentElement.classList.contains('sb-search-shortcut-open');
       if (mobileSearchShortcutOpen) return 'fixed';

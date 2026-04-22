@@ -20,6 +20,13 @@
       header.classList.remove('is-nav-wrap');
     };
 
+    const syncDesktopHeaderMeasurements = () => {
+      if (!headerInnerElement) return;
+      const headerInnerWidth = headerInnerElement.getBoundingClientRect().width;
+      if (!Number.isFinite(headerInnerWidth) || headerInnerWidth <= 0) return;
+      header.style.setProperty('--sb-header-inner-width', `${headerInnerWidth}px`);
+    };
+
     const getDesktopNavRects = () => {
       if (!desktopMenu || !desktopBrand || !desktopRightIcons) return null;
       return {
@@ -39,6 +46,8 @@
     };
 
     const applyDesktopNavLayout = () => {
+      syncDesktopHeaderMeasurements();
+
       if (!isDesktopViewport() || !desktopMenu || desktopMenuItems.length === 0) {
         clearDesktopNavLayoutClasses();
         return;
