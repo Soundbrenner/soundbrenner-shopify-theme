@@ -11,7 +11,8 @@
   "404": {
     "title": "404",
     "not_found": "页面未找到。",
-    "back_to_shopping": "返回购物"
+    "back_to_shopping": "返回购物",
+    "theme_version": "主题版本 {{ version }}"
   },
   "blog": {
     "article_comments": "评论",
@@ -463,6 +464,9 @@
     "checkout": {
       "split_delivery": {
         "items_for_shipping": "待发货商品"
+      },
+      "payment": {
+        "multiple_primary_payment_not_allowed": "无效的支付方式"
       }
     }
   }
