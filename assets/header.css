@@ -187,14 +187,9 @@
     display: grid;
     grid-template-rows: 0fr;
     pointer-events: none;
-    position: fixed;
-    top: calc(
-      var(
-        --sb-top-stack-content-bottom,
-        var(--sb-top-stack-bottom, calc(var(--sb-header-height, 60px) + var(--sb-announcement-min-height, 0px)))
-      ) + var(--sb-desktop-popout-offset)
-    );
-    transform: translateX(-50%);
+    position: absolute;
+    top: calc(100% + var(--sb-desktop-popout-offset));
+    transform: translate(-50%, 0);
     min-width: min(var(--sb-primary-max-width), var(--sb-primary-min-width));
     width: min(
       var(--sb-primary-max-width),
