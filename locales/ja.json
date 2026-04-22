@@ -11,7 +11,8 @@
   "404": {
     "title": "404",
     "not_found": "ページが見つかりません。",
-    "back_to_shopping": "買い物に戻る"
+    "back_to_shopping": "買い物に戻る",
+    "theme_version": "テーマバージョン {{ version }}"
   },
   "blog": {
     "article_comments": "コメント",
