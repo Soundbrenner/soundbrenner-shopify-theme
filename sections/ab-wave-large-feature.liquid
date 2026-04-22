@@ -1,0 +1,383 @@
+{% comment %}
+  Temporary AB test material for the Wave product template.
+  Safe to delete after the experiment ends.
+{% endcomment %}
+
+{% liquid
+  assign ab_test_wave_large_feature_media_alt_fallback = 'sb.large_feature.image_alt' | t
+  assign ab_test_wave_large_feature_kicker_fallback = 'sb.large_feature.kicker' | t
+%}
+
+<section class="sb-ab-test-wave-large-feature" data-sb-motion="reveal">
+  <div class="sb-ab-test-wave-large-feature__stack" data-sb-motion-item>
+    <div class="sb-ab-test-wave-large-feature__layout {% if section.settings.media_position == 'right' %}sb-ab-test-wave-large-feature__layout--media-right{% endif %}">
+      <div class="sb-ab-test-wave-large-feature__media">
+        {% assign media_alt = section.settings.media.alt | default: section.settings.title_part_one | strip %}
+        {% if media_alt == blank %}
+          {% assign media_alt = ab_test_wave_large_feature_media_alt_fallback %}
+        {% endif %}
+
+        {% if section.settings.media_video != blank %}
+          {{
+            section.settings.media_video
+            | video_tag:
+              class: 'sb-ab-test-wave-large-feature__media-video',
+              controls: false,
+              autoplay: true,
+              loop: true,
+              muted: true,
+              playsinline: true,
+              image_size: '1240x',
+              preload: 'metadata'
+          }}
+        {% elsif section.settings.media != blank %}
+          {{
+            section.settings.media
+            | image_url: width: 1240
+            | image_tag:
+              class: 'sb-ab-test-wave-large-feature__media-image',
+              widths: '400, 620, 800, 1024, 1240',
+              sizes: '(min-width: 750px) 620px, 100vw',
+              alt: media_alt,
+              loading: 'lazy'
+          }}
+        {% else %}
+          <img
+            class="sb-ab-test-wave-large-feature__media-image"
+            src="{{ 'placeholder-large-feature.png' | asset_url }}"
+            alt="{{ media_alt | escape }}"
+            loading="lazy"
+            width="1240"
+            height="1108"
+          >
+        {% endif %}
+      </div>
+
+      <div class="sb-ab-test-wave-large-feature__content">
+        {% if section.settings.show_icon_and_kicker %}
+          {% assign ab_test_wave_large_feature_kicker_text = section.settings.kicker_text | default: ab_test_wave_large_feature_kicker_fallback %}
+          {% if section.settings.kicker_icon != blank %}
+            {% assign ab_test_wave_large_feature_kicker_icon_url = section.settings.kicker_icon | image_url: width: 16 %}
+          {% else %}
+            {% assign ab_test_wave_large_feature_kicker_icon_url = 'icon-square-placeholder.svg' | asset_url %}
+          {% endif %}
+
+          <div class="sb-ab-test-wave-large-feature__kicker-row">
+            <span
+              class="sb-ab-test-wave-large-feature__kicker-icon"
+              style="--sb-ab-test-wave-large-feature-kicker-icon-url: url('{{ ab_test_wave_large_feature_kicker_icon_url }}');"
+              aria-hidden="true"
+            ></span>
+            <p class="sb-ab-test-wave-large-feature__kicker-text font-body weight-regular">{{ ab_test_wave_large_feature_kicker_text }}</p>
+          </div>
+        {% endif %}
+
+        {% if section.settings.title_part_one != blank or section.settings.title_part_two != blank %}
+          <h2 class="sb-ab-test-wave-large-feature__title font-title weight-bold">
+            {% if section.settings.title_part_one != blank %}
+              <span class="sb-ab-test-wave-large-feature__title-primary">{{ section.settings.title_part_one }}</span>
+            {% endif %}
+            {% if section.settings.title_part_two != blank %}
+              {% if section.settings.title_part_one != blank %} {% endif %}
+              <span class="sb-ab-test-wave-large-feature__title-accent sb-ab-test-wave-large-feature__title-accent--{{ section.settings.title_accent_color }}">
+                {{ section.settings.title_part_two }}
+              </span>
+            {% endif %}
+          </h2>
+        {% endif %}
+
+        {% if section.settings.body != blank %}
+          <div class="sb-ab-test-wave-large-feature__body font-body weight-regular rte">
+            {{ section.settings.body }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .sb-ab-test-wave-large-feature {
+    width: 100%;
+  }
+
+  .sb-ab-test-wave-large-feature__stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-96);
+  }
+
+  .sb-ab-test-wave-large-feature__layout {
+    align-items: center;
+    column-gap: var(--sb-space-96);
+    display: grid;
+    grid-template-areas: 'media content';
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .sb-ab-test-wave-large-feature__layout--media-right {
+    grid-template-areas: 'content media';
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sb-ab-test-wave-large-feature__media {
+    border-radius: 24px;
+    grid-area: media;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .sb-ab-test-wave-large-feature__media-image {
+    aspect-ratio: 620 / 554;
+    display: block;
+    height: auto;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .sb-ab-test-wave-large-feature__media-video {
+    aspect-ratio: 620 / 554;
+    border: 0;
+    display: block;
+    height: auto;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .sb-ab-test-wave-large-feature__content {
+    grid-area: content;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .sb-ab-test-wave-large-feature__kicker-row {
+    align-items: center;
+    color: var(--sb-color-neutral-800);
+    display: inline-flex;
+    gap: var(--sb-space-8);
+    margin-bottom: var(--sb-space-24);
+  }
+
+  .sb-ab-test-wave-large-feature__kicker-icon {
+    background: var(--sb-color-neutral-800);
+    display: inline-block;
+    height: var(--sb-space-16);
+    mask-image: var(--sb-ab-test-wave-large-feature-kicker-icon-url);
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    -webkit-mask-image: var(--sb-ab-test-wave-large-feature-kicker-icon-url);
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    width: var(--sb-space-16);
+  }
+
+  .sb-ab-test-wave-large-feature__kicker-text {
+    color: var(--sb-color-neutral-800);
+    margin: 0;
+  }
+
+  .sb-ab-test-wave-large-feature__title {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .sb-ab-test-wave-large-feature__title-primary,
+  .sb-ab-test-wave-large-feature__title-accent {
+    text-wrap: pretty;
+  }
+
+  .sb-ab-test-wave-large-feature__title-accent--primary-500 {
+    color: var(--sb-color-primary-500);
+  }
+
+  .sb-ab-test-wave-large-feature__title-accent--tangerine-pop-500 {
+    color: var(--sb-color-tangerine-pop-500);
+  }
+
+  .sb-ab-test-wave-large-feature__title-accent--grape-jam-500 {
+    color: var(--sb-color-grape-jam-500);
+  }
+
+  .sb-ab-test-wave-large-feature__title-accent--berry-blue-700 {
+    color: var(--sb-color-berry-blue-700);
+  }
+
+  .sb-ab-test-wave-large-feature__body {
+    color: var(--sb-color-neutral-900);
+    margin-top: var(--sb-space-30);
+  }
+
+  .sb-ab-test-wave-large-feature__body > * {
+    margin: 0;
+  }
+
+  .sb-ab-test-wave-large-feature__body > * + * {
+    margin-top: var(--sb-space-24);
+  }
+
+  .sb-ab-test-wave-large-feature__body .metafield-rich_text_field > * + * {
+    margin-top: var(--sb-space-24);
+  }
+
+  @media (max-width: 749px) {
+    .sb-ab-test-wave-large-feature__stack {
+      gap: var(--sb-space-96);
+    }
+
+    .sb-ab-test-wave-large-feature__layout,
+    .sb-ab-test-wave-large-feature__layout--media-right {
+      gap: var(--sb-space-36);
+      grid-template-areas:
+        'content'
+        'media';
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+{% endstylesheet %}
+
+<script>
+  (() => {
+    const applyAbTestWaveLargeFeatureTitleWidowControl = (scope) => {
+      if (!scope) return;
+
+      scope.querySelectorAll('.sb-ab-test-wave-large-feature__title-primary, .sb-ab-test-wave-large-feature__title-accent').forEach((node) => {
+        if (node.dataset.sbWidowControlled === 'true') return;
+
+        const normalizedText = (node.textContent || '').replace(/\s+/g, ' ').trim();
+        if (!normalizedText) {
+          node.dataset.sbWidowControlled = 'true';
+          return;
+        }
+
+        const words = normalizedText.split(' ');
+        if (words.length >= 2) {
+          const finalPair = `${words[words.length - 2]}\u00A0${words[words.length - 1]}`;
+          const leading = words.slice(0, -2).join(' ');
+          node.textContent = leading ? `${leading} ${finalPair}` : finalPair;
+        } else {
+          node.textContent = normalizedText;
+        }
+
+        node.dataset.sbWidowControlled = 'true';
+      });
+    };
+
+    const currentSection = document.currentScript && document.currentScript.closest('.shopify-section');
+    applyAbTestWaveLargeFeatureTitleWidowControl(currentSection || document);
+
+    document.addEventListener('shopify:section:load', (event) => {
+      applyAbTestWaveLargeFeatureTitleWidowControl(event.target);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "AB test Wave feature",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Temporary AB test material for the Wave product page. Delete after the experiment."
+    },
+    {
+      "type": "select",
+      "id": "media_position",
+      "label": "Media position (desktop)",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "media",
+      "label": "Image",
+      "info": "Target minimum 620x554 at 2x export (1240x1108)."
+    },
+    {
+      "type": "video",
+      "id": "media_video",
+      "label": "Video",
+      "info": "Target minimum 620x554 at 2x export (1240x1108). If both are set, Video is shown."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icon_and_kicker",
+      "label": "Show icon and kicker",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "kicker_icon",
+      "label": "Kicker icon",
+      "info": "Target minimum 16x16. SVG recommended.",
+      "visible_if": "{{ section.settings.show_icon_and_kicker }}"
+    },
+    {
+      "type": "text",
+      "id": "kicker_text",
+      "label": "Kicker text",
+      "default": "Kicker",
+      "visible_if": "{{ section.settings.show_icon_and_kicker }}"
+    },
+    {
+      "type": "text",
+      "id": "title_part_one",
+      "label": "Title part 1",
+      "default": "AB test feature"
+    },
+    {
+      "type": "text",
+      "id": "title_part_two",
+      "label": "Title part 2",
+      "default": "placeholder"
+    },
+    {
+      "type": "select",
+      "id": "title_accent_color",
+      "label": "Title accent color",
+      "default": "primary-500",
+      "options": [
+        {
+          "value": "primary-500",
+          "label": "Primary-500"
+        },
+        {
+          "value": "tangerine-pop-500",
+          "label": "Tangerine-pop-500"
+        },
+        {
+          "value": "grape-jam-500",
+          "label": "Grape-jam-500"
+        },
+        {
+          "value": "berry-blue-700",
+          "label": "Berry-blue-700"
+        }
+      ]
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body",
+      "default": "<p>Temporary AB test placeholder content. Replace in Theme Editor for the experiment.</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "AB test Wave feature"
+    }
+  ]
+}
+{% endschema %}

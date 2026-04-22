@@ -230,7 +230,12 @@
       "email": "Correo electrónico",
       "full_name": "Nombre completo",
       "send": "Enviar",
-      "success_message": "Gracias por contactarnos. Te responderemos lo antes posible."
+      "success_message": "Gracias por contactarnos. Te responderemos lo antes posible.",
+      "notice_item_refunds": "Solo gestionamos reembolsos y garantías para pedidos en soundbrenner.com. Si compraste en otro lugar, contacta a tu tienda.",
+      "notice_item_reply_existing": "Si ya tienes una solicitud de soporte abierta, responde a ese correo en vez de enviar un nuevo formulario.",
+      "notice_item_suggestion_portal_html": "Para sugerencias de funciones, visita nuestro <a href=\"{{ url }}\">portal de sugerencias</a>.",
+      "notice_item_technical_issue": "Para problemas técnicos, intenta incluir un video que muestre el problema (enlace vía iCloud, Google Drive, Dropbox, etc.).",
+      "notice_title": "Importante"
     },
     "footer": {
       "company": "Empresa",
@@ -458,6 +463,9 @@
     "checkout": {
       "split_delivery": {
         "items_for_shipping": "Artículos para envío"
+      },
+      "payment": {
+        "multiple_primary_payment_not_allowed": "Métodos de pago no válidos"
       }
     }
   }
