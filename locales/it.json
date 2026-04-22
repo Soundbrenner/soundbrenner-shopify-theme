@@ -11,7 +11,8 @@
   "404": {
     "title": "404",
     "not_found": "Pagina non trovata.",
-    "back_to_shopping": "Torna agli acquisti"
+    "back_to_shopping": "Torna agli acquisti",
+    "theme_version": "Versione tema {{ version }}"
   },
   "blog": {
     "article_comments": "Commenti",
