@@ -1328,11 +1328,15 @@
         }
         const nextIndex = navigationIndices[nextNavigationIndex];
         const galleryItems = getRenderedGalleryItems(mediaWrap);
+        const nextItem = galleryItems[nextIndex];
+        mediaWrap.dataset.galleryAnimating = 'true';
+        await ensureMediaReady(nextItem);
+        if (mediaWrap.dataset.galleryAnimating !== 'true') return;
+
         const isWrapForward = direction > 0 && currentNavigationIndex === navigationIndices.length - 1;
         const isWrapBackward = direction < 0 && currentNavigationIndex === 0;
         const navigationToken = String((Number(mediaWrap.dataset.galleryNavigationToken || '0') || 0) + 1);
         mediaWrap.dataset.galleryNavigationToken = navigationToken;
-        mediaWrap.dataset.galleryAnimating = 'true';
         if (isWrapForward || isWrapBackward) {
           const track = getCarouselTrack(mediaWrap);
           const slides = getCarouselSlides(mediaWrap);
@@ -1347,23 +1351,23 @@
         } else {
           selectSlide(mediaWrap, nextIndex, { instant: false });
         }
-        preloadMediaItem(galleryItems[nextIndex]);
+        preloadMediaItem(nextItem);
 
         const track = getCarouselTrack(mediaWrap);
         let cleared = false;
         const clearAnimating = () => {
           if (cleared) return;
           cleared = true;
-                if (mediaWrap.dataset.galleryNavigationToken === navigationToken && (isWrapForward || isWrapBackward)) {
-                  selectSlide(mediaWrap, nextIndex, { instant: true });
-                }
-                getCarouselTrack(mediaWrap)?.classList.remove('is-animating');
-                mediaWrap.dataset.galleryAnimating = 'false';
-              };
+          if (mediaWrap.dataset.galleryNavigationToken === navigationToken && (isWrapForward || isWrapBackward)) {
+            selectSlide(mediaWrap, nextIndex, { instant: true });
+          }
+          getCarouselTrack(mediaWrap)?.classList.remove('is-animating');
+          mediaWrap.dataset.galleryAnimating = 'false';
+        };
 
         if (track) {
           track.addEventListener('transitionend', clearAnimating, { once: true });
-          setTimeout(clearAnimating, 220);
+          setTimeout(clearAnimating, 260);
         } else {
           clearAnimating();
         }

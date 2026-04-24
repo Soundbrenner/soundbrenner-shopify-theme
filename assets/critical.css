@@ -1265,6 +1265,10 @@ body .sb-page-content__body .rte > * + * {
   transform: translate(0, -50%);
 }
 
+[data-sb-thumbnail-section] .sb-product-thumbnail__media-wrap[data-gallery-animating='true'] .sb-product-thumbnail__gallery-nav {
+  pointer-events: none;
+}
+
 @media (hover: hover) and (pointer: fine) {
   [data-sb-thumbnail-section] .sb-product-thumbnail__media-wrap:hover .sb-product-thumbnail__gallery-nav {
     opacity: 1;
