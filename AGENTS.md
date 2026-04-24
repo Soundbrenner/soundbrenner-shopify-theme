@@ -25,6 +25,7 @@
 - For new copy, add keys in `locales/en.default.json` and reference those keys in code so Shopify Translate & Adapt (or equivalent apps) can manage locale translations.
 - For quotation marks around dynamic text (for example search terms), do not hard-code quote characters in Liquid/JS. Put the full sentence, including opening/closing quotes, in locale strings so each language can choose correct punctuation.
 - Default English quote style is curly double quotes: `“{{ term }}”`. Other locales should define their own native quote style in translation files/apps.
+- When bumping the theme version in `config/settings_schema.json`, also update the 404 hero card subheadline in `templates/404.json` to match. Do not assume `theme_info.theme_version` is exposed to Liquid as `settings.theme_version`.
 
 ## Motion
 

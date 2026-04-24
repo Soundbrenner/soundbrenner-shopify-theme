@@ -118,13 +118,15 @@
         for option_value in option.values
           assign option_swatch_color = option_value.swatch.color | default: option_value.name
           assign option_swatch_image = blank
-          assign option_swatch_hover_image = blank
+          assign option_swatch_hover_media_index = blank
           assign option_swatch_gallery = blank
+          assign option_swatch_gallery_count = 0
           assign option_swatch_variant_id = blank
           assign option_swatch_price_text = blank
           assign option_swatch_compare_price_text = blank
           assign option_swatch_price_cents = blank
           assign option_swatch_compare_price_cents = blank
+          assign option_variant_hover_media_index_raw = blank
 
           if option_value.swatch.image != blank
             assign option_swatch_image = option_value.swatch.image | image_url: width: 584
@@ -141,8 +143,9 @@
                 assign variant_color_value = product_variant.option3
             endcase
 
-            if variant_color_value == option_value.name
+            if variant_color_value == option_value.name and product_variant.available
               assign option_swatch_variant_id = product_variant.id
+              assign option_variant_hover_media_index_raw = product_variant.metafields.custom.thumbnail_hover_media_index.value | default: product_variant.metafields.custom.thumbnail_hover_media_index
               capture option_swatch_price_text
                 render 'sb-money-no-decimals', amount: product_variant.price, currency: thumbnail_currency_code, context: 'storefront'
               endcapture
@@ -171,10 +174,12 @@
                   assign variant_color_value = product_variant.option3
               endcase
 
-              if variant_color_value == option_value.name and product_variant.featured_image != blank
+              if variant_color_value == option_value.name and product_variant.available and product_variant.featured_image != blank
                 assign option_swatch_image = product_variant.featured_image | image_url: width: 584
                 assign option_swatch_gallery = 'image::' | append: option_swatch_image
+                assign option_swatch_gallery_count = 1
                 assign option_swatch_variant_id = product_variant.id
+                assign option_variant_hover_media_index_raw = product_variant.metafields.custom.thumbnail_hover_media_index.value | default: product_variant.metafields.custom.thumbnail_hover_media_index
                 capture option_swatch_price_text
                   render 'sb-money-no-decimals', amount: product_variant.price, currency: thumbnail_currency_code, context: 'storefront'
                 endcapture
@@ -186,14 +191,6 @@
                   endcapture
                   assign option_swatch_compare_price_text = option_swatch_compare_price_text | strip
                   assign option_swatch_compare_price_cents = product_variant.compare_at_price | plus: 0
-                endif
-
-                capture option_swatch_hover_image_url
-                  render 'sb-hover-image-url', resource: product_variant, width: 584
-                endcapture
-                assign option_swatch_hover_image_url = option_swatch_hover_image_url | strip
-                if option_swatch_hover_image_url != blank
-                  assign option_swatch_hover_image = option_swatch_hover_image_url
                 endif
 
                 assign option_variant_gallery_images = product_variant.metafields.custom.images.value | default: product_variant.metafields.custom.images
@@ -237,6 +234,7 @@
 
                     if option_variant_gallery_token != blank
                       assign option_swatch_gallery = option_swatch_gallery | append: '||' | append: option_variant_gallery_token
+                      assign option_swatch_gallery_count = option_swatch_gallery_count | plus: 1
                     endif
                   endfor
                 endif
@@ -245,37 +243,36 @@
             endfor
           endif
 
-          if option_swatch_hover_image == blank
-            for product_variant in product.variants
-              assign variant_color_value = blank
-              case option.position
-                when 1
-                  assign variant_color_value = product_variant.option1
-                when 2
-                  assign variant_color_value = product_variant.option2
-                when 3
-                  assign variant_color_value = product_variant.option3
-              endcase
-              if variant_color_value == option_value.name
-                capture option_swatch_hover_image_url
-                  render 'sb-hover-image-url', resource: product_variant, width: 584
-                endcapture
-                assign option_swatch_hover_image_url = option_swatch_hover_image_url | strip
-                if option_swatch_hover_image_url != blank
-                  assign option_swatch_hover_image = option_swatch_hover_image_url
-                  break
-                endif
+          if option_swatch_gallery_count > 1
+            assign option_variant_hover_media_index_raw = option_variant_hover_media_index_raw | default: blank | strip
+            assign product_hover_media_index_raw = product.metafields.custom.thumbnail_hover_media_index.value | default: product.metafields.custom.thumbnail_hover_media_index | default: blank | strip
+
+            if option_variant_hover_media_index_raw != blank
+              assign option_variant_hover_media_index_number = option_variant_hover_media_index_raw | plus: 0
+              if option_variant_hover_media_index_number > 1 and option_variant_hover_media_index_number <= option_swatch_gallery_count
+                assign option_swatch_hover_media_index = option_variant_hover_media_index_number
               endif
-            endfor
+            endif
+
+            if option_swatch_hover_media_index == blank and product_hover_media_index_raw != blank
+              assign product_hover_media_index_number = product_hover_media_index_raw | plus: 0
+              if product_hover_media_index_number > 1 and product_hover_media_index_number <= option_swatch_gallery_count
+                assign option_swatch_hover_media_index = product_hover_media_index_number
+              endif
+            endif
+
+            if option_swatch_hover_media_index == blank
+              assign option_swatch_hover_media_index = 2
+            endif
           endif
 
-          if option_swatch_color != blank
+          if option_swatch_color != blank and option_swatch_variant_id != blank
             capture swatch_payload_entry
               echo option_swatch_color
               echo swatch_payload_field_delimiter
               echo option_swatch_image
               echo swatch_payload_field_delimiter
-              echo option_swatch_hover_image
+              echo option_swatch_hover_media_index
               echo swatch_payload_field_delimiter
               echo option_swatch_gallery
               echo swatch_payload_field_delimiter
@@ -326,53 +323,21 @@
   assign thumbnail_compare_info_text = compare_info_text
   assign thumbnail_gallery_images = ''
   assign thumbnail_gallery_count = 0
-  assign thumbnail_hover_image_url = hover_image_url | default: blank
-  if thumbnail_hover_image_url != blank
-    assign thumbnail_hover_image_url = thumbnail_hover_image_url | strip
-  endif
-
-  if thumbnail_hover_image_url == blank
-    assign selected_payload_index = selected_swatch_value
-    if selected_payload_index < 1
-      assign selected_payload_index = 1
-    endif
-    if selected_payload_index > swatch_payload_count
-      assign selected_payload_index = 1
-    endif
-    assign payload_index = 0
-    for swatch_payload_entry in swatch_payload_entries
-      assign swatch_payload_entry_clean = swatch_payload_entry | strip
-      if swatch_payload_entry_clean != blank
-        assign payload_index = payload_index | plus: 1
-        if payload_index == selected_payload_index
-          assign swatch_payload_fields = swatch_payload_entry_clean | split: swatch_payload_field_delimiter
-          assign thumbnail_hover_image_url = swatch_payload_fields[2] | default: blank | strip
-          break
-        endif
-      endif
-    endfor
-    assign thumbnail_hover_image_url = thumbnail_hover_image_url | strip
-  endif
+  assign thumbnail_hover_media_index = blank
 
   if product != blank
+    assign product_hover_media_index_raw = product.metafields.custom.thumbnail_hover_media_index.value | default: product.metafields.custom.thumbnail_hover_media_index | default: blank | strip
     assign selected_variant = product.selected_or_first_available_variant
+    assign selected_variant_hover_media_index_raw = blank
     if selected_variant != blank
       assign thumbnail_variant_id = selected_variant.id
+      assign selected_variant_hover_media_index_raw = selected_variant.metafields.custom.thumbnail_hover_media_index.value | default: selected_variant.metafields.custom.thumbnail_hover_media_index | default: blank | strip
       assign thumbnail_price_cents = selected_variant.price | plus: 0
       if selected_variant.compare_at_price > selected_variant.price and thumbnail_hide_discounts == false
         assign thumbnail_compare_price_cents = selected_variant.compare_at_price | plus: 0
       endif
       if selected_variant.featured_image != blank
         assign thumbnail_image = selected_variant.featured_image
-      endif
-      if thumbnail_hover_image_url == blank
-        capture thumbnail_variant_hover_image_url
-          render 'sb-hover-image-url', resource: selected_variant, width: 584
-        endcapture
-        assign thumbnail_variant_hover_image_url = thumbnail_variant_hover_image_url | strip
-        if thumbnail_variant_hover_image_url != blank
-          assign thumbnail_hover_image_url = thumbnail_variant_hover_image_url
-        endif
       endif
     endif
     if thumbnail_price == blank and selected_variant != blank
@@ -401,16 +366,6 @@
           assign thumbnail_badge_type = 'new'
         endif
       endfor
-    endif
-
-    if thumbnail_hover_image_url == blank
-      capture thumbnail_product_hover_image_url
-        render 'sb-hover-image-url', resource: product, width: 584
-      endcapture
-      assign thumbnail_product_hover_image_url = thumbnail_product_hover_image_url | strip
-      if thumbnail_product_hover_image_url != blank
-        assign thumbnail_hover_image_url = thumbnail_product_hover_image_url
-      endif
     endif
 
     assign primary_gallery_image = blank
@@ -514,6 +469,26 @@
         endif
       endfor
     endif
+
+    if thumbnail_gallery_count > 1
+      if selected_variant_hover_media_index_raw != blank
+        assign selected_variant_hover_media_index_number = selected_variant_hover_media_index_raw | plus: 0
+        if selected_variant_hover_media_index_number > 1 and selected_variant_hover_media_index_number <= thumbnail_gallery_count
+          assign thumbnail_hover_media_index = selected_variant_hover_media_index_number
+        endif
+      endif
+
+      if thumbnail_hover_media_index == blank and product_hover_media_index_raw != blank
+        assign product_hover_media_index_number = product_hover_media_index_raw | plus: 0
+        if product_hover_media_index_number > 1 and product_hover_media_index_number <= thumbnail_gallery_count
+          assign thumbnail_hover_media_index = product_hover_media_index_number
+        endif
+      endif
+
+      if thumbnail_hover_media_index == blank
+        assign thumbnail_hover_media_index = 2
+      endif
+    endif
   endif
 
   if thumbnail_compare_info_text == blank and product != blank
@@ -557,7 +532,7 @@
     class="sb-product-thumbnail__media-wrap"
     data-gallery-index="0"
     data-thumbnail-static-media="{% if thumbnail_static_media %}true{% else %}false{% endif %}"
-    {% if thumbnail_static_media == false and thumbnail_hover_image_url != blank %}data-hover-image="{{ thumbnail_hover_image_url }}"{% endif %}
+    {% if thumbnail_static_media == false and thumbnail_hover_media_index != blank %}data-hover-media-index="{{ thumbnail_hover_media_index }}"{% endif %}
   >
     <a class="sb-product-thumbnail__media" href="{{ thumbnail_url }}" data-thumbnail-link data-thumbnail-base-url="{{ thumbnail_url }}" data-image-frame>
       {% if thumbnail_badge_label != blank %}
@@ -705,7 +680,7 @@
           {% if swatch_color != blank %}
             {% assign swatch_button_index = swatch_button_index | plus: 1 %}
             {% assign swatch_image = swatch_payload_fields[1] | default: blank %}
-            {% assign swatch_hover_image = swatch_payload_fields[2] | default: blank %}
+            {% assign swatch_hover_media_index = swatch_payload_fields[2] | default: blank | strip %}
             {% assign swatch_gallery = swatch_payload_fields[3] | default: blank %}
             {% assign swatch_variant_id_resolved = swatch_payload_fields[4] | default: blank | strip %}
             {% if swatch_variant_id_resolved == blank %}
@@ -720,7 +695,7 @@
               class="sb-product-thumbnail__swatch{% if selected_swatch_value == swatch_button_index %} is-selected{% endif %}"
               style="--sb-swatch-color: {{ swatch_color }};"
               data-thumbnail-image="{{ swatch_image }}"
-              data-thumbnail-hover-image="{{ swatch_hover_image }}"
+              {% if swatch_hover_media_index != blank %}data-thumbnail-hover-media-index="{{ swatch_hover_media_index }}"{% endif %}
               data-thumbnail-gallery="{{ swatch_gallery }}"
               data-thumbnail-variant-id="{{ swatch_variant_id_resolved }}"
               data-thumbnail-price="{{ swatch_price_text | default: thumbnail_price }}"
