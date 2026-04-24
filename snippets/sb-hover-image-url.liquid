@@ -8,6 +8,88 @@
   assign sb_hover_media = blank
 
   if sb_hover_resource != blank
+    assign sb_hover_context_product = sb_hover_resource
+    assign sb_hover_context_variant = blank
+    if sb_hover_resource.product != blank
+      assign sb_hover_context_variant = sb_hover_resource
+      assign sb_hover_context_product = sb_hover_resource.product
+    endif
+
+    assign sb_hover_index_raw = blank
+    if sb_hover_context_variant != blank
+      assign sb_hover_index_raw = sb_hover_context_variant.metafields.custom.thumbnail_hover_media_index.value | default: sb_hover_context_variant.metafields.custom.thumbnail_hover_media_index | default: blank | strip
+    endif
+    if sb_hover_index_raw == blank and sb_hover_context_product != blank
+      assign sb_hover_index_raw = sb_hover_context_product.metafields.custom.thumbnail_hover_media_index.value | default: sb_hover_context_product.metafields.custom.thumbnail_hover_media_index | default: blank | strip
+    endif
+    assign sb_hover_index = sb_hover_index_raw | plus: 0
+    if sb_hover_index <= 1
+      assign sb_hover_index = 2
+    endif
+
+    assign sb_hover_gallery_position = 0
+    assign sb_hover_primary_image = blank
+    if sb_hover_context_variant != blank and sb_hover_context_variant.featured_image != blank
+      assign sb_hover_primary_image = sb_hover_context_variant.featured_image
+    elsif sb_hover_context_product != blank and sb_hover_context_product.featured_image != blank
+      assign sb_hover_primary_image = sb_hover_context_product.featured_image
+    elsif sb_hover_context_product != blank and sb_hover_context_product.featured_media.preview_image != blank
+      assign sb_hover_primary_image = sb_hover_context_product.featured_media.preview_image
+    endif
+
+    if sb_hover_primary_image != blank
+      assign sb_hover_gallery_position = sb_hover_gallery_position | plus: 1
+      if sb_hover_gallery_position == sb_hover_index
+        assign sb_hover_media = sb_hover_primary_image
+      endif
+    endif
+
+    if sb_hover_media == blank and sb_hover_context_variant != blank
+      assign sb_hover_variant_gallery = sb_hover_context_variant.metafields.custom.images.value | default: sb_hover_context_variant.metafields.custom.images
+      if sb_hover_variant_gallery != blank
+        for sb_hover_variant_gallery_item in sb_hover_variant_gallery
+          assign sb_hover_variant_gallery_media = sb_hover_variant_gallery_item.value | default: sb_hover_variant_gallery_item
+          assign sb_hover_variant_candidate = blank
+          if sb_hover_variant_gallery_media.media_type == 'video'
+            assign sb_hover_variant_candidate = sb_hover_variant_gallery_media.preview_image
+          elsif sb_hover_variant_gallery_media.preview_image != blank
+            assign sb_hover_variant_candidate = sb_hover_variant_gallery_media.preview_image
+          else
+            assign sb_hover_variant_candidate = sb_hover_variant_gallery_media
+          endif
+
+          if sb_hover_variant_candidate != blank and sb_hover_variant_candidate != sb_hover_primary_image
+            assign sb_hover_gallery_position = sb_hover_gallery_position | plus: 1
+            if sb_hover_gallery_position == sb_hover_index
+              assign sb_hover_media = sb_hover_variant_candidate
+              break
+            endif
+          endif
+        endfor
+      endif
+    endif
+
+    if sb_hover_media == blank and sb_hover_gallery_position <= 1 and sb_hover_context_product != blank and sb_hover_context_product.media != blank
+      for sb_hover_product_gallery_media in sb_hover_context_product.media
+        assign sb_hover_product_candidate = blank
+        if sb_hover_product_gallery_media.media_type == 'video'
+          assign sb_hover_product_candidate = sb_hover_product_gallery_media.preview_image
+        elsif sb_hover_product_gallery_media.preview_image != blank
+          assign sb_hover_product_candidate = sb_hover_product_gallery_media.preview_image
+        endif
+
+        if sb_hover_product_candidate != blank and sb_hover_product_candidate != sb_hover_primary_image
+          assign sb_hover_gallery_position = sb_hover_gallery_position | plus: 1
+          if sb_hover_gallery_position == sb_hover_index
+            assign sb_hover_media = sb_hover_product_candidate
+            break
+          endif
+        endif
+      endfor
+    endif
+  endif
+
+  if sb_hover_resource != blank and sb_hover_media == blank
     assign sb_hover_metafield = sb_hover_resource.metafields.custom.sbv2_hover_photo
     if sb_hover_metafield == blank
       assign sb_hover_metafield = sb_hover_resource.metafields.custom.hover_photo
