@@ -1167,7 +1167,8 @@ body .sb-page-content__body .rte > * + * {
   background: var(--sb-color-neutral-100);
   border-radius: var(--sb-space-24);
   box-shadow: 0 0 10px 0 var(--sb-color-always-black-12);
-  display: block;
+  clip-path: inset(0 round var(--sb-space-24));
+  display: grid;
   overflow: hidden;
   position: relative;
   text-decoration: none;
@@ -1404,13 +1405,17 @@ body .sb-page-content__body .rte > * + * {
 }
 
 [data-sb-thumbnail-section] .sb-product-thumbnail__carousel {
+  aspect-ratio: 1 / 1;
   display: block;
+  grid-area: 1 / 1;
   overflow: hidden;
   width: 100%;
+  z-index: 1;
 }
 
 [data-sb-thumbnail-section] .sb-product-thumbnail__carousel-track {
   display: flex;
+  height: 100%;
   transition: transform 180ms linear;
   width: 100%;
 }
@@ -1419,18 +1424,43 @@ body .sb-page-content__body .rte > * + * {
   transition: none;
 }
 
+[data-sb-thumbnail-section] .sb-product-thumbnail__carousel-track:not(.is-animating)
+  .sb-product-thumbnail__carousel-slide[aria-hidden='true'] {
+  visibility: hidden;
+}
+
 [data-sb-thumbnail-section] .sb-product-thumbnail__carousel-slide {
+  aspect-ratio: 1 / 1;
   flex: 0 0 100%;
+  height: 100%;
+  overflow: visible;
+  position: relative;
   width: 100%;
+  z-index: 0;
+}
+
+[data-sb-thumbnail-section] .sb-product-thumbnail__carousel-slide[aria-hidden='false'] {
+  z-index: 1;
 }
 
 [data-sb-thumbnail-section] .sb-product-thumbnail__media-item,
 [data-sb-thumbnail-section] .sb-product-thumbnail__image-placeholder {
   aspect-ratio: 1 / 1;
   display: block;
+  grid-area: 1 / 1;
   height: auto;
+  max-width: none;
   object-fit: cover;
   width: 100%;
+  z-index: 0;
+}
+
+[data-sb-thumbnail-section] .sb-product-thumbnail__carousel-slide > .sb-product-thumbnail__media-item {
+  height: calc(100% + 2px);
+  inset: -1px;
+  margin: 0;
+  position: absolute;
+  width: calc(100% + 2px);
 }
 
 [data-sb-thumbnail-section] .sb-product-thumbnail__video.sb-product-thumbnail__media-item {
@@ -1606,7 +1636,7 @@ body .sb-page-content__body .rte > * + * {
 
 .sb-product-thumbnail__carousel-slide {
   background: transparent;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .sb-product-thumbnail__carousel-slide > .sb-product-thumbnail__video.sb-product-thumbnail__media-item {
@@ -1632,9 +1662,9 @@ video.sb-product-main__media-asset {
   box-shadow: none;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  margin: calc(var(--sb-space-2) * -1);
-  width: calc(100% + (var(--sb-space-2) * 2));
-  height: calc(100% + (var(--sb-space-2) * 2));
+  margin: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);

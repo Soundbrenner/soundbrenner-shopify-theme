@@ -555,15 +555,26 @@
       {% endif %}
     </a>
     {% if thumbnail_static_media == false and thumbnail_gallery_count > 1 %}
-      <div class="sb-product-thumbnail__gallery-sources" aria-hidden="true">
-        {% assign gallery_image_urls = thumbnail_gallery_images | split: '||' %}
-        {% for gallery_image_url in gallery_image_urls %}
-          {% assign gallery_image_url_clean = gallery_image_url | strip %}
-          {% if gallery_image_url_clean != blank %}
-            <span class="sb-product-thumbnail__gallery-image-source" data-gallery-image="{{ gallery_image_url_clean }}"></span>
-          {% endif %}
-        {% endfor %}
-      </div>
+      <script type="application/json" data-thumbnail-gallery-json>
+        [
+          {%- assign gallery_image_urls = thumbnail_gallery_images | split: '||' -%}
+          {%- assign has_rendered_gallery_json_item = false -%}
+          {%- for gallery_image_url in gallery_image_urls -%}
+            {%- assign gallery_image_url_clean = gallery_image_url | strip -%}
+            {%- if gallery_image_url_clean != blank -%}
+              {%- assign gallery_media_parts = gallery_image_url_clean | split: '::' -%}
+              {%- assign gallery_media_type = gallery_media_parts[0] | default: 'image' | strip -%}
+              {%- assign gallery_media_src = gallery_media_parts[1] | default: gallery_image_url_clean | strip -%}
+              {%- assign gallery_media_poster = gallery_media_parts[2] | default: blank | strip -%}
+              {%- if gallery_media_src != blank -%}
+                {%- if has_rendered_gallery_json_item -%},{%- endif -%}
+                {"type":{{ gallery_media_type | json }},"src":{{ gallery_media_src | json }},"poster":{{ gallery_media_poster | json }}}
+                {%- assign has_rendered_gallery_json_item = true -%}
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        ]
+      </script>
     {% endif %}
     {% if thumbnail_static_media == false %}
       {% if thumbnail_gallery_count > 1 or thumbnail_has_swatches_input %}
