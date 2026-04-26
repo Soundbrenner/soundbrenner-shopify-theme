@@ -21,7 +21,7 @@
     "storefront_price_override_discount_depth_3": 33,
     "storefront_price_override_product_id_4": "wave-pro-in-ear-monitors-for-gamers",
     "storefront_price_override_discount_depth_4": 33,
-    "seasonal_sale_end_date": "2026-04-25",
+    "seasonal_sale_end_date": "2026-04-26",
     "seasonal_announcement_gradient": "linear-gradient(90deg, #B19CD9 0%, #7B5EA7 33%, #7B5EA7 66%, #B19CD9 100%)",
     "seasonal_announcement_copy_free_shipping": "{{ Sale name }}: {{ Sitewide discount depth }}% off & free shipping in {{ Shipping country }} over {{ Free shipping threshold }}",
     "seasonal_announcement_copy_no_free_shipping": "{{ Sale name }}: {{ Sitewide discount depth }}% off in {{ Shipping country }}",
