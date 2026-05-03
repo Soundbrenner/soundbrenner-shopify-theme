@@ -1029,7 +1029,7 @@
         "text_circle_fifths_intro_after_smartwatch": {
           "type": "text",
           "settings": {
-            "text": "<p>The <strong>Circle of fifths</strong> is a music theory tool that shows how keys, chords, and scales relate to each other. Neighboring keys on the circle share nearly all of the same notes, which is why they often sound natural together.</p><p>On Core 2 / Spark, the feature gives you a quick reference while practicing, composing, or learning a song.</p>"
+            "text": "<p>The <strong>circle of fifths</strong> is a music theory tool that shows how keys, chords, and scales relate to each other. Neighboring keys on the circle share nearly all of the same notes, which is why they often sound natural together.</p><p>On Core 2 / Spark, the feature gives you a quick reference while practicing, composing, or learning a song.</p>"
           }
         },
         "subheading_circle_fifths_after_smartwatch_screen": {
