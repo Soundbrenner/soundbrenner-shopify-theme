@@ -1,5 +1,11 @@
 # Theme Rules
 
+## Production Deployment
+
+- The production Shopify theme is synced from GitHub. Launch production changes by committing and pushing to GitHub first.
+- Do not use `shopify theme push --allow-live` as the default production deployment path. Use direct Shopify pushes only for an explicit emergency/hotfix or when the user specifically asks for it, and then reconcile the exact same change back to Git immediately.
+- When the user says to push, ship, launch, or push to production in this repo, treat that as: commit the intended changes, push the branch to GitHub, and let the Shopify Git sync deploy them.
+
 ## Shopify-First Engineering
 
 - Always implement features using native Shopify theme architecture and APIs first (Liquid, sections, blocks, snippets, schema settings, metafields, menus, locales, and Theme Editor settings).
