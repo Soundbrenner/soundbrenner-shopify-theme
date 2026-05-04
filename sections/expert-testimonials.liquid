@@ -22,7 +22,8 @@
   else
     assign section_title = section.settings.title
     assign section_subtitle = section.settings.subtitle
-    if section_subtitle == '<p>Expert testimonials subtitle.</p>'
+    assign section_subtitle_text = section_subtitle | strip_html | strip
+    if section_subtitle_text == 'Expert testimonials subtitle.'
       assign section_subtitle = blank
     endif
 
