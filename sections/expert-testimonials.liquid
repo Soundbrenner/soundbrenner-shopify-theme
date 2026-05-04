@@ -24,7 +24,7 @@
     assign section_subtitle = section.settings.subtitle
     assign section_subtitle_string = section_subtitle | append: ''
     assign section_subtitle_text = section_subtitle_string | strip_html | strip
-    if section_subtitle_text == blank or section_subtitle_text == 'Expert testimonials subtitle.'
+    if section_subtitle_text == blank or section_subtitle_text == 'Expert testimonials subtitle.' or section_title == 'Worn by the best'
       assign section_subtitle = blank
     endif
 
