@@ -9,12 +9,305 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "page",
+    "password_gate": {
+      "type": "partnership-password-gate",
       "settings": {}
+    },
+    "hero": {
+      "type": "product-page-hero",
+      "settings": {}
+    },
+    "expert_testimonials_carousel": {
+      "type": "expert-testimonials",
+      "blocks": {
+        "item_1": {
+          "type": "testimonial",
+          "settings": {}
+        },
+        "item_2": {
+          "type": "testimonial",
+          "settings": {}
+        },
+        "item_3": {
+          "type": "testimonial",
+          "settings": {}
+        },
+        "item_4": {
+          "type": "testimonial",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "settings": {
+        "use_product_metaobjects": false,
+        "title": "The best don’t just use products, they shape them."
+      }
+    },
+    "top_feature_highlights": {
+      "type": "top-feature-highlights",
+      "blocks": {
+        "item_1": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/icon-signature-design.svg",
+            "gradient_value": "linear-gradient(135deg, #FF0739 0%, #8E3BFF 100%)",
+            "title": "You actually care about design",
+            "body": "<p>You care about how things look, feel, and work. So do we.</p>"
+          }
+        },
+        "item_2": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/icon-signature-aesthetic.svg",
+            "gradient_value": "linear-gradient(135deg, #E67702 0%, #FF4700 100%)",
+            "title": "You have a clear aesthetic point of view",
+            "body": "<p>Your sound and visual world are instantly recognizable.</p>"
+          }
+        },
+        "item_3": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/icon-signature-audience.svg",
+            "gradient_value": "linear-gradient(135deg, #0097FF 0%, #00FCA4 100%)",
+            "title": "Your fans are already our users",
+            "body": "<p>Your audience goes beyond musicians. We build for musicians, but also creators and everyday listeners.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_1",
+        "item_2",
+        "item_3"
+      ],
+      "settings": {
+        "use_product_metaobjects": false,
+        "title": "Tim, this is why you are our #1 choice for a signature IEM"
+      }
+    },
+    "large_feature_left": {
+      "type": "large-feature",
+      "settings": {
+        "use_product_metaobjects": false,
+        "media_position": "left",
+        "show_icon_and_kicker": false,
+        "title_part_one": "We design tools people actually want to use.",
+        "title_part_two": "Every detail is considered.",
+        "title_accent_color": "primary-500",
+        "body": "<p>$10M+ annual hardware revenue. Sold globally via Guitar Center, Sweetwater, and Thomann.</p><p>We’ve never done a signature collaboration before. We’ve been waiting for the right one.</p>"
+      }
+    },
+    "trust_indicators_desktop": {
+      "type": "trust-indicators",
+      "blocks": {
+        "item_1": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/trust-indicator-70000-units-sold.svg",
+            "text": "<p>In-ear monitors sold per year</p>"
+          }
+        },
+        "item_2": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/trust-indicator-trustscore.svg",
+            "text": "<p>4.7 TrustScore on Trustpilot</p>"
+          }
+        },
+        "item_3": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/trust-indicator-ratings.svg",
+            "text": "<p>3,000+ verified reviews</p>"
+          }
+        },
+        "item_4": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/trust-indicator-trustpilot.svg",
+            "text": "<p>”They sound better than my Shure SE846s.”</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "settings": {
+        "use_product_metaobjects": false,
+        "title": "Critically acclaimed"
+      }
+    },
+    "features_carousel_product_foundation": {
+      "type": "feature-carousel",
+      "blocks": {
+        "item_1": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/feature-carousel-partnership-order-1-musicians.jpg",
+            "body": "<p><strong>Used by musicians</strong></p>"
+          }
+        },
+        "item_2": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/feature-carousel-partnership-order-2-gamers.jpg",
+            "body": "<p><strong>Used by gamers</strong></p>"
+          }
+        },
+        "item_3": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/feature-carousel-partnership-order-3-everyday-listening.jpg",
+            "body": "<p><strong>Made for everyday listening</strong></p>"
+          }
+        },
+        "item_4": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/feature-carousel-partnership-order-4-packaging.jpg",
+            "body": "<p><strong>Thoughtfully designed packaging</strong></p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "settings": {
+        "use_product_metaobjects": false,
+        "title": "Our current product line up"
+      }
+    },
+    "features_carousel_1": {
+      "type": "feature-carousel",
+      "blocks": {
+        "item_1": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/partnership-vision-ivory-seraph.jpg",
+            "body": "<p><strong>Ivory Seraph</strong></p>"
+          }
+        },
+        "item_2": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/partnership-vision-obsidian-thorn.jpg",
+            "body": "<p><strong>Obsidian Thorn</strong></p>"
+          }
+        },
+        "item_3": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/partnership-vision-relic-halo.jpg",
+            "body": "<p><strong>Relic Halo</strong></p>"
+          }
+        },
+        "item_4": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/partnership-vision-chrome-echo.jpg",
+            "body": "<p><strong>Chrome Echo</strong></p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "settings": {
+        "use_product_metaobjects": false,
+        "title": "The Vision"
+      }
+    },
+    "features_carousel_2": {
+      "type": "feature-carousel",
+      "blocks": {
+        "item_1": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/partnership-royalty-units.jpg",
+            "body": "<p><strong>Royalty on every unit sold.</strong> You earn on every product, directly tied to demand.</p>"
+          }
+        },
+        "item_2": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/partnership-guaranteed-minimum.jpg",
+            "body": "<p><strong>Guaranteed minimum.</strong> A baseline payout, regardless of sales.</p>"
+          }
+        },
+        "item_3": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/partnership-affiliate-revenue.jpg",
+            "body": "<p><strong>Affiliate revenue.</strong> Earn extra on all sales through your code.</p>"
+          }
+        },
+        "item_4": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/partnership-flexible-involvement.jpg",
+            "body": "<p><strong>Flexible involvement.</strong> You decide how involved you want to be.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "settings": {
+        "use_product_metaobjects": false,
+        "title": "Your upside"
+      }
+    },
+    "founder_note": {
+      "type": "founder-note",
+      "settings": {
+        "image": "shopify://shop_images/florian-simmendinger-profile.png",
+        "image_alt": "Florian Simmendinger",
+        "text": "Hi Tim,\n\nI've followed your work for a long time and think you're one of the most interesting creators in modern music. This felt worth building specifically with you in mind.\n\nI would love to get on a call to discuss specifics!\n\nSincerely,\nFlorian Simmendinger\nFounder, CEO & Head of Design at Soundbrenner",
+        "button_label": "Email florian@soundbrenner.com",
+        "button_link": "mailto:florian@soundbrenner.com"
+      }
+    },
+    "footer_hero_card": {
+      "type": "hero-card",
+      "settings": {
+        "use_seasonal_hero_card": false,
+        "use_resource_title_description": false,
+        "use_product_page_metaobjects": false,
+        "background_image_desktop": "shopify://shop_images/hero-card-tim-henson-x-soundbrenner-desktop.jpg",
+        "background_image_mobile": "shopify://shop_images/hero-card-tim-henson-x-soundbrenner-mobile.jpg",
+        "kicker": "Tim Henson x Soundbrenner",
+        "headline": "Let's build it.",
+        "show_button": false
+      }
     }
   },
   "order": [
-    "main"
+    "password_gate",
+    "hero",
+    "expert_testimonials_carousel",
+    "top_feature_highlights",
+    "large_feature_left",
+    "trust_indicators_desktop",
+    "features_carousel_product_foundation",
+    "features_carousel_1",
+    "features_carousel_2",
+    "founder_note",
+    "footer_hero_card"
   ]
 }

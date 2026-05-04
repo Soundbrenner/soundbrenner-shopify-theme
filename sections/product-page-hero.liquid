@@ -26,13 +26,38 @@
   assign hero_image_mobile_url = blank
   assign hero_product_tagline = blank
   assign hero_product_tagline_html = blank
+  assign hero_manual_mode = false
+  assign hero_display_kicker = blank
+  assign hero_display_title = blank
+  assign hero_display_tagline = blank
+  assign hero_display_subheadline = blank
   assign hero_selected_variant = blank
   assign hero_has_compare_price = false
   assign hero_has_linked_videos = false
   assign hero_video_anchor_link = blank
+  assign hero_show_price = false
+  assign hero_show_button = false
+  assign hero_button_label = blank
+  assign hero_button_link = blank
 
   if request.page_type != 'product' or product == blank
-    assign hide_section = true
+    assign hero_manual_mode = true
+    assign hero_media_title = section.settings.title
+    assign hero_display_kicker = section.settings.kicker
+    assign hero_display_title = section.settings.title
+    assign hero_display_tagline = section.settings.tagline
+    assign hero_display_subheadline = section.settings.subheadline
+    assign hero_media_desktop_field = section.settings.media
+    assign hero_media_mobile_field = section.settings.media_mobile
+    assign hero_show_button = section.settings.show_button
+    assign hero_button_label = section.settings.button_label
+    assign hero_button_link = section.settings.button_link
+
+    if section.settings.use_resource_title_description and page != blank
+      assign hero_media_title = page.title
+      assign hero_display_title = page.title
+      assign hero_display_tagline = page.content | strip_html
+    endif
   else
     assign hero_header_ref = product.metafields.custom.sbv2_product_page_header
     assign hero_header = hero_header_ref.value | default: hero_header_ref.reference.value | default: hero_header_ref.reference | default: hero_header_ref
@@ -42,12 +67,18 @@
   endif
 
   if hide_section == false
-    assign hero_video_anchor_link = '#sb-hero-video-product-' | append: product.id
+    if hero_manual_mode
+      assign hero_video_anchor_link = section.settings.button_link
+    else
+      assign hero_video_anchor_link = '#sb-hero-video-product-' | append: product.id
+    endif
 
-    assign hero_media_title = product.title
+    unless hero_manual_mode
+      assign hero_media_title = product.title
 
-    assign hero_media_desktop_field = hero_header.media.value | default: hero_header.media
-    assign hero_media_mobile_field = hero_header.media_mobile.value | default: hero_header.media_mobile
+      assign hero_media_desktop_field = hero_header.media.value | default: hero_header.media
+      assign hero_media_mobile_field = hero_header.media_mobile.value | default: hero_header.media_mobile
+    endunless
 
     assign hero_media_desktop_type = hero_media_desktop_field.media_type | append: ''
     assign hero_media_mobile_type = hero_media_mobile_field.media_type | append: ''
@@ -239,6 +270,10 @@
     endif
 
     assign hero_has_media = false
+    if hero_manual_mode and hero_has_video == false and hero_image_desktop_url == blank and hero_image_mobile_url == blank
+      assign hero_image_desktop_url = 'placeholder-hero-card-desktop.jpg' | asset_url
+      assign hero_image_mobile_url = 'placeholder-hero-card-mobile.jpg' | asset_url
+    endif
     if hero_has_video or hero_image_desktop_url != blank or hero_image_mobile_url != blank
       assign hero_has_media = true
     endif
@@ -248,42 +283,50 @@
     endif
 
     if hide_section == false
-      assign hero_product_settings_ref = product.metafields.custom.sbv2_product_settings.value | default: product.metafields.custom.sbv2_product_settings
-      if hero_product_settings_ref != blank
-        assign hero_product_tagline = hero_product_settings_ref.tagline.value | default: hero_product_settings_ref.tagline
-        assign hero_product_tagline_html = hero_product_settings_ref.tagline | metafield_tag
-      endif
-
-      assign hero_linked_videos_ref = product.metafields.custom.sbv2_hero_videos
-      assign hero_linked_videos_root = hero_linked_videos_ref.value | default: hero_linked_videos_ref.reference.value | default: hero_linked_videos_ref.reference | default: hero_linked_videos_ref
-      if hero_linked_videos_root != blank
-        assign hero_linked_video_items = hero_linked_videos_root.videos.value | default: hero_linked_videos_root.videos.references | default: hero_linked_videos_root.videos
-        if hero_linked_video_items != blank
-          for hero_linked_video_item in hero_linked_video_items limit: 4
-            assign hero_linked_video_entry = hero_linked_video_item.value | default: hero_linked_video_item.reference.value | default: hero_linked_video_item.reference | default: hero_linked_video_item
-            assign hero_linked_video_youtube_id = hero_linked_video_entry.youtube_id.value | default: hero_linked_video_entry.youtube_id | append: '' | strip
-            if hero_linked_video_youtube_id contains 'youtube.com/watch'
-              assign hero_linked_video_youtube_id = hero_linked_video_youtube_id | split: 'v=' | last | split: '&' | first
-            elsif hero_linked_video_youtube_id contains 'youtu.be/'
-              assign hero_linked_video_youtube_id = hero_linked_video_youtube_id | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first
-            endif
-            assign hero_linked_video_youtube_id = hero_linked_video_youtube_id | split: '?' | first | split: '&' | first | split: '/' | last
-
-            if hero_linked_video_youtube_id != blank
-              assign hero_has_linked_videos = true
-              break
-            endif
-          endfor
+      if hero_manual_mode
+        if hero_media_title == blank and hero_display_kicker == blank and hero_display_tagline == blank and hero_display_subheadline == blank
+          assign hide_section = true
         endif
-      endif
+      else
+        assign hero_show_price = true
+        assign hero_display_title = product.title
+        assign hero_product_settings_ref = product.metafields.custom.sbv2_product_settings.value | default: product.metafields.custom.sbv2_product_settings
+        if hero_product_settings_ref != blank
+          assign hero_product_tagline = hero_product_settings_ref.tagline.value | default: hero_product_settings_ref.tagline
+          assign hero_product_tagline_html = hero_product_settings_ref.tagline | metafield_tag
+        endif
 
-      assign hero_selected_variant = product.selected_or_first_available_variant
-      assign hero_currency_code = cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency | upcase
-      if hero_selected_variant == blank and product.variants != blank
-        assign hero_selected_variant = product.variants.first
-      endif
-      if hero_selected_variant.compare_at_price > hero_selected_variant.price
-        assign hero_has_compare_price = true
+        assign hero_linked_videos_ref = product.metafields.custom.sbv2_hero_videos
+        assign hero_linked_videos_root = hero_linked_videos_ref.value | default: hero_linked_videos_ref.reference.value | default: hero_linked_videos_ref.reference | default: hero_linked_videos_ref
+        if hero_linked_videos_root != blank
+          assign hero_linked_video_items = hero_linked_videos_root.videos.value | default: hero_linked_videos_root.videos.references | default: hero_linked_videos_root.videos
+          if hero_linked_video_items != blank
+            for hero_linked_video_item in hero_linked_video_items limit: 4
+              assign hero_linked_video_entry = hero_linked_video_item.value | default: hero_linked_video_item.reference.value | default: hero_linked_video_item.reference | default: hero_linked_video_item
+              assign hero_linked_video_youtube_id = hero_linked_video_entry.youtube_id.value | default: hero_linked_video_entry.youtube_id | append: '' | strip
+              if hero_linked_video_youtube_id contains 'youtube.com/watch'
+                assign hero_linked_video_youtube_id = hero_linked_video_youtube_id | split: 'v=' | last | split: '&' | first
+              elsif hero_linked_video_youtube_id contains 'youtu.be/'
+                assign hero_linked_video_youtube_id = hero_linked_video_youtube_id | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first
+              endif
+              assign hero_linked_video_youtube_id = hero_linked_video_youtube_id | split: '?' | first | split: '&' | first | split: '/' | last
+
+              if hero_linked_video_youtube_id != blank
+                assign hero_has_linked_videos = true
+                break
+              endif
+            endfor
+          endif
+        endif
+
+        assign hero_selected_variant = product.selected_or_first_available_variant
+        assign hero_currency_code = cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency | upcase
+        if hero_selected_variant == blank and product.variants != blank
+          assign hero_selected_variant = product.variants.first
+        endif
+        if hero_selected_variant.compare_at_price > hero_selected_variant.price
+          assign hero_has_compare_price = true
+        endif
       endif
     endif
   endif
@@ -310,9 +353,11 @@
   {% endif %}
   {% # theme-check-enable RemoteAsset %}
   <section
-    class="sb-product-page-hero"
+    class="sb-product-page-hero{% if hero_manual_mode %} sb-product-page-hero--manual{% endif %}"
     data-product-hero
-    data-product-id="{{ product.id }}"
+    {% unless hero_manual_mode %}
+      data-product-id="{{ product.id }}"
+    {% endunless %}
   >
     <div class="sb-product-page-hero__media-wrap">
       <div class="sb-product-page-hero__media" id="sb-product-page-hero-media-{{ section.id }}">
@@ -399,40 +444,62 @@
     </div>
 
     <div class="sb-product-page-hero__content">
-      <h1 class="sb-product-page-hero__name font-body weight-semibold">{{ product.title }}</h1>
+      {% if hero_manual_mode %}
+        {% if hero_display_kicker != blank %}
+          <p class="sb-product-page-hero__name font-body weight-semibold">{{ hero_display_kicker }}</p>
+        {% endif %}
 
-      {% if hero_product_tagline_html != blank %}
+        {% if hero_display_title != blank %}
+          <h1 class="sb-product-page-hero__tagline font-title weight-bold">{{ hero_display_title }}</h1>
+        {% endif %}
+
+        {% if hero_display_subheadline != blank %}
+          <div class="sb-product-page-hero__subheadline font-body weight-regular rte">
+            {{ hero_display_subheadline }}
+          </div>
+        {% endif %}
+      {% else %}
+        {% if hero_display_title != blank %}
+          <h1 class="sb-product-page-hero__name font-body weight-semibold">{{ hero_display_title }}</h1>
+        {% endif %}
+      {% endif %}
+
+      {% if hero_manual_mode == false and hero_product_tagline_html != blank %}
         <div class="sb-product-page-hero__tagline sb-product-page-hero__tagline--rich font-title weight-bold rte">
           {{ hero_product_tagline_html }}
         </div>
-      {% elsif hero_product_tagline != blank %}
+      {% elsif hero_manual_mode == false and hero_product_tagline != blank %}
         <p class="sb-product-page-hero__tagline font-title weight-bold">{{ hero_product_tagline }}</p>
+      {% elsif hero_manual_mode == false and hero_display_tagline != blank %}
+        <p class="sb-product-page-hero__tagline font-title weight-bold">{{ hero_display_tagline }}</p>
       {% endif %}
 
-      <div
-        class="sb-product-page-hero__price-row"
-        data-product-hero-price-root
-        data-product-id="{{ product.id }}"
-        data-product-variant-ids="{% for variant in product.variants %}{% unless forloop.first %},{% endunless %}{{ variant.id }}{% endfor %}"
-        data-currency="{{ hero_currency_code }}"
-        data-initial-variant-id="{{ hero_selected_variant.id }}"
-        data-initial-price="{{ hero_selected_variant.price | default: 0 }}"
-        data-initial-compare-price="{{ hero_selected_variant.compare_at_price | default: 0 }}"
+      {% if hero_show_price %}
+        <div
+          class="sb-product-page-hero__price-row"
+          data-product-hero-price-root
+          data-product-id="{{ product.id }}"
+          data-product-variant-ids="{% for variant in product.variants %}{% unless forloop.first %},{% endunless %}{{ variant.id }}{% endfor %}"
+          data-currency="{{ hero_currency_code }}"
+          data-initial-variant-id="{{ hero_selected_variant.id }}"
+          data-initial-price="{{ hero_selected_variant.price | default: 0 }}"
+          data-initial-compare-price="{{ hero_selected_variant.compare_at_price | default: 0 }}"
 
-      >
-        <p
-          class="sb-product-page-hero__price sb-product-page-hero__price--compare font-body weight-regular"
-          data-product-hero-compare-price
-          {% unless hero_has_compare_price %}
-            hidden
-          {% endunless %}
         >
-          {% render 'sb-money-no-decimals', amount: hero_selected_variant.compare_at_price, currency: hero_currency_code, context: 'storefront' %}
-        </p>
-        <p class="sb-product-page-hero__price sb-product-page-hero__price--current font-body weight-regular" data-product-hero-current-price>
-          {% render 'sb-money-no-decimals', amount: hero_selected_variant.price, currency: hero_currency_code, context: 'storefront' %}
-        </p>
-      </div>
+          <p
+            class="sb-product-page-hero__price sb-product-page-hero__price--compare font-body weight-regular"
+            data-product-hero-compare-price
+            {% unless hero_has_compare_price %}
+              hidden
+            {% endunless %}
+          >
+            {% render 'sb-money-no-decimals', amount: hero_selected_variant.compare_at_price, currency: hero_currency_code, context: 'storefront' %}
+          </p>
+          <p class="sb-product-page-hero__price sb-product-page-hero__price--current font-body weight-regular" data-product-hero-current-price>
+            {% render 'sb-money-no-decimals', amount: hero_selected_variant.price, currency: hero_currency_code, context: 'storefront' %}
+          </p>
+        </div>
+      {% endif %}
 
       {% if hero_has_linked_videos %}
         <div class="sb-product-page-hero__actions">
@@ -442,6 +509,16 @@
             size: 'large',
             icon_position: 'trailing',
             extra_class: 'sb-product-page-hero__watch-video-button font-caption weight-bold'
+          %}
+        </div>
+      {% elsif hero_show_button and hero_button_label != blank and hero_button_link != blank %}
+        <div class="sb-product-page-hero__actions">
+          {% render 'radiant-button',
+            label: hero_button_label,
+            link: hero_button_link,
+            size: 'large',
+            icon_position: 'trailing',
+            extra_class: 'sb-product-page-hero__manual-button font-caption weight-bold'
           %}
         </div>
       {% endif %}
@@ -458,6 +535,7 @@
       if (!heroRoot) return;
 
       const priceRoot = heroRoot.querySelector('[data-product-hero-price-root]');
+      if (!priceRoot) return;
       const comparePriceElement = heroRoot.querySelector('[data-product-hero-compare-price]');
       const currentPriceElement = heroRoot.querySelector('[data-product-hero-current-price]');
       const watchVideoButton = heroRoot.querySelector('.sb-product-page-hero__watch-video-button');
@@ -715,6 +793,20 @@
     text-wrap: balance;
   }
 
+  .sb-product-page-hero__subheadline {
+    color: var(--sb-color-neutral-900);
+    margin: 20px 0 0;
+    text-wrap: balance;
+  }
+
+  .sb-product-page-hero__subheadline > * {
+    margin: 0;
+  }
+
+  .sb-product-page-hero__subheadline > * + * {
+    margin-top: 20px;
+  }
+
   .sb-product-page-hero__tagline .metafield-single_line_text_field {
     text-wrap: balance;
   }
@@ -787,6 +879,10 @@
       z-index: 2;
     }
 
+    .sb-product-page-hero--manual .sb-product-page-hero__content {
+      padding-left: var(--sb-space-64);
+    }
+
     .sb-product-page-hero__actions {
       justify-content: flex-start;
     }
@@ -848,7 +944,71 @@
 {% schema %}
 {
   "name": "Product page hero",
-  "settings": [],
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_resource_title_description",
+      "label": "Use Shopify page title and description",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "media",
+      "label": "Media desktop",
+      "info": "Target minimum 1240x600 at 2x export (2480x1200)."
+    },
+    {
+      "type": "image_picker",
+      "id": "media_mobile",
+      "label": "Media mobile",
+      "info": "Target minimum 402x369 at 3x export (1206x1107)."
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Headline",
+      "default": "Title",
+      "visible_if": "{{ section.settings.use_resource_title_description == false }}"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker",
+      "visible_if": "{{ section.settings.use_resource_title_description == false }}"
+    },
+    {
+      "type": "textarea",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Tagline",
+      "visible_if": "{{ section.settings.use_resource_title_description == false }}"
+    },
+    {
+      "type": "richtext",
+      "id": "subheadline",
+      "label": "Subheadline",
+      "default": "<p>Subheadline.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button",
+      "label": "Show button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Button",
+      "visible_if": "{{ section.settings.show_button }}"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "visible_if": "{{ section.settings.show_button }}"
+    }
+  ],
   "presets": [
     {
       "name": "Product page hero"

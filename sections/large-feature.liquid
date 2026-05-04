@@ -243,6 +243,17 @@
                   image_size: '1240x',
                   preload: 'metadata'
               }}
+            {% elsif section.settings.media_video_url != blank %}
+              <video
+                class="sb-large-feature__media-video"
+                autoplay
+                loop
+                muted
+                playsinline
+                preload="metadata"
+              >
+                <source src="{{ section.settings.media_video_url | escape }}" type="video/mp4">
+              </video>
             {% elsif section.settings.media != blank %}
               {{
                 section.settings.media
@@ -567,6 +578,12 @@
       "id": "media_video",
       "label": "Video",
       "info": "Target minimum 620x554 at 2x export (1240x1108). If both are set, Video is shown."
+    },
+    {
+      "type": "url",
+      "id": "media_video_url",
+      "label": "Video URL",
+      "info": "Use only for existing Shopify-hosted video URLs when the picker reference is unavailable."
     },
     {
       "type": "checkbox",
