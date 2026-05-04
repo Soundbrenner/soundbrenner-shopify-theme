@@ -458,6 +458,14 @@
       "page_title": "パスワードで保護されています",
       "message_fallback": "パスワードを入力してストアに進んでください。",
       "store_owner_html": "ストアオーナーの方ですか？<a href=\"{{ link }}\">こちらからログイン</a>"
+    },
+    "partnership_password": {
+      "access_help_html": "パスワードをお持ちでなく、アクセス権があると思う場合は、<a href=\"{{ link }}\">{{ email }}</a> にメールしてください",
+      "description": "非公開の製品コラボレーションアイデアです。パスワードを入力して表示してください。",
+      "enter": "入力",
+      "error": "パスワードが間違っています",
+      "password_label": "パスワード",
+      "title": "ティム・ヘンソン x Soundbrenner"
     }
   },
   "shopify": {

@@ -458,6 +458,14 @@
       "page_title": "受密码保护",
       "message_fallback": "请输入密码以继续访问商店。",
       "store_owner_html": "店主？<a href=\"{{ link }}\">在这里登录</a>"
+    },
+    "partnership_password": {
+      "access_help_html": "如果你没有密码，但认为你应该有权限，请发送邮件至<a href=\"{{ link }}\">{{ email }}</a>",
+      "description": "一个私密的产品合作创意。请输入密码查看。",
+      "enter": "输入",
+      "error": "密码错误",
+      "password_label": "密码",
+      "title": "Tim Henson x Soundbrenner"
     }
   },
   "shopify": {
