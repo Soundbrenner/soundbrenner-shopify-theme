@@ -1,6 +1,7 @@
 {% liquid
   assign use_product_metaobjects = section.settings.use_product_metaobjects
   assign section_title = blank
+  assign section_subtitle = blank
   assign hide_section = false
   assign section_items = blank
   assign manual_has_items = false
@@ -20,6 +21,10 @@
     endif
   else
     assign section_title = section.settings.title
+    assign section_subtitle = section.settings.subtitle
+    if section_subtitle == '<p>Expert testimonials subtitle.</p>'
+      assign section_subtitle = blank
+    endif
 
     for block in section.blocks
       assign block_testimonial = block.settings.testimonial.value | default: block.settings.testimonial.reference.value | default: block.settings.testimonial.reference | default: block.settings.testimonial
@@ -54,9 +59,9 @@
     {% if section_title != blank %}
       <h2 class="sb-expert-testimonials-carousel__title font-title weight-bold">{{ section_title }}</h2>
     {% endif %}
-    {% if section.settings.subtitle != blank and use_product_metaobjects == false %}
+    {% if section_subtitle != blank and use_product_metaobjects == false %}
       <div class="sb-expert-testimonials-carousel__subtitle font-body weight-bold rte">
-        {{ section.settings.subtitle }}
+        {{ section_subtitle }}
       </div>
     {% endif %}
 
@@ -390,7 +395,6 @@
       "type": "richtext",
       "id": "subtitle",
       "label": "Subtitle",
-      "default": "<p>Expert testimonials subtitle.</p>",
       "visible_if": "{{ section.settings.use_product_metaobjects == false }}"
     }
   ],
