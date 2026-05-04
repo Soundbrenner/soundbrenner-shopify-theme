@@ -233,7 +233,8 @@
       "name": "Expert testimonials",
       "settings": {
         "use_product_metaobjects": false,
-        "title": "Worn by the best"
+        "title": "Worn by the best",
+        "subtitle": ""
       }
     },
     "hero_card_d8GepA": {
