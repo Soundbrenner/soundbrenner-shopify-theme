@@ -1,0 +1,1692 @@
+- generic [active] [ref=e1]:
+  - alertdialog "Cookie consent" [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - heading "Cookie consent" [level=2] [ref=e5]
+        - paragraph [ref=e6]:
+          - text: We and our partners, including Shopify, use cookies and other technologies to personalize your experience, show you ads, and perform analytics, and we will not use cookies or other technologies for these purposes unless you accept them. Learn more in our
+          - link "Privacy Policy" [ref=e7] [cursor=pointer]:
+            - /url: https://www.soundbrenner.com/policies/privacy-policy
+      - generic [ref=e8]:
+        - button "Manage preferences" [ref=e9] [cursor=pointer]:
+          - generic [ref=e10]: Manage preferences
+        - button "Accept" [ref=e11] [cursor=pointer]
+        - button "Decline" [ref=e12] [cursor=pointer]
+  - generic [ref=e13]:
+    - paragraph [ref=e19]: "12th Anniversary Sale: 15% off & free shipping in United States over $89 USD"
+    - generic [ref=e20]:
+      - generic [ref=e22]:
+        - link "Soundbrenner" [ref=e23] [cursor=pointer]:
+          - /url: /
+          - img [ref=e25]
+        - navigation "Primary" [ref=e47]:
+          - generic [ref=e48]:
+            - link "In-ear monitors" [ref=e49] [cursor=pointer]:
+              - /url: /collections/in-ear-monitors
+            - generic "In-ear monitors":
+              - generic:
+                - generic:
+                  - link "In-ear monitors":
+                    - /url: /collections/in-ear-monitors
+                  - generic:
+                    - article:
+                      - link "Bestseller Wave in-ear monitors":
+                        - /url: /products/wave-in-ear-monitors
+                        - generic: Bestseller
+                        - img "Wave in-ear monitors"
+                      - paragraph:
+                        - link "Wave in-ear monitors":
+                          - /url: /products/wave-in-ear-monitors
+                      - paragraph: Crystal clear sound. Unbeatable value.
+                      - list:
+                        - listitem:
+                          - link "Accessories":
+                            - /url: /collections/wave-in-ear-monitors
+                    - article:
+                      - link "New Wave Pro in-ear monitors":
+                        - /url: /products/wave-pro-in-ear-monitors
+                        - generic: New
+                        - img "Wave Pro in-ear monitors"
+                      - paragraph:
+                        - link "Wave Pro in-ear monitors":
+                          - /url: /products/wave-pro-in-ear-monitors
+                      - paragraph: No compromises. Every note, perfected.
+                      - list:
+                        - listitem:
+                          - link "Accessories":
+                            - /url: /collections/wave-pro-in-ear-monitors
+                    - article:
+                      - link "Compare in-ear monitors":
+                        - /url: /pages/compare-in-ear-monitors
+                        - img "Compare in-ear monitors"
+                      - paragraph:
+                        - link "Compare in-ear monitors":
+                          - /url: /pages/compare-in-ear-monitors
+                      - paragraph: Which one is right for you?
+          - generic [ref=e50]:
+            - link "Wearables" [ref=e51] [cursor=pointer]:
+              - /url: /collections/wearables
+            - generic "Wearables":
+              - generic:
+                - generic:
+                  - link "Wearables":
+                    - /url: /collections/wearables
+                  - generic:
+                    - article:
+                      - link "Bestseller Pulse vibrating metronome":
+                        - /url: /products/pulse-vibrating-metronome
+                        - generic: Bestseller
+                        - img "Pulse vibrating metronome"
+                      - paragraph:
+                        - link "Pulse vibrating metronome":
+                          - /url: /products/pulse-vibrating-metronome
+                      - paragraph: Don't hear it. Feel it.
+                      - list:
+                        - listitem:
+                          - link "Accessories":
+                            - /url: /collections/pulse-vibrating-metronome
+                    - article:
+                      - link "Core 2 practice companion":
+                        - /url: /products/core-2-practice-companion
+                        - img "Core 2 practice companion"
+                      - paragraph:
+                        - link "Core 2 practice companion":
+                          - /url: /products/core-2-practice-companion
+                      - paragraph: Make music practice addictive. Reach your musical goals.
+                      - list:
+                        - listitem:
+                          - link "Accessories":
+                            - /url: /collections/core-2-practice-companion
+                    - article:
+                      - link "New Spark practice companion":
+                        - /url: /products/spark-practice-companion
+                        - generic: New
+                        - img "Spark practice companion"
+                      - paragraph:
+                        - link "Spark practice companion":
+                          - /url: /products/spark-practice-companion
+                      - paragraph: Practice that feels like play. Made for young musicians.
+                      - list:
+                        - listitem:
+                          - link "Accessories":
+                            - /url: /collections/spark-practice-companion
+                    - article:
+                      - link "Compare wearables":
+                        - /url: /pages/compare-wearables
+                        - img "Compare wearables"
+                      - paragraph:
+                        - link "Compare wearables":
+                          - /url: /pages/compare-wearables
+                      - paragraph: Which one is right for you?
+          - generic [ref=e52]:
+            - link "Earplugs" [ref=e53] [cursor=pointer]:
+              - /url: /collections/minuendo-earplugs
+            - generic "Earplugs":
+              - generic:
+                - generic:
+                  - link "Earplugs":
+                    - /url: /collections/minuendo-earplugs
+                  - generic:
+                    - article:
+                      - link "Bestseller Minuendo earplugs":
+                        - /url: /products/minuendo-earplugs
+                        - generic: Bestseller
+                        - img "Minuendo earplugs"
+                      - paragraph:
+                        - link "Minuendo earplugs":
+                          - /url: /products/minuendo-earplugs
+                      - paragraph: Adjustable noise reduction. Natural sound clarity.
+                      - list:
+                        - listitem:
+                          - link "Accessories":
+                            - /url: /collections/minuendo-earplugs
+          - generic [ref=e54]:
+            - link "More products" [ref=e55] [cursor=pointer]:
+              - /url: /collections/more-products
+            - generic "More products":
+              - generic:
+                - generic:
+                  - link "More products":
+                    - /url: /collections/more-products
+                  - generic:
+                    - article:
+                      - link "The Metronome app":
+                        - /url: /pages/the-metronome-app
+                        - img "The Metronome app"
+                      - paragraph:
+                        - link "The Metronome app":
+                          - /url: /pages/the-metronome-app
+                      - generic:
+                        - paragraph:
+                          - generic: "4.7"
+                        - paragraph: 210K+ ratings
+                        - generic:
+                          - link "Download on the App Store":
+                            - /url: https://apps.apple.com/us/app/the-metronome-by-soundbrenner/id1048954353
+                            - img "Download on the App Store"
+                          - link "Download on Google Play":
+                            - /url: https://play.google.com/store/apps/details?id=com.soundbrenner.pulse
+                            - img "Download on Google Play"
+                    - article:
+                      - link "Music tech":
+                        - /url: /collections/music-tech
+                        - img "Music tech"
+                      - paragraph:
+                        - link "Music tech":
+                          - /url: /collections/music-tech
+                      - paragraph: Innovative gear curated by Soundbrenner for you.
+                      - list:
+                        - listitem:
+                          - link "Stomp foot pedal":
+                            - /url: /products/stomp-foot-pedal
+                        - listitem:
+                          - link "Flow microphone":
+                            - /url: /products/flow-microphone
+                        - listitem:
+                          - link "Genki Wave MIDI ring":
+                            - /url: /products/genki-wave-midi-ring
+                    - article:
+                      - link "Playtronica MIDI instruments":
+                        - /url: /collections/playtronica-midi-instruments
+                        - img "Playtronica MIDI instruments"
+                      - paragraph:
+                        - link "Playtronica MIDI instruments":
+                          - /url: /collections/playtronica-midi-instruments
+                      - paragraph: Turn objects into instruments.
+                      - list:
+                        - listitem:
+                          - link "Playtron MIDI instrument":
+                            - /url: /products/playtron-midi-instrument
+                        - listitem:
+                          - link "TouchMe MIDI instrument":
+                            - /url: /products/touchme-midi-instrument
+                    - article:
+                      - link "Merch":
+                        - /url: /collections/merch
+                        - img "Merch"
+                      - paragraph:
+                        - link "Merch":
+                          - /url: /collections/merch
+                      - paragraph: Level up your swag.
+                      - list:
+                        - listitem:
+                          - link "Gift card":
+                            - /url: /products/gift-card
+          - link "Support" [ref=e57] [cursor=pointer]:
+            - /url: /pages/support
+        - generic [ref=e58]:
+          - generic [ref=e59]:
+            - button "Region selector" [ref=e60] [cursor=pointer]
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - img
+                          - combobox "Search":
+                            - listbox:
+                              - list:
+                                - option "Australia":
+                                  - generic:
+                                    - img
+                                  - generic: Australia
+                                  - generic: AUD $
+                                - option "Canada":
+                                  - generic:
+                                    - img
+                                  - generic: Canada
+                                  - generic: CAD $
+                                - option "United Kingdom":
+                                  - generic:
+                                    - img
+                                  - generic: United Kingdom
+                                  - generic: GBP £
+                                - option "United States":
+                                  - generic:
+                                    - img
+                                  - generic: United States
+                                  - generic: USD $
+                              - list:
+                                - option "Afghanistan":
+                                  - generic:
+                                    - img
+                                  - generic: Afghanistan
+                                  - generic: AFN ؋
+                                - option "Åland Islands":
+                                  - generic:
+                                    - img
+                                  - generic: Åland Islands
+                                  - generic: EUR €
+                                - option "Albania":
+                                  - generic:
+                                    - img
+                                  - generic: Albania
+                                  - generic: EUR €
+                                - option "Algeria":
+                                  - generic:
+                                    - img
+                                  - generic: Algeria
+                                  - generic: DZD د.ج
+                                - option "Andorra":
+                                  - generic:
+                                    - img
+                                  - generic: Andorra
+                                  - generic: EUR €
+                                - option "Angola":
+                                  - generic:
+                                    - img
+                                  - generic: Angola
+                                  - generic: USD $
+                                - option "Anguilla":
+                                  - generic:
+                                    - img
+                                  - generic: Anguilla
+                                  - generic: XCD $
+                                - option "Antigua & Barbuda":
+                                  - generic:
+                                    - img
+                                  - generic: Antigua & Barbuda
+                                  - generic: XCD $
+                                - option "Argentina":
+                                  - generic:
+                                    - img
+                                  - generic: Argentina
+                                  - generic: USD $
+                                - option "Armenia":
+                                  - generic:
+                                    - img
+                                  - generic: Armenia
+                                  - generic: AMD դր.
+                                - option "Aruba":
+                                  - generic:
+                                    - img
+                                  - generic: Aruba
+                                  - generic: AWG ƒ
+                                - option "Ascension Island":
+                                  - generic:
+                                    - img
+                                  - generic: Ascension Island
+                                  - generic: GBP £
+                                - option "Australia":
+                                  - generic:
+                                    - img
+                                  - generic: Australia
+                                  - generic: AUD $
+                                - option "Austria":
+                                  - generic:
+                                    - img
+                                  - generic: Austria
+                                  - generic: EUR €
+                                - option "Azerbaijan":
+                                  - generic:
+                                    - img
+                                  - generic: Azerbaijan
+                                  - generic: AZN ₼
+                                - option "Bahamas":
+                                  - generic:
+                                    - img
+                                  - generic: Bahamas
+                                  - generic: BSD $
+                                - option "Bahrain":
+                                  - generic:
+                                    - img
+                                  - generic: Bahrain
+                                  - generic: USD $
+                                - option "Bangladesh":
+                                  - generic:
+                                    - img
+                                  - generic: Bangladesh
+                                  - generic: BDT ৳
+                                - option "Barbados":
+                                  - generic:
+                                    - img
+                                  - generic: Barbados
+                                  - generic: BBD $
+                                - option "Belarus":
+                                  - generic:
+                                    - img
+                                  - generic: Belarus
+                                  - generic: USD $
+                                - option "Belgium":
+                                  - generic:
+                                    - img
+                                  - generic: Belgium
+                                  - generic: EUR €
+                                - option "Belize":
+                                  - generic:
+                                    - img
+                                  - generic: Belize
+                                  - generic: BZD $
+                                - option "Benin":
+                                  - generic:
+                                    - img
+                                  - generic: Benin
+                                  - generic: XOF Fr
+                                - option "Bermuda":
+                                  - generic:
+                                    - img
+                                  - generic: Bermuda
+                                  - generic: GBP £
+                                - option "Bhutan":
+                                  - generic:
+                                    - img
+                                  - generic: Bhutan
+                                  - generic: USD $
+                                - option "Bolivia":
+                                  - generic:
+                                    - img
+                                  - generic: Bolivia
+                                  - generic: BOB Bs.
+                                - option "Bosnia & Herzegovina":
+                                  - generic:
+                                    - img
+                                  - generic: Bosnia & Herzegovina
+                                  - generic: EUR €
+                                - option "Botswana":
+                                  - generic:
+                                    - img
+                                  - generic: Botswana
+                                  - generic: BWP P
+                                - option "Brazil":
+                                  - generic:
+                                    - img
+                                  - generic: Brazil
+                                  - generic: USD $
+                                - option "British Indian Ocean Territory":
+                                  - generic:
+                                    - img
+                                  - generic: British Indian Ocean Territory
+                                  - generic: USD $
+                                - option "British Virgin Islands":
+                                  - generic:
+                                    - img
+                                  - generic: British Virgin Islands
+                                  - generic: GBP £
+                                - option "Brunei":
+                                  - generic:
+                                    - img
+                                  - generic: Brunei
+                                  - generic: BND $
+                                - option "Bulgaria":
+                                  - generic:
+                                    - img
+                                  - generic: Bulgaria
+                                  - generic: EUR €
+                                - option "Burkina Faso":
+                                  - generic:
+                                    - img
+                                  - generic: Burkina Faso
+                                  - generic: XOF Fr
+                                - option "Burundi":
+                                  - generic:
+                                    - img
+                                  - generic: Burundi
+                                  - generic: BIF Fr
+                                - option "Cambodia":
+                                  - generic:
+                                    - img
+                                  - generic: Cambodia
+                                  - generic: KHR ៛
+                                - option "Cameroon":
+                                  - generic:
+                                    - img
+                                  - generic: Cameroon
+                                  - generic: XAF CFA
+                                - option "Canada":
+                                  - generic:
+                                    - img
+                                  - generic: Canada
+                                  - generic: CAD $
+                                - option "Cape Verde":
+                                  - generic:
+                                    - img
+                                  - generic: Cape Verde
+                                  - generic: CVE $
+                                - option "Caribbean Netherlands":
+                                  - generic:
+                                    - img
+                                  - generic: Caribbean Netherlands
+                                  - generic: USD $
+                                - option "Cayman Islands":
+                                  - generic:
+                                    - img
+                                  - generic: Cayman Islands
+                                  - generic: GBP £
+                                - option "Central African Republic":
+                                  - generic:
+                                    - img
+                                  - generic: Central African Republic
+                                  - generic: XAF CFA
+                                - option "Chad":
+                                  - generic:
+                                    - img
+                                  - generic: Chad
+                                  - generic: XAF CFA
+                                - option "Chile":
+                                  - generic:
+                                    - img
+                                  - generic: Chile
+                                  - generic: USD $
+                                - option "China":
+                                  - generic:
+                                    - img
+                                  - generic: China
+                                  - generic: CNY ¥
+                                - option "Christmas Island":
+                                  - generic:
+                                    - img
+                                  - generic: Christmas Island
+                                  - generic: AUD $
+                                - option "Cocos (Keeling) Islands":
+                                  - generic:
+                                    - img
+                                  - generic: Cocos (Keeling) Islands
+                                  - generic: AUD $
+                                - option "Colombia":
+                                  - generic:
+                                    - img
+                                  - generic: Colombia
+                                  - generic: USD $
+                                - option "Comoros":
+                                  - generic:
+                                    - img
+                                  - generic: Comoros
+                                  - generic: KMF Fr
+                                - option "Congo - Brazzaville":
+                                  - generic:
+                                    - img
+                                  - generic: Congo - Brazzaville
+                                  - generic: XAF CFA
+                                - option "Congo - Kinshasa":
+                                  - generic:
+                                    - img
+                                  - generic: Congo - Kinshasa
+                                  - generic: CDF Fr
+                                - option "Cook Islands":
+                                  - generic:
+                                    - img
+                                  - generic: Cook Islands
+                                  - generic: NZD $
+                                - option "Costa Rica":
+                                  - generic:
+                                    - img
+                                  - generic: Costa Rica
+                                  - generic: CRC ₡
+                                - option "Côte d’Ivoire":
+                                  - generic:
+                                    - img
+                                  - generic: Côte d’Ivoire
+                                  - generic: XOF Fr
+                                - option "Croatia":
+                                  - generic:
+                                    - img
+                                  - generic: Croatia
+                                  - generic: EUR €
+                                - option "Curaçao":
+                                  - generic:
+                                    - img
+                                  - generic: Curaçao
+                                  - generic: ANG ƒ
+                                - option "Cyprus":
+                                  - generic:
+                                    - img
+                                  - generic: Cyprus
+                                  - generic: EUR €
+                                - option "Czechia":
+                                  - generic:
+                                    - img
+                                  - generic: Czechia
+                                  - generic: EUR €
+                                - option "Denmark":
+                                  - generic:
+                                    - img
+                                  - generic: Denmark
+                                  - generic: EUR €
+                                - option "Djibouti":
+                                  - generic:
+                                    - img
+                                  - generic: Djibouti
+                                  - generic: DJF Fdj
+                                - option "Dominica":
+                                  - generic:
+                                    - img
+                                  - generic: Dominica
+                                  - generic: XCD $
+                                - option "Dominican Republic":
+                                  - generic:
+                                    - img
+                                  - generic: Dominican Republic
+                                  - generic: DOP $
+                                - option "Ecuador":
+                                  - generic:
+                                    - img
+                                  - generic: Ecuador
+                                  - generic: USD $
+                                - option "Egypt":
+                                  - generic:
+                                    - img
+                                  - generic: Egypt
+                                  - generic: EGP ج.م
+                                - option "El Salvador":
+                                  - generic:
+                                    - img
+                                  - generic: El Salvador
+                                  - generic: USD $
+                                - option "Equatorial Guinea":
+                                  - generic:
+                                    - img
+                                  - generic: Equatorial Guinea
+                                  - generic: XAF CFA
+                                - option "Eritrea":
+                                  - generic:
+                                    - img
+                                  - generic: Eritrea
+                                  - generic: USD $
+                                - option "Estonia":
+                                  - generic:
+                                    - img
+                                  - generic: Estonia
+                                  - generic: EUR €
+                                - option "Eswatini":
+                                  - generic:
+                                    - img
+                                  - generic: Eswatini
+                                  - generic: USD $
+                                - option "Ethiopia":
+                                  - generic:
+                                    - img
+                                  - generic: Ethiopia
+                                  - generic: ETB Br
+                                - option "Falkland Islands":
+                                  - generic:
+                                    - img
+                                  - generic: Falkland Islands
+                                  - generic: GBP £
+                                - option "Faroe Islands":
+                                  - generic:
+                                    - img
+                                  - generic: Faroe Islands
+                                  - generic: EUR €
+                                - option "Fiji":
+                                  - generic:
+                                    - img
+                                  - generic: Fiji
+                                  - generic: FJD $
+                                - option "Finland":
+                                  - generic:
+                                    - img
+                                  - generic: Finland
+                                  - generic: EUR €
+                                - option "France":
+                                  - generic:
+                                    - img
+                                  - generic: France
+                                  - generic: EUR €
+                                - option "French Guiana":
+                                  - generic:
+                                    - img
+                                  - generic: French Guiana
+                                  - generic: EUR €
+                                - option "French Polynesia":
+                                  - generic:
+                                    - img
+                                  - generic: French Polynesia
+                                  - generic: EUR €
+                                - option "French Southern Territories":
+                                  - generic:
+                                    - img
+                                  - generic: French Southern Territories
+                                  - generic: EUR €
+                                - option "Gabon":
+                                  - generic:
+                                    - img
+                                  - generic: Gabon
+                                  - generic: XOF Fr
+                                - option "Gambia":
+                                  - generic:
+                                    - img
+                                  - generic: Gambia
+                                  - generic: GMD D
+                                - option "Georgia":
+                                  - generic:
+                                    - img
+                                  - generic: Georgia
+                                  - generic: USD $
+                                - option "Germany":
+                                  - generic:
+                                    - img
+                                  - generic: Germany
+                                  - generic: EUR €
+                                - option "Ghana":
+                                  - generic:
+                                    - img
+                                  - generic: Ghana
+                                  - generic: USD $
+                                - option "Gibraltar":
+                                  - generic:
+                                    - img
+                                  - generic: Gibraltar
+                                  - generic: GBP £
+                                - option "Greece":
+                                  - generic:
+                                    - img
+                                  - generic: Greece
+                                  - generic: EUR €
+                                - option "Greenland":
+                                  - generic:
+                                    - img
+                                  - generic: Greenland
+                                  - generic: EUR €
+                                - option "Grenada":
+                                  - generic:
+                                    - img
+                                  - generic: Grenada
+                                  - generic: XCD $
+                                - option "Guadeloupe":
+                                  - generic:
+                                    - img
+                                  - generic: Guadeloupe
+                                  - generic: EUR €
+                                - option "Guatemala":
+                                  - generic:
+                                    - img
+                                  - generic: Guatemala
+                                  - generic: GTQ Q
+                                - option "Guernsey":
+                                  - generic:
+                                    - img
+                                  - generic: Guernsey
+                                  - generic: GBP £
+                                - option "Guinea":
+                                  - generic:
+                                    - img
+                                  - generic: Guinea
+                                  - generic: GNF Fr
+                                - option "Guinea-Bissau":
+                                  - generic:
+                                    - img
+                                  - generic: Guinea-Bissau
+                                  - generic: XOF Fr
+                                - option "Guyana":
+                                  - generic:
+                                    - img
+                                  - generic: Guyana
+                                  - generic: GYD $
+                                - option "Haiti":
+                                  - generic:
+                                    - img
+                                  - generic: Haiti
+                                  - generic: USD $
+                                - option "Honduras":
+                                  - generic:
+                                    - img
+                                  - generic: Honduras
+                                  - generic: HNL L
+                                - option "Hong Kong SAR":
+                                  - generic:
+                                    - img
+                                  - generic: Hong Kong SAR
+                                  - generic: HKD $
+                                - option "Hungary":
+                                  - generic:
+                                    - img
+                                  - generic: Hungary
+                                  - generic: EUR €
+                                - option "Iceland":
+                                  - generic:
+                                    - img
+                                  - generic: Iceland
+                                  - generic: EUR €
+                                - option "India":
+                                  - generic:
+                                    - img
+                                  - generic: India
+                                  - generic: INR ₹
+                                - option "Indonesia":
+                                  - generic:
+                                    - img
+                                  - generic: Indonesia
+                                  - generic: IDR Rp
+                                - option "Iraq":
+                                  - generic:
+                                    - img
+                                  - generic: Iraq
+                                  - generic: USD $
+                                - option "Ireland":
+                                  - generic:
+                                    - img
+                                  - generic: Ireland
+                                  - generic: EUR €
+                                - option "Isle of Man":
+                                  - generic:
+                                    - img
+                                  - generic: Isle of Man
+                                  - generic: GBP £
+                                - option "Israel":
+                                  - generic:
+                                    - img
+                                  - generic: Israel
+                                  - generic: ILS ₪
+                                - option "Italy":
+                                  - generic:
+                                    - img
+                                  - generic: Italy
+                                  - generic: EUR €
+                                - option "Jamaica":
+                                  - generic:
+                                    - img
+                                  - generic: Jamaica
+                                  - generic: JMD $
+                                - option "Japan":
+                                  - generic:
+                                    - img
+                                  - generic: Japan
+                                  - generic: JPY ¥
+                                - option "Jersey":
+                                  - generic:
+                                    - img
+                                  - generic: Jersey
+                                  - generic: GBP £
+                                - option "Jordan":
+                                  - generic:
+                                    - img
+                                  - generic: Jordan
+                                  - generic: USD $
+                                - option "Kazakhstan":
+                                  - generic:
+                                    - img
+                                  - generic: Kazakhstan
+                                  - generic: KZT ₸
+                                - option "Kenya":
+                                  - generic:
+                                    - img
+                                  - generic: Kenya
+                                  - generic: KES KSh
+                                - option "Kiribati":
+                                  - generic:
+                                    - img
+                                  - generic: Kiribati
+                                  - generic: USD $
+                                - option "Kosovo":
+                                  - generic:
+                                    - img
+                                  - generic: Kosovo
+                                  - generic: EUR €
+                                - option "Kuwait":
+                                  - generic:
+                                    - img
+                                  - generic: Kuwait
+                                  - generic: USD $
+                                - option "Kyrgyzstan":
+                                  - generic:
+                                    - img
+                                  - generic: Kyrgyzstan
+                                  - generic: KGS som
+                                - option "Laos":
+                                  - generic:
+                                    - img
+                                  - generic: Laos
+                                  - generic: LAK ₭
+                                - option "Latvia":
+                                  - generic:
+                                    - img
+                                  - generic: Latvia
+                                  - generic: EUR €
+                                - option "Lebanon":
+                                  - generic:
+                                    - img
+                                  - generic: Lebanon
+                                  - generic: LBP ل.ل
+                                - option "Lesotho":
+                                  - generic:
+                                    - img
+                                  - generic: Lesotho
+                                  - generic: USD $
+                                - option "Liberia":
+                                  - generic:
+                                    - img
+                                  - generic: Liberia
+                                  - generic: USD $
+                                - option "Libya":
+                                  - generic:
+                                    - img
+                                  - generic: Libya
+                                  - generic: USD $
+                                - option "Liechtenstein":
+                                  - generic:
+                                    - img
+                                  - generic: Liechtenstein
+                                  - generic: CHF CHF
+                                - option "Lithuania":
+                                  - generic:
+                                    - img
+                                  - generic: Lithuania
+                                  - generic: EUR €
+                                - option "Luxembourg":
+                                  - generic:
+                                    - img
+                                  - generic: Luxembourg
+                                  - generic: EUR €
+                                - option "Macao SAR":
+                                  - generic:
+                                    - img
+                                  - generic: Macao SAR
+                                  - generic: MOP P
+                                - option "Madagascar":
+                                  - generic:
+                                    - img
+                                  - generic: Madagascar
+                                  - generic: USD $
+                                - option "Malawi":
+                                  - generic:
+                                    - img
+                                  - generic: Malawi
+                                  - generic: MWK MK
+                                - option "Malaysia":
+                                  - generic:
+                                    - img
+                                  - generic: Malaysia
+                                  - generic: MYR RM
+                                - option "Maldives":
+                                  - generic:
+                                    - img
+                                  - generic: Maldives
+                                  - generic: MVR MVR
+                                - option "Mali":
+                                  - generic:
+                                    - img
+                                  - generic: Mali
+                                  - generic: XOF Fr
+                                - option "Malta":
+                                  - generic:
+                                    - img
+                                  - generic: Malta
+                                  - generic: EUR €
+                                - option "Martinique":
+                                  - generic:
+                                    - img
+                                  - generic: Martinique
+                                  - generic: EUR €
+                                - option "Mauritania":
+                                  - generic:
+                                    - img
+                                  - generic: Mauritania
+                                  - generic: USD $
+                                - option "Mauritius":
+                                  - generic:
+                                    - img
+                                  - generic: Mauritius
+                                  - generic: MUR ₨
+                                - option "Mayotte":
+                                  - generic:
+                                    - img
+                                  - generic: Mayotte
+                                  - generic: EUR €
+                                - option "Mexico":
+                                  - generic:
+                                    - img
+                                  - generic: Mexico
+                                  - generic: MXN $
+                                - option "Moldova":
+                                  - generic:
+                                    - img
+                                  - generic: Moldova
+                                  - generic: EUR €
+                                - option "Monaco":
+                                  - generic:
+                                    - img
+                                  - generic: Monaco
+                                  - generic: EUR €
+                                - option "Mongolia":
+                                  - generic:
+                                    - img
+                                  - generic: Mongolia
+                                  - generic: MNT ₮
+                                - option "Montenegro":
+                                  - generic:
+                                    - img
+                                  - generic: Montenegro
+                                  - generic: EUR €
+                                - option "Montserrat":
+                                  - generic:
+                                    - img
+                                  - generic: Montserrat
+                                  - generic: XCD $
+                                - option "Morocco":
+                                  - generic:
+                                    - img
+                                  - generic: Morocco
+                                  - generic: MAD د.م.
+                                - option "Mozambique":
+                                  - generic:
+                                    - img
+                                  - generic: Mozambique
+                                  - generic: USD $
+                                - option "Myanmar (Burma)":
+                                  - generic:
+                                    - img
+                                  - generic: Myanmar (Burma)
+                                  - generic: MMK K
+                                - option "Namibia":
+                                  - generic:
+                                    - img
+                                  - generic: Namibia
+                                  - generic: USD $
+                                - option "Nauru":
+                                  - generic:
+                                    - img
+                                  - generic: Nauru
+                                  - generic: AUD $
+                                - option "Nepal":
+                                  - generic:
+                                    - img
+                                  - generic: Nepal
+                                  - generic: NPR Rs.
+                                - option "Netherlands":
+                                  - generic:
+                                    - img
+                                  - generic: Netherlands
+                                  - generic: EUR €
+                                - option "New Caledonia":
+                                  - generic:
+                                    - img
+                                  - generic: New Caledonia
+                                  - generic: EUR €
+                                - option "New Zealand":
+                                  - generic:
+                                    - img
+                                  - generic: New Zealand
+                                  - generic: NZD $
+                                - option "Nicaragua":
+                                  - generic:
+                                    - img
+                                  - generic: Nicaragua
+                                  - generic: NIO C$
+                                - option "Niger":
+                                  - generic:
+                                    - img
+                                  - generic: Niger
+                                  - generic: XOF Fr
+                                - option "Nigeria":
+                                  - generic:
+                                    - img
+                                  - generic: Nigeria
+                                  - generic: NGN ₦
+                                - option "Niue":
+                                  - generic:
+                                    - img
+                                  - generic: Niue
+                                  - generic: NZD $
+                                - option "Norfolk Island":
+                                  - generic:
+                                    - img
+                                  - generic: Norfolk Island
+                                  - generic: AUD $
+                                - option "North Macedonia":
+                                  - generic:
+                                    - img
+                                  - generic: North Macedonia
+                                  - generic: EUR €
+                                - option "Norway":
+                                  - generic:
+                                    - img
+                                  - generic: Norway
+                                  - generic: EUR €
+                                - option "Oman":
+                                  - generic:
+                                    - img
+                                  - generic: Oman
+                                  - generic: USD $
+                                - option "Pakistan":
+                                  - generic:
+                                    - img
+                                  - generic: Pakistan
+                                  - generic: PKR ₨
+                                - option "Palestinian Territories":
+                                  - generic:
+                                    - img
+                                  - generic: Palestinian Territories
+                                  - generic: ILS ₪
+                                - option "Panama":
+                                  - generic:
+                                    - img
+                                  - generic: Panama
+                                  - generic: USD $
+                                - option "Papua New Guinea":
+                                  - generic:
+                                    - img
+                                  - generic: Papua New Guinea
+                                  - generic: PGK K
+                                - option "Paraguay":
+                                  - generic:
+                                    - img
+                                  - generic: Paraguay
+                                  - generic: PYG ₲
+                                - option "Peru":
+                                  - generic:
+                                    - img
+                                  - generic: Peru
+                                  - generic: PEN S/
+                                - option "Philippines":
+                                  - generic:
+                                    - img
+                                  - generic: Philippines
+                                  - generic: PHP ₱
+                                - option "Pitcairn Islands":
+                                  - generic:
+                                    - img
+                                  - generic: Pitcairn Islands
+                                  - generic: NZD $
+                                - option "Poland":
+                                  - generic:
+                                    - img
+                                  - generic: Poland
+                                  - generic: EUR €
+                                - option "Portugal":
+                                  - generic:
+                                    - img
+                                  - generic: Portugal
+                                  - generic: EUR €
+                                - option "Qatar":
+                                  - generic:
+                                    - img
+                                  - generic: Qatar
+                                  - generic: QAR ر.ق
+                                - option "Réunion":
+                                  - generic:
+                                    - img
+                                  - generic: Réunion
+                                  - generic: EUR €
+                                - option "Romania":
+                                  - generic:
+                                    - img
+                                  - generic: Romania
+                                  - generic: EUR €
+                                - option "Russia":
+                                  - generic:
+                                    - img
+                                  - generic: Russia
+                                  - generic: USD $
+                                - option "Rwanda":
+                                  - generic:
+                                    - img
+                                  - generic: Rwanda
+                                  - generic: RWF FRw
+                                - option "Samoa":
+                                  - generic:
+                                    - img
+                                  - generic: Samoa
+                                  - generic: WST T
+                                - option "San Marino":
+                                  - generic:
+                                    - img
+                                  - generic: San Marino
+                                  - generic: EUR €
+                                - option "São Tomé & Príncipe":
+                                  - generic:
+                                    - img
+                                  - generic: São Tomé & Príncipe
+                                  - generic: STD Db
+                                - option "Saudi Arabia":
+                                  - generic:
+                                    - img
+                                  - generic: Saudi Arabia
+                                  - generic: SAR ر.س
+                                - option "Senegal":
+                                  - generic:
+                                    - img
+                                  - generic: Senegal
+                                  - generic: XOF Fr
+                                - option "Serbia":
+                                  - generic:
+                                    - img
+                                  - generic: Serbia
+                                  - generic: EUR €
+                                - option "Seychelles":
+                                  - generic:
+                                    - img
+                                  - generic: Seychelles
+                                  - generic: USD $
+                                - option "Sierra Leone":
+                                  - generic:
+                                    - img
+                                  - generic: Sierra Leone
+                                  - generic: SLL Le
+                                - option "Singapore":
+                                  - generic:
+                                    - img
+                                  - generic: Singapore
+                                  - generic: SGD $
+                                - option "Sint Maarten":
+                                  - generic:
+                                    - img
+                                  - generic: Sint Maarten
+                                  - generic: EUR €
+                                - option "Slovakia":
+                                  - generic:
+                                    - img
+                                  - generic: Slovakia
+                                  - generic: EUR €
+                                - option "Slovenia":
+                                  - generic:
+                                    - img
+                                  - generic: Slovenia
+                                  - generic: EUR €
+                                - option "Solomon Islands":
+                                  - generic:
+                                    - img
+                                  - generic: Solomon Islands
+                                  - generic: SBD $
+                                - option "Somalia":
+                                  - generic:
+                                    - img
+                                  - generic: Somalia
+                                  - generic: USD $
+                                - option "South Africa":
+                                  - generic:
+                                    - img
+                                  - generic: South Africa
+                                  - generic: USD $
+                                - option "South Georgia & South Sandwich Islands":
+                                  - generic:
+                                    - img
+                                  - generic: South Georgia & South Sandwich Islands
+                                  - generic: GBP £
+                                - option "South Korea":
+                                  - generic:
+                                    - img
+                                  - generic: South Korea
+                                  - generic: KRW ₩
+                                - option "South Sudan":
+                                  - generic:
+                                    - img
+                                  - generic: South Sudan
+                                  - generic: USD $
+                                - option "Spain":
+                                  - generic:
+                                    - img
+                                  - generic: Spain
+                                  - generic: EUR €
+                                - option "Sri Lanka":
+                                  - generic:
+                                    - img
+                                  - generic: Sri Lanka
+                                  - generic: LKR ₨
+                                - option "St. Barthélemy":
+                                  - generic:
+                                    - img
+                                  - generic: St. Barthélemy
+                                  - generic: EUR €
+                                - option "St. Helena":
+                                  - generic:
+                                    - img
+                                  - generic: St. Helena
+                                  - generic: GBP £
+                                - option "St. Kitts & Nevis":
+                                  - generic:
+                                    - img
+                                  - generic: St. Kitts & Nevis
+                                  - generic: XCD $
+                                - option "St. Lucia":
+                                  - generic:
+                                    - img
+                                  - generic: St. Lucia
+                                  - generic: XCD $
+                                - option "St. Martin":
+                                  - generic:
+                                    - img
+                                  - generic: St. Martin
+                                  - generic: EUR €
+                                - option "St. Pierre & Miquelon":
+                                  - generic:
+                                    - img
+                                  - generic: St. Pierre & Miquelon
+                                  - generic: EUR €
+                                - option "St. Vincent & Grenadines":
+                                  - generic:
+                                    - img
+                                  - generic: St. Vincent & Grenadines
+                                  - generic: XCD $
+                                - option "Sudan":
+                                  - generic:
+                                    - img
+                                  - generic: Sudan
+                                  - generic: USD $
+                                - option "Suriname":
+                                  - generic:
+                                    - img
+                                  - generic: Suriname
+                                  - generic: USD $
+                                - option "Svalbard & Jan Mayen":
+                                  - generic:
+                                    - img
+                                  - generic: Svalbard & Jan Mayen
+                                  - generic: EUR €
+                                - option "Sweden":
+                                  - generic:
+                                    - img
+                                  - generic: Sweden
+                                  - generic: EUR €
+                                - option "Switzerland":
+                                  - generic:
+                                    - img
+                                  - generic: Switzerland
+                                  - generic: CHF CHF
+                                - option "Taiwan":
+                                  - generic:
+                                    - img
+                                  - generic: Taiwan
+                                  - generic: TWD $
+                                - option "Tajikistan":
+                                  - generic:
+                                    - img
+                                  - generic: Tajikistan
+                                  - generic: TJS ЅМ
+                                - option "Tanzania":
+                                  - generic:
+                                    - img
+                                  - generic: Tanzania
+                                  - generic: TZS Sh
+                                - option "Thailand":
+                                  - generic:
+                                    - img
+                                  - generic: Thailand
+                                  - generic: THB ฿
+                                - option "Timor-Leste":
+                                  - generic:
+                                    - img
+                                  - generic: Timor-Leste
+                                  - generic: USD $
+                                - option "Togo":
+                                  - generic:
+                                    - img
+                                  - generic: Togo
+                                  - generic: XOF Fr
+                                - option "Tokelau":
+                                  - generic:
+                                    - img
+                                  - generic: Tokelau
+                                  - generic: NZD $
+                                - option "Tonga":
+                                  - generic:
+                                    - img
+                                  - generic: Tonga
+                                  - generic: TOP T$
+                                - option "Trinidad & Tobago":
+                                  - generic:
+                                    - img
+                                  - generic: Trinidad & Tobago
+                                  - generic: TTD $
+                                - option "Tristan da Cunha":
+                                  - generic:
+                                    - img
+                                  - generic: Tristan da Cunha
+                                  - generic: GBP £
+                                - option "Tunisia":
+                                  - generic:
+                                    - img
+                                  - generic: Tunisia
+                                  - generic: USD $
+                                - option "Türkiye":
+                                  - generic:
+                                    - img
+                                  - generic: Türkiye
+                                  - generic: USD $
+                                - option "Turkmenistan":
+                                  - generic:
+                                    - img
+                                  - generic: Turkmenistan
+                                  - generic: USD $
+                                - option "Turks & Caicos Islands":
+                                  - generic:
+                                    - img
+                                  - generic: Turks & Caicos Islands
+                                  - generic: USD $
+                                - option "Tuvalu":
+                                  - generic:
+                                    - img
+                                  - generic: Tuvalu
+                                  - generic: AUD $
+                                - option "U.S. Outlying Islands":
+                                  - generic:
+                                    - img
+                                  - generic: U.S. Outlying Islands
+                                  - generic: USD $
+                                - option "Uganda":
+                                  - generic:
+                                    - img
+                                  - generic: Uganda
+                                  - generic: UGX USh
+                                - option "Ukraine":
+                                  - generic:
+                                    - img
+                                  - generic: Ukraine
+                                  - generic: EUR €
+                                - option "United Arab Emirates":
+                                  - generic:
+                                    - img
+                                  - generic: United Arab Emirates
+                                  - generic: AED د.إ
+                                - option "United Kingdom":
+                                  - generic:
+                                    - img
+                                  - generic: United Kingdom
+                                  - generic: GBP £
+                                - option "United States":
+                                  - generic:
+                                    - img
+                                  - generic: United States
+                                  - generic: USD $
+                                - option "Uruguay":
+                                  - generic:
+                                    - img
+                                  - generic: Uruguay
+                                  - generic: UYU $U
+                                - option "Uzbekistan":
+                                  - generic:
+                                    - img
+                                  - generic: Uzbekistan
+                                  - generic: UZS so'm
+                                - option "Vanuatu":
+                                  - generic:
+                                    - img
+                                  - generic: Vanuatu
+                                  - generic: VUV Vt
+                                - option "Vatican City":
+                                  - generic:
+                                    - img
+                                  - generic: Vatican City
+                                  - generic: EUR €
+                                - option "Venezuela":
+                                  - generic:
+                                    - img
+                                  - generic: Venezuela
+                                  - generic: USD $
+                                - option "Vietnam":
+                                  - generic:
+                                    - img
+                                  - generic: Vietnam
+                                  - generic: VND ₫
+                                - option "Wallis & Futuna":
+                                  - generic:
+                                    - img
+                                  - generic: Wallis & Futuna
+                                  - generic: EUR €
+                                - option "Western Sahara":
+                                  - generic:
+                                    - img
+                                  - generic: Western Sahara
+                                  - generic: MAD د.م.
+                                - option "Yemen":
+                                  - generic:
+                                    - img
+                                  - generic: Yemen
+                                  - generic: YER ﷼
+                                - option "Zambia":
+                                  - generic:
+                                    - img
+                                  - generic: Zambia
+                                  - generic: USD $
+                                - option "Zimbabwe":
+                                  - generic:
+                                    - img
+                                  - generic: Zimbabwe
+                                  - generic: USD $
+                      - generic:
+                        - generic: Language
+                        - generic:
+                          - generic: English
+                          - combobox "Language":
+                            - option "English" [selected]
+                            - option "Deutsch"
+                            - option "简体中文"
+                            - option "Français"
+                            - option "Italiano"
+                            - option "日本語"
+                            - option "한국어"
+                            - option "Español"
+                          - generic:
+                            - img
+          - generic [ref=e62]:
+            - link "Search" [ref=e63] [cursor=pointer]:
+              - /url: /search
+              - img [ref=e65]
+            - generic "Account" [ref=e68]:
+              - button "Account" [ref=e71] [cursor=pointer]:
+                - img [ref=e73]
+            - button "Cart" [ref=e75] [cursor=pointer]:
+              - img [ref=e77]
+      - generic:
+        - option "English" [selected]
+        - option "Deutsch"
+        - option "简体中文"
+        - option "Français"
+        - option "Italiano"
+        - option "日本語"
+        - option "한국어"
+        - option "Español"
+        - button "Close menu"
+      - generic: $0 -$0 $0
+  - generic [ref=e80]:
+    - img "Tim Henson x Soundbrenner" [ref=e84]
+    - generic [ref=e85]:
+      - heading "Tim Henson x Soundbrenner" [level=1] [ref=e86]
+      - paragraph [ref=e88]:
+        - text: Prepared privately for Tim Henson. A proposal to design a
+        - strong [ref=e89]: signature in-ear monitor
+        - text: built around your sound and aesthetic.
+  - generic [ref=e92]:
+    - heading "The best don’t just use products, they shape them." [level=2] [ref=e93]
+    - paragraph [ref=e95]: No one has defined what a modern, design-led IEM looks like yet. This is our opportunity.
+    - generic [ref=e97]:
+      - article [ref=e98]:
+        - img "Atoms shoes" [ref=e100]
+        - paragraph [ref=e101]: Atoms shoes
+        - paragraph [ref=e102]: MKBHD
+      - article [ref=e103]:
+        - img "IM8 Health" [ref=e105]
+        - paragraph [ref=e106]: IM8 Health
+        - paragraph [ref=e107]: David Beckham
+      - article [ref=e108]:
+        - img "Loop earplugs" [ref=e110]
+        - paragraph [ref=e111]: Loop earplugs
+        - paragraph [ref=e112]: Lando Norris from McLaren Formula 1
+      - article [ref=e113]:
+        - img "Beats by Dre" [ref=e115]
+        - paragraph [ref=e116]: Beats by Dre
+        - paragraph [ref=e117]: Jennie Kim from BLACKPINK
+    - generic [ref=e118]:
+      - button "Previous" [disabled] [ref=e119]:
+        - img [ref=e121]
+      - button "Next" [ref=e124] [cursor=pointer]:
+        - img [ref=e126]
+  - generic [ref=e130]:
+    - 'heading "Tim, this is why you are our #1 choice for a signature IEM" [level=2] [ref=e131]'
+    - generic [ref=e132]:
+      - article [ref=e133]:
+        - heading "You actually care about design" [level=3] [ref=e136]
+        - paragraph [ref=e138]: You care about how things look, feel, and work. So do we.
+      - article [ref=e139]:
+        - heading "You have a clear aesthetic point of view" [level=3] [ref=e142]
+        - paragraph [ref=e144]: Your sound and visual world are instantly recognizable.
+      - article [ref=e145]:
+        - heading "Your fans are already our users" [level=3] [ref=e148]
+        - paragraph [ref=e150]: Your audience goes beyond musicians. We build for musicians, but also creators and everyday listeners.
+  - generic [ref=e154]:
+    - img "We design tools people actually want to use." [ref=e156]
+    - generic [ref=e157]:
+      - heading "We design tools people actually want to use. Every detail is considered." [level=2] [ref=e158]
+      - generic [ref=e159]:
+        - paragraph [ref=e160]: $10M+ annual hardware revenue. Sold globally via Guitar Center, Sweetwater, and Thomann.
+        - paragraph [ref=e161]: We’ve never done a signature collaboration before. We’ve been waiting for the right one.
+  - generic [ref=e163]:
+    - heading "Critically acclaimed" [level=2] [ref=e164]
+    - generic [ref=e165]:
+      - article [ref=e166]:
+        - paragraph [ref=e170]: In-ear monitors sold per year
+      - article [ref=e171]:
+        - paragraph [ref=e175]: 4.7 TrustScore on Trustpilot
+      - article [ref=e176]:
+        - paragraph [ref=e180]: 3,000+ verified reviews
+      - article [ref=e181]:
+        - paragraph [ref=e185]: ”They sound better than my Shure SE846s.”
+  - generic [ref=e189]:
+    - img "Wave and Wave Pro in-ear monitors" [ref=e191]
+    - generic [ref=e192]:
+      - heading "We’re building IEMs for a broader audience. Accessible pricing for real-world use." [level=2] [ref=e193]
+      - generic [ref=e194]:
+        - paragraph [ref=e195]: IEMs were built for professionals. We made them accessible.
+        - paragraph [ref=e196]: Wave from $99. Wave Pro from $199. Clear, isolated sound and all-day comfort, without the cost of custom systems.
+        - paragraph [ref=e197]: Consistent sound, anywhere. Used by musicians, gamers, and everyday listeners.
+  - generic [ref=e200]:
+    - heading "The Vision" [level=2] [ref=e201]
+    - paragraph [ref=e203]: Early explorations to get the imagination going. The final signature IEM will be co-created with you and our Tokyo-based industrial designer, former Head of Creative & Design at Puma (footwear).
+    - generic [ref=e205]:
+      - article [ref=e206]:
+        - img "Ivory Seraph" [ref=e208]
+        - paragraph [ref=e210]:
+          - strong [ref=e211]: Ivory Seraph
+      - article [ref=e212]:
+        - img "Obsidian Thorn" [ref=e214]
+        - paragraph [ref=e216]:
+          - strong [ref=e217]: Obsidian Thorn
+      - article [ref=e218]:
+        - img "Relic Halo" [ref=e220]
+        - paragraph [ref=e222]:
+          - strong [ref=e223]: Relic Halo
+      - article [ref=e224]:
+        - img "Chrome Echo" [ref=e226]
+        - paragraph [ref=e228]:
+          - strong [ref=e229]: Chrome Echo
+    - generic [ref=e230]:
+      - button "Previous" [disabled] [ref=e231]:
+        - img [ref=e233]
+      - button "Next" [ref=e236] [cursor=pointer]:
+        - img [ref=e238]
+  - generic [ref=e243]:
+    - heading "Your upside" [level=2] [ref=e244]
+    - generic [ref=e246]:
+      - article [ref=e247]:
+        - img "Royalty on every unit sold" [ref=e249]
+        - paragraph [ref=e251]:
+          - strong [ref=e252]: Royalty on every unit sold.
+          - text: You earn on every product, directly tied to demand.
+      - article [ref=e253]:
+        - img "Guaranteed minimum" [ref=e255]
+        - paragraph [ref=e257]:
+          - strong [ref=e258]: Guaranteed minimum.
+          - text: A baseline payout, regardless of sales.
+      - article [ref=e259]:
+        - img "Affiliate revenue" [ref=e261]
+        - paragraph [ref=e263]:
+          - strong [ref=e264]: Affiliate revenue.
+          - text: Earn extra on all sales through your code.
+      - article [ref=e265]:
+        - img "Flexible involvement" [ref=e267]
+        - paragraph [ref=e269]:
+          - strong [ref=e270]: Flexible involvement.
+          - text: You decide how involved you want to be.
+    - generic [ref=e271]:
+      - button "Previous" [disabled] [ref=e272]:
+        - img [ref=e274]
+      - button "Next" [ref=e277] [cursor=pointer]:
+        - img [ref=e279]
+  - generic [ref=e284]:
+    - img "Florian Simmendinger" [ref=e286]
+    - generic [ref=e287]:
+      - generic [ref=e288]:
+        - text: Hi Tim,
+        - text: I've followed your work for a long time and think you're one of the most interesting creators in modern music. This felt worth building specifically with you in mind.
+        - text: I would love to get on a call to discuss specifics!
+        - text: Sincerely,
+        - text: Florian Simmendinger
+        - text: Founder, CEO & Head of Design at Soundbrenner
+      - link "Email florian@soundbrenner.com" [ref=e290] [cursor=pointer]:
+        - /url: mailto:florian@soundbrenner.com
+        - generic [ref=e291]: Email florian@soundbrenner.com
+  - generic [ref=e295]:
+    - paragraph [ref=e296]: Tim Henson x Soundbrenner
+    - heading "Let's build it." [level=2] [ref=e297]
+  - contentinfo [ref=e299]:
+    - generic [ref=e301]:
+      - generic [ref=e302]:
+        - generic [ref=e304]:
+          - heading "Join our newsletter" [level=3] [ref=e305]
+          - paragraph [ref=e306]: Get 20% off and stay up to date.
+        - generic [ref=e308]:
+          - generic [ref=e309]:
+            - heading "Partner with us" [level=3] [ref=e310]
+            - list [ref=e311]:
+              - listitem [ref=e312]:
+                - link "Content creators and artists" [ref=e313] [cursor=pointer]:
+                  - /url: /pages/content-creators-and-artists
+          - generic [ref=e314]:
+            - heading "Company" [level=3] [ref=e315]
+            - list [ref=e316]:
+              - listitem [ref=e317]:
+                - link "About us" [ref=e318] [cursor=pointer]:
+                  - /url: /pages/about-us
+              - listitem [ref=e319]:
+                - link "Blog" [ref=e320] [cursor=pointer]:
+                  - /url: /blogs/articles
+              - listitem [ref=e321]:
+                - link "Careers" [ref=e322] [cursor=pointer]:
+                  - /url: /pages/careers
+          - generic [ref=e323]:
+            - heading "Resources" [level=3] [ref=e324]
+            - list [ref=e325]:
+              - listitem [ref=e326]:
+                - link "Support" [ref=e327] [cursor=pointer]:
+                  - /url: /pages/support
+              - listitem [ref=e328]:
+                - link "All reviews" [ref=e329] [cursor=pointer]:
+                  - /url: /pages/all-reviews
+              - listitem [ref=e330]:
+                - link "Shipping, returns and warranty" [ref=e331] [cursor=pointer]:
+                  - /url: /pages/shipping-returns-and-warranty
+              - listitem [ref=e332]:
+                - link "Student discount" [ref=e333] [cursor=pointer]:
+                  - /url: /pages/student-discount
+      - generic [ref=e335]:
+        - generic [ref=e336]:
+          - link "Trustpilot logo link" [ref=e337] [cursor=pointer]:
+            - /url: https://www.trustpilot.com/review/soundbrenner.com
+            - img [ref=e339]
+          - link "Trustpilot stars link" [ref=e344] [cursor=pointer]:
+            - /url: https://www.trustpilot.com/review/soundbrenner.com
+            - img [ref=e346]
+          - link "Read Soundbrenner reviews on Trustpilot" [ref=e354] [cursor=pointer]:
+            - /url: https://www.trustpilot.com/review/soundbrenner.com
+            - generic [ref=e355]: 4.7 out of 5
+        - generic "Social links" [ref=e356]:
+          - link "Instagram" [ref=e357] [cursor=pointer]:
+            - /url: https://www.instagram.com/soundbrenner
+            - img [ref=e358]
+          - link "Facebook" [ref=e362] [cursor=pointer]:
+            - /url: https://www.facebook.com/soundbrenner
+            - img [ref=e363]
+          - link "TikTok" [ref=e365] [cursor=pointer]:
+            - /url: https://www.tiktok.com/@soundbrenner
+            - img [ref=e366]
+          - link "X" [ref=e368] [cursor=pointer]:
+            - /url: https://x.com/soundbrenner
+            - img [ref=e369]
+          - link "YouTube" [ref=e371] [cursor=pointer]:
+            - /url: https://www.youtube.com/soundbrenner
+            - img [ref=e372]
+    - generic [ref=e374]:
+      - paragraph [ref=e375]: Designed for musicians by Soundbrenner
+      - generic [ref=e376]:
+        - link "Privacy policy" [ref=e377] [cursor=pointer]:
+          - /url: /policies/privacy-policy
+        - generic [ref=e378]: ·
+        - link "Terms of service" [ref=e379] [cursor=pointer]:
+          - /url: /policies/terms-of-service
+        - generic [ref=e380]: ·
+        - link "Legal" [ref=e381] [cursor=pointer]:
+          - /url: /pages/legal
+        - generic [ref=e382]: ·
+        - generic [ref=e383]: © 2026 Soundbrenner

@@ -1010,6 +1010,64 @@
             "text": "<p><strong>Airplane mode</strong></p><p>Disables all wireless communication, including Bluetooth. When Airplane Mode is enabled, the device cannot connect to your mobile device.</p><p><strong>Bluetooth</strong></p><p>Displays the current connection status. Press the bottom button to unpair the device and make it available for pairing again.</p><p><strong>Factory reset</strong></p><p>Erases all data and preferences and restores the Core / Spark to its factory settings. After a factory reset, the device will be locked until setup is completed again using the Soundbrenner app.</p>"
           }
         },
+        "divider_circle_fifths_after_smartwatch": {
+          "type": "divider",
+          "settings": {}
+        },
+        "heading_circle_fifths_after_smartwatch": {
+          "type": "heading",
+          "settings": {
+            "heading": "Circle of fifths"
+          }
+        },
+        "subheading_circle_fifths_after_smartwatch_intro": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Using the circle on Core 2 / Spark"
+          }
+        },
+        "text_circle_fifths_intro_after_smartwatch": {
+          "type": "text",
+          "settings": {
+            "text": "<p>The <strong>circle of fifths</strong> is a music theory tool that shows how keys, chords, and scales relate to each other. Neighboring keys on the circle share nearly all of the same notes, which is why they often sound natural together.</p><p>On Core 2 / Spark, the feature gives you a quick reference while practicing, composing, or learning a song.</p>"
+          }
+        },
+        "subheading_circle_fifths_after_smartwatch_screen": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Read the screen"
+          }
+        },
+        "text_circle_fifths_screen_after_smartwatch": {
+          "type": "text",
+          "settings": {
+            "text": "<p>The top of the screen shows related chords from the current area of the circle. Major chords appear on the top row and minor chords appear below them. The currently selected key is marked with a small rectangle.</p><p>The lower part of the screen shows the notes in the selected scale. For example, C major shows C D E F G A B C, while A minor shows A B C D E F G A.</p>"
+          }
+        },
+        "subheading_circle_fifths_after_smartwatch_controls": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Navigate the circle"
+          }
+        },
+        "text_circle_fifths_controls_after_smartwatch": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Rotate the wheel to move left or right around the circle. Moving clockwise follows fifths and adds sharps to the key signature. Moving counter-clockwise follows flats.</p><p>Press the bottom button to switch the focus between the major and minor rows.</p><h4>Tip</h4><p>Use nearby chords as a starting point when writing progressions. They are closely related to the selected key and usually feel cohesive together.</p>"
+          }
+        },
+        "subheading_circle_fifths_after_smartwatch_enharmonic": {
+          "type": "subheading",
+          "settings": {
+            "heading": "F♯ and G♭"
+          }
+        },
+        "text_circle_fifths_enharmonic_after_smartwatch": {
+          "type": "text",
+          "settings": {
+            "text": "<p>At the bottom of the circle, F♯ and G♭ share the same position. They sound the same but are written differently, which is called an enharmonic equivalent.</p><p>Core 2 / Spark shows F♯ when you arrive from the sharp side and G♭ when you arrive from the flat side. A dotted line marks this transition.</p>"
+          }
+        },
         "divider_G4W7PG": {
           "type": "divider",
           "settings": {}
@@ -1336,6 +1394,16 @@
         "text_hdLRXH",
         "subheading_8T3AUg",
         "text_DcDGni",
+        "divider_circle_fifths_after_smartwatch",
+        "heading_circle_fifths_after_smartwatch",
+        "subheading_circle_fifths_after_smartwatch_intro",
+        "text_circle_fifths_intro_after_smartwatch",
+        "subheading_circle_fifths_after_smartwatch_screen",
+        "text_circle_fifths_screen_after_smartwatch",
+        "subheading_circle_fifths_after_smartwatch_controls",
+        "text_circle_fifths_controls_after_smartwatch",
+        "subheading_circle_fifths_after_smartwatch_enharmonic",
+        "text_circle_fifths_enharmonic_after_smartwatch",
         "divider_G4W7PG",
         "heading_8JzcNh",
         "subheading_LiwjxQ",

@@ -3,6 +3,7 @@
   assign uses_product_metaobjects = false
   assign hide_section = false
   assign section_title = section.settings.title
+  assign section_subtitle = section.settings.subtitle
   assign carousel_items = blank
   assign has_valid_item = false
   assign feature_video_alt_fallback = 'sb.feature_carousel.video_alt' | t
@@ -16,6 +17,7 @@
       if source_root != blank
         assign uses_product_metaobjects = true
         assign section_title = source_root.title.value | default: source_root.title | default: section_title
+        assign section_subtitle = blank
         assign carousel_items = source_root.items.value | default: source_root.items.references | default: source_root.items
       endif
     endif
@@ -57,6 +59,11 @@
     <div class="sb-feature-carousel__motion" data-sb-motion-item>
     {% if section_title != blank %}
       <h2 class="sb-feature-carousel__title font-title weight-bold">{{ section_title }}</h2>
+    {% endif %}
+    {% if section_subtitle != blank %}
+      <div class="sb-feature-carousel__subtitle font-body weight-bold rte">
+        {{ section_subtitle }}
+      </div>
     {% endif %}
 
     <div class="sb-feature-carousel__viewport" data-sb-carousel-viewport>
@@ -292,8 +299,23 @@
 
   .sb-feature-carousel__title {
     color: var(--sb-color-neutral-900);
-    margin: 0 0 var(--sb-space-48);
+    margin: 0;
     text-align: center;
+  }
+
+  .sb-feature-carousel__subtitle {
+    color: var(--sb-color-neutral-900);
+    margin: var(--sb-space-24) auto var(--sb-space-48);
+    max-width: 1080px;
+    text-align: center;
+  }
+
+  .sb-feature-carousel__subtitle > * {
+    margin: 0;
+  }
+
+  .sb-feature-carousel__title + .sb-feature-carousel__viewport {
+    margin-top: var(--sb-space-48);
   }
 
   .sb-feature-carousel__viewport {
@@ -472,6 +494,11 @@
       "id": "title",
       "label": "Title",
       "default": "Feature carousel"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle"
     }
   ],
   "blocks": [

@@ -1,0 +1,53 @@
+- generic [ref=e1]:
+  - generic [ref=e4]:
+    - generic [ref=e5]: You need to sign in to see this page.
+    - banner [ref=e6]:
+      - link "Slack" [ref=e8] [cursor=pointer]:
+        - /url: https://slack.com
+        - img "Slack" [ref=e9]
+      - generic [ref=e11]:
+        - text: Don’t have an account yet?
+        - link "Create an account" [ref=e12] [cursor=pointer]:
+          - /url: /signup?redir=%2Farchives%2FCLZMQM1L1%2Fp1763970540187789%3Fname%3DCLZMQM1L1%26perma%3D1763970540187789
+    - generic [ref=e13]:
+      - heading "Sign in to Soundbrenner" [level=1] [ref=e14]
+      - generic [ref=e15]: soundbrenner.slack.com
+      - generic [ref=e16]:
+        - generic [ref=e17]:
+          - generic [ref=e18]:
+            - button "Google" [ref=e20] [cursor=pointer]:
+              - img [ref=e21]
+              - generic [ref=e28]: Google
+            - link "Apple" [ref=e30] [cursor=pointer]:
+              - /url: https://soundbrenner.slack.com/workspace-signin/oauth/apple/start?redir=%2Farchives%2FCLZMQM1L1%2Fp1763970540187789%3Fname%3DCLZMQM1L1%26perma%3D1763970540187789&is_ssb_browser_signin=
+              - img [ref=e31]
+              - generic [ref=e33]: Apple
+          - generic [ref=e34]:
+            - separator [ref=e35]
+            - generic [ref=e36]: OR
+            - separator [ref=e37]
+        - generic [ref=e39]:
+          - generic [ref=e40]: Enter your email address
+          - textbox "Enter your email address" [active] [ref=e42]:
+            - /placeholder: name@work-email.com
+          - button "Sign In With Email" [ref=e43] [cursor=pointer]
+        - generic [ref=e44]:
+          - img [ref=e46]
+          - generic [ref=e48]:
+            - text: We’ll email you a magic code for a password-free sign in. Or you can
+            - link "sign in with a password instead" [ref=e49] [cursor=pointer]:
+              - /url: /sign_in_with_password?redir=%2Farchives%2FCLZMQM1L1%2Fp1763970540187789%3Fname%3DCLZMQM1L1%26perma%3D1763970540187789
+            - text: .
+    - contentinfo [ref=e52]:
+      - link "Privacy & Terms" [ref=e53] [cursor=pointer]:
+        - /url: /legal
+      - link "Contact Us" [ref=e54] [cursor=pointer]:
+        - /url: /help/requests/new
+      - link "Change region" [ref=e56] [cursor=pointer]:
+        - /url: "#"
+        - generic [ref=e57]: 
+        - text: Change region
+        - generic [ref=e58]: 
+  - generic [ref=e59]:
+    - alert [ref=e60]
+    - log [ref=e61]

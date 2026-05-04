@@ -1,0 +1,40 @@
+[    1853ms] [INFO] Resource Sentinel initialized... @ https://www.notion.so/soundbrenner-dev/Circle-of-fifths-246ae0e72893805396b7f2c36305d985:0
+[    3086ms] [INFO] 2026-05-03T03:02:43.481Z [error] StatsigClientLoader.ts: statsig_on_device_eval_timeout {data: Object} @ https://www.notion.so/_assets/app-2e5178aa007489ff.js:6
+[    4161ms] [INFO] 2026-05-03T03:02:44.557Z [info] PageLoader: loserAborted {data: Object} @ https://www.notion.so/_assets/app-2e5178aa007489ff.js:6
+[    4192ms] [INFO] 2026-05-03T03:02:44.589Z [info] FeatureFlagTransactionQueue: preferIndexedDB {team: no-team-specified} @ https://www.notion.so/_assets/app-2e5178aa007489ff.js:6
+[    4268ms] [WARNING]   WARN  [Statsig] Creating multiple Statsig clients with the same SDK key can lead to unexpected behavior. Multi-instance support requires different SDK keys. @ https://www.notion.so/_assets/38994-57e75a3c479e6567.js:0
+[    4295ms] [INFO] 2026-05-03T03:02:44.691Z [info] appHelpers: shouldShowError {data: Object} @ https://www.notion.so/_assets/app-2e5178aa007489ff.js:6
+[    4300ms] [INFO] 2026-05-03T03:02:44.696Z [info] appHelpers: shouldShowError {data: Object} @ https://www.notion.so/_assets/app-2e5178aa007489ff.js:6
+[    4307ms] [INFO] 2026-05-03T03:02:44.704Z [error] statsig: initialize {error: Object, data: Object} @ https://www.notion.so/_assets/app-2e5178aa007489ff.js:6
+[    4310ms] [LOG] %c
+	nnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+	nnnn                         nnnn
+	nnnnnnn                          nnnn
+	nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+	nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+	nnnnnnnn                           nnn
+	nnnnnnnn    nnnnnnnn     nnnnnnn   nnn
+	nnnnnnnn      nnnnnnn      nnn     nnn
+	nnnnnnnn      nnnnnnnn     nnn     nnn
+	nnnnnnnn      nnnnnnnnnn   nnn     nnn
+	nnnnnnnn      nnn nnnnnnn  nnn     nnn
+	nnnnnnnn      nnn  nnnnnnnnnnn     nnn
+	nnnnnnnn      nnn   nnnnnnnnnn     nnn
+	nnnnnnnn      nnn     nnnnnnnn     nnn
+	nnnnnnnn      nnn      nnnnnnn     nnn
+	nnnnnnnn    nnnnnnnn    nnnnnn     nnn
+	  nnnnnn                           nnn
+		nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn		We're hiring!
+		  nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn		notion.so/careers
+
+	“yeah, I would probably eat a lemon for one hundred dollars” -- Ivan Zhao (2023-07-14)
+				  font-family: monospace @ https://www.notion.so/_assets/mainApp-ac0f925f97120d6d.js:76
+[    4320ms] [INFO] 2026-05-03T03:02:44.717Z [info] appHelpers: shouldShowError {data: Object} @ https://www.notion.so/_assets/app-2e5178aa007489ff.js:6
+[    5591ms] [INFO] 2026-05-03T03:02:45.988Z [error] handleRestrictedStateForResponse: callApi {data: Object} @ https://www.notion.so/_assets/app-2e5178aa007489ff.js:6
+[    5723ms] [INFO] 2026-05-03T03:02:46.120Z [error] handleRestrictedStateForResponse: callApi {data: Object} @ https://www.notion.so/_assets/app-2e5178aa007489ff.js:6
+[    6034ms] [WARNING] Ignoring inability to install OPFS sqlite3_vfs: Cannot install OPFS: Missing SharedArrayBuffer and/or Atomics. The server must emit the COOP/COEP response headers to enable those. See https://sqlite.org/wasm/doc/trunk/persistence.md#coop-coep @ https://www.notion.so/_assets/wasm-sqlite-worker-98074fa7be5e0051.js:0
+[    6790ms] [WARNING] Amplitude Logger [Warn]: Event not tracked, no destination plugins on the instance @ https://www.notion.so/_assets/transport-support-49d6a98cbf389fa8.js:0
+[    6791ms] [INFO] 2026-05-03T03:02:47.187Z [error] eventTrailApiHelpers: trackFailure {error: Object} @ https://www.notion.so/_assets/app-2e5178aa007489ff.js:6
+[    7681ms] [INFO] 2026-05-03T03:02:48.078Z [info] sqliteSchemaHelpers: attemptFastForwardMigration {data: Object} @ https://www.notion.so/_assets/app-2e5178aa007489ff.js:6
+[    7701ms] [INFO] 2026-05-03T03:02:48.097Z [info] sqliteSchemaHelpers: successfulFastForwardMigration {data: Object} @ https://www.notion.so/_assets/app-2e5178aa007489ff.js:6
+[    9622ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://cdn.metadata.io/pixel/config/1127.json:0

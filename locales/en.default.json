@@ -290,6 +290,14 @@
       "message_fallback": "Enter the password to continue to the store.",
       "store_owner_html": "Store owner? <a href=\"{{ link }}\">Log in here</a>"
     },
+    "partnership_password": {
+      "access_help_html": "If you don't have the password, and think you should have access, email <a href=\"{{ link }}\">{{ email }}</a>",
+      "description": "A private product collaboration idea. Enter the password to view it.",
+      "enter": "Enter",
+      "error": "Wrong password",
+      "password_label": "Password",
+      "title": "Tim Henson x Soundbrenner"
+    },
     "media": {
       "close_video": "Close video",
       "play_video": "Play video",

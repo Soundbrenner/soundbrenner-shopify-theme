@@ -34,3 +34,8 @@
 - Limit motion to premium storytelling content. Do not animate primary buy UI, navigation, footer, repeated product grids, filters, or other utility UI unless the user explicitly asks.
 - Keep the effect subtle: opacity plus small translate only. Do not add parallax, section-specific scroll handlers, or extra animation frameworks.
 - Content must remain visible without JavaScript, and reduced-motion users and Theme Editor sessions must see content immediately.
+
+## Local auth
+
+- If GitHub CLI or Shopify credentials are needed in Codex, check `/Users/simmenfl/Desktop/LLM context personal/codex-local-auth.md` for the local auth recovery flow.
+- Never store GitHub, Shopify, or deployment tokens in this repo, in `AGENTS.md`, or in committed files. Use macOS Keychain or another local secret store instead.

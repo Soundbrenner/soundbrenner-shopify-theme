@@ -1,0 +1,9 @@
+[    4339ms] [INFO] [HotReload] Connected @ http://127.0.0.1:9292/cdn/shopifycloud/theme-hot-reload/theme-hot-reload.js:299
+[    4385ms] [VERBOSE] Rendering was performed in a subtree hidden by content-visibility. @ https://cdn.shopify.com/storefront/web-components/account/account-dialog-DgTBvLFI.js:0
+[    5354ms] [ERROR] Framing 'https://shop.app/' violates the following Content Security Policy directive: "frame-ancestors https://soundbrenner.myshopify.com https://soundbrenner.account.myshopify.com https://soundbrenner.com https://www.soundbrenner.com https://shop.soundbrenner.com https://account.soundbrenner.com https://soundbrenner.cn https://www.soundbrenner.cn https://shopify.com". The request has been blocked.
+ @ :0
+[    5439ms] [VERBOSE] Rendering was performed in a subtree hidden by content-visibility. @ https://cdn.shopify.com/shopifycloud/shop-js/modules/v2/chunk.colors_8e3QE3km.esm.js:0
+[    5446ms] [VERBOSE] Rendering was performed in a subtree hidden by content-visibility. @ https://cdn.shopify.com/shopifycloud/shop-js/modules/v2/chunk.index_Bn2S2V7g.esm.js:0
+[    6450ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://shop.app/accounts/pre_auth?client_id=00ca1929-1a0a-48ed-bb58-99a374d7c573&analytics_trace_id=21a751d9-5ca5-4e61-9e77-2b0d3fb94345&flow=embed&flow_version=account_menu&target_origin=http%3A%2F%2F127.0.0.1%3A9292&storefront_domain=https%3A%2F%2Fwww.soundbrenner.com&scope=openid+email%3Averified+pay%3Asession_token+profile+shop%3Aaccount_uuid&locale=en:0
+[    7420ms] [VERBOSE] Rendering was performed in a subtree hidden by content-visibility. @ :3119
+[    8038ms] [WARNING] Specifying 'overflow: visible' on img, video and canvas tags may cause them to produce visual content outside of the element bounds. See https://github.com/WICG/view-transitions/blob/main/debugging_overflow_on_images.md for details. @ http://127.0.0.1:9292/pages/tim-henson-x-soundbrenner:675

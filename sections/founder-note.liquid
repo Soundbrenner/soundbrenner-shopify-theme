@@ -1,0 +1,145 @@
+{% liquid
+  assign founder_note_image = section.settings.image
+  assign founder_note_image_alt = section.settings.image_alt | default: 'Florian Simmendinger'
+  assign founder_note_text = section.settings.text
+  assign founder_note_button_label = section.settings.button_label
+  assign founder_note_button_link = section.settings.button_link
+%}
+
+<section class="sb-founder-note" data-sb-motion="reveal">
+  <div class="sb-founder-note__inner" data-sb-motion-item>
+    <div class="sb-founder-note__image-wrap">
+      {% if founder_note_image != blank %}
+        {{
+          founder_note_image
+          | image_url: width: 320
+          | image_tag:
+            class: 'sb-founder-note__image',
+            widths: '160, 320',
+            sizes: '160px',
+            alt: founder_note_image_alt,
+            loading: 'lazy'
+        }}
+      {% endif %}
+    </div>
+
+    <div class="sb-founder-note__content">
+      {% if founder_note_text != blank %}
+        <div class="sb-founder-note__text font-body weight-regular">
+          {{ founder_note_text | escape | newline_to_br }}
+        </div>
+      {% endif %}
+
+      {% if founder_note_button_label != blank and founder_note_button_link != blank %}
+        <div class="sb-founder-note__button">
+          {% render 'radiant-button',
+            label: founder_note_button_label,
+            link: founder_note_button_link,
+            size: 'large',
+            icon_position: 'none'
+          %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .sb-founder-note {
+    padding: var(--sb-space-96) var(--sb-page-margin);
+  }
+
+  .sb-founder-note__inner {
+    align-items: flex-start;
+    display: flex;
+    gap: 36px;
+    margin: 0 auto;
+  }
+
+  .sb-founder-note__image-wrap {
+    flex: 0 0 160px;
+  }
+
+  .sb-founder-note__image {
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    display: block;
+    height: 160px;
+    object-fit: cover;
+    width: 160px;
+  }
+
+  .sb-founder-note__content {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .sb-founder-note__text {
+    color: var(--sb-color-neutral-900);
+    white-space: normal;
+  }
+
+  .sb-founder-note__button {
+    margin-top: 30px;
+  }
+
+  @media (max-width: 749px) {
+    .sb-founder-note {
+      padding-bottom: var(--sb-space-72);
+      padding-top: var(--sb-space-72);
+    }
+
+    .sb-founder-note__inner {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 36px;
+      text-align: left;
+    }
+
+    .sb-founder-note__content {
+      width: 100%;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Founder note",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Target minimum 160x160 at 2x export (320x320)."
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image alt text",
+      "default": "Florian Simmendinger"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\nSincerely,\nFlorian Simmendinger\nFounder, CEO & Head of Design at Soundbrenner"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Email florian@soundbrenner.com"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Founder note"
+    }
+  ]
+}
+{% endschema %}

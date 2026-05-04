@@ -1,0 +1,41 @@
+[     318ms] [INFO] Resource Sentinel initialized... @ https://www.notion.so/soundbrenner-dev/Introduction-246ae0e72893809492a0ff2b708b7338:0
+[     362ms] [INFO] 2026-05-03T03:03:22.207Z [info] FeatureFlagTransactionQueue: preferIndexedDB {team: no-team-specified} @ https://www.notion.so/_assets/app-2e5178aa007489ff.js:6
+[     365ms] [WARNING]   WARN  [Statsig] 'StatsigUser.customIDs.stableID' mismatch @ https://www.notion.so/_assets/38994-57e75a3c479e6567.js:0
+[     366ms] [WARNING]   WARN  [Statsig] 'StatsigUser.customIDs.stableID' mismatch @ https://www.notion.so/_assets/38994-57e75a3c479e6567.js:0
+[     367ms] [WARNING]   WARN  [Statsig] 'StatsigUser.customIDs.stableID' mismatch @ https://www.notion.so/_assets/38994-57e75a3c479e6567.js:0
+[     391ms] [WARNING] Ignoring inability to install OPFS sqlite3_vfs: Cannot install OPFS: Missing SharedArrayBuffer and/or Atomics. The server must emit the COOP/COEP response headers to enable those. See https://sqlite.org/wasm/doc/trunk/persistence.md#coop-coep @ https://www.notion.so/_assets/wasm-sqlite-worker-98074fa7be5e0051.js:0
+[     427ms] [INFO] 2026-05-03T03:03:22.272Z [info] appHelpers: shouldShowError {data: Object} @ https://www.notion.so/_assets/app-2e5178aa007489ff.js:6
+[     429ms] [INFO] 2026-05-03T03:03:22.273Z [info] appHelpers: shouldShowError {data: Object} @ https://www.notion.so/_assets/app-2e5178aa007489ff.js:6
+[     433ms] [LOG] %c
+	nnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+	nnnn                         nnnn
+	nnnnnnn                          nnnn
+	nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+	nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+	nnnnnnnn                           nnn
+	nnnnnnnn    nnnnnnnn     nnnnnnn   nnn
+	nnnnnnnn      nnnnnnn      nnn     nnn
+	nnnnnnnn      nnnnnnnn     nnn     nnn
+	nnnnnnnn      nnnnnnnnnn   nnn     nnn
+	nnnnnnnn      nnn nnnnnnn  nnn     nnn
+	nnnnnnnn      nnn  nnnnnnnnnnn     nnn
+	nnnnnnnn      nnn   nnnnnnnnnn     nnn
+	nnnnnnnn      nnn     nnnnnnnn     nnn
+	nnnnnnnn      nnn      nnnnnnn     nnn
+	nnnnnnnn    nnnnnnnn    nnnnnn     nnn
+	  nnnnnn                           nnn
+		nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn		We're hiring!
+		  nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn		notion.so/careers
+
+	“yeah, I would probably eat a lemon for one hundred dollars” -- Ivan Zhao (2023-07-14)
+				  font-family: monospace @ https://www.notion.so/_assets/mainApp-ac0f925f97120d6d.js:76
+[     508ms] [INFO] 2026-05-03T03:03:22.352Z [info] syncRecordValuesBatched: recordPointerMissingSpaceId {actor: Object, data: Object} @ https://www.notion.so/_assets/app-2e5178aa007489ff.js:6
+[     512ms] [INFO] 2026-05-03T03:03:22.357Z [info] PageLoader: loserAborted {data: Object} @ https://www.notion.so/_assets/app-2e5178aa007489ff.js:6
+[     606ms] [WARNING]   WARN  [Statsig] 'StatsigUser.customIDs.stableID' mismatch @ https://www.notion.so/_assets/38994-57e75a3c479e6567.js:0
+[     607ms] [WARNING]   WARN  [Statsig] 'StatsigUser.customIDs.stableID' mismatch @ https://www.notion.so/_assets/38994-57e75a3c479e6567.js:0
+[     847ms] [INFO] 2026-05-03T03:03:22.691Z [error] handleRestrictedStateForResponse: callApi {data: Object} @ https://www.notion.so/_assets/76406-6b42df3763f56eeb.js:472
+[     847ms] [INFO] 2026-05-03T03:03:22.692Z [error] handleRestrictedStateForResponse: callApi {data: Object} @ https://www.notion.so/_assets/76406-6b42df3763f56eeb.js:472
+[     852ms] [WARNING] Amplitude Logger [Warn]: Event not tracked, no destination plugins on the instance @ https://www.notion.so/_assets/76406-6b42df3763f56eeb.js:472
+[     852ms] [INFO] 2026-05-03T03:03:22.697Z [error] eventTrailApiHelpers: trackFailure {error: Object} @ https://www.notion.so/_assets/76406-6b42df3763f56eeb.js:472
+[    1063ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://cdn.metadata.io/pixel/config/1127.json:0
+[    2531ms] [INFO] 2026-05-03T03:03:24.376Z [info] syncRecordValuesBatched: recordPointerMissingSpaceId {actor: Object, data: Object} @ https://www.notion.so/_assets/76406-6b42df3763f56eeb.js:472

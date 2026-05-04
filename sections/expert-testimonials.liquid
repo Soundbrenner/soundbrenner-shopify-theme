@@ -23,7 +23,11 @@
 
     for block in section.blocks
       assign block_testimonial = block.settings.testimonial.value | default: block.settings.testimonial.reference.value | default: block.settings.testimonial.reference | default: block.settings.testimonial
-      if block_testimonial != blank
+      assign block_image = block.settings.image
+      assign block_name = block.settings.name | append: '' | strip
+      assign block_title = block.settings.title | append: '' | strip
+      assign block_quote = block.settings.quote | append: '' | strip
+      if block_testimonial != blank or block_image != blank or block_name != blank or block_title != blank or block_quote != blank
         assign manual_has_items = true
         break
       endif
@@ -49,6 +53,11 @@
     <div class="sb-expert-testimonials-carousel__motion" data-sb-motion-item>
     {% if section_title != blank %}
       <h2 class="sb-expert-testimonials-carousel__title font-title weight-bold">{{ section_title }}</h2>
+    {% endif %}
+    {% if section.settings.subtitle != blank and use_product_metaobjects == false %}
+      <div class="sb-expert-testimonials-carousel__subtitle font-body weight-bold rte">
+        {{ section.settings.subtitle }}
+      </div>
     {% endif %}
 
     <div class="sb-expert-testimonials-carousel__viewport" data-sb-carousel-viewport>
@@ -109,15 +118,22 @@
             {% liquid
               assign expert_entry = block.settings.testimonial.value | default: block.settings.testimonial.reference.value | default: block.settings.testimonial.reference | default: block.settings.testimonial
             %}
-            {% if expert_entry == blank %}
-              {% continue %}
-            {% endif %}
 
             {% liquid
               assign expert_image = expert_entry.image.value | default: expert_entry.image
               assign expert_name = expert_entry.name.value | default: expert_entry.name
               assign expert_title = expert_entry.title.value | default: expert_entry.title
               assign expert_quote = expert_entry.quote.value | default: expert_entry.quote
+              if expert_entry == blank
+                assign expert_image = block.settings.image
+                assign expert_name = block.settings.name
+                assign expert_title = block.settings.title
+                assign expert_quote = block.settings.quote
+              endif
+
+              if expert_image == blank and expert_name == blank and expert_title == blank and expert_quote == blank
+                continue
+              endif
 
               assign expert_image_request_width = 849
               if expert_image != blank and expert_image.width != blank
@@ -193,8 +209,27 @@
 
   .sb-expert-testimonials-carousel__title {
     color: var(--sb-color-neutral-900);
-    margin: 0 0 var(--sb-space-48);
+    margin: 0;
     text-align: center;
+  }
+
+  .sb-expert-testimonials-carousel__subtitle {
+    color: var(--sb-color-neutral-900);
+    margin: var(--sb-space-24) auto var(--sb-space-48);
+    max-width: 820px;
+    text-align: center;
+  }
+
+  .sb-expert-testimonials-carousel__title + .sb-expert-testimonials-carousel__viewport {
+    margin-top: var(--sb-space-48);
+  }
+
+  .sb-expert-testimonials-carousel__subtitle > * {
+    margin: 0;
+  }
+
+  .sb-expert-testimonials-carousel__subtitle > * + * {
+    margin-top: var(--sb-space-8);
   }
 
   .sb-expert-testimonials-carousel__viewport {
@@ -350,6 +385,13 @@
       "label": "Title",
       "default": "Expert testimonials",
       "visible_if": "{{ section.settings.use_product_metaobjects == false }}"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "<p>Expert testimonials subtitle.</p>",
+      "visible_if": "{{ section.settings.use_product_metaobjects == false }}"
     }
   ],
   "blocks": [
@@ -363,6 +405,33 @@
           "label": "Testimonial",
           "metaobject_type": "sbv2_expert_testimonials_carousel_item",
           "info": "Select an individual testimonial."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Target minimum 283x283 at 3x export (849x849).",
+          "visible_if": "{{ section.settings.use_product_metaobjects == false }}"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Testimonial name",
+          "visible_if": "{{ section.settings.use_product_metaobjects == false }}"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Testimonial title",
+          "visible_if": "{{ section.settings.use_product_metaobjects == false }}"
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "visible_if": "{{ section.settings.use_product_metaobjects == false }}"
         }
       ]
     }

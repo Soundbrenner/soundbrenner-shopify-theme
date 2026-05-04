@@ -1,0 +1,69 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e4]:
+    - generic [ref=e6]:
+      - link "Skip to content" [ref=e8] [cursor=pointer]:
+        - /url: "#main"
+        - generic [ref=e9]:
+          - text: Skip to content
+          - img [ref=e10]
+      - generic [ref=e12]:
+        - banner [ref=e13]
+        - main [ref=e15]:
+          - group [disabled] [ref=e18]:
+            - generic [ref=e20]:
+              - generic [ref=e23]:
+                - img "Page icon" [ref=e28]: ⚪
+                - heading "Circle of fifths" [level=1] [ref=e33]
+              - generic [ref=e39]:
+                - table "Page properties" [ref=e40]:
+                  - row "Owner" [disabled] [ref=e42]:
+                    - cell "Owner" [ref=e47]:
+                      - generic [ref=e48]:
+                        - img [ref=e54]
+                        - generic [ref=e56]: Owner
+                    - cell "S Soundbrenner Dev Team" [ref=e57]:
+                      - generic [ref=e64]:
+                        - generic [ref=e69]: S
+                        - generic [ref=e70]: Soundbrenner Dev Team
+                  - row "Verification" [disabled] [ref=e72]:
+                    - cell "Verification" [ref=e77]:
+                      - generic [ref=e78]:
+                        - img [ref=e84]
+                        - generic [ref=e86]: Verification
+                    - cell "Empty" [ref=e87]:
+                      - generic [ref=e92]: Empty
+                  - row "Tags" [disabled] [ref=e94]:
+                    - cell "Tags" [ref=e99]:
+                      - generic [ref=e100]:
+                        - img [ref=e106]
+                        - generic [ref=e108]: Tags
+                    - cell "Empty" [ref=e109]:
+                      - generic [ref=e113]: Empty
+                - button "1 more property" [disabled] [ref=e116] [cursor=pointer]:
+                  - img [ref=e117]
+                  - text: 1 more property
+              - generic [ref=e120]:
+                - link "📕 Introduction" [disabled] [ref=e123] [cursor=pointer]:
+                  - /url: /soundbrenner-dev/Introduction-246ae0e72893809492a0ff2b708b7338?pvs=25
+                  - generic [ref=e126]:
+                    - generic [ref=e130]: 📕
+                    - generic [ref=e132]: Introduction
+                - link "🎼 Relative minor keys" [disabled] [ref=e135] [cursor=pointer]:
+                  - /url: /soundbrenner-dev/Relative-minor-keys-246ae0e7289380ad8cd3d88436977b13?pvs=25
+                  - generic [ref=e138]:
+                    - generic [ref=e142]: 🎼
+                    - generic [ref=e144]: Relative minor keys
+                - link "🎹 Key chords" [disabled] [ref=e147] [cursor=pointer]:
+                  - /url: /soundbrenner-dev/Key-chords-246ae0e7289380b29dd9e2d6cc69ca4e?pvs=25
+                  - generic [ref=e150]:
+                    - generic [ref=e154]: 🎹
+                    - generic [ref=e156]: Key chords
+                - link "⌚ Circle of fifth on Core" [disabled] [ref=e159] [cursor=pointer]:
+                  - /url: /soundbrenner-dev/Circle-of-fifth-on-Core-247ae0e7289380758f3cd4f7f24bdba3?pvs=25
+                  - generic [ref=e162]:
+                    - generic [ref=e166]: ⌚
+                    - generic [ref=e168]: Circle of fifth on Core
+    - status [ref=e174]
+    - alert [ref=e175]
+  - iframe [ref=e176]:
+    

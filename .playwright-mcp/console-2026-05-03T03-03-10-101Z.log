@@ -1,0 +1,37 @@
+[     389ms] [INFO] Resource Sentinel initialized... @ https://www.notion.so/soundbrenner-dev/Introduction-246ae0e72893809492a0ff2b708b7338?pvs=25:0
+[     473ms] [INFO] 2026-05-03T03:03:10.573Z [info] FeatureFlagTransactionQueue: preferIndexedDB {team: no-team-specified} @ https://www.notion.so/_assets/app-2e5178aa007489ff.js:6
+[     474ms] [WARNING]   WARN  [Statsig] Creating multiple Statsig clients with the same SDK key can lead to unexpected behavior. Multi-instance support requires different SDK keys. @ https://www.notion.so/_assets/38994-57e75a3c479e6567.js:0
+[     492ms] [INFO] 2026-05-03T03:03:10.593Z [info] appHelpers: shouldShowError {data: Object} @ https://www.notion.so/_assets/app-2e5178aa007489ff.js:6
+[     494ms] [INFO] 2026-05-03T03:03:10.594Z [info] appHelpers: shouldShowError {data: Object} @ https://www.notion.so/_assets/app-2e5178aa007489ff.js:6
+[     499ms] [LOG] %c
+	nnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+	nnnn                         nnnn
+	nnnnnnn                          nnnn
+	nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+	nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+	nnnnnnnn                           nnn
+	nnnnnnnn    nnnnnnnn     nnnnnnn   nnn
+	nnnnnnnn      nnnnnnn      nnn     nnn
+	nnnnnnnn      nnnnnnnn     nnn     nnn
+	nnnnnnnn      nnnnnnnnnn   nnn     nnn
+	nnnnnnnn      nnn nnnnnnn  nnn     nnn
+	nnnnnnnn      nnn  nnnnnnnnnnn     nnn
+	nnnnnnnn      nnn   nnnnnnnnnn     nnn
+	nnnnnnnn      nnn     nnnnnnnn     nnn
+	nnnnnnnn      nnn      nnnnnnn     nnn
+	nnnnnnnn    nnnnnnnn    nnnnnn     nnn
+	  nnnnnn                           nnn
+		nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn		We're hiring!
+		  nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn		notion.so/careers
+
+	“yeah, I would probably eat a lemon for one hundred dollars” -- Ivan Zhao (2023-07-14)
+				  font-family: monospace @ https://www.notion.so/_assets/mainApp-ac0f925f97120d6d.js:76
+[     555ms] [WARNING] Ignoring inability to install OPFS sqlite3_vfs: Cannot install OPFS: Missing SharedArrayBuffer and/or Atomics. The server must emit the COOP/COEP response headers to enable those. See https://sqlite.org/wasm/doc/trunk/persistence.md#coop-coep @ https://www.notion.so/_assets/wasm-sqlite-worker-98074fa7be5e0051.js:0
+[     629ms] [INFO] 2026-05-03T03:03:10.729Z [info] syncRecordValuesBatched: recordPointerMissingSpaceId {actor: Object, data: Object} @ https://www.notion.so/_assets/app-2e5178aa007489ff.js:6
+[     729ms] [INFO] 2026-05-03T03:03:10.830Z [info] PageLoader: loserAborted {data: Object} @ https://www.notion.so/_assets/app-2e5178aa007489ff.js:6
+[     832ms] [WARNING]   WARN  [Statsig] 'StatsigUser.customIDs.stableID' mismatch @ https://www.notion.so/_assets/38994-57e75a3c479e6567.js:0
+[     942ms] [INFO] 2026-05-03T03:03:11.043Z [error] handleRestrictedStateForResponse: callApi {data: Object} @ https://www.notion.so/_assets/76406-6b42df3763f56eeb.js:472
+[     962ms] [INFO] 2026-05-03T03:03:11.062Z [error] handleRestrictedStateForResponse: callApi {data: Object} @ https://www.notion.so/_assets/76406-6b42df3763f56eeb.js:472
+[    1113ms] [WARNING] Amplitude Logger [Warn]: Event not tracked, no destination plugins on the instance @ https://www.notion.so/_assets/76406-6b42df3763f56eeb.js:472
+[    1113ms] [INFO] 2026-05-03T03:03:11.214Z [error] eventTrailApiHelpers: trackFailure {error: Object} @ https://www.notion.so/_assets/76406-6b42df3763f56eeb.js:472
+[    1410ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://cdn.metadata.io/pixel/config/1127.json:0

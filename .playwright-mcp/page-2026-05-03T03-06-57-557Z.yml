@@ -1,0 +1,2371 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - paragraph [ref=e8]: "12th Anniversary Sale: 15% off & free shipping in United States over $89 USD"
+    - generic [ref=e9]:
+      - generic [ref=e11]:
+        - link "Soundbrenner" [ref=e12] [cursor=pointer]:
+          - /url: /
+          - img [ref=e14]
+        - navigation "Primary" [ref=e36]:
+          - generic [ref=e37]:
+            - link "In-ear monitors" [ref=e38] [cursor=pointer]:
+              - /url: /collections/in-ear-monitors
+            - generic "In-ear monitors":
+              - generic:
+                - generic:
+                  - link "In-ear monitors":
+                    - /url: /collections/in-ear-monitors
+                  - generic:
+                    - article:
+                      - link "Bestseller Wave in-ear monitors":
+                        - /url: /products/wave-in-ear-monitors
+                        - generic: Bestseller
+                        - img "Wave in-ear monitors"
+                      - paragraph:
+                        - link "Wave in-ear monitors":
+                          - /url: /products/wave-in-ear-monitors
+                      - paragraph: Crystal clear sound. Unbeatable value.
+                      - list:
+                        - listitem:
+                          - link "Accessories":
+                            - /url: /collections/wave-in-ear-monitors
+                    - article:
+                      - link "New Wave Pro in-ear monitors":
+                        - /url: /products/wave-pro-in-ear-monitors
+                        - generic: New
+                        - img "Wave Pro in-ear monitors"
+                      - paragraph:
+                        - link "Wave Pro in-ear monitors":
+                          - /url: /products/wave-pro-in-ear-monitors
+                      - paragraph: No compromises. Every note, perfected.
+                      - list:
+                        - listitem:
+                          - link "Accessories":
+                            - /url: /collections/wave-pro-in-ear-monitors
+                    - article:
+                      - link "Compare in-ear monitors":
+                        - /url: /pages/compare-in-ear-monitors
+                        - img "Compare in-ear monitors"
+                      - paragraph:
+                        - link "Compare in-ear monitors":
+                          - /url: /pages/compare-in-ear-monitors
+                      - paragraph: Which one is right for you?
+          - generic [ref=e39]:
+            - link "Wearables" [ref=e40] [cursor=pointer]:
+              - /url: /collections/wearables
+            - generic "Wearables":
+              - generic:
+                - generic:
+                  - link "Wearables":
+                    - /url: /collections/wearables
+                  - generic:
+                    - article:
+                      - link "Bestseller Pulse vibrating metronome":
+                        - /url: /products/pulse-vibrating-metronome
+                        - generic: Bestseller
+                        - img "Pulse vibrating metronome"
+                      - paragraph:
+                        - link "Pulse vibrating metronome":
+                          - /url: /products/pulse-vibrating-metronome
+                      - paragraph: Don't hear it. Feel it.
+                      - list:
+                        - listitem:
+                          - link "Accessories":
+                            - /url: /collections/pulse-vibrating-metronome
+                    - article:
+                      - link "Core 2 practice companion":
+                        - /url: /products/core-2-practice-companion
+                        - img "Core 2 practice companion"
+                      - paragraph:
+                        - link "Core 2 practice companion":
+                          - /url: /products/core-2-practice-companion
+                      - paragraph: Make music practice addictive. Reach your musical goals.
+                      - list:
+                        - listitem:
+                          - link "Accessories":
+                            - /url: /collections/core-2-practice-companion
+                    - article:
+                      - link "New Spark practice companion":
+                        - /url: /products/spark-practice-companion
+                        - generic: New
+                        - img "Spark practice companion"
+                      - paragraph:
+                        - link "Spark practice companion":
+                          - /url: /products/spark-practice-companion
+                      - paragraph: Practice that feels like play. Made for young musicians.
+                      - list:
+                        - listitem:
+                          - link "Accessories":
+                            - /url: /collections/spark-practice-companion
+                    - article:
+                      - link "Compare wearables":
+                        - /url: /pages/compare-wearables
+                        - img "Compare wearables"
+                      - paragraph:
+                        - link "Compare wearables":
+                          - /url: /pages/compare-wearables
+                      - paragraph: Which one is right for you?
+          - generic [ref=e41]:
+            - link "Earplugs" [ref=e42] [cursor=pointer]:
+              - /url: /collections/minuendo-earplugs
+            - generic "Earplugs":
+              - generic:
+                - generic:
+                  - link "Earplugs":
+                    - /url: /collections/minuendo-earplugs
+                  - generic:
+                    - article:
+                      - link "Bestseller Minuendo earplugs":
+                        - /url: /products/minuendo-earplugs
+                        - generic: Bestseller
+                        - img "Minuendo earplugs"
+                      - paragraph:
+                        - link "Minuendo earplugs":
+                          - /url: /products/minuendo-earplugs
+                      - paragraph: Adjustable noise reduction. Natural sound clarity.
+                      - list:
+                        - listitem:
+                          - link "Accessories":
+                            - /url: /collections/minuendo-earplugs
+          - generic [ref=e43]:
+            - link "More products" [ref=e44] [cursor=pointer]:
+              - /url: /collections/more-products
+            - generic "More products":
+              - generic:
+                - generic:
+                  - link "More products":
+                    - /url: /collections/more-products
+                  - generic:
+                    - article:
+                      - link "The Metronome app":
+                        - /url: /pages/the-metronome-app
+                        - img "The Metronome app"
+                      - paragraph:
+                        - link "The Metronome app":
+                          - /url: /pages/the-metronome-app
+                      - generic:
+                        - paragraph:
+                          - generic: "4.7"
+                        - paragraph: 210K+ ratings
+                        - generic:
+                          - link "Download on the App Store":
+                            - /url: https://apps.apple.com/us/app/the-metronome-by-soundbrenner/id1048954353
+                            - img "Download on the App Store"
+                          - link "Download on Google Play":
+                            - /url: https://play.google.com/store/apps/details?id=com.soundbrenner.pulse
+                            - img "Download on Google Play"
+                    - article:
+                      - link "Music tech":
+                        - /url: /collections/music-tech
+                        - img "Music tech"
+                      - paragraph:
+                        - link "Music tech":
+                          - /url: /collections/music-tech
+                      - paragraph: Innovative gear curated by Soundbrenner for you.
+                      - list:
+                        - listitem:
+                          - link "Stomp foot pedal":
+                            - /url: /products/stomp-foot-pedal
+                        - listitem:
+                          - link "Flow microphone":
+                            - /url: /products/flow-microphone
+                        - listitem:
+                          - link "Genki Wave MIDI ring":
+                            - /url: /products/genki-wave-midi-ring
+                    - article:
+                      - link "Playtronica MIDI instruments":
+                        - /url: /collections/playtronica-midi-instruments
+                        - img "Playtronica MIDI instruments"
+                      - paragraph:
+                        - link "Playtronica MIDI instruments":
+                          - /url: /collections/playtronica-midi-instruments
+                      - paragraph: Turn objects into instruments.
+                      - list:
+                        - listitem:
+                          - link "Playtron MIDI instrument":
+                            - /url: /products/playtron-midi-instrument
+                        - listitem:
+                          - link "TouchMe MIDI instrument":
+                            - /url: /products/touchme-midi-instrument
+                    - article:
+                      - link "Merch":
+                        - /url: /collections/merch
+                        - img "Merch"
+                      - paragraph:
+                        - link "Merch":
+                          - /url: /collections/merch
+                      - paragraph: Level up your swag.
+                      - list:
+                        - listitem:
+                          - link "Gift card":
+                            - /url: /products/gift-card
+          - link "Support" [ref=e46] [cursor=pointer]:
+            - /url: /pages/support
+        - generic [ref=e47]:
+          - generic [ref=e48]:
+            - button "Region selector" [ref=e49] [cursor=pointer]
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - img
+                          - combobox "Search":
+                            - listbox:
+                              - list:
+                                - option "Australia":
+                                  - generic:
+                                    - img
+                                  - generic: Australia
+                                  - generic: AUD $
+                                - option "Canada":
+                                  - generic:
+                                    - img
+                                  - generic: Canada
+                                  - generic: CAD $
+                                - option "United Kingdom":
+                                  - generic:
+                                    - img
+                                  - generic: United Kingdom
+                                  - generic: GBP £
+                                - option "United States":
+                                  - generic:
+                                    - img
+                                  - generic: United States
+                                  - generic: USD $
+                              - list:
+                                - option "Afghanistan":
+                                  - generic:
+                                    - img
+                                  - generic: Afghanistan
+                                  - generic: AFN ؋
+                                - option "Åland Islands":
+                                  - generic:
+                                    - img
+                                  - generic: Åland Islands
+                                  - generic: EUR €
+                                - option "Albania":
+                                  - generic:
+                                    - img
+                                  - generic: Albania
+                                  - generic: EUR €
+                                - option "Algeria":
+                                  - generic:
+                                    - img
+                                  - generic: Algeria
+                                  - generic: DZD د.ج
+                                - option "Andorra":
+                                  - generic:
+                                    - img
+                                  - generic: Andorra
+                                  - generic: EUR €
+                                - option "Angola":
+                                  - generic:
+                                    - img
+                                  - generic: Angola
+                                  - generic: USD $
+                                - option "Anguilla":
+                                  - generic:
+                                    - img
+                                  - generic: Anguilla
+                                  - generic: XCD $
+                                - option "Antigua & Barbuda":
+                                  - generic:
+                                    - img
+                                  - generic: Antigua & Barbuda
+                                  - generic: XCD $
+                                - option "Argentina":
+                                  - generic:
+                                    - img
+                                  - generic: Argentina
+                                  - generic: USD $
+                                - option "Armenia":
+                                  - generic:
+                                    - img
+                                  - generic: Armenia
+                                  - generic: AMD դր.
+                                - option "Aruba":
+                                  - generic:
+                                    - img
+                                  - generic: Aruba
+                                  - generic: AWG ƒ
+                                - option "Ascension Island":
+                                  - generic:
+                                    - img
+                                  - generic: Ascension Island
+                                  - generic: GBP £
+                                - option "Australia":
+                                  - generic:
+                                    - img
+                                  - generic: Australia
+                                  - generic: AUD $
+                                - option "Austria":
+                                  - generic:
+                                    - img
+                                  - generic: Austria
+                                  - generic: EUR €
+                                - option "Azerbaijan":
+                                  - generic:
+                                    - img
+                                  - generic: Azerbaijan
+                                  - generic: AZN ₼
+                                - option "Bahamas":
+                                  - generic:
+                                    - img
+                                  - generic: Bahamas
+                                  - generic: BSD $
+                                - option "Bahrain":
+                                  - generic:
+                                    - img
+                                  - generic: Bahrain
+                                  - generic: USD $
+                                - option "Bangladesh":
+                                  - generic:
+                                    - img
+                                  - generic: Bangladesh
+                                  - generic: BDT ৳
+                                - option "Barbados":
+                                  - generic:
+                                    - img
+                                  - generic: Barbados
+                                  - generic: BBD $
+                                - option "Belarus":
+                                  - generic:
+                                    - img
+                                  - generic: Belarus
+                                  - generic: USD $
+                                - option "Belgium":
+                                  - generic:
+                                    - img
+                                  - generic: Belgium
+                                  - generic: EUR €
+                                - option "Belize":
+                                  - generic:
+                                    - img
+                                  - generic: Belize
+                                  - generic: BZD $
+                                - option "Benin":
+                                  - generic:
+                                    - img
+                                  - generic: Benin
+                                  - generic: XOF Fr
+                                - option "Bermuda":
+                                  - generic:
+                                    - img
+                                  - generic: Bermuda
+                                  - generic: GBP £
+                                - option "Bhutan":
+                                  - generic:
+                                    - img
+                                  - generic: Bhutan
+                                  - generic: USD $
+                                - option "Bolivia":
+                                  - generic:
+                                    - img
+                                  - generic: Bolivia
+                                  - generic: BOB Bs.
+                                - option "Bosnia & Herzegovina":
+                                  - generic:
+                                    - img
+                                  - generic: Bosnia & Herzegovina
+                                  - generic: EUR €
+                                - option "Botswana":
+                                  - generic:
+                                    - img
+                                  - generic: Botswana
+                                  - generic: BWP P
+                                - option "Brazil":
+                                  - generic:
+                                    - img
+                                  - generic: Brazil
+                                  - generic: USD $
+                                - option "British Indian Ocean Territory":
+                                  - generic:
+                                    - img
+                                  - generic: British Indian Ocean Territory
+                                  - generic: USD $
+                                - option "British Virgin Islands":
+                                  - generic:
+                                    - img
+                                  - generic: British Virgin Islands
+                                  - generic: GBP £
+                                - option "Brunei":
+                                  - generic:
+                                    - img
+                                  - generic: Brunei
+                                  - generic: BND $
+                                - option "Bulgaria":
+                                  - generic:
+                                    - img
+                                  - generic: Bulgaria
+                                  - generic: EUR €
+                                - option "Burkina Faso":
+                                  - generic:
+                                    - img
+                                  - generic: Burkina Faso
+                                  - generic: XOF Fr
+                                - option "Burundi":
+                                  - generic:
+                                    - img
+                                  - generic: Burundi
+                                  - generic: BIF Fr
+                                - option "Cambodia":
+                                  - generic:
+                                    - img
+                                  - generic: Cambodia
+                                  - generic: KHR ៛
+                                - option "Cameroon":
+                                  - generic:
+                                    - img
+                                  - generic: Cameroon
+                                  - generic: XAF CFA
+                                - option "Canada":
+                                  - generic:
+                                    - img
+                                  - generic: Canada
+                                  - generic: CAD $
+                                - option "Cape Verde":
+                                  - generic:
+                                    - img
+                                  - generic: Cape Verde
+                                  - generic: CVE $
+                                - option "Caribbean Netherlands":
+                                  - generic:
+                                    - img
+                                  - generic: Caribbean Netherlands
+                                  - generic: USD $
+                                - option "Cayman Islands":
+                                  - generic:
+                                    - img
+                                  - generic: Cayman Islands
+                                  - generic: GBP £
+                                - option "Central African Republic":
+                                  - generic:
+                                    - img
+                                  - generic: Central African Republic
+                                  - generic: XAF CFA
+                                - option "Chad":
+                                  - generic:
+                                    - img
+                                  - generic: Chad
+                                  - generic: XAF CFA
+                                - option "Chile":
+                                  - generic:
+                                    - img
+                                  - generic: Chile
+                                  - generic: USD $
+                                - option "China":
+                                  - generic:
+                                    - img
+                                  - generic: China
+                                  - generic: CNY ¥
+                                - option "Christmas Island":
+                                  - generic:
+                                    - img
+                                  - generic: Christmas Island
+                                  - generic: AUD $
+                                - option "Cocos (Keeling) Islands":
+                                  - generic:
+                                    - img
+                                  - generic: Cocos (Keeling) Islands
+                                  - generic: AUD $
+                                - option "Colombia":
+                                  - generic:
+                                    - img
+                                  - generic: Colombia
+                                  - generic: USD $
+                                - option "Comoros":
+                                  - generic:
+                                    - img
+                                  - generic: Comoros
+                                  - generic: KMF Fr
+                                - option "Congo - Brazzaville":
+                                  - generic:
+                                    - img
+                                  - generic: Congo - Brazzaville
+                                  - generic: XAF CFA
+                                - option "Congo - Kinshasa":
+                                  - generic:
+                                    - img
+                                  - generic: Congo - Kinshasa
+                                  - generic: CDF Fr
+                                - option "Cook Islands":
+                                  - generic:
+                                    - img
+                                  - generic: Cook Islands
+                                  - generic: NZD $
+                                - option "Costa Rica":
+                                  - generic:
+                                    - img
+                                  - generic: Costa Rica
+                                  - generic: CRC ₡
+                                - option "Côte d’Ivoire":
+                                  - generic:
+                                    - img
+                                  - generic: Côte d’Ivoire
+                                  - generic: XOF Fr
+                                - option "Croatia":
+                                  - generic:
+                                    - img
+                                  - generic: Croatia
+                                  - generic: EUR €
+                                - option "Curaçao":
+                                  - generic:
+                                    - img
+                                  - generic: Curaçao
+                                  - generic: ANG ƒ
+                                - option "Cyprus":
+                                  - generic:
+                                    - img
+                                  - generic: Cyprus
+                                  - generic: EUR €
+                                - option "Czechia":
+                                  - generic:
+                                    - img
+                                  - generic: Czechia
+                                  - generic: EUR €
+                                - option "Denmark":
+                                  - generic:
+                                    - img
+                                  - generic: Denmark
+                                  - generic: EUR €
+                                - option "Djibouti":
+                                  - generic:
+                                    - img
+                                  - generic: Djibouti
+                                  - generic: DJF Fdj
+                                - option "Dominica":
+                                  - generic:
+                                    - img
+                                  - generic: Dominica
+                                  - generic: XCD $
+                                - option "Dominican Republic":
+                                  - generic:
+                                    - img
+                                  - generic: Dominican Republic
+                                  - generic: DOP $
+                                - option "Ecuador":
+                                  - generic:
+                                    - img
+                                  - generic: Ecuador
+                                  - generic: USD $
+                                - option "Egypt":
+                                  - generic:
+                                    - img
+                                  - generic: Egypt
+                                  - generic: EGP ج.م
+                                - option "El Salvador":
+                                  - generic:
+                                    - img
+                                  - generic: El Salvador
+                                  - generic: USD $
+                                - option "Equatorial Guinea":
+                                  - generic:
+                                    - img
+                                  - generic: Equatorial Guinea
+                                  - generic: XAF CFA
+                                - option "Eritrea":
+                                  - generic:
+                                    - img
+                                  - generic: Eritrea
+                                  - generic: USD $
+                                - option "Estonia":
+                                  - generic:
+                                    - img
+                                  - generic: Estonia
+                                  - generic: EUR €
+                                - option "Eswatini":
+                                  - generic:
+                                    - img
+                                  - generic: Eswatini
+                                  - generic: USD $
+                                - option "Ethiopia":
+                                  - generic:
+                                    - img
+                                  - generic: Ethiopia
+                                  - generic: ETB Br
+                                - option "Falkland Islands":
+                                  - generic:
+                                    - img
+                                  - generic: Falkland Islands
+                                  - generic: GBP £
+                                - option "Faroe Islands":
+                                  - generic:
+                                    - img
+                                  - generic: Faroe Islands
+                                  - generic: EUR €
+                                - option "Fiji":
+                                  - generic:
+                                    - img
+                                  - generic: Fiji
+                                  - generic: FJD $
+                                - option "Finland":
+                                  - generic:
+                                    - img
+                                  - generic: Finland
+                                  - generic: EUR €
+                                - option "France":
+                                  - generic:
+                                    - img
+                                  - generic: France
+                                  - generic: EUR €
+                                - option "French Guiana":
+                                  - generic:
+                                    - img
+                                  - generic: French Guiana
+                                  - generic: EUR €
+                                - option "French Polynesia":
+                                  - generic:
+                                    - img
+                                  - generic: French Polynesia
+                                  - generic: EUR €
+                                - option "French Southern Territories":
+                                  - generic:
+                                    - img
+                                  - generic: French Southern Territories
+                                  - generic: EUR €
+                                - option "Gabon":
+                                  - generic:
+                                    - img
+                                  - generic: Gabon
+                                  - generic: XOF Fr
+                                - option "Gambia":
+                                  - generic:
+                                    - img
+                                  - generic: Gambia
+                                  - generic: GMD D
+                                - option "Georgia":
+                                  - generic:
+                                    - img
+                                  - generic: Georgia
+                                  - generic: USD $
+                                - option "Germany":
+                                  - generic:
+                                    - img
+                                  - generic: Germany
+                                  - generic: EUR €
+                                - option "Ghana":
+                                  - generic:
+                                    - img
+                                  - generic: Ghana
+                                  - generic: USD $
+                                - option "Gibraltar":
+                                  - generic:
+                                    - img
+                                  - generic: Gibraltar
+                                  - generic: GBP £
+                                - option "Greece":
+                                  - generic:
+                                    - img
+                                  - generic: Greece
+                                  - generic: EUR €
+                                - option "Greenland":
+                                  - generic:
+                                    - img
+                                  - generic: Greenland
+                                  - generic: EUR €
+                                - option "Grenada":
+                                  - generic:
+                                    - img
+                                  - generic: Grenada
+                                  - generic: XCD $
+                                - option "Guadeloupe":
+                                  - generic:
+                                    - img
+                                  - generic: Guadeloupe
+                                  - generic: EUR €
+                                - option "Guatemala":
+                                  - generic:
+                                    - img
+                                  - generic: Guatemala
+                                  - generic: GTQ Q
+                                - option "Guernsey":
+                                  - generic:
+                                    - img
+                                  - generic: Guernsey
+                                  - generic: GBP £
+                                - option "Guinea":
+                                  - generic:
+                                    - img
+                                  - generic: Guinea
+                                  - generic: GNF Fr
+                                - option "Guinea-Bissau":
+                                  - generic:
+                                    - img
+                                  - generic: Guinea-Bissau
+                                  - generic: XOF Fr
+                                - option "Guyana":
+                                  - generic:
+                                    - img
+                                  - generic: Guyana
+                                  - generic: GYD $
+                                - option "Haiti":
+                                  - generic:
+                                    - img
+                                  - generic: Haiti
+                                  - generic: USD $
+                                - option "Honduras":
+                                  - generic:
+                                    - img
+                                  - generic: Honduras
+                                  - generic: HNL L
+                                - option "Hong Kong SAR":
+                                  - generic:
+                                    - img
+                                  - generic: Hong Kong SAR
+                                  - generic: HKD $
+                                - option "Hungary":
+                                  - generic:
+                                    - img
+                                  - generic: Hungary
+                                  - generic: EUR €
+                                - option "Iceland":
+                                  - generic:
+                                    - img
+                                  - generic: Iceland
+                                  - generic: EUR €
+                                - option "India":
+                                  - generic:
+                                    - img
+                                  - generic: India
+                                  - generic: INR ₹
+                                - option "Indonesia":
+                                  - generic:
+                                    - img
+                                  - generic: Indonesia
+                                  - generic: IDR Rp
+                                - option "Iraq":
+                                  - generic:
+                                    - img
+                                  - generic: Iraq
+                                  - generic: USD $
+                                - option "Ireland":
+                                  - generic:
+                                    - img
+                                  - generic: Ireland
+                                  - generic: EUR €
+                                - option "Isle of Man":
+                                  - generic:
+                                    - img
+                                  - generic: Isle of Man
+                                  - generic: GBP £
+                                - option "Israel":
+                                  - generic:
+                                    - img
+                                  - generic: Israel
+                                  - generic: ILS ₪
+                                - option "Italy":
+                                  - generic:
+                                    - img
+                                  - generic: Italy
+                                  - generic: EUR €
+                                - option "Jamaica":
+                                  - generic:
+                                    - img
+                                  - generic: Jamaica
+                                  - generic: JMD $
+                                - option "Japan":
+                                  - generic:
+                                    - img
+                                  - generic: Japan
+                                  - generic: JPY ¥
+                                - option "Jersey":
+                                  - generic:
+                                    - img
+                                  - generic: Jersey
+                                  - generic: GBP £
+                                - option "Jordan":
+                                  - generic:
+                                    - img
+                                  - generic: Jordan
+                                  - generic: USD $
+                                - option "Kazakhstan":
+                                  - generic:
+                                    - img
+                                  - generic: Kazakhstan
+                                  - generic: KZT ₸
+                                - option "Kenya":
+                                  - generic:
+                                    - img
+                                  - generic: Kenya
+                                  - generic: KES KSh
+                                - option "Kiribati":
+                                  - generic:
+                                    - img
+                                  - generic: Kiribati
+                                  - generic: USD $
+                                - option "Kosovo":
+                                  - generic:
+                                    - img
+                                  - generic: Kosovo
+                                  - generic: EUR €
+                                - option "Kuwait":
+                                  - generic:
+                                    - img
+                                  - generic: Kuwait
+                                  - generic: USD $
+                                - option "Kyrgyzstan":
+                                  - generic:
+                                    - img
+                                  - generic: Kyrgyzstan
+                                  - generic: KGS som
+                                - option "Laos":
+                                  - generic:
+                                    - img
+                                  - generic: Laos
+                                  - generic: LAK ₭
+                                - option "Latvia":
+                                  - generic:
+                                    - img
+                                  - generic: Latvia
+                                  - generic: EUR €
+                                - option "Lebanon":
+                                  - generic:
+                                    - img
+                                  - generic: Lebanon
+                                  - generic: LBP ل.ل
+                                - option "Lesotho":
+                                  - generic:
+                                    - img
+                                  - generic: Lesotho
+                                  - generic: USD $
+                                - option "Liberia":
+                                  - generic:
+                                    - img
+                                  - generic: Liberia
+                                  - generic: USD $
+                                - option "Libya":
+                                  - generic:
+                                    - img
+                                  - generic: Libya
+                                  - generic: USD $
+                                - option "Liechtenstein":
+                                  - generic:
+                                    - img
+                                  - generic: Liechtenstein
+                                  - generic: CHF CHF
+                                - option "Lithuania":
+                                  - generic:
+                                    - img
+                                  - generic: Lithuania
+                                  - generic: EUR €
+                                - option "Luxembourg":
+                                  - generic:
+                                    - img
+                                  - generic: Luxembourg
+                                  - generic: EUR €
+                                - option "Macao SAR":
+                                  - generic:
+                                    - img
+                                  - generic: Macao SAR
+                                  - generic: MOP P
+                                - option "Madagascar":
+                                  - generic:
+                                    - img
+                                  - generic: Madagascar
+                                  - generic: USD $
+                                - option "Malawi":
+                                  - generic:
+                                    - img
+                                  - generic: Malawi
+                                  - generic: MWK MK
+                                - option "Malaysia":
+                                  - generic:
+                                    - img
+                                  - generic: Malaysia
+                                  - generic: MYR RM
+                                - option "Maldives":
+                                  - generic:
+                                    - img
+                                  - generic: Maldives
+                                  - generic: MVR MVR
+                                - option "Mali":
+                                  - generic:
+                                    - img
+                                  - generic: Mali
+                                  - generic: XOF Fr
+                                - option "Malta":
+                                  - generic:
+                                    - img
+                                  - generic: Malta
+                                  - generic: EUR €
+                                - option "Martinique":
+                                  - generic:
+                                    - img
+                                  - generic: Martinique
+                                  - generic: EUR €
+                                - option "Mauritania":
+                                  - generic:
+                                    - img
+                                  - generic: Mauritania
+                                  - generic: USD $
+                                - option "Mauritius":
+                                  - generic:
+                                    - img
+                                  - generic: Mauritius
+                                  - generic: MUR ₨
+                                - option "Mayotte":
+                                  - generic:
+                                    - img
+                                  - generic: Mayotte
+                                  - generic: EUR €
+                                - option "Mexico":
+                                  - generic:
+                                    - img
+                                  - generic: Mexico
+                                  - generic: MXN $
+                                - option "Moldova":
+                                  - generic:
+                                    - img
+                                  - generic: Moldova
+                                  - generic: EUR €
+                                - option "Monaco":
+                                  - generic:
+                                    - img
+                                  - generic: Monaco
+                                  - generic: EUR €
+                                - option "Mongolia":
+                                  - generic:
+                                    - img
+                                  - generic: Mongolia
+                                  - generic: MNT ₮
+                                - option "Montenegro":
+                                  - generic:
+                                    - img
+                                  - generic: Montenegro
+                                  - generic: EUR €
+                                - option "Montserrat":
+                                  - generic:
+                                    - img
+                                  - generic: Montserrat
+                                  - generic: XCD $
+                                - option "Morocco":
+                                  - generic:
+                                    - img
+                                  - generic: Morocco
+                                  - generic: MAD د.م.
+                                - option "Mozambique":
+                                  - generic:
+                                    - img
+                                  - generic: Mozambique
+                                  - generic: USD $
+                                - option "Myanmar (Burma)":
+                                  - generic:
+                                    - img
+                                  - generic: Myanmar (Burma)
+                                  - generic: MMK K
+                                - option "Namibia":
+                                  - generic:
+                                    - img
+                                  - generic: Namibia
+                                  - generic: USD $
+                                - option "Nauru":
+                                  - generic:
+                                    - img
+                                  - generic: Nauru
+                                  - generic: AUD $
+                                - option "Nepal":
+                                  - generic:
+                                    - img
+                                  - generic: Nepal
+                                  - generic: NPR Rs.
+                                - option "Netherlands":
+                                  - generic:
+                                    - img
+                                  - generic: Netherlands
+                                  - generic: EUR €
+                                - option "New Caledonia":
+                                  - generic:
+                                    - img
+                                  - generic: New Caledonia
+                                  - generic: EUR €
+                                - option "New Zealand":
+                                  - generic:
+                                    - img
+                                  - generic: New Zealand
+                                  - generic: NZD $
+                                - option "Nicaragua":
+                                  - generic:
+                                    - img
+                                  - generic: Nicaragua
+                                  - generic: NIO C$
+                                - option "Niger":
+                                  - generic:
+                                    - img
+                                  - generic: Niger
+                                  - generic: XOF Fr
+                                - option "Nigeria":
+                                  - generic:
+                                    - img
+                                  - generic: Nigeria
+                                  - generic: NGN ₦
+                                - option "Niue":
+                                  - generic:
+                                    - img
+                                  - generic: Niue
+                                  - generic: NZD $
+                                - option "Norfolk Island":
+                                  - generic:
+                                    - img
+                                  - generic: Norfolk Island
+                                  - generic: AUD $
+                                - option "North Macedonia":
+                                  - generic:
+                                    - img
+                                  - generic: North Macedonia
+                                  - generic: EUR €
+                                - option "Norway":
+                                  - generic:
+                                    - img
+                                  - generic: Norway
+                                  - generic: EUR €
+                                - option "Oman":
+                                  - generic:
+                                    - img
+                                  - generic: Oman
+                                  - generic: USD $
+                                - option "Pakistan":
+                                  - generic:
+                                    - img
+                                  - generic: Pakistan
+                                  - generic: PKR ₨
+                                - option "Palestinian Territories":
+                                  - generic:
+                                    - img
+                                  - generic: Palestinian Territories
+                                  - generic: ILS ₪
+                                - option "Panama":
+                                  - generic:
+                                    - img
+                                  - generic: Panama
+                                  - generic: USD $
+                                - option "Papua New Guinea":
+                                  - generic:
+                                    - img
+                                  - generic: Papua New Guinea
+                                  - generic: PGK K
+                                - option "Paraguay":
+                                  - generic:
+                                    - img
+                                  - generic: Paraguay
+                                  - generic: PYG ₲
+                                - option "Peru":
+                                  - generic:
+                                    - img
+                                  - generic: Peru
+                                  - generic: PEN S/
+                                - option "Philippines":
+                                  - generic:
+                                    - img
+                                  - generic: Philippines
+                                  - generic: PHP ₱
+                                - option "Pitcairn Islands":
+                                  - generic:
+                                    - img
+                                  - generic: Pitcairn Islands
+                                  - generic: NZD $
+                                - option "Poland":
+                                  - generic:
+                                    - img
+                                  - generic: Poland
+                                  - generic: EUR €
+                                - option "Portugal":
+                                  - generic:
+                                    - img
+                                  - generic: Portugal
+                                  - generic: EUR €
+                                - option "Qatar":
+                                  - generic:
+                                    - img
+                                  - generic: Qatar
+                                  - generic: QAR ر.ق
+                                - option "Réunion":
+                                  - generic:
+                                    - img
+                                  - generic: Réunion
+                                  - generic: EUR €
+                                - option "Romania":
+                                  - generic:
+                                    - img
+                                  - generic: Romania
+                                  - generic: EUR €
+                                - option "Russia":
+                                  - generic:
+                                    - img
+                                  - generic: Russia
+                                  - generic: USD $
+                                - option "Rwanda":
+                                  - generic:
+                                    - img
+                                  - generic: Rwanda
+                                  - generic: RWF FRw
+                                - option "Samoa":
+                                  - generic:
+                                    - img
+                                  - generic: Samoa
+                                  - generic: WST T
+                                - option "San Marino":
+                                  - generic:
+                                    - img
+                                  - generic: San Marino
+                                  - generic: EUR €
+                                - option "São Tomé & Príncipe":
+                                  - generic:
+                                    - img
+                                  - generic: São Tomé & Príncipe
+                                  - generic: STD Db
+                                - option "Saudi Arabia":
+                                  - generic:
+                                    - img
+                                  - generic: Saudi Arabia
+                                  - generic: SAR ر.س
+                                - option "Senegal":
+                                  - generic:
+                                    - img
+                                  - generic: Senegal
+                                  - generic: XOF Fr
+                                - option "Serbia":
+                                  - generic:
+                                    - img
+                                  - generic: Serbia
+                                  - generic: EUR €
+                                - option "Seychelles":
+                                  - generic:
+                                    - img
+                                  - generic: Seychelles
+                                  - generic: USD $
+                                - option "Sierra Leone":
+                                  - generic:
+                                    - img
+                                  - generic: Sierra Leone
+                                  - generic: SLL Le
+                                - option "Singapore":
+                                  - generic:
+                                    - img
+                                  - generic: Singapore
+                                  - generic: SGD $
+                                - option "Sint Maarten":
+                                  - generic:
+                                    - img
+                                  - generic: Sint Maarten
+                                  - generic: EUR €
+                                - option "Slovakia":
+                                  - generic:
+                                    - img
+                                  - generic: Slovakia
+                                  - generic: EUR €
+                                - option "Slovenia":
+                                  - generic:
+                                    - img
+                                  - generic: Slovenia
+                                  - generic: EUR €
+                                - option "Solomon Islands":
+                                  - generic:
+                                    - img
+                                  - generic: Solomon Islands
+                                  - generic: SBD $
+                                - option "Somalia":
+                                  - generic:
+                                    - img
+                                  - generic: Somalia
+                                  - generic: USD $
+                                - option "South Africa":
+                                  - generic:
+                                    - img
+                                  - generic: South Africa
+                                  - generic: USD $
+                                - option "South Georgia & South Sandwich Islands":
+                                  - generic:
+                                    - img
+                                  - generic: South Georgia & South Sandwich Islands
+                                  - generic: GBP £
+                                - option "South Korea":
+                                  - generic:
+                                    - img
+                                  - generic: South Korea
+                                  - generic: KRW ₩
+                                - option "South Sudan":
+                                  - generic:
+                                    - img
+                                  - generic: South Sudan
+                                  - generic: USD $
+                                - option "Spain":
+                                  - generic:
+                                    - img
+                                  - generic: Spain
+                                  - generic: EUR €
+                                - option "Sri Lanka":
+                                  - generic:
+                                    - img
+                                  - generic: Sri Lanka
+                                  - generic: LKR ₨
+                                - option "St. Barthélemy":
+                                  - generic:
+                                    - img
+                                  - generic: St. Barthélemy
+                                  - generic: EUR €
+                                - option "St. Helena":
+                                  - generic:
+                                    - img
+                                  - generic: St. Helena
+                                  - generic: GBP £
+                                - option "St. Kitts & Nevis":
+                                  - generic:
+                                    - img
+                                  - generic: St. Kitts & Nevis
+                                  - generic: XCD $
+                                - option "St. Lucia":
+                                  - generic:
+                                    - img
+                                  - generic: St. Lucia
+                                  - generic: XCD $
+                                - option "St. Martin":
+                                  - generic:
+                                    - img
+                                  - generic: St. Martin
+                                  - generic: EUR €
+                                - option "St. Pierre & Miquelon":
+                                  - generic:
+                                    - img
+                                  - generic: St. Pierre & Miquelon
+                                  - generic: EUR €
+                                - option "St. Vincent & Grenadines":
+                                  - generic:
+                                    - img
+                                  - generic: St. Vincent & Grenadines
+                                  - generic: XCD $
+                                - option "Sudan":
+                                  - generic:
+                                    - img
+                                  - generic: Sudan
+                                  - generic: USD $
+                                - option "Suriname":
+                                  - generic:
+                                    - img
+                                  - generic: Suriname
+                                  - generic: USD $
+                                - option "Svalbard & Jan Mayen":
+                                  - generic:
+                                    - img
+                                  - generic: Svalbard & Jan Mayen
+                                  - generic: EUR €
+                                - option "Sweden":
+                                  - generic:
+                                    - img
+                                  - generic: Sweden
+                                  - generic: EUR €
+                                - option "Switzerland":
+                                  - generic:
+                                    - img
+                                  - generic: Switzerland
+                                  - generic: CHF CHF
+                                - option "Taiwan":
+                                  - generic:
+                                    - img
+                                  - generic: Taiwan
+                                  - generic: TWD $
+                                - option "Tajikistan":
+                                  - generic:
+                                    - img
+                                  - generic: Tajikistan
+                                  - generic: TJS ЅМ
+                                - option "Tanzania":
+                                  - generic:
+                                    - img
+                                  - generic: Tanzania
+                                  - generic: TZS Sh
+                                - option "Thailand":
+                                  - generic:
+                                    - img
+                                  - generic: Thailand
+                                  - generic: THB ฿
+                                - option "Timor-Leste":
+                                  - generic:
+                                    - img
+                                  - generic: Timor-Leste
+                                  - generic: USD $
+                                - option "Togo":
+                                  - generic:
+                                    - img
+                                  - generic: Togo
+                                  - generic: XOF Fr
+                                - option "Tokelau":
+                                  - generic:
+                                    - img
+                                  - generic: Tokelau
+                                  - generic: NZD $
+                                - option "Tonga":
+                                  - generic:
+                                    - img
+                                  - generic: Tonga
+                                  - generic: TOP T$
+                                - option "Trinidad & Tobago":
+                                  - generic:
+                                    - img
+                                  - generic: Trinidad & Tobago
+                                  - generic: TTD $
+                                - option "Tristan da Cunha":
+                                  - generic:
+                                    - img
+                                  - generic: Tristan da Cunha
+                                  - generic: GBP £
+                                - option "Tunisia":
+                                  - generic:
+                                    - img
+                                  - generic: Tunisia
+                                  - generic: USD $
+                                - option "Türkiye":
+                                  - generic:
+                                    - img
+                                  - generic: Türkiye
+                                  - generic: USD $
+                                - option "Turkmenistan":
+                                  - generic:
+                                    - img
+                                  - generic: Turkmenistan
+                                  - generic: USD $
+                                - option "Turks & Caicos Islands":
+                                  - generic:
+                                    - img
+                                  - generic: Turks & Caicos Islands
+                                  - generic: USD $
+                                - option "Tuvalu":
+                                  - generic:
+                                    - img
+                                  - generic: Tuvalu
+                                  - generic: AUD $
+                                - option "U.S. Outlying Islands":
+                                  - generic:
+                                    - img
+                                  - generic: U.S. Outlying Islands
+                                  - generic: USD $
+                                - option "Uganda":
+                                  - generic:
+                                    - img
+                                  - generic: Uganda
+                                  - generic: UGX USh
+                                - option "Ukraine":
+                                  - generic:
+                                    - img
+                                  - generic: Ukraine
+                                  - generic: EUR €
+                                - option "United Arab Emirates":
+                                  - generic:
+                                    - img
+                                  - generic: United Arab Emirates
+                                  - generic: AED د.إ
+                                - option "United Kingdom":
+                                  - generic:
+                                    - img
+                                  - generic: United Kingdom
+                                  - generic: GBP £
+                                - option "United States":
+                                  - generic:
+                                    - img
+                                  - generic: United States
+                                  - generic: USD $
+                                - option "Uruguay":
+                                  - generic:
+                                    - img
+                                  - generic: Uruguay
+                                  - generic: UYU $U
+                                - option "Uzbekistan":
+                                  - generic:
+                                    - img
+                                  - generic: Uzbekistan
+                                  - generic: UZS so'm
+                                - option "Vanuatu":
+                                  - generic:
+                                    - img
+                                  - generic: Vanuatu
+                                  - generic: VUV Vt
+                                - option "Vatican City":
+                                  - generic:
+                                    - img
+                                  - generic: Vatican City
+                                  - generic: EUR €
+                                - option "Venezuela":
+                                  - generic:
+                                    - img
+                                  - generic: Venezuela
+                                  - generic: USD $
+                                - option "Vietnam":
+                                  - generic:
+                                    - img
+                                  - generic: Vietnam
+                                  - generic: VND ₫
+                                - option "Wallis & Futuna":
+                                  - generic:
+                                    - img
+                                  - generic: Wallis & Futuna
+                                  - generic: EUR €
+                                - option "Western Sahara":
+                                  - generic:
+                                    - img
+                                  - generic: Western Sahara
+                                  - generic: MAD د.م.
+                                - option "Yemen":
+                                  - generic:
+                                    - img
+                                  - generic: Yemen
+                                  - generic: YER ﷼
+                                - option "Zambia":
+                                  - generic:
+                                    - img
+                                  - generic: Zambia
+                                  - generic: USD $
+                                - option "Zimbabwe":
+                                  - generic:
+                                    - img
+                                  - generic: Zimbabwe
+                                  - generic: USD $
+                      - generic:
+                        - generic: Language
+                        - generic:
+                          - generic: English
+                          - combobox "Language":
+                            - option "English" [selected]
+                            - option "Deutsch"
+                            - option "简体中文"
+                            - option "Français"
+                            - option "Italiano"
+                            - option "日本語"
+                            - option "한국어"
+                            - option "Español"
+                          - generic:
+                            - img
+          - generic [ref=e51]:
+            - link "Search" [ref=e52] [cursor=pointer]:
+              - /url: /search
+              - img [ref=e54]
+            - generic "Account" [ref=e57]:
+              - button "Account" [ref=e60] [cursor=pointer]:
+                - img [ref=e62]
+            - button "Cart" [ref=e64] [cursor=pointer]:
+              - img [ref=e66]
+      - generic:
+        - option "English" [selected]
+        - option "Deutsch"
+        - option "简体中文"
+        - option "Français"
+        - option "Italiano"
+        - option "日本語"
+        - option "한국어"
+        - option "Español"
+        - button "Close menu"
+      - generic: $0 -$0 $0
+  - generic [ref=e71]:
+    - paragraph [ref=e72]: Manual Core and Spark practice companion
+    - heading "Understand every detail." [level=2] [ref=e73]
+  - generic [ref=e75]:
+    - complementary [ref=e76]:
+      - navigation "Product manual" [ref=e77]:
+        - link "Read this first, please" [ref=e78] [cursor=pointer]:
+          - /url: "#read-this-first-please-chapter_1"
+        - link "First steps" [ref=e79] [cursor=pointer]:
+          - /url: "#first-steps-chapter_2"
+        - link "Navigating the device" [ref=e80] [cursor=pointer]:
+          - /url: "#navigating-the-device-heading_rv3y7m"
+        - link "Practice tracker" [ref=e81] [cursor=pointer]:
+          - /url: "#practice-tracker-heading_kpp8g4"
+        - link "Vibrating metronome" [ref=e82] [cursor=pointer]:
+          - /url: "#vibrating-metronome-heading_3enxuu"
+        - link "Circle of fifths" [ref=e83] [cursor=pointer]:
+          - /url: "#circle-of-fifths-heading_circle_fifths"
+        - link "Chromatic tuner" [ref=e84] [cursor=pointer]:
+          - /url: "#chromatic-tuner-heading_kfjpnr"
+        - link "Decibel meter" [ref=e85] [cursor=pointer]:
+          - /url: "#decibel-meter-heading_dqmpqn"
+        - link "Smartwatch" [ref=e86] [cursor=pointer]:
+          - /url: "#smartwatch-heading_w4tnw9"
+        - link "Troubleshooting" [ref=e87] [cursor=pointer]:
+          - /url: "#troubleshooting-heading_8jzcnh"
+        - link "Compliance" [ref=e88] [cursor=pointer]:
+          - /url: "#compliance-heading_jbn8mk"
+        - link "FAQs" [ref=e89] [cursor=pointer]:
+          - /url: "#faqs-heading_xraptb"
+    - generic [ref=e90]:
+      - article [ref=e91]:
+        - heading "Read this first, please" [level=2] [ref=e92]
+      - generic [ref=e94]:
+        - paragraph [ref=e95]:
+          - strong [ref=e96]: "Important:"
+          - text: Do not pair Core / Spark in your phone's Bluetooth settings first. Always connect it from inside the Soundbrenner app. If it already appears in your phone's Bluetooth settings, remove or forget it there first, then reconnect it in the app.
+        - paragraph [ref=e97]:
+          - text: At Soundbrenner we firmly believe success is not given, it's earned. This is true for musicians, but also for companies.
+          - text: We went to great lengths to ensure the product you’re holding was made to the highest standards. We care deeply that it becomes an irreplaceable companion on your musical journey.
+          - text: If you experience any issues, our team will work hard to put a smile back on your face. We’re just an e-mail away.
+      - link "Contact us" [ref=e99] [cursor=pointer]:
+        - /url: /pages/contact-us
+        - generic [ref=e100]: Contact us
+      - separator [ref=e102]
+      - article [ref=e103]:
+        - heading "First steps" [level=2] [ref=e104]
+      - 'heading "Video: the best way to get started" [level=3] [ref=e105]'
+      - generic [ref=e107]:
+        - paragraph [ref=e108]: This video provides a comprehensive introduction to your Core / Spark. It covers everything you need to know to start using your device effectively in the shortest time possible.
+        - paragraph [ref=e109]:
+          - strong [ref=e110]: Important
+        - paragraph [ref=e111]: Do not pair Core / Spark in your phone's Bluetooth settings first. Always connect it from inside the Soundbrenner app.
+        - paragraph [ref=e112]: If your wearable already appears in your phone's Bluetooth settings, remove or forget it there first, then reconnect it from inside the app.
+        - paragraph [ref=e113]: Core / Spark can only actively connect to one mobile device at a time. If you switch to a different phone or tablet, first disconnect or unpair the wearable from the previous device, then connect it again in the app on the new device.
+      - figure [ref=e114]:
+        - iframe [ref=e115]:
+          - generic [ref=f7e4]:
+            - generic:
+              - generic:
+                - img
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - img
+              - generic:
+                - img
+                - generic: Playing in picture-in-picture
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic: More options
+                    - button "More options" [ref=f7e11] [cursor=pointer]:
+                      - img
+              - generic:
+                - button "Play" [ref=f7e13] [cursor=pointer]:
+                  - img [ref=f7e14]
+                  - generic:
+                    - generic: Play
+                - generic [ref=f7e17]:
+                  - generic [ref=f7e18]:
+                    - slider "Progress Bar" [ref=f7e19] [cursor=pointer]
+                    - generic:
+                      - generic:
+                        - generic: 00:00
+                    - generic [ref=f7e24]: 05:20
+                  - generic [ref=f7e25]:
+                    - generic [ref=f7e26]:
+                      - button:
+                        - img
+                      - slider
+                    - button:
+                      - img
+                      - generic: Settings
+                    - button:
+                      - img
+                      - generic: Picture-in-Picture
+                    - button:
+                      - img
+                      - generic: Fullscreen
+                    - button "Show controls" [ref=f7e27] [cursor=pointer]:
+                      - img [ref=f7e28]
+                      - generic:
+                        - generic: Show controls
+      - separator [ref=e117]
+      - heading "In the box" [level=3] [ref=e118]
+      - article [ref=e119]:
+        - button "Core 2" [ref=e120] [cursor=pointer]:
+          - generic [ref=e121]: Core 2
+          - generic [ref=e122]:
+            - img [ref=e124]
+            - img [ref=e127]
+        - separator [ref=e129]
+      - article [ref=e130]:
+        - button "Core Steel 2" [ref=e131] [cursor=pointer]:
+          - generic [ref=e132]: Core Steel 2
+          - generic [ref=e133]:
+            - img [ref=e135]
+            - img [ref=e138]
+        - separator [ref=e140]
+      - article [ref=e141]:
+        - button "Spark" [ref=e142] [cursor=pointer]:
+          - generic [ref=e143]: Spark
+          - generic [ref=e144]:
+            - img [ref=e146]
+            - img [ref=e149]
+        - separator [ref=e151]
+      - heading "Tech specs Core 2" [level=3] [ref=e152]
+      - article [ref=e153]:
+        - button "General tech specs" [ref=e154] [cursor=pointer]:
+          - generic [ref=e155]: General tech specs
+          - generic [ref=e156]:
+            - img [ref=e158]
+            - img [ref=e161]
+        - separator [ref=e163]
+      - article [ref=e164]:
+        - button "Vibrating metronome tech specs" [ref=e165] [cursor=pointer]:
+          - generic [ref=e166]: Vibrating metronome tech specs
+          - generic [ref=e167]:
+            - img [ref=e169]
+            - img [ref=e172]
+        - separator [ref=e174]
+      - article [ref=e175]:
+        - button "Practice tracker tech specs" [ref=e176] [cursor=pointer]:
+          - generic [ref=e177]: Practice tracker tech specs
+          - generic [ref=e178]:
+            - img [ref=e180]
+            - img [ref=e183]
+        - separator [ref=e185]
+      - article [ref=e186]:
+        - button "Chromatic tuner tech specs" [ref=e187] [cursor=pointer]:
+          - generic [ref=e188]: Chromatic tuner tech specs
+          - generic [ref=e189]:
+            - img [ref=e191]
+            - img [ref=e194]
+        - separator [ref=e196]
+      - article [ref=e197]:
+        - button "Decibel meter tech specs" [ref=e198] [cursor=pointer]:
+          - generic [ref=e199]: Decibel meter tech specs
+          - generic [ref=e200]:
+            - img [ref=e202]
+            - img [ref=e205]
+        - separator [ref=e207]
+      - article [ref=e208]:
+        - button "Smartwatch tech specs" [ref=e209] [cursor=pointer]:
+          - generic [ref=e210]: Smartwatch tech specs
+          - generic [ref=e211]:
+            - img [ref=e213]
+            - img [ref=e216]
+        - separator [ref=e218]
+      - heading "Tech specs Spark" [level=3] [ref=e219]
+      - article [ref=e220]:
+        - button "General tech specs" [ref=e221] [cursor=pointer]:
+          - generic [ref=e222]: General tech specs
+          - generic [ref=e223]:
+            - img [ref=e225]
+            - img [ref=e228]
+        - separator [ref=e230]
+      - article [ref=e231]:
+        - button "Practice motivator tech specs" [ref=e232] [cursor=pointer]:
+          - generic [ref=e233]: Practice motivator tech specs
+          - generic [ref=e234]:
+            - img [ref=e236]
+            - img [ref=e239]
+        - separator [ref=e241]
+      - article [ref=e242]:
+        - button "Vibrating metronome tech specs" [ref=e243] [cursor=pointer]:
+          - generic [ref=e244]: Vibrating metronome tech specs
+          - generic [ref=e245]:
+            - img [ref=e247]
+            - img [ref=e250]
+        - separator [ref=e252]
+      - article [ref=e253]:
+        - button "Chromatic tuner tech specs" [ref=e254] [cursor=pointer]:
+          - generic [ref=e255]: Chromatic tuner tech specs
+          - generic [ref=e256]:
+            - img [ref=e258]
+            - img [ref=e261]
+        - separator [ref=e263]
+      - article [ref=e264]:
+        - button "Decibel meter tech specs" [ref=e265] [cursor=pointer]:
+          - generic [ref=e266]: Decibel meter tech specs
+          - generic [ref=e267]:
+            - img [ref=e269]
+            - img [ref=e272]
+        - separator [ref=e274]
+      - article [ref=e275]:
+        - button "Smartwatch tech specs" [ref=e276] [cursor=pointer]:
+          - generic [ref=e277]: Smartwatch tech specs
+          - generic [ref=e278]:
+            - img [ref=e280]
+            - img [ref=e283]
+        - separator [ref=e285]
+      - heading "Plus subscription" [level=3] [ref=e286]
+      - figure [ref=e287]:
+        - img [ref=e288]
+      - generic [ref=e290]:
+        - paragraph [ref=e291]: Upgrade your practice with Plus, our optional premium service that unlocks the full capabilities of the Soundbrenner app. While your Core / Spark provides a complete experience on its own, Plus adds features such as cloud storage for your songs and setlists, along with additional exclusive tools.
+        - paragraph [ref=e292]: Your subscription directly supports the release of multiple major app updates each year, ensuring a continuous stream of new features and improvements.
+        - paragraph [ref=e293]: Your Core / Spark includes a free 3-month Plus trial. You can redeem it by following the in-app instructions after connecting your wearable.
+      - separator [ref=e295]
+      - heading "Charging the device" [level=3] [ref=e296]
+      - generic [ref=e298]:
+        - paragraph [ref=e299]: To charge your Core / Spark, attach the cable to the magnetic port located on the side of the device. A full charge takes approximately 1.5 hours.
+        - paragraph [ref=e300]:
+          - strong [ref=e301]: Battery life
+        - list [ref=e302]:
+          - listitem [ref=e303]: 4+ days in watch mode, or
+          - listitem [ref=e304]: 3+ hours metronome playback
+        - paragraph [ref=e305]:
+          - strong [ref=e306]: Charging light
+        - list [ref=e307]:
+          - listitem [ref=e308]: Orange light = charging
+          - listitem [ref=e309]: Green light = fully charged
+      - figure [ref=e310]:
+        - img [ref=e311]
+      - separator [ref=e313]
+      - heading "App & compatibility" [level=3] [ref=e314]
+      - paragraph [ref=e317]: Download our app on the product page.
+      - link "Download app" [ref=e319] [cursor=pointer]:
+        - /url: /pages/the-metronome-app
+        - generic [ref=e320]: Download app
+      - paragraph [ref=e323]: Requires an iPhone, iPad, iPod touch, Android device, or Mac with Apple silicon. See the app manual for details.
+      - link "View compatibility" [ref=e325] [cursor=pointer]:
+        - /url: /pages/manual-the-metronome-app
+        - generic [ref=e326]: View compatibility
+      - separator [ref=e328]
+      - heading "Wear & care" [level=3] [ref=e329]
+      - generic [ref=e331]:
+        - paragraph [ref=e332]: The Core / Spark is splash resistant (IP65). It can withstand light rain and minor water splashes, such as when washing your hands. However, it is not designed to withstand heavy rain, showers, or full water immersion.
+        - paragraph [ref=e333]:
+          - text: The Core / Spark contains strong magnets that may interfere with certain medical devices. For more information, please refer to the
+          - strong [ref=e334]: Safety & Regulatory Information
+          - text: section at the end of this manual.
+        - heading "Tip" [level=4] [ref=e335]
+        - paragraph [ref=e336]: Do not store your Core / Spark for extended periods (more than 3 months) with a fully depleted battery, as this may result in permanent battery damage.
+      - article [ref=e337]:
+        - button "Battery maintenance guide" [ref=e338] [cursor=pointer]:
+          - generic [ref=e339]: Battery maintenance guide
+          - generic [ref=e340]:
+            - img [ref=e342]
+            - img [ref=e345]
+        - separator [ref=e347]
+      - generic [ref=e349]:
+        - paragraph [ref=e350]:
+          - strong [ref=e351]: Silicone strap & body strap
+        - paragraph [ref=e352]: Both straps are highly durable and suitable for use in all environmental conditions.
+        - paragraph [ref=e353]:
+          - strong [ref=e354]: Leather straps
+        - paragraph [ref=e355]: We use premium-quality leather. Natural variations in color and markings, such as scars or wrinkles, are inherent characteristics of genuine leather and contribute to its unique appearance.
+        - paragraph [ref=e356]: Over time, the leather will naturally conform to your wrist and develop a distinctive patina. To preserve its quality and longevity, we recommend minimizing exposure to moisture.
+      - separator [ref=e358]
+      - heading "Lock system for the rig (Core only)" [level=3] [ref=e359]
+      - paragraph [ref=e362]: To remove the Core from its rig, twist it counterclockwise and take it off.
+      - figure [ref=e363]:
+        - img [ref=e364]
+      - generic [ref=e366]:
+        - paragraph [ref=e367]: To attach the Core to the rig, hold it slightly above the rig and release it. The Core will magnetically snap into place.
+        - paragraph [ref=e368]: When placing the Core on the rig, ensure that the buttons face toward your hand. If you prefer to wear the Core on your other wrist, you can adjust the screen orientation in the mobile app.
+        - heading "Tip" [level=4] [ref=e369]
+        - paragraph [ref=e370]: Make sure you both hear and feel the spring-loaded pin engage when the Core locks into place on the rig. This confirms that it is securely attached and prevents it from falling off.
+      - separator [ref=e372]
+      - heading "Changing the watch straps" [level=3] [ref=e373]
+      - generic [ref=e375]:
+        - paragraph [ref=e376]: To change the watch strap, turn the device over and release the two rivets located on each side.
+        - paragraph [ref=e377]: "We offer a range of strap options for the Soundbrenner Core and Spark, crafted from high-quality materials such as silicone, woven nylon, and leather. Explore the latest collection at:"
+      - link "Soundbrenner shop" [ref=e379] [cursor=pointer]:
+        - /url: /collections/all
+        - generic [ref=e380]: Soundbrenner shop
+      - figure [ref=e381]:
+        - img [ref=e382]
+      - separator [ref=e384]
+      - article [ref=e385]:
+        - heading "Navigating the device" [level=2] [ref=e386]
+      - heading "Device overview" [level=3] [ref=e387]
+      - generic [ref=e389]:
+        - paragraph [ref=e390]: "A: Wheel"
+        - paragraph [ref=e391]: "B: Magnetic port"
+        - paragraph [ref=e392]: "C: Top button"
+        - paragraph [ref=e393]: "D: Touch surface (soundwave)"
+        - paragraph [ref=e394]: "E: Bottom button"
+      - figure [ref=e395]:
+        - img [ref=e396]
+      - separator [ref=e398]
+      - heading "Device controls" [level=3] [ref=e399]
+      - generic [ref=e401]:
+        - paragraph [ref=e402]:
+          - strong [ref=e403]: Top button
+        - list [ref=e404]:
+          - listitem [ref=e405]: Go backward
+          - listitem [ref=e406]: Stop editing selection
+          - listitem [ref=e407]: Power on & power off (long press)
+        - paragraph [ref=e408]:
+          - strong [ref=e409]: Bottom button
+        - list [ref=e410]:
+          - listitem [ref=e411]: Go forward
+          - listitem [ref=e412]: Start editing selection
+          - listitem [ref=e413]: Open app dock
+        - paragraph [ref=e414]:
+          - strong [ref=e415]: Wheel
+        - list [ref=e416]:
+          - listitem [ref=e417]: Navigate the app dock
+          - listitem [ref=e418]: Change values while editing a selection
+        - paragraph [ref=e419]:
+          - strong [ref=e420]: Touch surface
+        - list [ref=e421]:
+          - listitem [ref=e422]: Tap the soundwave twice quickly to start or pause a feature while inside an app
+          - listitem [ref=e423]:
+            - text: Tap the soundwave three or more times to tap tempo while inside the
+            - strong [ref=e424]: Metronome
+            - text: app
+      - separator [ref=e426]
+      - heading "Power on & power off" [level=3] [ref=e427]
+      - generic [ref=e429]:
+        - paragraph [ref=e430]:
+          - strong [ref=e431]: Power on
+          - text: Hold the top button for 1 second to turn on the device.
+        - paragraph [ref=e432]:
+          - strong [ref=e433]: Power off
+        - paragraph [ref=e434]: 1. Hold the top button for 3 seconds until the power off prompt appears.
+        - paragraph [ref=e435]: 2. Select yes by pressing the bottom button.
+      - separator [ref=e437]
+      - heading "Navigation hierarchy" [level=3] [ref=e438]
+      - figure [ref=e439]:
+        - img [ref=e440]
+      - separator [ref=e442]
+      - heading "Touch interactions" [level=3] [ref=e443]
+      - generic [ref=e445]:
+        - paragraph [ref=e446]: The Core / Spark features a capacitive touch surface. To ensure reliable input detection, place two fingers flat across the surface. Do not use only your fingertips.
+        - paragraph [ref=e447]:
+          - strong [ref=e448]: Start or pause a feature
+        - paragraph [ref=e449]:
+          - text: Tap the soundwave icon twice quickly to start or pause certain features. This gesture works in the
+          - strong [ref=e450]: Metronome
+          - text: ","
+          - strong [ref=e451]: Timer
+          - text: ","
+          - strong [ref=e452]: Stopwatch
+          - text: ", and"
+          - strong [ref=e453]: Smartphone music remote
+          - text: apps.
+      - figure [ref=e454]:
+        - img [ref=e455]
+      - generic [ref=e457]:
+        - paragraph [ref=e458]:
+          - strong [ref=e459]: Tap tempo
+        - paragraph [ref=e460]:
+          - text: Tap the soundwave three times or more at a steady pace. The Core/Spark will set a new tempo that matches the average pace of your taps. Works in
+          - strong [ref=e461]: Metronome
+          - text: app only.
+      - figure [ref=e462]:
+        - img [ref=e463]
+      - separator [ref=e465]
+      - heading "Time, date & status icons" [level=3] [ref=e466]
+      - generic [ref=e468]:
+        - paragraph [ref=e469]:
+          - strong [ref=e470]: Time notation
+        - paragraph [ref=e471]: Use the app to change the time notation from AM/PM to 24h clock and vice versa.
+        - paragraph [ref=e472]:
+          - strong [ref=e473]: Watch face icons
+      - figure [ref=e474]:
+        - img [ref=e475]
+      - generic [ref=e476]:
+        - figure "Battery level" [ref=e477]:
+          - img [ref=e479]
+          - generic [ref=e480]: Battery level
+        - figure "Battery charging" [ref=e481]:
+          - img [ref=e483]
+          - generic [ref=e484]: Battery charging
+        - figure "New notification" [ref=e485]:
+          - img [ref=e487]
+          - generic [ref=e488]: New notification
+        - figure "Smartphone music remote" [ref=e489]:
+          - img [ref=e491]
+          - generic [ref=e492]: Smartphone music remote
+        - figure "Ready to pair" [ref=e493]:
+          - img [ref=e495]
+          - generic [ref=e496]: Ready to pair
+        - figure "Disconnected but paired" [ref=e497]:
+          - img [ref=e499]
+          - generic [ref=e500]: Disconnected but paired
+        - figure "Airplane mode" [ref=e501]:
+          - img [ref=e503]
+          - generic [ref=e504]: Airplane mode
+        - figure "Practice streak active goal not reached" [ref=e505]:
+          - img [ref=e507]
+          - generic [ref=e508]: Practice streak active goal not reached
+        - figure "Practice streak active goal reached" [ref=e509]:
+          - img [ref=e511]
+          - generic [ref=e512]: Practice streak active goal reached
+      - separator [ref=e514]
+      - article [ref=e515]:
+        - heading "Practice tracker" [level=2] [ref=e516]
+      - heading "(Core 2 / Spark only)" [level=3] [ref=e517]
+      - heading "Tracking on Core / Spark" [level=3] [ref=e518]
+      - generic [ref=e520]:
+        - paragraph [ref=e521]:
+          - text: In the
+          - strong [ref=e522]: Track
+          - text: app, set the duration of your practice session and select the instrument you will be using.
+        - paragraph [ref=e523]: "To modify the list of instruments available on your device, open the mobile app and navigate to:"
+        - paragraph [ref=e524]:
+          - strong [ref=e525]: Settings → User Profile → Instruments
+        - paragraph [ref=e526]: To begin your session, tap the soundwave icon twice quickly.
+      - figure [ref=e527]:
+        - img [ref=e528]
+      - generic [ref=e530]:
+        - paragraph [ref=e531]: If you have already been practicing but did not start the session on your device, you can adjust the start time. Press the bottom button and rotate the wheel to set the correct start time.
+        - paragraph [ref=e532]:
+          - text: When a practice session is active, the
+          - strong [ref=e533]: Track
+          - text: app will automatically open each time you wake the screen for quick access. The LED ring gradually fills with orange to indicate progress toward your goal.
+        - paragraph [ref=e534]: To disable the orange tracking light, open the mobile app and turn it off in the Core / Spark settings.
+      - figure [ref=e535]:
+        - img [ref=e536]
+      - generic [ref=e538]:
+        - paragraph [ref=e539]: During an active session, tap the soundwave icon twice quickly to pause or end the session.
+        - paragraph [ref=e540]: When editing a session, you can delete it or adjust the start and end times.
+      - separator [ref=e542]
+      - heading "Tracking with our mobile app" [level=3] [ref=e543]
+      - generic [ref=e545]:
+        - paragraph [ref=e546]: When you track a practice session on your device or in the mobile app, any changes you make, such as adjusting your goal, instrument, or start time, will automatically sync between both devices. All saved sessions are also synchronized automatically.
+        - paragraph [ref=e547]: If you experience synchronization issues, you can initiate a manual sync in the mobile app under your device’s settings.
+        - paragraph [ref=e548]: The mobile app provides several ways to view and analyze your practice data, including a practice calendar, streak tracking, and additional insights.
+      - figure [ref=e549]:
+        - img [ref=e550]
+      - separator [ref=e552]
+      - article [ref=e553]:
+        - heading "Vibrating metronome" [level=2] [ref=e554]
+      - heading "Body strap" [level=3] [ref=e555]
+      - generic [ref=e557]:
+        - paragraph [ref=e558]: Where you position the Core / Spark on your body can significantly affect your experience. The optimal placement varies from musician to musician.
+        - paragraph [ref=e559]: Using the included body strap and body strap rig, you can wear the Core on your wrist, arm, or ankle. With the included extension piece, you can also attach it to your chest, shoulder, or thigh.
+        - heading "Tip" [level=4] [ref=e560]
+        - paragraph [ref=e561]: During your first few sessions, experiment with different positions to determine what feels most comfortable and effective. Wearing the device on your chest typically provides the strongest and most precise vibration feedback.
+        - paragraph [ref=e562]: Ensure that the strap is secured firmly. A tighter fit enhances the transmission of vibrations and improves the overall experience.
+      - figure [ref=e563]:
+        - img [ref=e564]
+      - generic [ref=e566]:
+        - paragraph [ref=e567]:
+          - strong [ref=e568]: If you have thin arms or ankles
+        - paragraph [ref=e569]: To set the body strap to its smallest setting, align the arms of the rig with the markings on the strap as shown in the illustration below.
+      - figure [ref=e570]:
+        - img [ref=e571]
+      - separator [ref=e573]
+      - heading "How to feel the beat" [level=3] [ref=e574]
+      - generic [ref=e576]:
+        - paragraph [ref=e577]: Using a vibrational metronome is a different experience from using a traditional audible metronome. When you first begin using the Core / Spark, allow yourself time to adapt. Do not be discouraged if it feels unfamiliar at first, as this is a normal part of the learning process.
+        - paragraph [ref=e578]: With continued use, the vibration can become a subconscious cue that supports your sense of timing and helps you maintain the beat naturally.
+      - separator [ref=e580]
+      - heading "Setting up a rhythm" [level=3] [ref=e581]
+      - generic [ref=e583]:
+        - paragraph [ref=e584]: 1. Press the bottom button to select the first value.
+        - paragraph [ref=e585]: 2. While selected, use the wheel to change the value.
+      - figure [ref=e586]:
+        - img [ref=e587]
+      - generic [ref=e589]:
+        - paragraph [ref=e590]: 3. Press the bottom button again to edit the next value. Press the top button to go back.
+        - paragraph [ref=e591]: 4. Tap the soundwave twice quickly to start or pause the metronome.
+      - figure [ref=e592]:
+        - img [ref=e593]
+      - generic [ref=e595]:
+        - heading "Tip" [level=4] [ref=e596]
+        - paragraph [ref=e597]: You can also start the metronome by pressing and holding the bottom button. The metronome will begin as soon as you release the button.
+        - paragraph [ref=e598]: This method allows you to precisely align the start of the metronome with the rhythm of the music or audio you are listening to.
+      - separator [ref=e600]
+      - heading "Change LED lights, vibrations & sounds" [level=3] [ref=e601]
+      - generic [ref=e603]:
+        - paragraph [ref=e604]: Because every musician has different preferences, you can customize your Core / Spark using the mobile app.
+        - paragraph [ref=e605]:
+          - strong [ref=e606]: LED lights & vibrations
+        - paragraph [ref=e607]: "To adjust or disable the LED lights and vibrations, open the mobile app and navigate to:"
+        - paragraph [ref=e608]:
+          - strong [ref=e609]: Settings → Select your Core → Metronome vibrations
+          - text: or
+          - strong [ref=e610]: Metronome lights
+        - paragraph [ref=e611]: We recommend experimenting with different vibration intensities and durations to find the settings that work best for you.
+        - paragraph [ref=e612]:
+          - strong [ref=e613]: Sounds
+        - paragraph [ref=e614]: "To customize or disable the metronome sounds, open the mobile app and go to:"
+        - paragraph [ref=e615]:
+          - strong [ref=e616]: Settings → App settings → Metronome sounds
+      - figure [ref=e617]:
+        - img [ref=e618]
+      - separator [ref=e620]
+      - heading "Multi-player sync" [level=3] [ref=e621]
+      - generic [ref=e623]:
+        - paragraph [ref=e624]: The Core / Spark can be synchronized with other Soundbrenner wearables by connecting all devices to the same mobile device. You can sync up to five devices simultaneously, allowing everyone to feel the beat together.
+        - paragraph [ref=e625]:
+          - text: Core / Spark can only maintain one active connection at a time. If you want to switch to a different mobile device, first unpair or disconnect it from the current device. To access the unpairing prompt, open the
+          - strong [ref=e626]: Settings
+          - text: app on your Core / Spark, navigate to
+          - strong [ref=e627]: Bluetooth
+          - text: ", and press the bottom button."
+        - paragraph [ref=e628]: "Once the device is ready to pair, open the Soundbrenner app on the new mobile device. Then navigate to:"
+        - paragraph [ref=e629]:
+          - strong [ref=e630]: Settings → Add a Soundbrenner wearable
+        - paragraph [ref=e631]: Select the wearable you would like to connect and follow the on-screen instructions.
+      - figure [ref=e632]:
+        - img [ref=e633]
+      - separator [ref=e635]
+      - article [ref=e636]:
+        - heading "Circle of fifths" [level=2] [ref=e637]
+      - heading "Using the circle on Core 2 / Spark" [level=3] [ref=e638]
+      - generic [ref=e640]:
+        - paragraph [ref=e641]:
+          - text: The
+          - strong [ref=e642]: Circle of fifths
+          - text: is a music theory tool that shows how keys, chords, and scales relate to each other. Neighboring keys on the circle share nearly all of the same notes, which is why they often sound natural together.
+        - paragraph [ref=e643]: On Core 2 / Spark, the feature gives you a quick reference while practicing, composing, or learning a song.
+      - heading "Read the screen" [level=3] [ref=e644]
+      - generic [ref=e646]:
+        - paragraph [ref=e647]: The top of the screen shows related chords from the current area of the circle. Major chords appear on the top row and minor chords appear below them. The currently selected key is marked with a small rectangle.
+        - paragraph [ref=e648]: The lower part of the screen shows the notes in the selected scale. For example, C major shows C D E F G A B C, while A minor shows A B C D E F G A.
+      - heading "Navigate the circle" [level=3] [ref=e649]
+      - generic [ref=e651]:
+        - paragraph [ref=e652]: Rotate the wheel to move left or right around the circle. Moving clockwise follows fifths and adds sharps to the key signature. Moving counter-clockwise follows flats.
+        - paragraph [ref=e653]: Press the bottom button to switch the focus between the major and minor rows.
+        - heading "Tip" [level=4] [ref=e654]
+        - paragraph [ref=e655]: Use nearby chords as a starting point when writing progressions. They are closely related to the selected key and usually feel cohesive together.
+      - heading "F♯ and G♭" [level=3] [ref=e656]
+      - generic [ref=e658]:
+        - paragraph [ref=e659]: At the bottom of the circle, F♯ and G♭ share the same position. They sound the same but are written differently, which is called an enharmonic equivalent.
+        - paragraph [ref=e660]: Core 2 / Spark shows F♯ when you arrive from the sharp side and G♭ when you arrive from the flat side. A dotted line marks this transition.
+      - separator [ref=e662]
+      - article [ref=e663]:
+        - heading "Chromatic tuner" [level=2] [ref=e664]
+      - heading "Microphone tuner (Core 2 / Spark only)" [level=3] [ref=e665]
+      - generic [ref=e667]:
+        - paragraph [ref=e668]:
+          - text: Open the
+          - strong [ref=e669]: Microphone tuner
+          - text: app and play a note. The device will detect the closest pitch and display its deviation in cents. As you adjust the pitch, the LED ring will change from red to green to indicate when the note is in tune.
+        - paragraph [ref=e670]: "To adjust the tuning reference (A4), press the bottom button and rotate the wheel to set your preferred frequency (default: 440 Hz)."
+      - figure [ref=e671]:
+        - img [ref=e672]
+      - separator [ref=e674]
+      - heading "Contact tuner" [level=3] [ref=e675]
+      - generic [ref=e677]:
+        - paragraph [ref=e678]:
+          - text: The original Core includes the
+          - strong [ref=e679]: Contact tuner
+          - text: app pre-installed.
+        - paragraph [ref=e680]:
+          - text: For Core 2 / Spark, a magnetic tuning accessory is required to use the
+          - strong [ref=e681]: Contact tuner
+          - text: app. You can choose between a tuning clip or adhesive tuning mounts. Each accessory includes a unique code to unlock the Contact Tuner app on Core 2 / Spark.
+        - paragraph [ref=e682]: Contact tuning is designed for use with guitar, bass guitar, ukulele, and violin.
+        - heading "Tip" [level=4] [ref=e683]
+        - paragraph [ref=e684]: "To purchase magnetic tuning accessories, visit:"
+      - link "Soundbrenner shop" [ref=e686] [cursor=pointer]:
+        - /url: /collections/all
+        - generic [ref=e687]: Soundbrenner shop
+      - generic [ref=e689]:
+        - paragraph [ref=e690]:
+          - strong [ref=e691]: Attaching a magnetic tuner mount
+        - paragraph [ref=e692]: Each magnetic tuner mount comes with pre-applied adhesive. Remove the protective backing and firmly attach the mount to the headstock of your instrument.
+        - paragraph [ref=e693]: The tuner mount is designed for long-term use, so you do not need to remove it after each session. If you decide to remove it, peel it off carefully to avoid damaging the surface of your instrument.
+        - paragraph [ref=e694]:
+          - strong [ref=e695]: Using the contact tuner
+        - list [ref=e696]:
+          - listitem [ref=e697]:
+            - text: Open the
+            - strong [ref=e698]: Contact tuner
+            - text: app on your device.
+          - listitem [ref=e699]: Remove the wearable from its rig by twisting it counterclockwise.
+          - listitem [ref=e700]: Attach the magnetic port on the side of the device to the tuner mount or tuning clip.
+        - paragraph [ref=e701]: When you play a string, the LED ring and display will activate to show the tuning information.
+      - figure [ref=e702]:
+        - img [ref=e703]
+      - separator [ref=e705]
+      - article [ref=e706]:
+        - heading "Decibel meter" [level=2] [ref=e707]
+      - generic [ref=e709]:
+        - paragraph [ref=e710]:
+          - strong [ref=e711]: Sound levels
+        - paragraph [ref=e712]:
+          - text: Open the
+          - strong [ref=e713]: Decibel meter
+          - text: app to measure current, average, and maximum sound levels. The Core / Spark measures sound levels above 70 dB and uses A-weighting for its readings.
+        - heading "Tip (Core only)" [level=4] [ref=e714]
+        - paragraph [ref=e715]:
+          - text: For improved accuracy, remove the Core from its rig and place it on a soft surface, such as a cloth or your hand, before opening the
+          - strong [ref=e716]: Decibel meter
+          - text: app.
+        - paragraph [ref=e717]:
+          - strong [ref=e718]: Volume alarm
+        - paragraph [ref=e719]: "Your Core / Spark monitors sound exposure throughout the day and alerts you when volume levels reach potentially harmful thresholds, based on World Health Organization guidelines:"
+        - list [ref=e720]:
+          - listitem [ref=e721]: "80 dB: 5 hours 30 minutes per day"
+          - listitem [ref=e722]: "85 dB: 1 hour 45 minutes per day"
+          - listitem [ref=e723]: "90 dB: 30 minutes per day"
+          - listitem [ref=e724]: "95 dB: 10 minutes per day"
+        - paragraph [ref=e725]: Your privacy is important to us. No audio is recorded or stored at any time.
+        - paragraph [ref=e726]: "To disable the volume alarm and all background sound measurements, open the mobile app and navigate to:"
+        - paragraph [ref=e727]:
+          - strong [ref=e728]: Settings → Select your device → Volume alarm
+      - figure [ref=e729]:
+        - img [ref=e730]
+      - separator [ref=e732]
+      - article [ref=e733]:
+        - heading "Smartwatch" [level=2] [ref=e734]
+      - heading "Smartphone notifications" [level=3] [ref=e735]
+      - generic [ref=e737]:
+        - paragraph [ref=e738]: Smartphone notifications are supported on both iOS and Android devices. Your Core / Spark will mirror the notifications you receive on your mobile device and is compatible with all apps. At this time, it is not possible to enable or disable notifications for individual apps independently from your mobile device settings.
+        - paragraph [ref=e739]: For notifications to work reliably, your wearable must be connected through the Soundbrenner app, not just visible in your phone's Bluetooth settings.
+        - paragraph [ref=e740]: To receive notifications, iOS and Android require certain permissions. When you connect your device to the Soundbrenner app for the first time, these permissions will be requested automatically during setup.
+        - paragraph [ref=e741]: On Android, make sure notification access and background activity are enabled. On iPhone, make sure notification permissions are granted and Bluetooth remains enabled.
+        - paragraph [ref=e742]: "If you are not receiving notifications after completing the setup process, please refer to the troubleshooting section below:"
+      - article [ref=e743]:
+        - button "Core smartphone notifications troubleshooting" [ref=e744] [cursor=pointer]:
+          - generic [ref=e745]: Core smartphone notifications troubleshooting
+          - generic [ref=e746]:
+            - img [ref=e748]
+            - img [ref=e751]
+        - separator [ref=e753]
+      - generic [ref=e755]:
+        - paragraph [ref=e756]:
+          - strong [ref=e757]: Reading notifications
+        - paragraph [ref=e758]: New notifications automatically appear on the Core / Spark when you wake the screen.
+      - figure [ref=e759]:
+        - img [ref=e760]
+      - heading "Manage notifications" [level=3] [ref=e761]
+      - list [ref=e764]:
+        - listitem [ref=e765]: Rotate the wheel to scroll through the text of a notification.
+        - listitem [ref=e766]: Press the bottom button to delete the current notification and display the next one in the queue. The number in the top-right corner indicates how many notifications are currently queued.
+        - listitem [ref=e767]: Press and hold the bottom button to delete all notifications in the queue.
+        - listitem [ref=e768]: Press the top button to send all queued notifications to the Notification Center (up to a maximum of 20).
+        - listitem [ref=e769]: To access the Notification Center, rotate the wheel to the right while on the watch face.
+      - figure [ref=e770]:
+        - img [ref=e771]
+      - generic [ref=e773]:
+        - paragraph [ref=e774]:
+          - strong [ref=e775]: Phone calls
+        - paragraph [ref=e776]: When you receive a phone call, the Core / Spark will vibrate and display the option to accept or decline the call.
+        - paragraph [ref=e777]: As the Core / Spark does not have a built-in speaker or microphone, you will need to use your phone or connected Bluetooth headphones to conduct the call.
+      - separator [ref=e779]
+      - heading "Smartphone music remote (Core 2 / Spark only)" [level=3] [ref=e780]
+      - generic [ref=e782]:
+        - paragraph [ref=e783]: Control any media playing on your mobile device, including music, videos, podcasts, and audiobooks. This feature is compatible with all apps, such as Apple Music, Spotify, and YouTube.
+        - paragraph [ref=e784]: On Android devices, the Soundbrenner app requires access to your notifications to enable this feature.
+        - paragraph [ref=e785]:
+          - text: 1. Rotate the wheel to the left to access the
+          - strong [ref=e786]: Smartphone music remote
+          - text: .
+        - paragraph [ref=e787]: 2. Tap the soundwave icon twice quickly to start or pause playback.
+      - figure [ref=e788]:
+        - img [ref=e789]
+      - generic [ref=e791]:
+        - paragraph [ref=e792]: 3. Press the bottom button to select the current media playing. Twist the wheel forward for next, backward for previous.
+        - paragraph [ref=e793]: 4. Press the bottom button again to select the volume. Twist the wheel forward to increase, backward to decrease.
+      - figure [ref=e794]:
+        - img [ref=e795]
+      - separator [ref=e797]
+      - heading "Timer" [level=3] [ref=e798]
+      - generic [ref=e800]:
+        - paragraph [ref=e801]: Press the bottom button to select whether you want to adjust the hours, minutes, or seconds. Once selected, rotate the wheel to set the desired time.
+        - paragraph [ref=e802]: Tap the soundwave icon twice quickly to start or pause the timer.
+      - heading "Stopwatch" [level=3] [ref=e803]
+      - paragraph [ref=e806]: Tap the soundwave twice quickly to start or pause the stopwatch.
+      - heading "Alarm" [level=3] [ref=e807]
+      - generic [ref=e809]:
+        - paragraph [ref=e810]:
+          - text: To create an alarm, rotate the wheel to select
+          - strong [ref=e811]: New alarm
+          - text: ", then press the bottom button to confirm."
+        - paragraph [ref=e812]: Use the wheel to set the desired time. Press the bottom button to select the days on which the alarm should be active. Rotate the wheel to the right to enable a specific day. Active days are indicated by an underline. If no days are underlined, the alarm is active every day by default.
+        - paragraph [ref=e813]:
+          - text: To change the alarm status, select
+          - strong [ref=e814]: "On"
+          - text: using the bottom button. Rotate the wheel to choose
+          - strong [ref=e815]: "Off"
+          - text: or
+          - strong [ref=e816]: Delete
+          - text: ", then press the bottom button to confirm your selection."
+      - heading "Settings" [level=3] [ref=e817]
+      - generic [ref=e819]:
+        - paragraph [ref=e820]:
+          - strong [ref=e821]: Airplane mode
+        - paragraph [ref=e822]: Disables all wireless communication, including Bluetooth. When Airplane Mode is enabled, the device cannot connect to your mobile device.
+        - paragraph [ref=e823]:
+          - strong [ref=e824]: Bluetooth
+        - paragraph [ref=e825]: Displays the current connection status. Press the bottom button to unpair the device and make it available for pairing again.
+        - paragraph [ref=e826]:
+          - strong [ref=e827]: Factory reset
+        - paragraph [ref=e828]: Erases all data and preferences and restores the Core / Spark to its factory settings. After a factory reset, the device will be locked until setup is completed again using the Soundbrenner app.
+      - separator [ref=e830]
+      - article [ref=e831]:
+        - heading "Troubleshooting" [level=2] [ref=e832]
+      - heading "Connecting to your mobile device" [level=3] [ref=e833]
+      - paragraph [ref=e836]: If your Core, Core 2, or Spark does not connect to your mobile device, try the steps below.
+      - article [ref=e837]:
+        - button "Connection troubleshooting" [ref=e838] [cursor=pointer]:
+          - generic [ref=e839]: Connection troubleshooting
+          - generic [ref=e840]:
+            - img [ref=e842]
+            - img [ref=e845]
+        - separator [ref=e847]
+      - heading "Soft restart" [level=3] [ref=e848]
+      - generic [ref=e850]:
+        - paragraph [ref=e851]: If your device behaves unexpectedly, press and hold both buttons for 5 seconds, and continue holding them until Recovery Mode appears.
+        - paragraph [ref=e852]:
+          - text: Use the bottom button to select
+          - strong [ref=e853]: Restart
+          - text: and perform a soft restart.
+        - paragraph [ref=e854]: If the device remains unresponsive, perform a hard restart.
+      - figure [ref=e855]:
+        - img [ref=e856]
+      - heading "Hard restart" [level=3] [ref=e857]
+      - generic [ref=e859]:
+        - paragraph [ref=e860]: This procedure should only be used if your Core / Spark is unresponsive.
+        - paragraph [ref=e861]: Ensure that the charging cable is connected to a power source. Attach the cable to the magnetic port on the device, then detach it. Immediately reattach the cable a second time to initiate the hard restart.
+      - figure [ref=e862]:
+        - img [ref=e863]
+      - separator [ref=e865]
+      - article [ref=e866]:
+        - heading "Compliance" [level=2] [ref=e867]
+      - article [ref=e868]:
+        - button "Safety" [ref=e869] [cursor=pointer]:
+          - generic [ref=e870]: Safety
+          - generic [ref=e871]:
+            - img [ref=e873]
+            - img [ref=e876]
+        - separator [ref=e878]
+      - article [ref=e879]:
+        - button "Warranty" [ref=e880] [cursor=pointer]:
+          - generic [ref=e881]: Warranty
+          - generic [ref=e882]:
+            - img [ref=e884]
+            - img [ref=e887]
+        - separator [ref=e889]
+      - article [ref=e890]:
+        - button "Privacy policy" [ref=e891] [cursor=pointer]:
+          - generic [ref=e892]: Privacy policy
+          - generic [ref=e893]:
+            - img [ref=e895]
+            - img [ref=e898]
+        - separator [ref=e900]
+      - article [ref=e901]:
+        - button "Terms of service" [ref=e902] [cursor=pointer]:
+          - generic [ref=e903]: Terms of service
+          - generic [ref=e904]:
+            - img [ref=e906]
+            - img [ref=e909]
+        - separator [ref=e911]
+      - article [ref=e912]:
+        - button "Recycling" [ref=e913] [cursor=pointer]:
+          - generic [ref=e914]: Recycling
+          - generic [ref=e915]:
+            - img [ref=e917]
+            - img [ref=e920]
+        - separator [ref=e922]
+      - article [ref=e923]:
+        - button "EU declaration" [ref=e924] [cursor=pointer]:
+          - generic [ref=e925]: EU declaration
+          - generic [ref=e926]:
+            - img [ref=e928]
+            - img [ref=e931]
+        - separator [ref=e933]
+      - article [ref=e934]:
+        - button "FCC compliance" [ref=e935] [cursor=pointer]:
+          - generic [ref=e936]: FCC compliance
+          - generic [ref=e937]:
+            - img [ref=e939]
+            - img [ref=e942]
+        - separator [ref=e944]
+      - article [ref=e945]:
+        - heading "FAQs" [level=2] [ref=e946]
+      - article [ref=e947]:
+        - button "How to charge the Core / Spark in the shortest time possible?" [ref=e948] [cursor=pointer]:
+          - generic [ref=e949]: How to charge the Core / Spark in the shortest time possible?
+          - generic [ref=e950]:
+            - img [ref=e952]
+            - img [ref=e955]
+        - separator [ref=e957]
+      - article [ref=e958]:
+        - button "How to update the firmware of Core / Spark?" [ref=e959] [cursor=pointer]:
+          - generic [ref=e960]: How to update the firmware of Core / Spark?
+          - generic [ref=e961]:
+            - img [ref=e963]
+            - img [ref=e966]
+        - separator [ref=e968]
+      - article [ref=e969]:
+        - button "Why does my wearable stay at 120 BPM or not respond correctly?" [ref=e970] [cursor=pointer]:
+          - generic [ref=e971]: Why does my wearable stay at 120 BPM or not respond correctly?
+          - generic [ref=e972]:
+            - img [ref=e974]
+            - img [ref=e977]
+        - separator [ref=e979]
+      - article [ref=e980]:
+        - button "How do I sync Core / Spark with Ableton Live?" [ref=e981] [cursor=pointer]:
+          - generic [ref=e982]: How do I sync Core / Spark with Ableton Live?
+          - generic [ref=e983]:
+            - img [ref=e985]
+            - img [ref=e988]
+        - separator [ref=e990]
+      - article [ref=e991]:
+        - button "How to improve the tuner sustain of Core?" [ref=e992] [cursor=pointer]:
+          - generic [ref=e993]: How to improve the tuner sustain of Core?
+          - generic [ref=e994]:
+            - img [ref=e996]
+            - img [ref=e999]
+        - separator [ref=e1001]
+  - generic [ref=e1005]:
+    - paragraph [ref=e1006]: Contact us
+    - heading "We're here to help." [level=2] [ref=e1007]
+    - link "Send us a message" [ref=e1009] [cursor=pointer]:
+      - /url: /pages/contact-us
+      - generic [ref=e1010]: Send us a message
+  - contentinfo [ref=e1012]:
+    - generic [ref=e1014]:
+      - generic [ref=e1015]:
+        - generic [ref=e1017]:
+          - heading "Join our newsletter" [level=3] [ref=e1018]
+          - paragraph [ref=e1019]: Get 20% off and stay up to date.
+        - generic [ref=e1021]:
+          - generic [ref=e1022]:
+            - heading "Partner with us" [level=3] [ref=e1023]
+            - list [ref=e1024]:
+              - listitem [ref=e1025]:
+                - link "Content creators and artists" [ref=e1026] [cursor=pointer]:
+                  - /url: /pages/content-creators-and-artists
+          - generic [ref=e1027]:
+            - heading "Company" [level=3] [ref=e1028]
+            - list [ref=e1029]:
+              - listitem [ref=e1030]:
+                - link "About us" [ref=e1031] [cursor=pointer]:
+                  - /url: /pages/about-us
+              - listitem [ref=e1032]:
+                - link "Blog" [ref=e1033] [cursor=pointer]:
+                  - /url: /blogs/articles
+              - listitem [ref=e1034]:
+                - link "Careers" [ref=e1035] [cursor=pointer]:
+                  - /url: /pages/careers
+          - generic [ref=e1036]:
+            - heading "Resources" [level=3] [ref=e1037]
+            - list [ref=e1038]:
+              - listitem [ref=e1039]:
+                - link "Support" [ref=e1040] [cursor=pointer]:
+                  - /url: /pages/support
+              - listitem [ref=e1041]:
+                - link "All reviews" [ref=e1042] [cursor=pointer]:
+                  - /url: /pages/all-reviews
+              - listitem [ref=e1043]:
+                - link "Shipping, returns and warranty" [ref=e1044] [cursor=pointer]:
+                  - /url: /pages/shipping-returns-and-warranty
+              - listitem [ref=e1045]:
+                - link "Student discount" [ref=e1046] [cursor=pointer]:
+                  - /url: /pages/student-discount
+      - generic [ref=e1048]:
+        - generic [ref=e1049]:
+          - link "Trustpilot logo link" [ref=e1050] [cursor=pointer]:
+            - /url: https://www.trustpilot.com/review/soundbrenner.com
+            - img [ref=e1052]
+          - link "Trustpilot stars link" [ref=e1057] [cursor=pointer]:
+            - /url: https://www.trustpilot.com/review/soundbrenner.com
+            - img [ref=e1059]
+          - link "Read Soundbrenner reviews on Trustpilot" [ref=e1067] [cursor=pointer]:
+            - /url: https://www.trustpilot.com/review/soundbrenner.com
+            - generic [ref=e1068]: 4.7 out of 5
+        - generic "Social links" [ref=e1069]:
+          - link "Instagram" [ref=e1070] [cursor=pointer]:
+            - /url: https://www.instagram.com/soundbrenner
+            - img [ref=e1071]
+          - link "Facebook" [ref=e1075] [cursor=pointer]:
+            - /url: https://www.facebook.com/soundbrenner
+            - img [ref=e1076]
+          - link "TikTok" [ref=e1078] [cursor=pointer]:
+            - /url: https://www.tiktok.com/@soundbrenner
+            - img [ref=e1079]
+          - link "X" [ref=e1081] [cursor=pointer]:
+            - /url: https://x.com/soundbrenner
+            - img [ref=e1082]
+          - link "YouTube" [ref=e1084] [cursor=pointer]:
+            - /url: https://www.youtube.com/soundbrenner
+            - img [ref=e1085]
+    - generic [ref=e1087]:
+      - paragraph [ref=e1088]: Designed for musicians by Soundbrenner
+      - generic [ref=e1089]:
+        - link "Privacy policy" [ref=e1090] [cursor=pointer]:
+          - /url: /policies/privacy-policy
+        - generic [ref=e1091]: ·
+        - link "Terms of service" [ref=e1092] [cursor=pointer]:
+          - /url: /policies/terms-of-service
+        - generic [ref=e1093]: ·
+        - link "Legal" [ref=e1094] [cursor=pointer]:
+          - /url: /pages/legal
+        - generic [ref=e1095]: ·
+        - generic [ref=e1096]: © 2026 Soundbrenner

@@ -9,6 +9,9 @@ ehthumbs.db
 Thumbs.db
 node_modules/
 tmp/
+.env
+.env.*
+!.env.example
 
 # Shopify CLI files
 .shopify/
