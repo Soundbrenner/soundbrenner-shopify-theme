@@ -458,6 +458,14 @@
       "page_title": "Protegido con contraseña",
       "message_fallback": "Ingresa la contraseña para continuar a la tienda.",
       "store_owner_html": "¿Eres dueño de una tienda? <a href=\"{{ link }}\">Inicia sesión aquí</a>"
+    },
+    "partnership_password": {
+      "access_help_html": "Si no tienes la contraseña y crees que deberías tener acceso, envía un correo a <a href=\"{{ link }}\">{{ email }}</a>",
+      "description": "Una idea privada de colaboración de producto. Ingresa la contraseña para verla.",
+      "enter": "Entrar",
+      "error": "Contraseña incorrecta",
+      "password_label": "Contraseña",
+      "title": "Tim Henson x Soundbrenner"
     }
   },
   "shopify": {
