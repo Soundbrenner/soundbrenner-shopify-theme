@@ -15,26 +15,51 @@
     },
     "hero": {
       "type": "product-page-hero",
-      "settings": {}
+      "settings": {
+        "use_resource_title_description": false,
+        "kicker": "",
+        "title": "Tim Henson x Soundbrenner",
+        "tagline": "",
+        "subheadline": "<p>Prepared privately for Tim Henson. A proposal to design a <strong>signature in-ear monitor</strong> built around your sound and aesthetic.</p>",
+        "media": "shopify://shop_images/product-hero-tim-henson-x-soundbrenner-desktop.jpg",
+        "media_mobile": "shopify://shop_images/product-hero-tim-henson-x-soundbrenner-mobile.jpg",
+        "show_button": false
+      }
     },
     "expert_testimonials_carousel": {
       "type": "expert-testimonials",
       "blocks": {
         "item_1": {
           "type": "testimonial",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/expert-atoms-shoes-mkbhd.jpg",
+            "name": "Atoms shoes",
+            "title": "MKBHD"
+          }
         },
         "item_2": {
           "type": "testimonial",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/expert-im8-health-david-beckham.jpg",
+            "name": "IM8 Health",
+            "title": "David Beckham"
+          }
         },
         "item_3": {
           "type": "testimonial",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/expert-loop-earplugs-landonorris.jpg",
+            "name": "Loop earplugs",
+            "title": "Lando Norris from McLaren Formula 1"
+          }
         },
         "item_4": {
           "type": "testimonial",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/expert-beats-jennie-kim.jpg",
+            "name": "Beats by Dre",
+            "title": "Jennie Kim from BLACKPINK"
+          }
         }
       },
       "block_order": [
@@ -45,7 +70,8 @@
       ],
       "settings": {
         "use_product_metaobjects": false,
-        "title": "The best don’t just use products, they shape them."
+        "title": "The best don’t just use products, they shape them.",
+        "subtitle": "<p>No one has defined what a modern, design-led IEM looks like yet. This is our opportunity.</p>"
       }
     },
     "top_feature_highlights": {
@@ -94,6 +120,7 @@
       "settings": {
         "use_product_metaobjects": false,
         "media_position": "left",
+        "media_video_url": "https://cdn.shopify.com/videos/c/vp/680ac14f6f5847d18ea8365774a6a7c3/680ac14f6f5847d18ea8365774a6a7c3.HD-1080p-2.5Mbps-82561815.mp4",
         "show_icon_and_kicker": false,
         "title_part_one": "We design tools people actually want to use.",
         "title_part_two": "Every detail is considered.",
@@ -184,7 +211,8 @@
       ],
       "settings": {
         "use_product_metaobjects": false,
-        "title": "Our current product line up"
+        "title": "Our current product line up",
+        "subtitle": "<p>IEMs were built for professionals. We made them accessible to a large audience.<br>Wave is only $99. Wave Pro is only $199.</p>"
       }
     },
     "features_carousel_1": {
@@ -227,7 +255,8 @@
       ],
       "settings": {
         "use_product_metaobjects": false,
-        "title": "The Vision"
+        "title": "The Vision",
+        "subtitle": "<p>Early explorations to get the imagination going. The final signature IEM will be co-created with you and our Tokyo-based industrial designer, former Head of Creative & Design at Puma footwear.</p>"
       }
     },
     "features_carousel_2": {
