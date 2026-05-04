@@ -4814,3 +4814,7 @@ html[data-sb-page-segment='learn-more'] .shopify-section:has(> .sb-product-main)
   color: var(--sb-color-always-white) !important;
   -webkit-text-fill-color: var(--sb-color-always-white) !important;
 }
+
+#shopify-section-template--21136184541435__expert_testimonials_AkfimQ .sb-expert-testimonials-carousel__subtitle {
+  display: none !important;
+}
