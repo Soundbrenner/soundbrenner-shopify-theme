@@ -30,7 +30,9 @@
   assign hero_display_kicker = blank
   assign hero_display_title = blank
   assign hero_display_tagline = blank
+  assign hero_display_chip = blank
   assign hero_display_subheadline = blank
+  assign hero_tagline_font_class = 'font-hero-large'
   assign hero_selected_variant = blank
   assign hero_has_compare_price = false
   assign hero_has_linked_videos = false
@@ -46,6 +48,7 @@
     assign hero_display_kicker = section.settings.kicker
     assign hero_display_title = section.settings.title
     assign hero_display_tagline = section.settings.tagline
+    assign hero_display_chip = section.settings.chip_text | strip
     assign hero_display_subheadline = section.settings.subheadline
     assign hero_media_desktop_field = section.settings.media
     assign hero_media_mobile_field = section.settings.media_mobile
@@ -67,6 +70,10 @@
   endif
 
   if hide_section == false
+    if section.settings.use_smaller_tagline_font
+      assign hero_tagline_font_class = 'font-hero'
+    endif
+
     if hero_manual_mode
       assign hero_video_anchor_link = section.settings.button_link
     else
@@ -445,12 +452,16 @@
 
     <div class="sb-product-page-hero__content">
       {% if hero_manual_mode %}
+        {% if hero_display_chip != blank %}
+          <p class="sb-product-page-hero__chip font-caption weight-semibold">{{ hero_display_chip | escape }}</p>
+        {% endif %}
+
         {% if hero_display_kicker != blank %}
           <p class="sb-product-page-hero__name font-body weight-semibold">{{ hero_display_kicker }}</p>
         {% endif %}
 
         {% if hero_display_title != blank %}
-          <h1 class="sb-product-page-hero__tagline font-title weight-bold">{{ hero_display_title }}</h1>
+          <h1 class="sb-product-page-hero__tagline {{ hero_tagline_font_class }} weight-bold">{{ hero_display_title }}</h1>
         {% endif %}
 
         {% if hero_display_subheadline != blank %}
@@ -465,13 +476,13 @@
       {% endif %}
 
       {% if hero_manual_mode == false and hero_product_tagline_html != blank %}
-        <div class="sb-product-page-hero__tagline sb-product-page-hero__tagline--rich font-title weight-bold rte">
+        <div class="sb-product-page-hero__tagline sb-product-page-hero__tagline--rich {{ hero_tagline_font_class }} weight-bold rte">
           {{ hero_product_tagline_html }}
         </div>
       {% elsif hero_manual_mode == false and hero_product_tagline != blank %}
-        <p class="sb-product-page-hero__tagline font-title weight-bold">{{ hero_product_tagline }}</p>
+        <p class="sb-product-page-hero__tagline {{ hero_tagline_font_class }} weight-bold">{{ hero_product_tagline }}</p>
       {% elsif hero_manual_mode == false and hero_display_tagline != blank %}
-        <p class="sb-product-page-hero__tagline font-title weight-bold">{{ hero_display_tagline }}</p>
+        <p class="sb-product-page-hero__tagline {{ hero_tagline_font_class }} weight-bold">{{ hero_display_tagline }}</p>
       {% endif %}
 
       {% if hero_show_price %}
@@ -786,6 +797,20 @@
     margin: 0;
   }
 
+  .sb-product-page-hero__chip {
+    align-items: center;
+    align-self: center;
+    background: var(--sb-color-neutral-200);
+    border-radius: var(--sb-radius-pill);
+    color: var(--sb-color-neutral-900);
+    display: inline-flex;
+    justify-content: center;
+    margin: 0;
+    max-width: 100%;
+    padding: 8px 12px;
+    width: fit-content;
+  }
+
   .sb-product-page-hero__tagline {
     color: var(--sb-color-neutral-900);
     font-family: var(--font-display--family);
@@ -886,6 +911,10 @@
     .sb-product-page-hero__actions {
       justify-content: flex-start;
     }
+
+    .sb-product-page-hero__chip {
+      align-self: flex-start;
+    }
   }
 
   @media (max-width: 749px) {
@@ -981,6 +1010,18 @@
       "id": "tagline",
       "label": "Tagline",
       "default": "Tagline",
+      "visible_if": "{{ section.settings.use_resource_title_description == false }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_smaller_tagline_font",
+      "label": "Use smaller tagline font",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "chip_text",
+      "label": "Chip",
       "visible_if": "{{ section.settings.use_resource_title_description == false }}"
     },
     {

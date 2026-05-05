@@ -3222,7 +3222,7 @@ html[data-sb-page-segment='learn-more'] .shopify-section:has(> .sb-product-main)
 /* Final Klaviyo typography mapping */
 :is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) .kl_reviews__summary__average_value {
   font-family: var(--font-primary--family) !important;
-  font-size: var(--font-size-hero) !important;
+  font-size: var(--font-size-hero-large) !important;
   font-weight: 700 !important;
   line-height: 1 !important;
 }
