@@ -27,12 +27,12 @@
   assign product_in_the_box_items = blank
   assign product_addon_products = blank
   assign selected_multipack_variant_id = blank
-  assign ab_wave_pro_two_pack_product = section.settings.two_pack_bundle_product
-  assign ab_wave_pro_two_pack_variant = ab_wave_pro_two_pack_product.selected_or_first_available_variant
-  assign ab_wave_pro_selector_heading = section.settings.selector_heading | default: 'Pack size'
-  assign ab_wave_pro_one_pack_label = section.settings.one_pack_label | default: '1-pack'
-  assign ab_wave_pro_two_pack_label = section.settings.two_pack_label | default: '2-pack'
-  assign ab_wave_pro_two_pack_badge_label = section.settings.two_pack_badge_label | default: 'Save 10% extra'
+  assign ab_wave_two_pack_product = section.settings.two_pack_bundle_product
+  assign ab_wave_two_pack_variant = ab_wave_two_pack_product.selected_or_first_available_variant
+  assign ab_wave_selector_heading = section.settings.selector_heading | default: 'Pack size'
+  assign ab_wave_one_pack_label = section.settings.one_pack_label | default: '1-pack'
+  assign ab_wave_two_pack_label = section.settings.two_pack_label | default: '2-pack'
+  assign ab_wave_two_pack_badge_label = section.settings.two_pack_badge_label | default: 'Save 10% extra'
   assign product_page_header_ref = product.metafields.custom.sbv2_product_page_header
   assign product_page_header = product_page_header_ref.value | default: product_page_header_ref.reference.value | default: product_page_header_ref.reference | default: product_page_header_ref
   assign product_has_page_header = false
@@ -325,9 +325,9 @@
     endfor
   endif
 
-  if ab_wave_pro_two_pack_variant != blank
+  if ab_wave_two_pack_variant != blank
     assign selector_list_mode = 'multipack'
-    assign selector_list_heading = ab_wave_pro_selector_heading
+    assign selector_list_heading = ab_wave_selector_heading
     assign selected_multipack_variant_id = current_variant.id
   elsif selector_list_mode == 'variant'
     for option in product.options_with_values
@@ -907,7 +907,7 @@
                     aria-pressed="{% if current_variant.id == selected_multipack_variant_id %}true{% else %}false{% endif %}"
                   >
                     <span class="sb-product-main__selector-list-item-title font-body weight-bold">
-                      {{ ab_wave_pro_one_pack_label }}
+                      {{ ab_wave_one_pack_label }}
                     </span>
                     <span class="sb-product-main__selector-list-item-price-row">
                       {% if current_product_has_compare %}
@@ -921,10 +921,10 @@
                     </span>
                   </button>
 
-                  {% if ab_wave_pro_two_pack_variant != blank %}
+                  {% if ab_wave_two_pack_variant != blank %}
                     {% liquid
-                      assign multipack_variant = ab_wave_pro_two_pack_variant
-                      assign multipack_product = ab_wave_pro_two_pack_product
+                      assign multipack_variant = ab_wave_two_pack_variant
+                      assign multipack_product = ab_wave_two_pack_product
                       assign multipack_is_selected = false
                       if multipack_variant.id == selected_multipack_variant_id
                         assign multipack_is_selected = true
@@ -948,11 +948,11 @@
                     >
                       <span class="sb-product-main__selector-list-title-row">
                         <span class="sb-product-main__selector-list-item-title font-body weight-bold">
-                          {{ ab_wave_pro_two_pack_label }}
+                          {{ ab_wave_two_pack_label }}
                         </span>
-                        {% if ab_wave_pro_two_pack_badge_label != blank %}
+                        {% if ab_wave_two_pack_badge_label != blank %}
                           <span class="sb-product-main__selector-list-badge font-caption weight-bold">
-                            {{ ab_wave_pro_two_pack_badge_label }}
+                            {{ ab_wave_two_pack_badge_label }}
                           </span>
                         {% endif %}
                       </span>
@@ -1625,8 +1625,8 @@
     <script type="application/json" data-product-multipack-media-json>
       {
         {% liquid
-          assign multipack_product = ab_wave_pro_two_pack_product
-          assign multipack_variant = ab_wave_pro_two_pack_variant
+          assign multipack_product = ab_wave_two_pack_product
+          assign multipack_variant = ab_wave_two_pack_variant
 
           assign multipack_sticky_media = multipack_variant.featured_image | default: multipack_product.featured_image
           assign multipack_sticky_image_url = blank
@@ -5553,7 +5553,7 @@
 
 {% schema %}
 {
-  "name": "AB Wave Pro packs",
+  "name": "AB Wave packs",
   "settings": [
     {
       "type": "product",

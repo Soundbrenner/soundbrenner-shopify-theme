@@ -80,7 +80,7 @@
       }
     },
     "main": {
-      "type": "product-ab-wave-pro-pack-size-selector",
+      "type": "product-ab-wave-pack-size-selector",
       "blocks": {
         "media_gallery_pdp_main": {
           "type": "media_gallery",
@@ -128,9 +128,9 @@
         "popular_add_ons_pdp_main"
       ],
       "settings": {
-        "two_pack_bundle_product": "wave-pro-in-ear-monitors-2-pack",
+        "two_pack_bundle_product": "wave-in-ear-monitors-2-pack",
         "selector_heading": "Buy multiple and save extra",
-        "one_pack_label": "Wave Pro in-ear monitors",
+        "one_pack_label": "Wave in-ear monitors",
         "two_pack_badge_label": "Save 10% extra",
         "add_to_cart_icon": "cart"
       }
