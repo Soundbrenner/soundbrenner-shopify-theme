@@ -1,0 +1,203 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "top_sticky_accessory_bar": {
+      "type": "product-top-sticky-accessory-bar",
+      "settings": {}
+    },
+    "product_page_hero": {
+      "type": "product-page-hero",
+      "settings": {}
+    },
+    "hero_video_product": {
+      "type": "hero-video",
+      "settings": {}
+    },
+    "target_audience_carousel_product": {
+      "type": "target-audience-carousel",
+      "settings": {}
+    },
+    "large_feature_product": {
+      "type": "large-feature",
+      "settings": {
+        "use_product_metaobjects": true
+      }
+    },
+    "feature_carousel_product": {
+      "type": "feature-carousel",
+      "settings": {
+        "use_product_metaobjects": true
+      }
+    },
+    "trust_indicators_product": {
+      "type": "trust-indicators",
+      "settings": {
+        "use_product_metaobjects": true
+      }
+    },
+    "value_breakdown_product": {
+      "type": "value-breakdown",
+      "settings": {}
+    },
+    "see_it_in_action_carousel_product": {
+      "type": "see-it-in-action-carousel",
+      "settings": {
+        "use_product_metaobjects": true
+      }
+    },
+    "tech_specs_faqs_product": {
+      "type": "accordion",
+      "settings": {
+        "use_product_metaobjects": true,
+        "use_custom_title": false,
+        "show_subtitle": true
+      }
+    },
+    "compare_product": {
+      "type": "compare",
+      "settings": {
+        "use_metaobject_title": true
+      }
+    },
+    "top_feature_highlights": {
+      "type": "top-feature-highlights",
+      "settings": {
+        "use_product_metaobjects": true
+      }
+    },
+    "press_ticker_product": {
+      "type": "press-ticker",
+      "settings": {
+        "use_product_metaobject_color": true
+      }
+    },
+    "main": {
+      "type": "product-ab-wave-pro-pack-size-selector",
+      "blocks": {
+        "media_gallery_pdp_main": {
+          "type": "media_gallery",
+          "settings": {}
+        },
+        "klaviyo_reviews_average_rating_8ejwMT": {
+          "type": "shopify://apps/klaviyo-reviews/blocks/average-rating/db20e365-d984-4ac4-9655-e1588d951ca9",
+          "settings": {
+            "product": "{{product}}"
+          }
+        },
+        "variant_explainer_box_pdp_main": {
+          "type": "variant_explainer_box",
+          "settings": {}
+        },
+        "delivery_explainer_box_pdp_main": {
+          "type": "delivery_explainer_box",
+          "settings": {}
+        },
+        "video_stories_pdp_main": {
+          "type": "video_stories",
+          "settings": {}
+        },
+        "in_the_box_pdp_main": {
+          "type": "in_the_box",
+          "settings": {}
+        },
+        "description_pdp_main": {
+          "type": "description",
+          "settings": {}
+        },
+        "popular_add_ons_pdp_main": {
+          "type": "popular_add_ons",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "media_gallery_pdp_main",
+        "klaviyo_reviews_average_rating_8ejwMT",
+        "variant_explainer_box_pdp_main",
+        "delivery_explainer_box_pdp_main",
+        "video_stories_pdp_main",
+        "in_the_box_pdp_main",
+        "description_pdp_main",
+        "popular_add_ons_pdp_main"
+      ],
+      "settings": {
+        "two_pack_bundle_product": "wave-pro-in-ear-monitors-2-pack",
+        "selector_heading": "Buy multiple and save extra",
+        "one_pack_label": "Wave Pro in-ear monitors",
+        "two_pack_badge_label": "Save 10% extra",
+        "add_to_cart_icon": "cart"
+      }
+    },
+    "reviews_heading": {
+      "type": "reviews-heading",
+      "settings": {
+        "heading": "Real reviews by real musicians"
+      }
+    },
+    "177155579933e4f180": {
+      "type": "_blocks",
+      "blocks": {
+        "klaviyo_reviews_product_reviews_QJXNBz": {
+          "type": "shopify://apps/klaviyo-reviews/blocks/product-reviews/db20e365-d984-4ac4-9655-e1588d951ca9",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "klaviyo_reviews_product_reviews_QJXNBz"
+      ],
+      "settings": {}
+    },
+    "expert_testimonials_carousel": {
+      "type": "expert-testimonials",
+      "settings": {
+        "use_product_metaobjects": true
+      }
+    },
+    "product_footer_card": {
+      "type": "hero-card",
+      "settings": {
+        "use_seasonal_hero_card": false,
+        "use_resource_title_description": false,
+        "use_product_page_metaobjects": true,
+        "show_app_download_qr": false,
+        "show_app_download_app_store": false,
+        "show_app_download_google_play": false,
+        "show_app_download_china": false
+      }
+    },
+    "often_bought_together": {
+      "type": "often-bought-together",
+      "settings": {
+        "title": "Often bought together"
+      }
+    }
+  },
+  "order": [
+    "top_sticky_accessory_bar",
+    "product_page_hero",
+    "press_ticker_product",
+    "top_feature_highlights",
+    "hero_video_product",
+    "target_audience_carousel_product",
+    "large_feature_product",
+    "feature_carousel_product",
+    "trust_indicators_product",
+    "value_breakdown_product",
+    "see_it_in_action_carousel_product",
+    "tech_specs_faqs_product",
+    "compare_product",
+    "main",
+    "reviews_heading",
+    "177155579933e4f180",
+    "expert_testimonials_carousel",
+    "product_footer_card",
+    "often_bought_together"
+  ]
+}
