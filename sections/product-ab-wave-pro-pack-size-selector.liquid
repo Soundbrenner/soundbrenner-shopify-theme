@@ -941,7 +941,7 @@
                       data-selector-list-mode="multipack"
                       data-variant-id="{{ multipack_variant.id }}"
                       data-variant-available="{% if multipack_variant.available %}true{% else %}false{% endif %}"
-                      data-variant-product-id="{{ multipack_product.id }}"
+                      data-variant-product-id="{{ product.id }}"
                       data-variant-price="{{ multipack_variant.price | plus: 0 }}"
                       data-variant-compare-price="{% if multipack_variant.compare_at_price != blank %}{{ multipack_variant.compare_at_price | plus: 0 }}{% else %}0{% endif %}"
                       aria-pressed="{% if multipack_is_selected %}true{% else %}false{% endif %}"
