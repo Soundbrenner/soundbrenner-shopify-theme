@@ -224,29 +224,29 @@
         "item_1": {
           "type": "item",
           "settings": {
-            "image": "shopify://shop_images/partnership-vision-ivory-seraph.jpg",
-            "body": "<p><strong>Ivory Seraph</strong></p>"
+            "image": "shopify://shop_images/feature-carousel-el-estepario-black-strike.jpg",
+            "body": "<p><strong>Black Strike</strong></p>"
           }
         },
         "item_2": {
           "type": "item",
           "settings": {
-            "image": "shopify://shop_images/partnership-vision-obsidian-thorn.jpg",
-            "body": "<p><strong>Obsidian Thorn</strong></p>"
+            "image": "shopify://shop_images/feature-carousel-el-estepario-percussion-seal.jpg",
+            "body": "<p><strong>Percussion Seal</strong></p>"
           }
         },
         "item_3": {
           "type": "item",
           "settings": {
-            "image": "shopify://shop_images/partnership-vision-relic-halo.jpg",
-            "body": "<p><strong>Relic Halo</strong></p>"
+            "image": "shopify://shop_images/feature-carousel-el-estepario-steel-relic.jpg",
+            "body": "<p><strong>Steel Relic</strong></p>"
           }
         },
         "item_4": {
           "type": "item",
           "settings": {
-            "image": "shopify://shop_images/partnership-vision-chrome-echo.jpg",
-            "body": "<p><strong>Chrome Echo</strong></p>"
+            "image": "shopify://shop_images/feature-carousel-el-estepario-red-steppe.jpg",
+            "body": "<p><strong>Red Steppe</strong></p>"
           }
         }
       },
