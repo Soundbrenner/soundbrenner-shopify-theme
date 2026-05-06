@@ -33,6 +33,7 @@
   assign hero_display_chip = blank
   assign hero_display_subheadline = blank
   assign hero_tagline_font_class = 'font-hero-large'
+  assign hero_tagline_width_class = 'sb-product-page-hero__content--tagline-large'
   assign hero_selected_variant = blank
   assign hero_has_compare_price = false
   assign hero_has_linked_videos = false
@@ -72,6 +73,7 @@
   if hide_section == false
     if section.settings.use_smaller_tagline_font
       assign hero_tagline_font_class = 'font-hero'
+      assign hero_tagline_width_class = 'sb-product-page-hero__content--tagline-default'
     endif
 
     if hero_manual_mode
@@ -450,7 +452,7 @@
       </div>
     </div>
 
-    <div class="sb-product-page-hero__content">
+    <div class="sb-product-page-hero__content {{ hero_tagline_width_class }}">
       {% if hero_manual_mode %}
         {% if hero_display_chip != blank %}
           <p class="sb-product-page-hero__chip font-caption weight-regular">{{ hero_display_chip | escape }}</p>
@@ -815,13 +817,20 @@
     color: var(--sb-color-neutral-900);
     font-family: var(--font-display--family);
     margin: 20px 0 0;
+    max-width: 560px;
     text-wrap: balance;
   }
 
   .sb-product-page-hero__subheadline {
     color: var(--sb-color-neutral-900);
     margin: 20px 0 0;
+    max-width: 560px;
     text-wrap: balance;
+  }
+
+  .sb-product-page-hero__content--tagline-large .sb-product-page-hero__tagline,
+  .sb-product-page-hero__content--tagline-large .sb-product-page-hero__subheadline {
+    max-width: 400px;
   }
 
   .sb-product-page-hero__subheadline > * {
