@@ -4897,54 +4897,46 @@
           });
         };
 
-        const colorGroups = optionGroups.filter((group) => group.dataset.addonOptionType === 'color');
         const nonColorGroups = optionGroups.filter((group) => group.dataset.addonOptionType !== 'color');
-        const optionCount = Array.isArray(addonVariants[0]?.options) ? addonVariants[0].options.length : 0;
 
         const updateColorAvailability = () => {
-          colorGroups.forEach((colorGroup) => {
-            const colorIndex = getGroupOptionIndex(colorGroup);
-            if (colorIndex < 0) return;
+          optionGroups.forEach((optionGroup) => {
+            const optionIndex = getGroupOptionIndex(optionGroup);
+            if (optionIndex < 0) return;
 
-            const nonColorSelections = [];
-            for (let optionIndex = 0; optionIndex < optionCount; optionIndex += 1) {
-              if (optionIndex === colorIndex) continue;
-              const selectedValue = selectedOptions[optionIndex];
-              if (!selectedValue) continue;
-              nonColorSelections.push({ index: optionIndex, value: selectedValue });
-            }
-
-            const buttons = Array.from(colorGroup.querySelectorAll('[data-addon-option-value]'));
-            let firstVisibleColorValue = '';
+            const buttons = Array.from(optionGroup.querySelectorAll('[data-addon-option-value]'));
+            let firstVisibleValue = '';
 
             buttons.forEach((button) => {
-              const colorValue = button.dataset.addonOptionValue || '';
+              const nextValue = button.dataset.addonOptionValue || '';
               const hasMatchingVariant = addonVariants.some((variant) => {
                 if (!Array.isArray(variant.options)) return false;
-                if (variant.options[colorIndex] !== colorValue) return false;
                 if (!variant.available) return false;
-                return nonColorSelections.every(
-                  ({ index, value }) => !value || variant.options[index] === value
-                );
+                if (variant.options[optionIndex] !== nextValue) return false;
+                return variant.options.every((optionValue, index) => {
+                  if (index === optionIndex) return true;
+                  const selectedValue = selectedOptions[index];
+                  return !selectedValue || optionValue === selectedValue;
+                });
               });
 
               button.hidden = !hasMatchingVariant;
               button.classList.toggle('is-hidden', !hasMatchingVariant);
               button.setAttribute('aria-hidden', hasMatchingVariant ? 'false' : 'true');
 
-              if (hasMatchingVariant && !firstVisibleColorValue) {
-                firstVisibleColorValue = colorValue;
+              if (hasMatchingVariant && !firstVisibleValue) {
+                firstVisibleValue = nextValue;
               }
             });
 
-            const selectedColorValue = selectedOptions[colorIndex] || '';
+            const selectedValue = selectedOptions[optionIndex] || '';
             const selectedVisible = buttons.some(
-              (button) => !button.hidden && button.dataset.addonOptionValue === selectedColorValue
+              (button) => !button.hidden && button.dataset.addonOptionValue === selectedValue
             );
             if (!selectedVisible) {
-              selectedOptions[colorIndex] = firstVisibleColorValue || '';
+              selectedOptions[optionIndex] = firstVisibleValue || '';
             }
-            setGroupSelection(colorGroup, selectedOptions[colorIndex] || '');
+            setGroupSelection(optionGroup, selectedOptions[optionIndex] || '');
           });
         };
 
@@ -5009,6 +5001,7 @@
 
           const exactMatch = addonVariants.find((variant) => {
             if (!Array.isArray(variant.options) || variant.options.length !== optionsSnapshot.length) return false;
+            if (!variant.available) return false;
             return variant.options.every((optionValue, index) => optionValue === optionsSnapshot[index]);
           });
           if (exactMatch) return exactMatch;
@@ -5324,57 +5317,49 @@
         return optionPosition - 1;
       };
 
-      const colorGroups = optionGroups.filter((group) => group.dataset.optionType === 'color');
       const nonColorGroups = optionGroups.filter((group) => group.dataset.optionType !== 'color');
-      const optionCount = Array.isArray(variants[0]?.options) ? variants[0].options.length : 0;
       const hasMultipackSelectorList = selectorListItems.some((item) => item.dataset.selectorListMode === 'multipack');
 
       const updateColorAvailability = () => {
-        colorGroups.forEach((colorGroup) => {
-          const colorIndex = getGroupOptionIndex(colorGroup);
-          if (colorIndex < 0) return;
+        optionGroups.forEach((optionGroup) => {
+          const optionIndex = getGroupOptionIndex(optionGroup);
+          if (optionIndex < 0) return;
 
-          const nonColorSelections = [];
-          for (let optionIndex = 0; optionIndex < optionCount; optionIndex += 1) {
-            if (optionIndex === colorIndex) continue;
-            const selectedValue = selectedOptions[optionIndex];
-            if (!selectedValue) continue;
-            nonColorSelections.push({ index: optionIndex, value: selectedValue });
-          }
-
-          const buttons = Array.from(colorGroup.querySelectorAll('[data-option-value]'));
-          let firstVisibleColorValue = '';
+          const buttons = Array.from(optionGroup.querySelectorAll('[data-option-value]'));
+          let firstVisibleValue = '';
 
           buttons.forEach((button) => {
-            const colorValue = button.dataset.optionValue || '';
+            const nextValue = button.dataset.optionValue || '';
             const hasMatchingVariant = variants.some((variant) => {
               if (!Array.isArray(variant.options)) return false;
               if (!variant.available) return false;
-              if (variant.options[colorIndex] !== colorValue) return false;
-              return nonColorSelections.every(
-                ({ index, value }) => !value || variant.options[index] === value
-              );
+              if (variant.options[optionIndex] !== nextValue) return false;
+              return variant.options.every((optionValue, index) => {
+                if (index === optionIndex) return true;
+                const selectedValue = selectedOptions[index];
+                return !selectedValue || optionValue === selectedValue;
+              });
             });
 
             button.hidden = !hasMatchingVariant;
             button.classList.toggle('is-hidden', !hasMatchingVariant);
             button.setAttribute('aria-hidden', hasMatchingVariant ? 'false' : 'true');
 
-            if (hasMatchingVariant && !firstVisibleColorValue) {
-              firstVisibleColorValue = colorValue;
+            if (hasMatchingVariant && !firstVisibleValue) {
+              firstVisibleValue = nextValue;
             }
           });
 
-          const selectedColorValue = selectedOptions[colorIndex] || '';
+          const selectedValue = selectedOptions[optionIndex] || '';
           const selectedIsVisible = buttons.some(
-            (button) => !button.hidden && !button.classList.contains('is-hidden') && button.dataset.optionValue === selectedColorValue
+            (button) => !button.hidden && !button.classList.contains('is-hidden') && button.dataset.optionValue === selectedValue
           );
 
           if (!selectedIsVisible) {
-            selectedOptions[colorIndex] = firstVisibleColorValue || '';
+            selectedOptions[optionIndex] = firstVisibleValue || '';
           }
 
-          setGroupSelection(colorGroup, selectedOptions[colorIndex] || '');
+          setGroupSelection(optionGroup, selectedOptions[optionIndex] || '');
         });
       };
 
@@ -5470,6 +5455,7 @@
 
             const matchedVariant = variants.find((variant) => {
               if (!Array.isArray(variant.options) || variant.options.length !== selectedOptions.length) return false;
+              if (!variant.available) return false;
               return variant.options.every((optionValue, index) => optionValue === selectedOptions[index]);
             });
 
@@ -5483,6 +5469,7 @@
             if (group.dataset.optionType !== 'color') {
               const fallbackVariant = variants.find((variant) => {
                 if (!Array.isArray(variant.options)) return false;
+                if (!variant.available) return false;
                 return nonColorGroups.every((nonColorGroup) => {
                   const nonColorIndex = getGroupOptionIndex(nonColorGroup);
                   if (nonColorIndex < 0) return true;
