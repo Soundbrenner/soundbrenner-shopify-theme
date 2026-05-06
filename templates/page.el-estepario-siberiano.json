@@ -81,28 +81,28 @@
         "item_1": {
           "type": "item",
           "settings": {
-            "icon": "shopify://shop_images/icon-signature-design.svg",
+            "icon": "shopify://shop_images/icon-el-estepario-fingerprint.svg",
             "gradient_value": "linear-gradient(135deg, #FF0739 0%, #8E3BFF 100%)",
-            "title": "You actually care about design",
-            "body": "<p>You care about how things look, feel, and work. So do we.</p>"
+            "title": "You understand the instrument and the internet",
+            "body": "<p>You can play at an insane level, but you also know how to turn it into a video people actually want to watch.</p>"
           }
         },
         "item_2": {
           "type": "item",
           "settings": {
-            "icon": "shopify://shop_images/icon-signature-aesthetic.svg",
+            "icon": "shopify://shop_images/icon-el-estepario-verified-user.svg",
             "gradient_value": "linear-gradient(135deg, #E67702 0%, #FF4700 100%)",
-            "title": "You have a clear aesthetic point of view",
-            "body": "<p>Your sound and visual world are instantly recognizable.</p>"
+            "title": "Your audience trusts your standards",
+            "body": "<p>You are clearly selective about what you promote. That makes a product recommendation from you actually mean something.</p>"
           }
         },
         "item_3": {
           "type": "item",
           "settings": {
-            "icon": "shopify://shop_images/icon-signature-audience.svg",
+            "icon": "shopify://shop_images/icon-el-estepario-groups.svg",
             "gradient_value": "linear-gradient(135deg, #0097FF 0%, #00FCA4 100%)",
-            "title": "Your fans are already our users",
-            "body": "<p>Your audience goes beyond musicians. We build for musicians, but also creators and everyday listeners.</p>"
+            "title": "Your audience is bigger than drummers",
+            "body": "<p>You reach people who just love watching skill at the highest level, in other words, everyone! Exactly who our IEMs are designed for.</p>"
           }
         }
       },
@@ -113,7 +113,7 @@
       ],
       "settings": {
         "use_product_metaobjects": false,
-        "title": "El Estepario Siberiano, this is why you are our #1 choice for a signature IEM"
+        "title": "Jorge, this is why you are our #1 choice for a signature IEM"
       }
     },
     "large_feature_left": {
