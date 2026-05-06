@@ -33,6 +33,7 @@
   assign ab_wave_one_pack_label = section.settings.one_pack_label | default: '1-pack'
   assign ab_wave_two_pack_label = section.settings.two_pack_label | default: '2-pack'
   assign ab_wave_two_pack_badge_label = section.settings.two_pack_badge_label | default: 'Save 10% extra'
+  assign ab_wave_two_pack_strikeout_price_display = '$358'
   assign product_page_header_ref = product.metafields.custom.sbv2_product_page_header
   assign product_page_header = product_page_header_ref.value | default: product_page_header_ref.reference.value | default: product_page_header_ref.reference | default: product_page_header_ref
   assign product_has_page_header = false
@@ -944,6 +945,7 @@
                       data-variant-product-id="{{ product.id }}"
                       data-variant-price="{{ multipack_variant.price | plus: 0 }}"
                       data-variant-compare-price="{% if multipack_variant.compare_at_price != blank %}{{ multipack_variant.compare_at_price | plus: 0 }}{% else %}0{% endif %}"
+                      data-variant-forced-compare-price="{{ ab_wave_two_pack_strikeout_price_display | escape }}"
                       aria-pressed="{% if multipack_is_selected %}true{% else %}false{% endif %}"
                     >
                       <span class="sb-product-main__selector-list-title-row">
@@ -957,11 +959,9 @@
                         {% endif %}
                       </span>
                       <span class="sb-product-main__selector-list-item-price-row">
-                        {% if multipack_has_compare %}
-                          <span class="sb-product-main__price sb-product-main__price--compare font-body weight-regular">
-                            {% render 'sb-money-no-decimals', amount: multipack_variant.compare_at_price, currency: product_currency_code, context: 'storefront' %}
-                          </span>
-                        {% endif %}
+                        <span class="sb-product-main__price sb-product-main__price--compare font-body weight-regular">
+                          {{ ab_wave_two_pack_strikeout_price_display }}
+                        </span>
                         <span class="sb-product-main__price sb-product-main__price--current font-body weight-regular">
                           {% render 'sb-money-no-decimals', amount: multipack_variant.price, currency: product_currency_code, context: 'storefront' %}
                         </span>
@@ -4335,6 +4335,7 @@
       const resolveDisplayPrice = (purchaseData, overrideProductId = productId) => {
         const basePriceCents = Number(purchaseData?.price) || 0;
         const baseComparePriceCents = Number(purchaseData?.compare_at_price) || 0;
+        const forcedComparePriceCents = Number(purchaseData?.forced_compare_at_price) || 0;
         if (hideDiscounts) {
           return {
             currentPriceCents: basePriceCents,
@@ -4353,9 +4354,18 @@
           return {
             currentPriceCents: Number.isFinite(currentPriceCents) ? currentPriceCents : basePriceCents,
             comparePriceCents:
-              Number.isFinite(comparePriceCents) && comparePriceCents > (Number.isFinite(currentPriceCents) ? currentPriceCents : basePriceCents)
-                ? comparePriceCents
-                : null,
+              forcedComparePriceCents > (Number.isFinite(currentPriceCents) ? currentPriceCents : basePriceCents)
+                ? forcedComparePriceCents
+                : Number.isFinite(comparePriceCents) && comparePriceCents > (Number.isFinite(currentPriceCents) ? currentPriceCents : basePriceCents)
+                  ? comparePriceCents
+                  : null,
+          };
+        }
+
+        if (forcedComparePriceCents > basePriceCents) {
+          return {
+            currentPriceCents: basePriceCents,
+            comparePriceCents: forcedComparePriceCents,
           };
         }
 
@@ -5140,6 +5150,7 @@
           {
             price: Number(item.dataset.variantPrice || '0'),
             compare_at_price: Number(item.dataset.variantComparePrice || '0'),
+            forced_compare_at_price: Number(item.dataset.variantForcedComparePrice || '0'),
           },
           item.dataset.variantProductId || productId
         );
@@ -5150,11 +5161,29 @@
         }
 
         let comparePriceNode = item.querySelector('.sb-product-main__price--compare');
+        const forcedComparePriceText = `${item.dataset.variantForcedComparePrice || ''}`.trim();
+        const forcedComparePriceCents = Number(item.dataset.variantForcedComparePrice || '0');
         const hasComparePrice =
           Number.isFinite(itemPricing.comparePriceCents)
           && itemPricing.comparePriceCents > itemPricing.currentPriceCents;
 
-        if (hasComparePrice) {
+        if (forcedComparePriceText) {
+          if (!comparePriceNode) {
+            comparePriceNode = ensureSelectorListComparePriceElement(item);
+          }
+          if (comparePriceNode) {
+            comparePriceNode.textContent = forcedComparePriceText;
+            comparePriceNode.hidden = false;
+          }
+        } else if (forcedComparePriceCents > itemPricing.currentPriceCents) {
+          if (!comparePriceNode) {
+            comparePriceNode = ensureSelectorListComparePriceElement(item);
+          }
+          if (comparePriceNode) {
+            comparePriceNode.textContent = formatMoney(forcedComparePriceCents);
+            comparePriceNode.hidden = false;
+          }
+        } else if (hasComparePrice) {
           if (!comparePriceNode) {
             comparePriceNode = ensureSelectorListComparePriceElement(item);
           }
@@ -5502,6 +5531,7 @@
             product_id: item.dataset.variantProductId || productId,
             price: Number(item.dataset.variantPrice || '0'),
             compare_at_price: Number(item.dataset.variantComparePrice || '0'),
+            forced_compare_at_price: Number(item.dataset.variantForcedComparePrice || '0'),
           };
           variantSelect.value = `${purchaseData.id}`;
           applyPurchaseState(purchaseData);
