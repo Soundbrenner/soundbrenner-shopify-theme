@@ -18,12 +18,12 @@
       "settings": {
         "use_resource_title_description": false,
         "kicker": "",
-        "title": "Tim Henson x Soundbrenner",
+        "title": "El Estepario Siberiano x Soundbrenner",
         "tagline": "",
-        "chip_text": "Prepared privately for Tim Henson",
+        "chip_text": "Prepared privately for El Estepario Siberiano",
         "subheadline": "<p>A proposal to design a <strong>signature in-ear monitor</strong> built around your sound and aesthetic.</p>",
-        "media": "shopify://shop_images/product-hero-tim-henson-x-soundbrenner-desktop.jpg",
-        "media_mobile": "shopify://shop_images/product-hero-tim-henson-x-soundbrenner-mobile.jpg",
+        "media": "shopify://shop_images/product-hero-el-estepario-siberiano-desktop.jpg",
+        "media_mobile": "shopify://shop_images/product-hero-el-estepario-siberiano-mobile.jpg",
         "show_button": false
       }
     },
@@ -113,7 +113,7 @@
       ],
       "settings": {
         "use_product_metaobjects": false,
-        "title": "Tim, this is why you are our #1 choice for a signature IEM"
+        "title": "El Estepario Siberiano, this is why you are our #1 choice for a signature IEM"
       }
     },
     "large_feature_left": {
@@ -316,7 +316,7 @@
       "settings": {
         "image": "shopify://shop_images/florian-simmendinger-profile.png",
         "image_alt": "Florian Simmendinger",
-        "text": "Hi Tim,\n\nI've followed your work for a long time and think you're one of the most interesting creators in modern music. This felt worth building specifically with you in mind.\n\nI would love to get on a call to discuss specifics!\n\nSincerely,\nFlorian Simmendinger\nFounder, CEO & Head of Design at Soundbrenner",
+        "text": "Hi El Estepario Siberiano,\n\nI've followed your work for a long time and think you're one of the most interesting creators in modern music. This felt worth building specifically with you in mind.\n\nI would love to get on a call to discuss specifics!\n\nSincerely,\nFlorian Simmendinger\nFounder, CEO & Head of Design at Soundbrenner",
         "button_label": "Email florian@soundbrenner.com",
         "button_link": "mailto:florian@soundbrenner.com"
       }
@@ -327,9 +327,9 @@
         "use_seasonal_hero_card": false,
         "use_resource_title_description": false,
         "use_product_page_metaobjects": false,
-        "background_image_desktop": "shopify://shop_images/hero-card-tim-henson-x-soundbrenner-desktop.jpg",
-        "background_image_mobile": "shopify://shop_images/hero-card-tim-henson-x-soundbrenner-mobile.jpg",
-        "kicker": "Tim Henson x Soundbrenner",
+        "background_image_desktop": "shopify://shop_images/spotlight-card-el-estepario-siberiano-x-soundbrenner-desktop.jpg",
+        "background_image_mobile": "shopify://shop_images/spotlight-card-el-estepario-siberiano-x-soundbrenner-mobile.jpg",
+        "kicker": "El Estepario Siberiano x Soundbrenner",
         "headline": "Let's build it.",
         "show_button": false
       }
