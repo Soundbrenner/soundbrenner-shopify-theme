@@ -289,12 +289,12 @@
       "title": "Come visto su"
     },
     "partnership_password": {
-      "title": "",
-      "description": "",
-      "password_label": "",
-      "enter": "",
-      "access_help_html": "",
-      "error": ""
+      "title": "Tim Henson x Soundbrenner",
+      "description": "Un'idea di collaborazione privata su un prodotto. Inserisci la password per visualizzarla.",
+      "password_label": "Password",
+      "enter": "Entra",
+      "access_help_html": "Se non hai la password e pensi di dover avere accesso, scrivi a <a href=\"{{ link }}\">{{ email }}</a>",
+      "error": "Password errata"
     },
     "product": {
       "add": "Aggiungi",
