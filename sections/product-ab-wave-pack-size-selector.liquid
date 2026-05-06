@@ -48,6 +48,13 @@
   assign product_addon_products_ref = product.metafields.custom.addon_products
   assign product_usps_ref = product.metafields.custom.product_usps
   assign product_usps_root = product_usps_ref.value | default: product_usps_ref.reference | default: product_usps_ref
+  assign variant_swatch_source_product_ref = product.metafields.custom.variant_swatch_source_product
+  if variant_swatch_source_product_ref == blank
+    assign variant_swatch_source_product_ref = product.metafields.custom.swatch_source_product
+  endif
+  assign variant_swatch_source_product_handle = section.settings.variant_swatch_source_product_handle | default: product.metafields.custom.variant_swatch_source_product_handle.value | default: product.metafields.custom.swatch_source_product_handle.value
+  assign variant_swatch_source_product_by_handle = all_products[variant_swatch_source_product_handle]
+  assign variant_swatch_source_product = variant_swatch_source_product_by_handle | default: section.settings.variant_swatch_source_product | default: variant_swatch_source_product_ref.reference.value | default: variant_swatch_source_product_ref.reference | default: variant_swatch_source_product_ref.value | default: variant_swatch_source_product_ref
   assign add_to_cart_icon_type = section.settings.add_to_cart_icon | default: 'cart'
   assign product_module_block_types = '|media_gallery|variant_explainer_box|delivery_explainer_box|video_stories|in_the_box|description|popular_add_ons|'
   assign product_label_add_to_cart = 'sb.product.add_to_cart' | t
@@ -1035,7 +1042,10 @@
                           {% if option_value_label == selected_option_value %}
                             {% assign option_value_selected = true %}
                           {% endif %}
-                          {% assign option_value_swatch_color = option_value.swatch.color | default: option_value_label %}
+                          {% capture option_value_swatch_color %}
+                            {% render 'sb-option-value-swatch-color', option_value: option_value, option_position: option.position, option_name: option.name, source_product: variant_swatch_source_product %}
+                          {% endcapture %}
+                          {% assign option_value_swatch_color = option_value_swatch_color | strip %}
                           <button
                             type="button"
                             class="sb-product-main__color-swatch{% if option_value_selected %} is-selected{% endif %}"
@@ -1277,7 +1287,10 @@
                           <div class="sb-product-main__addon-color-swatches">
                             {% for addon_option_value in addon_option.values %}
                               {% assign addon_option_value_label = addon_option_value.name | default: addon_option_value %}
-                              {% assign addon_option_value_swatch_color = addon_option_value.swatch.color | default: addon_option_value_label %}
+                              {% capture addon_option_value_swatch_color %}
+                                {% render 'sb-option-value-swatch-color', option_value: addon_option_value, option_position: addon_option.position, option_name: addon_option.name %}
+                              {% endcapture %}
+                              {% assign addon_option_value_swatch_color = addon_option_value_swatch_color | strip %}
                               <button
                                 type="button"
                                 class="sb-product-main__addon-color-swatch{% if addon_option_value_label == addon_selected_option_value %} is-selected{% endif %}"
@@ -5585,6 +5598,18 @@
 {
   "name": "AB Wave packs",
   "settings": [
+    {
+      "type": "product",
+      "id": "variant_swatch_source_product",
+      "label": "t:labels.variant_swatch_source_product",
+      "info": "t:labels.variant_swatch_source_product_info"
+    },
+    {
+      "type": "text",
+      "id": "variant_swatch_source_product_handle",
+      "label": "t:labels.variant_swatch_source_product_handle",
+      "info": "t:labels.variant_swatch_source_product_handle_info"
+    },
     {
       "type": "product",
       "id": "two_pack_bundle_product",

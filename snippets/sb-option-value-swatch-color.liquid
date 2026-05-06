@@ -1,0 +1,50 @@
+{% doc %}
+  Resolves a Shopify option value swatch color, optionally falling back to a source product.
+
+  @param {product_option_value} option_value - The option value to render a swatch for
+  @param {number} [option_position] - The product option position
+  @param {string} [option_name] - The product option name
+  @param {product} [source_product] - Product whose native swatches should be used as a fallback
+
+  @example
+  {% render 'sb-option-value-swatch-color', option_value: option_value, option_position: option.position, option_name: option.name, source_product: source_product %}
+{% enddoc %}
+
+{% liquid
+  assign swatch_color = option_value.swatch.color
+  assign option_value_label = option_value.name | default: option_value
+
+  if swatch_color == blank and source_product != blank
+    assign source_option = blank
+    assign option_name_downcase = option_name | downcase
+
+    for source_product_option in source_product.options_with_values
+      assign source_option_name_downcase = source_product_option.name | downcase
+      if option_position != blank and source_product_option.position == option_position
+        assign source_option = source_product_option
+        break
+      elsif option_name != blank and source_product_option.name == option_name
+        assign source_option = source_product_option
+        break
+      elsif option_name_downcase contains 'color' and source_option_name_downcase contains 'color'
+        assign source_option = source_product_option
+        break
+      elsif option_name_downcase contains 'colour' and source_option_name_downcase contains 'colour'
+        assign source_option = source_product_option
+        break
+      endif
+    endfor
+
+    if source_option != blank
+      for source_option_value in source_option.values
+        assign source_option_value_label = source_option_value.name | default: source_option_value
+        if source_option_value_label == option_value_label
+          assign swatch_color = source_option_value.swatch.color
+          break
+        endif
+      endfor
+    endif
+  endif
+
+  echo swatch_color | default: option_value_label
+%}

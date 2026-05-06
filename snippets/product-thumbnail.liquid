@@ -111,12 +111,20 @@
   assign swatch_payload_entry_delimiter = '^^^sb-entry^^^'
   assign swatch_payload_field_delimiter = '^^^sb-field^^^'
   assign swatches_payload_value = swatches_payload | default: blank | strip
+  assign thumbnail_swatch_source_product_ref = product.metafields.custom.variant_swatch_source_product
+  if thumbnail_swatch_source_product_ref == blank
+    assign thumbnail_swatch_source_product_ref = product.metafields.custom.swatch_source_product
+  endif
+  assign thumbnail_swatch_source_product = thumbnail_swatch_source_product_ref.reference.value | default: thumbnail_swatch_source_product_ref.reference | default: thumbnail_swatch_source_product_ref.value | default: thumbnail_swatch_source_product_ref
   if swatches_payload_value == blank and product != blank
     for option in product.options_with_values
       assign option_name_downcase = option.name | downcase
       if option_name_downcase contains 'color' or option_name_downcase contains 'colour'
         for option_value in option.values
-          assign option_swatch_color = option_value.swatch.color | default: option_value.name
+          capture option_swatch_color
+            render 'sb-option-value-swatch-color', option_value: option_value, option_position: option.position, option_name: option.name, source_product: thumbnail_swatch_source_product
+          endcapture
+          assign option_swatch_color = option_swatch_color | strip
           assign option_swatch_image = blank
           assign option_swatch_hover_media_index = blank
           assign option_swatch_gallery = blank

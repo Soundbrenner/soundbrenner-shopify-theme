@@ -57,7 +57,11 @@
     "page_width": "Page width",
     "show_payment_icons": "Show payment icons",
     "text_style": "Text style",
-    "text": "Text"
+    "text": "Text",
+    "variant_swatch_source_product": "Variant swatch source product",
+    "variant_swatch_source_product_info": "Uses this product's native Shopify swatches when the current product does not expose swatch colors.",
+    "variant_swatch_source_product_handle": "Variant swatch source product handle",
+    "variant_swatch_source_product_handle_info": "Uses this product handle to load native Shopify swatches when product references do not expose swatch colors."
   },
   "names": {
     "section": "Section"
