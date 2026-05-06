@@ -11,7 +11,8 @@
   "404": {
     "title": "404",
     "not_found": "Page introuvable.",
-    "back_to_shopping": "Retour aux achats"
+    "back_to_shopping": "Retour aux achats",
+    "theme_version": "Version du thème {{ version }}"
   },
   "blog": {
     "article_comments": "Commentaires",
@@ -286,6 +287,14 @@
     "press_ticker": {
       "logos_aria_label": "Vu dans les logos",
       "title": "Vu dans"
+    },
+    "partnership_password": {
+      "title": "Tim Henson x Soundbrenner",
+      "description": "Une idée de collaboration privée sur un produit. Entre le mot de passe pour la voir.",
+      "password_label": "Mot de passe",
+      "enter": "Entrer",
+      "access_help_html": "Si tu n’as pas le mot de passe et que tu penses devoir avoir accès, envoie un e-mail à <a href=\"{{ link }}\">{{ email }}</a>",
+      "error": "Mot de passe incorrect"
     },
     "product": {
       "add": "Ajouter",

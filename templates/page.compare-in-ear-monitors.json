@@ -9,8 +9,8 @@
  */
 {
   "sections": {
-    "hero_card_main": {
-      "type": "hero-card",
+    "spotlight_card_main": {
+      "type": "spotlight-card",
       "settings": {
         "use_seasonal_hero_card": false,
         "use_resource_title_description": true,
@@ -39,7 +39,7 @@
     }
   },
   "order": [
-    "hero_card_main",
+    "spotlight_card_main",
     "compare"
   ]
 }

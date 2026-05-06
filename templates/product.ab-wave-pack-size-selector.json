@@ -5,6 +5,7 @@
  * This file may be updated by the Shopify admin theme editor
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
+ *
  * ------------------------------------------------------------
  */
 {
@@ -13,8 +14,8 @@
       "type": "product-top-sticky-accessory-bar",
       "settings": {}
     },
-    "product_page_hero": {
-      "type": "product-page-hero",
+    "hero_section": {
+      "type": "hero-section",
       "settings": {}
     },
     "hero_video_product": {
@@ -161,7 +162,7 @@
       }
     },
     "product_footer_card": {
-      "type": "hero-card",
+      "type": "spotlight-card",
       "settings": {
         "use_seasonal_hero_card": false,
         "use_resource_title_description": false,
@@ -181,7 +182,7 @@
   },
   "order": [
     "top_sticky_accessory_bar",
-    "product_page_hero",
+    "hero_section",
     "press_ticker_product",
     "top_feature_highlights",
     "hero_video_product",

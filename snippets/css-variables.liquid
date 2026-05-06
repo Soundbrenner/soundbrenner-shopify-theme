@@ -85,6 +85,7 @@
       {% if settings.type_display_font.system? %}{{ settings.type_display_font.family }}, {% else %}'SB Display', {% endif %}
       {{ settings.type_display_font.fallback_families }};
 
+    --font-size-hero-large: 2.25rem;
     --font-size-hero: 2rem;
     --font-size-title: 1.75rem;
     --font-size-callout: 1.25rem;
@@ -92,8 +93,6 @@
     --font-size-form-input: 1rem;
     --font-size-caption: 0.875rem;
     --font-size-caption-2: 0.75rem;
-    --font-hero-line-height:
-      {% if sb_display_font_family_downcase contains 'merriweather' %}1.25{% else %}1.1{% endif %};
     --font-title-line-height:
       {% if sb_display_font_family_downcase contains 'merriweather' %}1.35{% else %}1.25{% endif %};
 
@@ -109,6 +108,7 @@
     --sb-space-30: 24px;
     --sb-space-36: 30px;
     --sb-space-48: 36px;
+    --sb-space-56: 42px;
     --sb-space-64: 48px;
     --sb-space-96: 64px;
     --sb-space-128: 96px;
@@ -284,7 +284,8 @@
   @media (min-width: 750px) {
     :root {
       --page-margin: var(--page-margin-desktop);
-      --font-size-hero: 3rem;
+      --font-size-hero-large: 3rem;
+      --font-size-hero: 2.5rem;
       --font-size-title: 2.25rem;
       --font-size-callout: 1.5rem;
       --font-size-body: 1.125rem;
@@ -304,6 +305,7 @@
       --sb-space-30: 30px;
       --sb-space-36: 36px;
       --sb-space-48: 48px;
+      --sb-space-56: 56px;
       --sb-space-64: 64px;
       --sb-space-96: 96px;
       --sb-space-128: 128px;
@@ -456,10 +458,16 @@
     }
   }
 
+  .font-hero-large {
+    font-family: var(--font-display--family);
+    font-size: var(--font-size-hero-large);
+    line-height: var(--sb-space-64);
+  }
+
   .font-hero {
     font-family: var(--font-display--family);
     font-size: var(--font-size-hero);
-    line-height: var(--font-hero-line-height);
+    line-height: var(--sb-space-56);
   }
 
   .font-title {

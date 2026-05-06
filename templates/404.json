@@ -9,9 +9,9 @@
  */
 {
   "sections": {
-    "hero_card_4dtMWy": {
-      "type": "hero-card",
-      "name": "Hero card",
+    "spotlight_card_4dtMWy": {
+      "type": "spotlight-card",
+      "name": "Spotlight card",
       "settings": {
         "use_seasonal_hero_card": false,
         "background_image_desktop": "shopify://shop_images/Property_1_404_77e221c0-0adc-463b-8ca8-a59d9093e83b.jpg",
@@ -26,9 +26,9 @@
         "button_link": "/"
       }
     },
-    "hero_card_ixgYW9": {
-      "type": "hero-card",
-      "name": "Hero card",
+    "spotlight_card_ixgYW9": {
+      "type": "spotlight-card",
+      "name": "Spotlight card",
       "settings": {
         "use_seasonal_hero_card": true,
         "kicker": "",
@@ -43,7 +43,7 @@
     }
   },
   "order": [
-    "hero_card_4dtMWy",
-    "hero_card_ixgYW9"
+    "spotlight_card_4dtMWy",
+    "spotlight_card_ixgYW9"
   ]
 }

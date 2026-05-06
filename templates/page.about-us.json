@@ -10,7 +10,7 @@
 {
   "sections": {
     "hero_top": {
-      "type": "hero-card",
+      "type": "spotlight-card",
       "settings": {
         "use_resource_title_description": true,
         "use_seasonal_hero_card": false,
@@ -200,7 +200,7 @@
       }
     },
     "hero_bottom": {
-      "type": "hero-card",
+      "type": "spotlight-card",
       "settings": {
         "use_seasonal_hero_card": true,
         "kicker": "About us",

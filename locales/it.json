@@ -288,6 +288,14 @@
       "logos_aria_label": "Come visto nei loghi",
       "title": "Come visto su"
     },
+    "partnership_password": {
+      "title": "Tim Henson x Soundbrenner",
+      "description": "Un'idea di collaborazione privata su un prodotto. Inserisci la password per visualizzarla.",
+      "password_label": "Password",
+      "enter": "Entra",
+      "access_help_html": "Se non hai la password e pensi di dover avere accesso, scrivi a <a href=\"{{ link }}\">{{ email }}</a>",
+      "error": "Password errata"
+    },
     "product": {
       "add": "Aggiungi",
       "add_to_cart": "Aggiungi al carrello",

@@ -14,9 +14,9 @@
       "disabled": true,
       "settings": {}
     },
-    "hero_card_LAwg9p": {
-      "type": "hero-card",
-      "name": "Hero card",
+    "spotlight_card_LAwg9p": {
+      "type": "spotlight-card",
+      "name": "Spotlight card",
       "settings": {
         "use_seasonal_hero_card": false,
         "use_resource_title_description": false,
@@ -242,7 +242,7 @@
   },
   "order": [
     "main",
-    "hero_card_LAwg9p",
+    "spotlight_card_LAwg9p",
     "iem_compare_table_xFWW7g",
     "top_feature_highlights_wave",
     "large_feature_first_iem_fit",

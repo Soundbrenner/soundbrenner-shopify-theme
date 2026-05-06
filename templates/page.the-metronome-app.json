@@ -9,9 +9,9 @@
  */
 {
   "sections": {
-    "hero_card_TeBW6V": {
-      "type": "hero-card",
-      "name": "Hero card",
+    "spotlight_card_TeBW6V": {
+      "type": "spotlight-card",
+      "name": "Spotlight card",
       "settings": {
         "use_seasonal_hero_card": false,
         "background_image_desktop": "shopify://shop_images/Property_1_The_Metronome_1.jpg",
@@ -167,8 +167,8 @@
         "title": "Try it for free now"
       }
     },
-    "hero_card_2": {
-      "type": "hero-card",
+    "spotlight_card_2": {
+      "type": "spotlight-card",
       "settings": {
         "use_seasonal_hero_card": false,
         "background_image_desktop": "shopify://shop_images/Property_1_The_Metronome_3_7795744d-7856-4027-be1e-9598be95c007.jpg",
@@ -190,7 +190,7 @@
   },
   "order": [
     "metronome_app_sticky_nav",
-    "hero_card_TeBW6V",
+    "spotlight_card_TeBW6V",
     "trust_indicators",
     "large_feature_1",
     "large_feature_2",
@@ -198,6 +198,6 @@
     "large_feature_4",
     "large_feature_5",
     "download_app_section",
-    "hero_card_2"
+    "spotlight_card_2"
   ]
 }

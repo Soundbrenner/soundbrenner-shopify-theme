@@ -10,7 +10,7 @@
 {
   "sections": {
     "main": {
-      "type": "hero-card",
+      "type": "spotlight-card",
       "settings": {
         "use_seasonal_hero_card": false,
         "use_resource_title_description": true,
@@ -265,8 +265,8 @@
       ],
       "settings": {}
     },
-    "hero_card_wRrHA8": {
-      "type": "hero-card",
+    "spotlight_card_wRrHA8": {
+      "type": "spotlight-card",
       "settings": {
         "use_seasonal_hero_card": false,
         "use_resource_title_description": false,
@@ -291,6 +291,6 @@
   "order": [
     "main",
     "chapters",
-    "hero_card_wRrHA8"
+    "spotlight_card_wRrHA8"
   ]
 }
