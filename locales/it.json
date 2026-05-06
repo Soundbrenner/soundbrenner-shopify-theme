@@ -288,6 +288,14 @@
       "logos_aria_label": "Come visto nei loghi",
       "title": "Come visto su"
     },
+    "partnership_password": {
+      "title": "",
+      "description": "",
+      "password_label": "",
+      "enter": "",
+      "access_help_html": "",
+      "error": ""
+    },
     "product": {
       "add": "Aggiungi",
       "add_to_cart": "Aggiungi al carrello",

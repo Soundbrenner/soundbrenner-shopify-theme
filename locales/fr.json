@@ -11,7 +11,8 @@
   "404": {
     "title": "404",
     "not_found": "Page introuvable.",
-    "back_to_shopping": "Retour aux achats"
+    "back_to_shopping": "Retour aux achats",
+    "theme_version": ""
   },
   "blog": {
     "article_comments": "Commentaires",
@@ -286,6 +287,14 @@
     "press_ticker": {
       "logos_aria_label": "Vu dans les logos",
       "title": "Vu dans"
+    },
+    "partnership_password": {
+      "title": "",
+      "description": "",
+      "password_label": "",
+      "enter": "",
+      "access_help_html": "",
+      "error": ""
     },
     "product": {
       "add": "Ajouter",
