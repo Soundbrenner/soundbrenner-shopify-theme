@@ -28,7 +28,7 @@
       }
     },
     "seasonal_hero": {
-      "type": "hero-card",
+      "type": "spotlight-card",
       "settings": {
         "use_seasonal_hero_card": true,
         "use_resource_title_description": false,

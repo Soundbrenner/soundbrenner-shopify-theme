@@ -35,7 +35,7 @@ This theme uses one shared reveal pattern for premium storytelling sections.
 - `sections/footer.liquid`
 - `sections/reviews-heading.liquid`
 - `sections/expert-testimonials.liquid`
-- `sections/hero-card.liquid`
+- `sections/spotlight-card.liquid`
 
 ## Out of scope by default
 

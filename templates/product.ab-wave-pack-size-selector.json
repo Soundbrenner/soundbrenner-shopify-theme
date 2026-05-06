@@ -15,7 +15,7 @@
       "settings": {}
     },
     "product_page_hero": {
-      "type": "product-page-hero",
+      "type": "hero-section",
       "settings": {}
     },
     "hero_video_product": {
@@ -162,7 +162,7 @@
       }
     },
     "product_footer_card": {
-      "type": "hero-card",
+      "type": "spotlight-card",
       "settings": {
         "use_seasonal_hero_card": false,
         "use_resource_title_description": false,

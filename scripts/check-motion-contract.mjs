@@ -21,7 +21,7 @@ const allowedMotionFiles = new Set([
   'sections/footer.liquid',
   'sections/reviews-heading.liquid',
   'sections/expert-testimonials.liquid',
-  'sections/hero-card.liquid',
+  'sections/spotlight-card.liquid',
   'assets/motion.css',
   'assets/section-motion.js',
 ]);

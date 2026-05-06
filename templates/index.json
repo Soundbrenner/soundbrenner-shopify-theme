@@ -10,7 +10,7 @@
 {
   "sections": {
     "main": {
-      "type": "hero-card",
+      "type": "spotlight-card",
       "settings": {
         "use_seasonal_hero_card": true,
         "use_resource_title_description": false,
@@ -113,8 +113,8 @@
       }
     },
     "hero_card_HFy7pm": {
-      "type": "hero-card",
-      "name": "Hero card",
+      "type": "spotlight-card",
+      "name": "Spotlight card",
       "settings": {
         "use_seasonal_hero_card": false,
         "use_resource_title_description": false,
@@ -141,8 +141,8 @@
       }
     },
     "hero_card_Dzed3m": {
-      "type": "hero-card",
-      "name": "Hero card",
+      "type": "spotlight-card",
+      "name": "Spotlight card",
       "settings": {
         "use_seasonal_hero_card": false,
         "use_resource_title_description": false,
@@ -238,8 +238,8 @@
       }
     },
     "hero_card_d8GepA": {
-      "type": "hero-card",
-      "name": "Hero card",
+      "type": "spotlight-card",
+      "name": "Spotlight card",
       "settings": {
         "use_seasonal_hero_card": false,
         "use_resource_title_description": false,
@@ -385,8 +385,8 @@
       }
     },
     "hero_card_bottom_seasonal": {
-      "type": "hero-card",
-      "name": "Hero card",
+      "type": "spotlight-card",
+      "name": "Spotlight card",
       "settings": {
         "use_seasonal_hero_card": true,
         "use_resource_title_description": false,

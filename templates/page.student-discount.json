@@ -10,8 +10,8 @@
 {
   "sections": {
     "hero_card_k7f97P": {
-      "type": "hero-card",
-      "name": "Hero card",
+      "type": "spotlight-card",
+      "name": "Spotlight card",
       "settings": {
         "use_resource_title_description": true,
         "use_seasonal_hero_card": false,

@@ -33,7 +33,7 @@
   assign hero_display_chip = blank
   assign hero_display_subheadline = blank
   assign hero_tagline_font_class = 'font-hero-large'
-  assign hero_tagline_width_class = 'sb-product-page-hero__content--tagline-large'
+  assign hero_tagline_width_class = 'sb-hero-section__content--tagline-large'
   assign hero_selected_variant = blank
   assign hero_has_compare_price = false
   assign hero_has_linked_videos = false
@@ -73,7 +73,7 @@
   if hide_section == false
     if section.settings.use_smaller_tagline_font
       assign hero_tagline_font_class = 'font-hero'
-      assign hero_tagline_width_class = 'sb-product-page-hero__content--tagline-default'
+      assign hero_tagline_width_class = 'sb-hero-section__content--tagline-default'
     endif
 
     if hero_manual_mode
@@ -362,18 +362,18 @@
   {% endif %}
   {% # theme-check-enable RemoteAsset %}
   <section
-    class="sb-product-page-hero{% if hero_manual_mode %} sb-product-page-hero--manual{% endif %}"
+    class="sb-hero-section{% if hero_manual_mode %} sb-hero-section--manual{% endif %}"
     data-product-hero
     {% unless hero_manual_mode %}
       data-product-id="{{ product.id }}"
     {% endunless %}
   >
-    <div class="sb-product-page-hero__media-wrap">
-      <div class="sb-product-page-hero__media" id="sb-product-page-hero-media-{{ section.id }}">
+    <div class="sb-hero-section__media-wrap">
+      <div class="sb-hero-section__media" id="sb-hero-section-media-{{ section.id }}">
         {% if hero_has_video %}
           {% if hero_use_iframe_video and hero_video_embed_url != blank and hero_mobile_use_iframe_video and hero_video_mobile_embed_url != blank and hero_video_mobile_embed_url != hero_video_embed_url %}
             <iframe
-              class="sb-product-page-hero__media-iframe sb-product-page-hero__media-iframe--desktop"
+              class="sb-hero-section__media-iframe sb-hero-section__media-iframe--desktop"
               src="about:blank"
               data-embed-src="{{ hero_video_embed_url | escape }}"
               title="{{ hero_media_title | escape }}"
@@ -382,7 +382,7 @@
               allowfullscreen
             ></iframe>
             <iframe
-              class="sb-product-page-hero__media-iframe sb-product-page-hero__media-iframe--mobile"
+              class="sb-hero-section__media-iframe sb-hero-section__media-iframe--mobile"
               src="about:blank"
               data-embed-src="{{ hero_video_mobile_embed_url | escape }}"
               title="{{ hero_media_title | escape }}"
@@ -392,7 +392,7 @@
             ></iframe>
           {% elsif hero_use_iframe_video and hero_video_embed_url != blank %}
             <iframe
-              class="sb-product-page-hero__media-iframe"
+              class="sb-hero-section__media-iframe"
               src="{{ hero_video_embed_url | escape }}"
               title="{{ hero_media_title | escape }}"
               loading="eager"
@@ -401,7 +401,7 @@
             ></iframe>
           {% elsif hero_video_mobile_url != blank and hero_video_mobile_url != hero_video_desktop_url %}
             <video
-              class="sb-product-page-hero__media-video sb-product-page-hero__media-video--desktop"
+              class="sb-hero-section__media-video sb-hero-section__media-video--desktop"
               autoplay
               loop
               muted
@@ -412,7 +412,7 @@
               src="{{ hero_video_desktop_url }}"
             ></video>
             <video
-              class="sb-product-page-hero__media-video sb-product-page-hero__media-video--mobile"
+              class="sb-hero-section__media-video sb-hero-section__media-video--mobile"
               autoplay
               loop
               muted
@@ -424,7 +424,7 @@
             ></video>
           {% else %}
             <video
-              class="sb-product-page-hero__media-video"
+              class="sb-hero-section__media-video"
               autoplay
               loop
               muted
@@ -439,7 +439,7 @@
           <picture>
             <source media="(max-width: 749px)" srcset="{{ hero_image_mobile_url }}">
             <img
-              class="sb-product-page-hero__media-image"
+              class="sb-hero-section__media-image"
               src="{{ hero_image_desktop_url }}"
               alt="{{ hero_media_title | escape }}"
               loading="eager"
@@ -452,44 +452,44 @@
       </div>
     </div>
 
-    <div class="sb-product-page-hero__content {{ hero_tagline_width_class }}">
+    <div class="sb-hero-section__content {{ hero_tagline_width_class }}">
       {% if hero_manual_mode %}
         {% if hero_display_chip != blank %}
-          <p class="sb-product-page-hero__chip font-caption weight-regular">{{ hero_display_chip | escape }}</p>
+          <p class="sb-hero-section__chip font-caption weight-regular">{{ hero_display_chip | escape }}</p>
         {% endif %}
 
         {% if hero_display_kicker != blank %}
-          <p class="sb-product-page-hero__name font-body weight-semibold">{{ hero_display_kicker }}</p>
+          <p class="sb-hero-section__name font-body weight-semibold">{{ hero_display_kicker }}</p>
         {% endif %}
 
         {% if hero_display_title != blank %}
-          <h1 class="sb-product-page-hero__tagline {{ hero_tagline_font_class }} weight-bold">{{ hero_display_title }}</h1>
+          <h1 class="sb-hero-section__tagline {{ hero_tagline_font_class }} weight-bold">{{ hero_display_title }}</h1>
         {% endif %}
 
         {% if hero_display_subheadline != blank %}
-          <div class="sb-product-page-hero__subheadline font-body weight-regular rte">
+          <div class="sb-hero-section__subheadline font-body weight-regular rte">
             {{ hero_display_subheadline }}
           </div>
         {% endif %}
       {% else %}
         {% if hero_display_title != blank %}
-          <h1 class="sb-product-page-hero__name font-body weight-semibold">{{ hero_display_title }}</h1>
+          <h1 class="sb-hero-section__name font-body weight-semibold">{{ hero_display_title }}</h1>
         {% endif %}
       {% endif %}
 
       {% if hero_manual_mode == false and hero_product_tagline_html != blank %}
-        <div class="sb-product-page-hero__tagline sb-product-page-hero__tagline--rich {{ hero_tagline_font_class }} weight-bold rte">
+        <div class="sb-hero-section__tagline sb-hero-section__tagline--rich {{ hero_tagline_font_class }} weight-bold rte">
           {{ hero_product_tagline_html }}
         </div>
       {% elsif hero_manual_mode == false and hero_product_tagline != blank %}
-        <p class="sb-product-page-hero__tagline {{ hero_tagline_font_class }} weight-bold">{{ hero_product_tagline }}</p>
+        <p class="sb-hero-section__tagline {{ hero_tagline_font_class }} weight-bold">{{ hero_product_tagline }}</p>
       {% elsif hero_manual_mode == false and hero_display_tagline != blank %}
-        <p class="sb-product-page-hero__tagline {{ hero_tagline_font_class }} weight-bold">{{ hero_display_tagline }}</p>
+        <p class="sb-hero-section__tagline {{ hero_tagline_font_class }} weight-bold">{{ hero_display_tagline }}</p>
       {% endif %}
 
       {% if hero_show_price %}
         <div
-          class="sb-product-page-hero__price-row"
+          class="sb-hero-section__price-row"
           data-product-hero-price-root
           data-product-id="{{ product.id }}"
           data-product-variant-ids="{% for variant in product.variants %}{% unless forloop.first %},{% endunless %}{{ variant.id }}{% endfor %}"
@@ -500,7 +500,7 @@
 
         >
           <p
-            class="sb-product-page-hero__price sb-product-page-hero__price--compare font-body weight-regular"
+            class="sb-hero-section__price sb-hero-section__price--compare font-body weight-regular"
             data-product-hero-compare-price
             {% unless hero_has_compare_price %}
               hidden
@@ -508,30 +508,30 @@
           >
             {% render 'sb-money-no-decimals', amount: hero_selected_variant.compare_at_price, currency: hero_currency_code, context: 'storefront' %}
           </p>
-          <p class="sb-product-page-hero__price sb-product-page-hero__price--current font-body weight-regular" data-product-hero-current-price>
+          <p class="sb-hero-section__price sb-hero-section__price--current font-body weight-regular" data-product-hero-current-price>
             {% render 'sb-money-no-decimals', amount: hero_selected_variant.price, currency: hero_currency_code, context: 'storefront' %}
           </p>
         </div>
       {% endif %}
 
       {% if hero_has_linked_videos %}
-        <div class="sb-product-page-hero__actions">
+        <div class="sb-hero-section__actions">
           {% render 'radiant-button',
             label: 'Watch video',
             link: hero_video_anchor_link,
             size: 'large',
             icon_position: 'trailing',
-            extra_class: 'sb-product-page-hero__watch-video-button font-caption weight-bold'
+            extra_class: 'sb-hero-section__watch-video-button font-caption weight-bold'
           %}
         </div>
       {% elsif hero_show_button and hero_button_label != blank and hero_button_link != blank %}
-        <div class="sb-product-page-hero__actions">
+        <div class="sb-hero-section__actions">
           {% render 'radiant-button',
             label: hero_button_label,
             link: hero_button_link,
             size: 'large',
             icon_position: 'trailing',
-            extra_class: 'sb-product-page-hero__manual-button font-caption weight-bold'
+            extra_class: 'sb-hero-section__manual-button font-caption weight-bold'
           %}
         </div>
       {% endif %}
@@ -551,7 +551,7 @@
       if (!priceRoot) return;
       const comparePriceElement = heroRoot.querySelector('[data-product-hero-compare-price]');
       const currentPriceElement = heroRoot.querySelector('[data-product-hero-current-price]');
-      const watchVideoButton = heroRoot.querySelector('.sb-product-page-hero__watch-video-button');
+      const watchVideoButton = heroRoot.querySelector('.sb-hero-section__watch-video-button');
       const currencyCode = `${priceRoot?.dataset.currency || ''}`.trim().toUpperCase();
       const productId = priceRoot?.dataset.productId || '';
       const variantIds = String(priceRoot?.dataset.productVariantIds || '')
@@ -642,15 +642,15 @@
         applyVariantPrice(variant);
       });
 
-      const responsiveMediaIframes = Array.from(heroRoot.querySelectorAll('.sb-product-page-hero__media-iframe[data-embed-src]'));
+      const responsiveMediaIframes = Array.from(heroRoot.querySelectorAll('.sb-hero-section__media-iframe[data-embed-src]'));
       const mobileMediaQuery = window.matchMedia('(max-width: 749px)');
       const EMPTY_IFRAME_SRC = 'about:blank';
 
       const isFrameActiveForViewport = (frame) => {
-        if (frame.classList.contains('sb-product-page-hero__media-iframe--mobile')) {
+        if (frame.classList.contains('sb-hero-section__media-iframe--mobile')) {
           return mobileMediaQuery.matches;
         }
-        if (frame.classList.contains('sb-product-page-hero__media-iframe--desktop')) {
+        if (frame.classList.contains('sb-hero-section__media-iframe--desktop')) {
           return !mobileMediaQuery.matches;
         }
         return true;
@@ -687,7 +687,7 @@
       }
 
       if (watchVideoButton) {
-        const watchVideoActions = watchVideoButton.closest('.sb-product-page-hero__actions');
+        const watchVideoActions = watchVideoButton.closest('.sb-hero-section__actions');
 
         const getHeroVideoTarget = () => {
           if (watchVideoButton && watchVideoButton.tagName === 'A') {
@@ -740,20 +740,20 @@
 {% endif %}
 
 {% stylesheet %}
-  .sb-product-page-hero {
-    --sb-product-page-hero-mobile-media-width: 402;
-    --sb-product-page-hero-mobile-media-height: 369;
+  .sb-hero-section {
+    --sb-hero-section-mobile-media-width: 402;
+    --sb-hero-section-mobile-media-height: 369;
     display: flex;
     flex-direction: column;
     width: 100%;
   }
 
-  .sb-product-page-hero__media-wrap {
+  .sb-hero-section__media-wrap {
     margin: 0;
     width: 100%;
   }
 
-  .sb-product-page-hero__media {
+  .sb-hero-section__media {
     aspect-ratio: 1240 / 600;
     background: var(--sb-color-neutral-100);
     border-radius: 0;
@@ -763,9 +763,9 @@
     width: 100%;
   }
 
-  .sb-product-page-hero__media-image,
-  .sb-product-page-hero__media-video,
-  .sb-product-page-hero__media-iframe {
+  .sb-hero-section__media-image,
+  .sb-hero-section__media-video,
+  .sb-hero-section__media-iframe {
     border: 0;
     display: block;
     height: 100%;
@@ -774,32 +774,32 @@
     width: 100%;
   }
 
-  .sb-product-page-hero__media-iframe {
+  .sb-hero-section__media-iframe {
     position: relative;
   }
 
-  .sb-product-page-hero__media-video--mobile,
-  .sb-product-page-hero__media-iframe--mobile {
+  .sb-hero-section__media-video--mobile,
+  .sb-hero-section__media-iframe--mobile {
     display: none;
   }
 
-  .sb-product-page-hero__media picture {
+  .sb-hero-section__media picture {
     display: block;
     height: 100%;
     width: 100%;
   }
 
-  .sb-product-page-hero__content {
+  .sb-hero-section__content {
     margin-top: 36px;
     width: 100%;
   }
 
-  .sb-product-page-hero__name {
+  .sb-hero-section__name {
     color: var(--sb-color-neutral-900);
     margin: 0;
   }
 
-  .sb-product-page-hero__chip {
+  .sb-hero-section__chip {
     align-items: center;
     align-self: center;
     background: var(--sb-color-neutral-200);
@@ -813,7 +813,7 @@
     width: fit-content;
   }
 
-  .sb-product-page-hero__tagline {
+  .sb-hero-section__tagline {
     color: var(--sb-color-neutral-900);
     font-family: var(--font-display--family);
     margin: 20px 0 0;
@@ -821,31 +821,31 @@
     text-wrap: balance;
   }
 
-  .sb-product-page-hero__subheadline {
+  .sb-hero-section__subheadline {
     color: var(--sb-color-neutral-900);
     margin: 20px 0 0;
     max-width: 560px;
     text-wrap: balance;
   }
 
-  .sb-product-page-hero__content--tagline-large .sb-product-page-hero__tagline,
-  .sb-product-page-hero__content--tagline-large .sb-product-page-hero__subheadline {
+  .sb-hero-section__content--tagline-large .sb-hero-section__tagline,
+  .sb-hero-section__content--tagline-large .sb-hero-section__subheadline {
     max-width: 400px;
   }
 
-  .sb-product-page-hero__subheadline > * {
+  .sb-hero-section__subheadline > * {
     margin: 0;
   }
 
-  .sb-product-page-hero__subheadline > * + * {
+  .sb-hero-section__subheadline > * + * {
     margin-top: 20px;
   }
 
-  .sb-product-page-hero__tagline .metafield-single_line_text_field {
+  .sb-hero-section__tagline .metafield-single_line_text_field {
     text-wrap: balance;
   }
 
-  .sb-product-page-hero__tagline--rich > * {
+  .sb-hero-section__tagline--rich > * {
     font-family: inherit;
     font-size: inherit;
     font-weight: inherit;
@@ -853,11 +853,11 @@
     margin: 0;
   }
 
-  .sb-product-page-hero__tagline--rich > * + * {
+  .sb-hero-section__tagline--rich > * + * {
     margin-top: 20px;
   }
 
-  .sb-product-page-hero__price-row {
+  .sb-hero-section__price-row {
     align-items: center;
     column-gap: var(--sb-space-8);
     display: inline-flex;
@@ -866,41 +866,41 @@
     row-gap: var(--sb-space-8);
   }
 
-  .sb-product-page-hero__price {
+  .sb-hero-section__price {
     margin: 0;
   }
 
-  .sb-product-page-hero__price--compare {
+  .sb-hero-section__price--compare {
     color: var(--sb-color-neutral-800);
     text-decoration: line-through;
   }
 
-  .sb-product-page-hero__price--current {
+  .sb-hero-section__price--current {
     color: var(--sb-color-blue-500);
   }
 
-  .sb-product-page-hero__actions {
+  .sb-hero-section__actions {
     display: flex;
     justify-content: center;
     margin-top: 24px;
     width: 100%;
   }
 
-  .sb-product-page-hero__watch-video-button {
+  .sb-hero-section__watch-video-button {
     width: fit-content;
   }
 
   @media (min-width: 750px) {
-    .sb-product-page-hero {
+    .sb-hero-section {
       position: relative;
     }
 
-    .sb-product-page-hero__media-wrap {
+    .sb-hero-section__media-wrap {
       position: relative;
       z-index: 1;
     }
 
-    .sb-product-page-hero__content {
+    .sb-hero-section__content {
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -913,21 +913,21 @@
       z-index: 2;
     }
 
-    .sb-product-page-hero--manual .sb-product-page-hero__content {
+    .sb-hero-section--manual .sb-hero-section__content {
       padding-left: var(--sb-space-64);
     }
 
-    .sb-product-page-hero__actions {
+    .sb-hero-section__actions {
       justify-content: flex-start;
     }
 
-    .sb-product-page-hero__chip {
+    .sb-hero-section__chip {
       align-self: flex-start;
     }
   }
 
   @media (max-width: 749px) {
-    .sb-product-page-hero {
+    .sb-hero-section {
       align-items: stretch;
       display: flex;
       flex-direction: column-reverse;
@@ -940,7 +940,7 @@
       width: calc(100% + (var(--page-margin) * 2));
     }
 
-    .sb-product-page-hero__media-wrap {
+    .sb-hero-section__media-wrap {
       bottom: auto;
       left: auto;
       position: relative;
@@ -948,24 +948,24 @@
       z-index: 1;
     }
 
-    .sb-product-page-hero__media {
-      aspect-ratio: var(--sb-product-page-hero-mobile-media-width) / var(--sb-product-page-hero-mobile-media-height);
+    .sb-hero-section__media {
+      aspect-ratio: var(--sb-hero-section-mobile-media-width) / var(--sb-hero-section-mobile-media-height);
       margin-inline: 0;
       max-width: none;
       width: 100%;
     }
 
-    .sb-product-page-hero__media-video--desktop,
-    .sb-product-page-hero__media-iframe--desktop {
+    .sb-hero-section__media-video--desktop,
+    .sb-hero-section__media-iframe--desktop {
       display: none;
     }
 
-    .sb-product-page-hero__media-video--mobile,
-    .sb-product-page-hero__media-iframe--mobile {
+    .sb-hero-section__media-video--mobile,
+    .sb-hero-section__media-iframe--mobile {
       display: block;
     }
 
-    .sb-product-page-hero__content {
+    .sb-hero-section__content {
       align-items: center;
       display: flex;
       flex-direction: column;
@@ -981,7 +981,7 @@
 
 {% schema %}
 {
-  "name": "Product page hero",
+  "name": "Hero section",
   "settings": [
     {
       "type": "checkbox",
@@ -1061,7 +1061,7 @@
   ],
   "presets": [
     {
-      "name": "Product page hero"
+      "name": "Hero section"
     }
   ]
 }
