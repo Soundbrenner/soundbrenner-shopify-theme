@@ -15,7 +15,9 @@
     },
     "product_page_hero": {
       "type": "hero-section",
-      "settings": {}
+      "settings": {
+        "use_smaller_tagline_font": true
+      }
     },
     "hero_video_product": {
       "type": "hero-video",
