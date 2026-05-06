@@ -2793,6 +2793,10 @@
     color: var(--sb-color-neutral-100);
   }
 
+  .sb-product-main__variant-pill.is-hidden {
+    display: none !important;
+  }
+
   .sb-product-main__variant-explainer {
     background: var(--sb-color-neutral-200);
     border-radius: 24px;
@@ -3466,6 +3470,10 @@
   .sb-product-main__addon-option-pill.is-active {
     background: var(--sb-color-neutral-900);
     color: var(--sb-color-neutral-100);
+  }
+
+  .sb-product-main__addon-option-pill.is-hidden {
+    display: none !important;
   }
 
   .sb-product-main__addon-color-swatches {
@@ -5585,12 +5593,6 @@
 {
   "name": "AB Wave packs",
   "settings": [
-    {
-      "type": "product",
-      "id": "variant_swatch_source_product",
-      "label": "t:labels.variant_swatch_source_product",
-      "info": "t:labels.variant_swatch_source_product_info"
-    },
     {
       "type": "text",
       "id": "variant_swatch_source_product_handle",
