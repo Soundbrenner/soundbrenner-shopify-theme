@@ -14,7 +14,7 @@
       "disabled": true,
       "settings": {}
     },
-    "hero_card_LAwg9p": {
+    "spotlight_card_LAwg9p": {
       "type": "spotlight-card",
       "name": "Spotlight card",
       "settings": {
@@ -107,7 +107,7 @@
         "title_part_one": "A first IEM should feel",
         "title_part_two": "right from day one",
         "title_accent_color": "primary-500",
-        "body": "<p>One of the biggest reasons people delay their first IEM is simple: they worry it will feel awkward the moment they put it in.</p><p>Wave is designed to sit securely without feeling intimidating, so getting started feels easier than expected.</p><p>Once the fit clicks, everything changes\u2014better focus, clearer sound, and a setup you can rely on during practice and on stage.</p>"
+        "body": "<p>One of the biggest reasons people delay their first IEM is simple: they worry it will feel awkward the moment they put it in.</p><p>Wave is designed to sit securely without feeling intimidating, so getting started feels easier than expected.</p><p>Once the fit clicks, everything changes—better focus, clearer sound, and a setup you can rely on during practice and on stage.</p>"
       }
     },
     "large_feature_first_iem_complexity": {
@@ -121,7 +121,7 @@
         "kicker_icon": "",
         "kicker_text": "",
         "title_part_one": "Serious monitoring",
-        "title_part_two": "doesn\u2019t have to be complicated",
+        "title_part_two": "doesn’t have to be complicated",
         "title_accent_color": "primary-500",
         "body": "<p>Another common hesitation is complexity. A lot of first-time buyers assume IEMs will add more gear, more setup, and more things to troubleshoot.</p><p>Wave keeps it straightforward: connect, play, and hear clearly without charging, pairing, or Bluetooth lag.</p><p>It is the simple way to move beyond consumer listening gear without making your setup harder to live with.</p>"
       }
@@ -145,7 +145,7 @@
   },
   "order": [
     "main",
-    "hero_card_LAwg9p",
+    "spotlight_card_LAwg9p",
     "iem_compare_table_xFWW7g",
     "top_feature_highlights_wave",
     "large_feature_first_iem_fit",

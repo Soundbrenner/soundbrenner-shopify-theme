@@ -14,7 +14,7 @@
       "disabled": true,
       "settings": {}
     },
-    "hero_card_LAwg9p": {
+    "spotlight_card_LAwg9p": {
       "type": "spotlight-card",
       "name": "Spotlight card",
       "settings": {
@@ -242,7 +242,7 @@
   },
   "order": [
     "main",
-    "hero_card_LAwg9p",
+    "spotlight_card_LAwg9p",
     "iem_compare_table_xFWW7g",
     "top_feature_highlights_wave",
     "large_feature_first_iem_fit",

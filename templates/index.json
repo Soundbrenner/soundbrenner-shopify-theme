@@ -112,7 +112,7 @@
         "non_product_content_color": "neutral-800"
       }
     },
-    "hero_card_HFy7pm": {
+    "spotlight_card_HFy7pm": {
       "type": "spotlight-card",
       "name": "Spotlight card",
       "settings": {
@@ -140,7 +140,7 @@
         "show_app_download_china": false
       }
     },
-    "hero_card_Dzed3m": {
+    "spotlight_card_Dzed3m": {
       "type": "spotlight-card",
       "name": "Spotlight card",
       "settings": {
@@ -237,7 +237,7 @@
         "subtitle": ""
       }
     },
-    "hero_card_d8GepA": {
+    "spotlight_card_d8GepA": {
       "type": "spotlight-card",
       "name": "Spotlight card",
       "settings": {
@@ -384,7 +384,7 @@
         "quote": "Great musicians aren't born. They're crafted. Success is simply the sum of every hour you spent in the practice room.\n\nAt Soundbrenner, we don't believe in shortcuts - only better tools for the journey to mastery."
       }
     },
-    "hero_card_bottom_seasonal": {
+    "spotlight_card_bottom_seasonal": {
       "type": "spotlight-card",
       "name": "Spotlight card",
       "settings": {
@@ -415,13 +415,13 @@
     "main",
     "collection_overview_home",
     "press_ticker_home",
-    "hero_card_HFy7pm",
-    "hero_card_Dzed3m",
+    "spotlight_card_HFy7pm",
+    "spotlight_card_Dzed3m",
     "expert_testimonials_AkfimQ",
-    "hero_card_d8GepA",
+    "spotlight_card_d8GepA",
     "highlights_shipping_returns",
     "accordion_shipping_returns",
     "quote_section_home",
-    "hero_card_bottom_seasonal"
+    "spotlight_card_bottom_seasonal"
   ]
 }

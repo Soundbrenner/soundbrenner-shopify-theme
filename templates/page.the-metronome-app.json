@@ -9,7 +9,7 @@
  */
 {
   "sections": {
-    "hero_card_TeBW6V": {
+    "spotlight_card_TeBW6V": {
       "type": "spotlight-card",
       "name": "Spotlight card",
       "settings": {
@@ -167,7 +167,7 @@
         "title": "Try it for free now"
       }
     },
-    "hero_card_2": {
+    "spotlight_card_2": {
       "type": "spotlight-card",
       "settings": {
         "use_seasonal_hero_card": false,
@@ -190,7 +190,7 @@
   },
   "order": [
     "metronome_app_sticky_nav",
-    "hero_card_TeBW6V",
+    "spotlight_card_TeBW6V",
     "trust_indicators",
     "large_feature_1",
     "large_feature_2",
@@ -198,6 +198,6 @@
     "large_feature_4",
     "large_feature_5",
     "download_app_section",
-    "hero_card_2"
+    "spotlight_card_2"
   ]
 }

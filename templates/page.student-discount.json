@@ -9,7 +9,7 @@
  */
 {
   "sections": {
-    "hero_card_k7f97P": {
+    "spotlight_card_k7f97P": {
       "type": "spotlight-card",
       "name": "Spotlight card",
       "settings": {
@@ -122,7 +122,7 @@
     }
   },
   "order": [
-    "hero_card_k7f97P",
+    "spotlight_card_k7f97P",
     "text",
     "contact_form",
     "accordion"

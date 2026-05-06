@@ -13,7 +13,7 @@
       "type": "product-top-sticky-accessory-bar",
       "settings": {}
     },
-    "product_page_hero": {
+    "hero_section": {
       "type": "hero-section",
       "settings": {
         "use_smaller_tagline_font": true
@@ -179,7 +179,7 @@
   },
   "order": [
     "top_sticky_accessory_bar",
-    "product_page_hero",
+    "hero_section",
     "press_ticker_product",
     "top_feature_highlights",
     "hero_video_product",

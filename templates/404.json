@@ -9,7 +9,7 @@
  */
 {
   "sections": {
-    "hero_card_4dtMWy": {
+    "spotlight_card_4dtMWy": {
       "type": "spotlight-card",
       "name": "Spotlight card",
       "settings": {
@@ -26,7 +26,7 @@
         "button_link": "/"
       }
     },
-    "hero_card_ixgYW9": {
+    "spotlight_card_ixgYW9": {
       "type": "spotlight-card",
       "name": "Spotlight card",
       "settings": {
@@ -43,7 +43,7 @@
     }
   },
   "order": [
-    "hero_card_4dtMWy",
-    "hero_card_ixgYW9"
+    "spotlight_card_4dtMWy",
+    "spotlight_card_ixgYW9"
   ]
 }
