@@ -11,7 +11,9 @@
   "sections": {
     "password_gate": {
       "type": "partnership-password-gate",
-      "settings": {}
+      "settings": {
+        "title": "El Estepario Siberiano x Soundbrenner"
+      }
     },
     "hero": {
       "type": "hero-section",
